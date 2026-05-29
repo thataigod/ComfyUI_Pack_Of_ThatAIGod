@@ -248,6 +248,7 @@ class LLM_Node:
                 if mode == "OpenRouter":
                     credits = self.fetch_openrouter_credits(api_key)
                     if credits: info_parts.append(f"Credits: {credits}")
+                api_key = ""
                 final_info = " | ".join(info_parts)
                 
                 result = (generated_content, True, final_info)
