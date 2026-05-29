@@ -8,11 +8,15 @@ import socket
 import base64
 import io
 import time
+import logging
 import torch
 import numpy as np
 from typing import Any
 from PIL import Image
 from server import PromptServer
+
+
+logger = logging.getLogger("ThatAIGod")
 
 
 class LLM_Node:
@@ -144,7 +148,7 @@ class LLM_Node:
         cache_key: tuple[Any, ...] = (mode, model_name, system_prompt, user_prompt, temperature, max_tokens, seed, image_hash)
 
         if cache_key in self._response_cache:
-            print(f"[ThatAIGod] Returning cached LLM response for seed {seed}")
+            logger.info("Returning cached LLM response for seed %s", seed)
             cached_text: str
             status: bool
             info: str

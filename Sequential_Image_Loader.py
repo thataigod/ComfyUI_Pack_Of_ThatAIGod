@@ -2,8 +2,12 @@ import os
 import torch
 import numpy as np
 import re
+import logging
 from typing import Any
 from PIL import Image, ImageOps
+
+
+logger = logging.getLogger("ThatAIGod")
 
 
 class SequentialImageLoader:
@@ -29,7 +33,7 @@ class SequentialImageLoader:
         index: int = kwargs.get("seed", 0)
 
         if not directory_path or not os.path.exists(directory_path):
-            print(f"[SequentialLoader] Error: Directory not found -> {directory_path}")
+            logger.error("Directory not found -> %s", directory_path)
             return (torch.zeros((1, 64, 64, 3)), "error_no_dir", "0/0")
 
         valid_extensions: tuple[str, ...] = ('.png', '.jpg', '.jpeg', '.webp', '.bmp', '.tiff')
@@ -38,7 +42,7 @@ class SequentialImageLoader:
 
         total_files: int = len(files)
         if total_files == 0:
-            print("[SequentialLoader] No images found.")
+            logger.warning("No images found in %s", directory_path)
             return (torch.zeros((1, 64, 64, 3)), "error_empty_dir", "0/0")
 
         safe_index: int = index % total_files
@@ -47,7 +51,7 @@ class SequentialImageLoader:
         filename_no_ext: str = os.path.splitext(current_filename)[0]
         stats: str = f"{safe_index + 1}/{total_files}"
 
-        print(f"[SequentialLoader] Processing {stats}: {current_filename}")
+        logger.info("Processing %s: %s", stats, current_filename)
 
         try:
             img_path: str = os.path.join(directory_path, current_filename)
@@ -63,7 +67,7 @@ class SequentialImageLoader:
             return (image_tensor, filename_no_ext, stats)
 
         except Exception as e:
-            print(f"[SequentialLoader] Failed to load {current_filename}: {e}")
+            logger.error("Failed to load %s: %s", current_filename, e)
             return (torch.zeros((1, 64, 64, 3)), "error_load", stats)
 
 NODE_CLASS_MAPPINGS = {
