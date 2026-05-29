@@ -25,8 +25,7 @@ class SequentialImageLoader:
     CATEGORY = "ThatAIGod/Image Utils"
 
     def natural_sort_key(self, s):
-        # Handles "image1.jpg", "image10.jpg", "image2.jpg" correctly
-        return [int(text) if text.isdigit() else text.lower() for text in re.split(r'(\d+)', s)]
+        return [(0, int(text)) if text.isdigit() else (1, text.lower()) for text in re.split(r'(\d+)', s)]
 
     def load_next(self, **kwargs):
         directory_path = kwargs.get("Directory Path", "")
