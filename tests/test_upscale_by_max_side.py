@@ -3,10 +3,9 @@ import os
 import types
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Mock comfy module before any real imports — it's not available outside ComfyUI
 comfy_mock = types.ModuleType('comfy')
 comfy_mock.utils = types.ModuleType('comfy.utils')
-comfy_mock.utils.common_upscale = None  # will be set in setUp
+comfy_mock.utils.common_upscale = None
 sys.modules['comfy'] = comfy_mock
 sys.modules['comfy.utils'] = comfy_mock.utils
 
@@ -74,6 +73,20 @@ class TestUpscaleByMaxSide(unittest.TestCase):
         img = self._make_image(256, 512)
         result = self.node.upscale(**{"Image": img, "Max Side": 512, "Divisibility": 8, "Method": "bilinear"})
         self.assertEqual(result[0].shape[3], 3)
+
+    def test_missing_image_raises_value_error(self):
+        with self.assertRaises(ValueError):
+            self.node.upscale(**{"Max Side": 1024, "Divisibility": 8, "Method": "bilinear"})
+
+    def test_has_description(self):
+        from Upscale_By_Max_Side import UpscaleByMaxSide
+        self.assertTrue(hasattr(UpscaleByMaxSide, "DESCRIPTION"))
+        self.assertIsInstance(UpscaleByMaxSide.DESCRIPTION, str)
+
+    def test_mappings_exported(self):
+        from Upscale_By_Max_Side import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+        self.assertIn("UpscaleByMaxSide", NODE_CLASS_MAPPINGS)
+        self.assertIn("UpscaleByMaxSide", NODE_DISPLAY_NAME_MAPPINGS)
 
 
 if __name__ == "__main__":

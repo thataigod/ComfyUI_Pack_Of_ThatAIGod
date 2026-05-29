@@ -2,6 +2,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import unittest
+import random
 from Dynamic_Resolution_Picker import DynamicResolution
 
 
@@ -16,8 +17,8 @@ class TestDynamicResolution(unittest.TestCase):
             "Scale Factor": 1.5,
             "seed": 0,
         })
-        self.assertEqual(result["result"][0], 1024)  # Width
-        self.assertEqual(result["result"][1], 1024)  # Height
+        self.assertEqual(result["result"][0], 1024)
+        self.assertEqual(result["result"][1], 1024)
 
     def test_portrait_2_3_ratio(self):
         result = self.node.calculate(**{
@@ -51,7 +52,7 @@ class TestDynamicResolution(unittest.TestCase):
 
     def test_min_dimension_at_least_64(self):
         result = self.node.calculate(**{
-            "Max Side Pixels": 256,
+            "Max Side Pixels": 64,
             "Aspect Ratio": "Square 1:1",
             "Scale Factor": 0.1,
             "seed": 0,
@@ -125,6 +126,40 @@ class TestDynamicResolution(unittest.TestCase):
         height = result["result"][1]
         max_val = result["result"][7]
         self.assertEqual(max_val, max(width, height))
+
+    def test_max_side_clamped_to_16384(self):
+        result = self.node.calculate(**{
+            "Max Side Pixels": 99999,
+            "Aspect Ratio": "Square 1:1",
+            "Scale Factor": 1.0,
+            "seed": 0,
+        })
+        w, h = result["result"][0], result["result"][1]
+        self.assertLessEqual(w, 16384)
+        self.assertLessEqual(h, 16384)
+
+    def test_max_side_clamped_to_64(self):
+        result = self.node.calculate(**{
+            "Max Side Pixels": 1,
+            "Aspect Ratio": "Square 1:1",
+            "Scale Factor": 1.0,
+            "seed": 0,
+        })
+        w, h = result["result"][0], result["result"][1]
+        self.assertGreaterEqual(w, 64)
+        self.assertGreaterEqual(h, 64)
+
+    def test_resolve_ratio_returns_known_label(self):
+        rng = random.Random(0)
+        label, ratio = self.node._resolve_ratio("Square 1:1", rng)
+        self.assertEqual(label, "Square 1:1")
+        self.assertEqual(ratio, 1.0)
+
+    def test_resolve_ratio_fallback_for_unknown(self):
+        rng = random.Random(0)
+        label, ratio = self.node._resolve_ratio("Unknown Ratio", rng)
+        self.assertEqual(label, "Square 1:1")
+        self.assertEqual(ratio, 1.0)
 
 
 if __name__ == "__main__":

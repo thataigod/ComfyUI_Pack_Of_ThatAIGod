@@ -2,20 +2,25 @@ import math
 import random
 from typing import Any
 
+try:
+    from .utils import clamp_dimension, compute_aspect_ratio_dimensions
+except ImportError:
+    from utils import clamp_dimension, compute_aspect_ratio_dimensions
+
 _PORTRAITS: dict[str, float] = {
-    "Portrait 2:3 (Classic)": 2/3,
-    "Portrait 3:4 (Standard)": 3/4,
-    "Portrait 4:5 (Social)": 4/5,
-    "Portrait 9:16 (Mobile)": 9/16,
+    "Portrait 2:3 (Classic)": 2 / 3,
+    "Portrait 3:4 (Standard)": 3 / 4,
+    "Portrait 4:5 (Social)": 4 / 5,
+    "Portrait 9:16 (Mobile)": 9 / 16,
 }
 
 _LANDSCAPES: dict[str, float] = {
-    "Landscape 3:2 (Classic)": 3/2,
-    "Landscape 4:3 (Standard)": 4/3,
-    "Landscape 5:4 (Display)": 5/4,
-    "Landscape 16:9 (HD)": 16/9,
-    "Landscape 16:10 (Monitor)": 16/10,
-    "Landscape 21:9 (Ultrawide)": 21/9,
+    "Landscape 3:2 (Classic)": 3 / 2,
+    "Landscape 4:3 (Standard)": 4 / 3,
+    "Landscape 5:4 (Display)": 5 / 4,
+    "Landscape 16:9 (HD)": 16 / 9,
+    "Landscape 16:10 (Monitor)": 16 / 10,
+    "Landscape 21:9 (Ultrawide)": 21 / 9,
     "Landscape 1.85:1 (Cinema)": 1.85,
 }
 
@@ -44,8 +49,28 @@ _SORTED_ALL_ITEMS: list[tuple[str, float]] = sorted(_ALL_RATIOS.items())
 
 
 class DynamicResolution:
-    RETURN_TYPES: tuple[str, ...] = ("INT", "INT", "INT", "INT", "FLOAT", "STRING", "INT", "INT")
-    RETURN_NAMES: tuple[str, ...] = ("Width", "Height", "Scaled Width", "Scaled Height", "Scale Factor", "Keywords", "Guide Size", "Max Size")
+    DESCRIPTION = "Calculates width and height from a max side pixel value and aspect ratio, with optional random selection and scaling."
+
+    RETURN_TYPES: tuple[str, ...] = (
+        "INT",
+        "INT",
+        "INT",
+        "INT",
+        "FLOAT",
+        "STRING",
+        "INT",
+        "INT",
+    )
+    RETURN_NAMES: tuple[str, ...] = (
+        "Width",
+        "Height",
+        "Scaled Width",
+        "Scaled Height",
+        "Scale Factor",
+        "Keywords",
+        "Guide Size",
+        "Max Size",
+    )
     FUNCTION: str = "calculate"
     CATEGORY: str = "ThatAIGod/Image Utils"
 
@@ -71,12 +96,32 @@ class DynamicResolution:
 
         return {
             "required": {
-                "Max Side Pixels": ("INT", {"default": 1024, "min": 256, "max": 16384, "step": 8}),
+                "Max Side Pixels": (
+                    "INT",
+                    {"default": 1024, "min": 64, "max": 16384, "step": 8},
+                ),
                 "Aspect Ratio": (ratio_options, {"default": "Square 1:1"}),
-                "Scale Factor": ("FLOAT", {"default": 1.5, "min": 0.1, "max": 8.0, "step": 0.05}),
-                "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
+                "Scale Factor": (
+                    "FLOAT",
+                    {"default": 1.5, "min": 0.1, "max": 8.0, "step": 0.05},
+                ),
+                "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}),
             },
         }
+
+    def _resolve_ratio(
+        self, aspect_ratio_label: str, rng: random.Random
+    ) -> tuple[str, float]:
+        if "Random" in aspect_ratio_label:
+            if aspect_ratio_label == "Random (Portrait)":
+                return rng.choice(_SORTED_PORTRAIT_ITEMS)
+            elif aspect_ratio_label == "Random (Landscape)":
+                return rng.choice(_SORTED_LANDSCAPE_ITEMS)
+            else:
+                return rng.choice(_SORTED_ALL_ITEMS)
+        elif aspect_ratio_label in _ALL_RATIOS:
+            return aspect_ratio_label, _ALL_RATIOS[aspect_ratio_label]
+        return "Square 1:1", 1.0
 
     def calculate(self, **kwargs: Any) -> dict[str, Any]:
         max_side: int = kwargs.get("Max Side Pixels", 1024)
@@ -84,43 +129,14 @@ class DynamicResolution:
         scale_factor: float = kwargs.get("Scale Factor", 1.5)
         seed: int = kwargs.get("seed", 0)
 
-        if max_side < 64 or max_side > 16384:
-            max_side = max(64, min(max_side, 16384))
-
+        max_side = clamp_dimension(max_side, 64, 16384)
         scale_factor = max(0.1, min(scale_factor, 8.0))
 
         rng: random.Random = random.Random(seed)
-
-        target_label: str = aspect_ratio_label
-        ratio_float: float = 1.0
-
-        if "Random" in aspect_ratio_label:
-            if aspect_ratio_label == "Random (Portrait)":
-                target_label, ratio_float = rng.choice(_SORTED_PORTRAIT_ITEMS)
-            elif aspect_ratio_label == "Random (Landscape)":
-                target_label, ratio_float = rng.choice(_SORTED_LANDSCAPE_ITEMS)
-            else:
-                target_label, ratio_float = rng.choice(_SORTED_ALL_ITEMS)
-        elif target_label in _ALL_RATIOS:
-            ratio_float = _ALL_RATIOS[target_label]
-        else:
-            ratio_float = 1.0
-            target_label = "Square 1:1"
+        target_label, ratio_float = self._resolve_ratio(aspect_ratio_label, rng)
 
         keywords: str = _KEYWORD_MAP.get(target_label, f"{target_label}, Aspect Ratio")
-
-        if ratio_float > 1.0:
-            width: float = float(max_side)
-            height: float = max_side / ratio_float
-        elif ratio_float < 1.0:
-            height = float(max_side)
-            width = max_side * ratio_float
-        else:
-            width = float(max_side)
-            height = float(max_side)
-
-        width_int: int = max(int(round(width / 8) * 8), 64)
-        height_int: int = max(int(round(height / 8) * 8), 64)
+        width_int, height_int = compute_aspect_ratio_dimensions(max_side, ratio_float)
 
         guide_size: int = min(width_int, height_int)
         max_size_val: int = max(width_int, height_int)
@@ -150,13 +166,23 @@ class DynamicResolution:
                 "guide_size": [guide_size],
                 "max_size": [max_size_val],
             },
-            "result": (width_int, height_int, scaled_width, scaled_height, scale_factor, keywords, guide_size, max_size_val),
+            "result": (
+                width_int,
+                height_int,
+                scaled_width,
+                scaled_height,
+                scale_factor,
+                keywords,
+                guide_size,
+                max_size_val,
+            ),
         }
 
+
 NODE_CLASS_MAPPINGS = {
-    "DynamicResolution": DynamicResolution
+    "DynamicResolution": DynamicResolution,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "DynamicResolution": "Dynamic Resolution Picker"
+    "DynamicResolution": "Dynamic Resolution Picker",
 }

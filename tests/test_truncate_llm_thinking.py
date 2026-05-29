@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import unittest
-from Truncate_LLM_Thinking import TruncateThinking
+from Truncate_LLM_Thinking import TruncateThinking, _WILDCARD_PATTERN
 
 
 class TestTruncateThinking(unittest.TestCase):
@@ -61,6 +61,35 @@ class TestTruncateThinking(unittest.TestCase):
         long_text = "<think>test</think>" * 20000
         result = self.node.truncate(Text=long_text)
         self.assertLess(len(result[0]), 110000)
+
+    def test_truncate_long_text_cuts_at_token_boundary(self):
+        text = "prefix " + ("<think>m</think>" * 5000) + " suffix"
+        result = self.node._truncate_long_text(text, "<think>", "</think>", max_length=200)
+        self.assertLessEqual(len(result), 200 + len("</think>"))
+
+    def test_truncate_long_text_with_incomplete_start(self):
+        text = "<think>AAAA" * 5000
+        result = self.node._truncate_long_text(text, "<think>", "</think>", max_length=50)
+        self.assertLessEqual(len(result), 50)
+
+    def test_truncate_long_text_below_max_returns_unchanged(self):
+        text = "short text"
+        result = self.node._truncate_long_text(text, "<think>", "</think>", max_length=100000)
+        self.assertEqual(result, text)
+
+    def test_truncate_long_text_cuts_at_incomplete_start(self):
+        text = "<think>hello</think>something<think>AAAA" * 5000
+        result = self.node._truncate_long_text(text, "<think>", "</think>", max_length=50)
+        self.assertFalse(result.endswith("<think>AAAA"))
+
+    def test_has_description(self):
+        self.assertTrue(hasattr(TruncateThinking, "DESCRIPTION"))
+        self.assertIsInstance(TruncateThinking.DESCRIPTION, str)
+
+    def test_mappings_exported(self):
+        from Truncate_LLM_Thinking import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+        self.assertIn("TruncateThinking", NODE_CLASS_MAPPINGS)
+        self.assertIn("TruncateThinking", NODE_DISPLAY_NAME_MAPPINGS)
 
 
 if __name__ == "__main__":

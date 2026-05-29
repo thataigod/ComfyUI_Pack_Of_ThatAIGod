@@ -1,12 +1,15 @@
 import logging
-import torch
 from typing import Any
+import torch
 import comfy.utils
+
 
 logger: logging.Logger = logging.getLogger("ThatAIGod")
 
 
 class UpscaleByMaxSide:
+    DESCRIPTION = "Upscales an image so its longest side matches a target pixel value, with configurable method and divisibility constraints."
+
     RETURN_TYPES: tuple[str, ...] = ("IMAGE", "INT", "INT")
     RETURN_NAMES: tuple[str, ...] = ("Image", "Width", "Height")
     FUNCTION: str = "upscale"
@@ -19,12 +22,18 @@ class UpscaleByMaxSide:
                 "Image": ("IMAGE",),
                 "Max Side": ("INT", {"default": 1024, "min": 64, "max": 16384, "step": 8}),
                 "Divisibility": ("INT", {"default": 8, "min": 1, "max": 128, "step": 1}),
-                "Method": (["lanczos", "bicubic", "bilinear", "nearest-exact", "area"], {"default": "lanczos"}),
+                "Method": (
+                    ["lanczos", "bicubic", "bilinear", "nearest-exact", "area"],
+                    {"default": "lanczos"},
+                ),
             }
         }
 
     def upscale(self, **kwargs: Any) -> tuple[torch.Tensor, int, int]:
-        image: torch.Tensor = kwargs.get("Image")
+        image: torch.Tensor | None = kwargs.get("Image")
+        if image is None:
+            raise ValueError("Image input is required but was not provided.")
+
         max_side: int = kwargs.get("Max Side", 1024)
         divisibility: int = kwargs.get("Divisibility", 8)
         method: str = kwargs.get("Method", "lanczos")
@@ -55,15 +64,23 @@ class UpscaleByMaxSide:
         if target_w != scale_w or target_h != scale_h:
             h_start = (scale_h - target_h) // 2
             w_start = (scale_w - target_w) // 2
-            logger.info("Center-cropping from %dx%d to %dx%d to meet divisibility=%d", scale_w, scale_h, target_w, target_h, divisibility)
-            s = s[:, h_start:h_start + target_h, w_start:w_start + target_w, :]
+            logger.info(
+                "Center-cropping from %dx%d to %dx%d to meet divisibility=%d",
+                scale_w,
+                scale_h,
+                target_w,
+                target_h,
+                divisibility,
+            )
+            s = s[:, h_start : h_start + target_h, w_start : w_start + target_w, :]
 
         return (s, target_w, target_h)
 
+
 NODE_CLASS_MAPPINGS = {
-    "UpscaleByMaxSide": UpscaleByMaxSide
+    "UpscaleByMaxSide": UpscaleByMaxSide,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "UpscaleByMaxSide": "Upscale By Max Side"
+    "UpscaleByMaxSide": "Upscale By Max Side",
 }

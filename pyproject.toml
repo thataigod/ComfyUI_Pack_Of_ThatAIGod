@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-pack-of-thataigod"
-version = "1.0.0"
+version = "1.1.0"
 description = "Custom node pack for ComfyUI with LLM integration, image utilities, and wildcard prompt generation"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -10,8 +10,8 @@ authors = [
 ]
 dependencies = [
     "Pillow>=10.0.0",
-    "numpy",
-    "torch",
+    "numpy>=1.21",
+    "torch>=2.0.0",
 ]
 
 [build-system]
@@ -20,3 +20,8 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["."]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v"
+filterwarnings = ["ignore::DeprecationWarning"]

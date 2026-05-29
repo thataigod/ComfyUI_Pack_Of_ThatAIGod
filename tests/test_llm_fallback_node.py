@@ -63,6 +63,15 @@ class TestLLMFallbackSwitch(unittest.TestCase):
         })
         self.assertEqual(result[0], "fallback")
 
+    def test_has_description(self):
+        self.assertTrue(hasattr(LLM_Fallback_Node, "DESCRIPTION"))
+        self.assertIsInstance(LLM_Fallback_Node.DESCRIPTION, str)
+
+    def test_mappings_exported(self):
+        from LLM_Fallback_Node import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+        self.assertIn("LLM_Fallback_Node", NODE_CLASS_MAPPINGS)
+        self.assertIn("LLM_Fallback_Node", NODE_DISPLAY_NAME_MAPPINGS)
+
 
 if __name__ == "__main__":
     unittest.main()

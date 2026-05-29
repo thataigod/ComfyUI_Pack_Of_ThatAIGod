@@ -2,29 +2,36 @@ import sys
 import os
 import tempfile
 import shutil
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import unittest
-from Wildcard_Reader import WildcardReader
+from unittest.mock import patch
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import Wildcard_Reader
+from Wildcard_Reader import WildcardReader, _WILDCARD_PATTERN
 
 
 class TestWildcardReader(unittest.TestCase):
     def setUp(self):
         self.node = WildcardReader()
-        self.module_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        self.wildcards_dir = os.path.join(self.module_dir, "wildcards")
-        self.backup_dir = None
-
-        if os.path.exists(self.wildcards_dir):
-            self.backup_dir = tempfile.mkdtemp()
-            shutil.move(self.wildcards_dir, os.path.join(self.backup_dir, "wildcards"))
-
+        self.temp_dir = tempfile.mkdtemp()
+        self.wildcards_dir = os.path.join(self.temp_dir, "wildcards")
         os.makedirs(self.wildcards_dir, exist_ok=True)
 
+        self.module_file_patch = patch.object(
+            Wildcard_Reader,
+            "__file__",
+            os.path.join(self.temp_dir, "Wildcard_Reader.py"),
+        )
+        self.module_file_patch.start()
+
+        WildcardReader._file_index_cache.clear()
+        WildcardReader._file_mtimes.clear()
+        WildcardReader._deck_cache.clear()
+
     def tearDown(self):
-        shutil.rmtree(self.wildcards_dir, ignore_errors=True)
-        if self.backup_dir and os.path.exists(os.path.join(self.backup_dir, "wildcards")):
-            shutil.move(os.path.join(self.backup_dir, "wildcards"), self.module_dir)
-            self.wildcards_dir = os.path.join(self.module_dir, "wildcards")
+        self.module_file_patch.stop()
+        shutil.rmtree(self.temp_dir, ignore_errors=True)
 
     def _create_wildcard_file(self, filename, lines):
         path = os.path.join(self.wildcards_dir, filename)
@@ -37,7 +44,7 @@ class TestWildcardReader(unittest.TestCase):
             text="a cat on a mat",
             mode="Deterministic (Seed)",
             seed=0,
-            delimiter=", "
+            delimiter=", ",
         )
         self.assertEqual(result[0], "a cat on a mat")
 
@@ -47,7 +54,7 @@ class TestWildcardReader(unittest.TestCase):
             text="__colors__",
             mode="Deterministic (Seed)",
             seed=42,
-            delimiter=", "
+            delimiter=", ",
         )
         self.assertIn(result[0], ["red", "green", "blue"])
 
@@ -72,7 +79,7 @@ class TestWildcardReader(unittest.TestCase):
             mode="Deterministic (Seed)",
             seed=0,
             delimiter=", ",
-            **{"Prependable Text": "Start:"}
+            **{"Prependable Text": "Start:"},
         )
         self.assertTrue(result[0].startswith("Start:"))
 
@@ -83,7 +90,7 @@ class TestWildcardReader(unittest.TestCase):
             mode="Deterministic (Seed)",
             seed=0,
             delimiter=", ",
-            **{"Appendable Text": ":End"}
+            **{"Appendable Text": ":End"},
         )
         self.assertTrue(result[0].endswith(":End"))
 
@@ -93,7 +100,7 @@ class TestWildcardReader(unittest.TestCase):
             text="__colors__",
             mode="Deterministic (Seed)",
             seed=0,
-            delimiter=", "
+            delimiter=", ",
         )
         self.assertNotEqual(result[0], "# comment")
 
@@ -104,7 +111,7 @@ class TestWildcardReader(unittest.TestCase):
             text="__primary__",
             mode="Deterministic (Seed)",
             seed=42,
-            delimiter=", "
+            delimiter=", ",
         )
         self.assertIn(result[0], ["red", "blue"])
 
@@ -113,7 +120,7 @@ class TestWildcardReader(unittest.TestCase):
             text="__nonexistent_file__",
             mode="Deterministic (Seed)",
             seed=0,
-            delimiter=", "
+            delimiter=", ",
         )
         self.assertEqual(result[0], "__nonexistent_file__")
 
@@ -123,18 +130,61 @@ class TestWildcardReader(unittest.TestCase):
             text="__empty__",
             mode="Deterministic (Seed)",
             seed=0,
-            delimiter=", "
+            delimiter=", ",
         )
-        self.assertIsInstance(result[0], str)
+        self.assertEqual(result[0], "")
 
     def test_path_traversal_blocked(self):
         result = self.node.process(
             text="__..__",
             mode="Deterministic (Seed)",
             seed=0,
-            delimiter=", "
+            delimiter=", ",
         )
         self.assertEqual(result[0], "__..__")
+
+    def test_single_wildcard_with_subdir(self):
+        os.makedirs(os.path.join(self.wildcards_dir, "sub"), exist_ok=True)
+        self._create_wildcard_file("sub/colors.txt", ["red", "green"])
+        result = self.node.process(
+            text="__sub/colors__",
+            mode="Deterministic (Seed)",
+            seed=42,
+            delimiter=", ",
+        )
+        self.assertIn(result[0], ["red", "green"])
+
+    def test_wildcard_pattern_matches_varied_tags(self):
+        self.assertTrue(_WILDCARD_PATTERN.match("__hello__"))
+        self.assertTrue(_WILDCARD_PATTERN.match("__hello-world__"))
+        self.assertTrue(_WILDCARD_PATTERN.match("__sub/path__"))
+        self.assertIsNone(_WILDCARD_PATTERN.match("__no match!!__"))
+
+    def test_build_file_index_caches_by_mtime(self):
+        self._create_wildcard_file("colors.txt", ["red"])
+        index1 = self.node._build_file_index(self.wildcards_dir)
+        self.assertIn("colors.txt", index1)
+
+        index2 = self.node._build_file_index(self.wildcards_dir)
+        self.assertEqual(index1, index2)
+
+    def test_build_file_index_refreshes_on_new_file(self):
+        self._create_wildcard_file("a.txt", ["a"])
+        index1 = self.node._build_file_index(self.wildcards_dir)
+        self.assertIn("a.txt", index1)
+
+        self._create_wildcard_file("b.txt", ["b"])
+        index2 = self.node._build_file_index(self.wildcards_dir)
+        self.assertIn("b.txt", index2)
+
+    def test_has_description(self):
+        self.assertTrue(hasattr(WildcardReader, "DESCRIPTION"))
+        self.assertIsInstance(WildcardReader.DESCRIPTION, str)
+
+    def test_mappings_exported(self):
+        from Wildcard_Reader import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+        self.assertIn("WildcardReader", NODE_CLASS_MAPPINGS)
+        self.assertIn("WildcardReader", NODE_DISPLAY_NAME_MAPPINGS)
 
 
 if __name__ == "__main__":

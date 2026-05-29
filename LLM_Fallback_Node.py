@@ -2,6 +2,8 @@ from typing import Any
 
 
 class LLM_Fallback_Node:
+    DESCRIPTION = "Routes between the original input and the generated LLM output based on the status boolean from the LLM node."
+
     RETURN_TYPES: tuple[str, ...] = ("STRING",)
     RETURN_NAMES: tuple[str, ...] = ("Final Text",)
     FUNCTION: str = "switch"
@@ -16,7 +18,7 @@ class LLM_Fallback_Node:
             "optional": {
                 "Generated Text": ("STRING", {"forceInput": True}),
                 "Status (Boolean)": ("BOOLEAN", {"default": False}),
-            }
+            },
         }
 
     def switch(self, **kwargs: Any) -> tuple[str]:
@@ -32,3 +34,12 @@ class LLM_Fallback_Node:
         if status and generated_text and generated_text.strip():
             return (generated_text,)
         return (original_input,)
+
+
+NODE_CLASS_MAPPINGS = {
+    "LLM_Fallback_Node": LLM_Fallback_Node,
+}
+
+NODE_DISPLAY_NAME_MAPPINGS = {
+    "LLM_Fallback_Node": "LLM Fallback Switch",
+}
