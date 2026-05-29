@@ -7,6 +7,8 @@ from .Sequential_Image_Loader import NODE_CLASS_MAPPINGS as SEQ_CLASS, NODE_DISP
 from .Truncate_LLM_Thinking import NODE_CLASS_MAPPINGS as TRUNC_CLASS, NODE_DISPLAY_NAME_MAPPINGS as TRUNC_DISPLAY
 from .Upscale_By_Max_Side import NODE_CLASS_MAPPINGS as UP_CLASS, NODE_DISPLAY_NAME_MAPPINGS as UP_DISPLAY
 
+__version__: str = "1.0.0"
+
 LLM_CLASS: dict[str, Any] = {
     "LLM_Node": LLM_Node,
     "LLM_Fallback_Node": LLM_Fallback_Node

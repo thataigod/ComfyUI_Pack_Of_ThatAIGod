@@ -1,4 +1,9 @@
 @echo off
+if not exist ".\autowildcards" (
+    echo This script must be run from the wildcards directory.
+    pause
+    exit /b
+)
 
 (
 echo Jet Black

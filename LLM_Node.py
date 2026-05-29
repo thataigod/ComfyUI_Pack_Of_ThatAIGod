@@ -39,12 +39,12 @@ class LLM_Node:
 
         try:
             url: str = "https://openrouter.ai/api/v1/models"
-            req: urllib.request.Request = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            req: urllib.request.Request = urllib.request.Request(url, headers={'User-Agent': 'ThatAIGod-ComfyUI-Node/1.0'})
             with urllib.request.urlopen(req, timeout=2) as response:
                 data: dict[str, Any] = json.loads(response.read().decode("utf-8"))
                 if "data" in data and isinstance(data["data"], list):
                     fetched_models: list[str] = [m["id"] for m in data["data"]]
-                    cls._model_cache = fetched_models
+                    cls._model_cache = fetched_models[:200]
                     return fetched_models
         except Exception:
             pass
@@ -112,7 +112,7 @@ class LLM_Node:
                 "https://openrouter.ai/api/v1/credits",
                 headers={
                     "Authorization": f"Bearer {api_key}",
-                    "User-Agent": "Mozilla/5.0"
+                    "User-Agent": "ThatAIGod-ComfyUI-Node/1.0"
                 }
             )
             with urllib.request.urlopen(req, timeout=3) as response:
@@ -220,7 +220,7 @@ class LLM_Node:
         headers: dict[str, str] = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://github.com/thataigod",
+            "User-Agent": "ThatAIGod-ComfyUI-Node/1.0",
             "X-Title": "ComfyUI-Pack-Of-ThatAIGod",
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }

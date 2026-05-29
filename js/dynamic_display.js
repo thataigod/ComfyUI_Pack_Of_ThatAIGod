@@ -45,7 +45,7 @@ app.registerExtension({
 
                 // 2. Refresh Button
                 this.addWidget("button", "Refresh Models", null, () => {
-                    this.refreshModels();
+                    this.refreshModels().catch((err) => console.error("Refresh failed:", err));
                 });
 
                 // 3. Spacer Widget (Bottom Buffer)

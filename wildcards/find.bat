@@ -1,8 +1,14 @@
 @echo off
 setlocal enabledelayedexpansion
 
-:: === CONFIGURATION ===
-set "searchWord=fan"
+if "%1"=="" (
+    echo Usage: find.bat ^<searchWord^>
+    echo Example: find.bat red
+    pause
+    exit /b
+)
+
+set "searchWord=%~1"
 set "searchFolder=%~dp0autowildcards"
 
 echo Searching for "%searchWord%" in "%searchFolder%"...
