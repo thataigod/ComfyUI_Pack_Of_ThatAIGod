@@ -247,7 +247,6 @@ class LLM_Node:
             generated_content: str = "".join(full_content).strip()
 
             api_key_was: str = api_key
-            del api_key
             info_parts: list[str] = [f"Latency: {latency:.2f}s"]
             if cfg["mode"] == "OpenRouter":
                 credits: str | None = self.fetch_openrouter_credits(api_key_was)

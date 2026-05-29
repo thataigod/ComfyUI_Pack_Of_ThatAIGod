@@ -147,7 +147,6 @@ async def _async_fetch_stream(
     url: str, payload: dict[str, Any], api_key: str, timeout: int
 ) -> list[bytes]:
     headers: dict[str, str] = {**_STREAM_HEADERS, "Authorization": f"Bearer {api_key}"}
-    del api_key
     async with aiohttp.ClientSession() as session:
         async with session.post(
             url,
@@ -213,7 +212,8 @@ def fetch_openrouter_credits(api_key: str) -> str | None:
                 usage: float = float(d.get("total_usage", 0))
                 remaining: float = total - usage
                 return f"${remaining:.2f}"
-    except Exception:
+    except Exception as e:
+        logger.debug("Failed to fetch OpenRouter credits: %s", e)
         return None
     return None
 
