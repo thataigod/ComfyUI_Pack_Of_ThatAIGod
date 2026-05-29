@@ -78,6 +78,12 @@ class TestUpscaleByMaxSide(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.node.upscale(**{"Max Side": 1024, "Divisibility": 8, "Method": "bilinear"})
 
+    def test_input_types_returns_dict(self):
+        from Upscale_By_Max_Side import UpscaleByMaxSide
+        result = UpscaleByMaxSide.INPUT_TYPES()
+        self.assertIn("required", result)
+        self.assertIn("Image", result["required"])
+
     def test_has_description(self):
         from Upscale_By_Max_Side import UpscaleByMaxSide
         self.assertTrue(hasattr(UpscaleByMaxSide, "DESCRIPTION"))

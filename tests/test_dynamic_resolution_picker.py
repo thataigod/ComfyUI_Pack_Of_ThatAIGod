@@ -155,6 +155,23 @@ class TestDynamicResolution(unittest.TestCase):
         self.assertEqual(label, "Square 1:1")
         self.assertEqual(ratio, 1.0)
 
+    def test_input_types_returns_dict(self):
+        result = DynamicResolution.INPUT_TYPES()
+        self.assertIn("required", result)
+        self.assertIn("Aspect Ratio", result["required"])
+
+    def test_random_any_ratio(self):
+        for _ in range(20):
+            result = self.node.calculate(**{
+                "Max Side Pixels": 1024,
+                "Aspect Ratio": "Random (Any)",
+                "Scale Factor": 1.0,
+                "seed": 42,
+            })
+            w, h = result["result"][0], result["result"][1]
+            self.assertGreaterEqual(w, 64)
+            self.assertGreaterEqual(h, 64)
+
     def test_resolve_ratio_fallback_for_unknown(self):
         rng = random.Random(0)
         label, ratio = self.node._resolve_ratio("Unknown Ratio", rng)

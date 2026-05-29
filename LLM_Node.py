@@ -148,7 +148,6 @@ class LLM_Node:
                     return f"${remaining:.2f}"
         except Exception:
             return None
-        return None
 
     def push_error_to_ui(self, unique_id: str | None, error_msg: str) -> None:
         if unique_id:

@@ -87,6 +87,18 @@ class TestSequentialImageLoader(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.node.load_next(**{"Directory Path": "", "seed": 0})
 
+    def test_input_types_returns_dict(self):
+        result = SequentialImageLoader.INPUT_TYPES()
+        self.assertIn("required", result)
+        self.assertIn("Directory Path", result["required"])
+
+    def test_non_rgb_conversion(self):
+        path = os.path.join(self.temp_dir, "grayscale.png")
+        gray = Image.new("L", (64, 64))
+        gray.save(path)
+        result = self.node.load_next(**{"Directory Path": self.temp_dir, "seed": 0})
+        self.assertEqual(result[0].shape[3], 3)
+
     def test_has_description(self):
         self.assertTrue(hasattr(SequentialImageLoader, "DESCRIPTION"))
         self.assertIsInstance(SequentialImageLoader.DESCRIPTION, str)

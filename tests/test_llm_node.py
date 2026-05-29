@@ -354,6 +354,98 @@ class TestLLMNode(unittest.TestCase):
         result = self.node._parse_stream_chunk(line)
         self.assertEqual(result, "")
 
+    def test_fetch_openrouter_credits_no_data_key_returns_none(self):
+        mock_response = MagicMock()
+        mock_response.read.return_value = json.dumps({"error": "unauthorized"}).encode("utf-8")
+        mock_response.__enter__.return_value = mock_response
+        with patch.object(urllib.request, "urlopen", return_value=mock_response):
+            result = self.node.fetch_openrouter_credits("test-key")
+            self.assertIsNone(result)
+
+    def test_push_error_to_ui_with_unique_id_calls_send_sync(self):
+        with patch("LLM_Node.PromptServer.instance.send_sync") as mock_send:
+            self.node.push_error_to_ui("node_123", "test error msg")
+            mock_send.assert_called_once_with(
+                "that_ai_god.stream",
+                {"node": "node_123", "type": "update", "delta": "\n\n[ERROR]: test error msg"},
+            )
+
+    def test_generate_with_unique_id_and_cached_streams_to_ui(self):
+        cache_key = ("OpenRouter", "test-model", "", "hello", 0.7, 1024, 0, None)
+        LLM_Node._response_cache[cache_key] = ("cached reply", True, "cached info")
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
+            with patch("LLM_Node.PromptServer.instance.send_sync") as mock_send:
+                result = self.node.generate(**_make_kwargs({
+                    "User Prompt": "hello", "System Prompt": "",
+                    "unique_id": "uid_42",
+                }))
+                text, status, info = result
+                self.assertEqual(text, "cached reply")
+                self.assertTrue(status)
+                mock_send.assert_any_call(
+                    "that_ai_god.stream", {"node": "uid_42", "type": "start"}
+                )
+                mock_send.assert_any_call(
+                    "that_ai_god.stream",
+                    {"node": "uid_42", "type": "update", "delta": "cached reply"},
+                )
+
+    def test_image_encoding_error_returns_error_tuple(self):
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
+            with patch("LLM_Node.PromptServer"):
+                with patch.object(self.node, "encode_image_to_base64", side_effect=ValueError("bad image")):
+                    import torch
+                    bad_img = torch.zeros((1, 64, 64, 3))
+                    result = self.node.generate(**_make_kwargs({
+                        "Image(s)": bad_img, "unique_id": "uid_42",
+                    }))
+                    text, status, info = result
+                    self.assertEqual(text, "")
+                    self.assertFalse(status)
+                    self.assertIn("bad image", info)
+
+    def test_generate_with_unique_id_streaming_shows_credits(self):
+        mock_response = MagicMock()
+        chunks = [
+            b'data: {"choices":[{"delta":{"content":"Hello"}}]}\n',
+            b'data: [DONE]\n',
+        ]
+        mock_response.__enter__.return_value.__iter__.return_value = chunks
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
+            with patch("LLM_Node.PromptServer.instance.send_sync") as mock_send:
+                with patch.object(urllib.request, "urlopen", return_value=mock_response):
+                    with patch.object(self.node, "fetch_openrouter_credits", return_value="$5.00"):
+                        result = self.node.generate(**_make_kwargs({
+                            "unique_id": "uid_99",
+                        }))
+                        text, status, info = result
+                        self.assertEqual(text, "Hello")
+                        self.assertTrue(status)
+                        self.assertIn("Credits: $5.00", info)
+                        mock_send.assert_any_call(
+                            "that_ai_god.stream", {"node": "uid_99", "type": "start"}
+                        )
+                        mock_send.assert_any_call(
+                            "that_ai_god.stream",
+                            {"node": "uid_99", "type": "update", "delta": "Hello"},
+                        )
+
+    def test_generic_exception_in_generate_returns_error_tuple(self):
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
+            with patch("LLM_Node.PromptServer"):
+                with patch.object(urllib.request, "urlopen", side_effect=RuntimeError("something broke")):
+                    result = self.node.generate(**_make_kwargs())
+                    text, status, info = result
+                    self.assertEqual(text, "")
+                    self.assertFalse(status)
+                    self.assertIn("something broke", info)
+
+    def test_input_types_returns_dict(self):
+        result = LLM_Node.INPUT_TYPES()
+        self.assertIn("required", result)
+        self.assertIn("Mode", result["required"])
+        self.assertIn("Model", result["required"])
+
     def test_has_description(self):
         self.assertTrue(hasattr(LLM_Node, "DESCRIPTION"))
         self.assertIsInstance(LLM_Node.DESCRIPTION, str)

@@ -82,6 +82,11 @@ class TestTruncateThinking(unittest.TestCase):
         result = self.node._truncate_long_text(text, "<think>", "</think>", max_length=50)
         self.assertFalse(result.endswith("<think>AAAA"))
 
+    def test_input_types_returns_dict(self):
+        result = TruncateThinking.INPUT_TYPES()
+        self.assertIn("required", result)
+        self.assertIn("Text", result["required"])
+
     def test_has_description(self):
         self.assertTrue(hasattr(TruncateThinking, "DESCRIPTION"))
         self.assertIsInstance(TruncateThinking.DESCRIPTION, str)

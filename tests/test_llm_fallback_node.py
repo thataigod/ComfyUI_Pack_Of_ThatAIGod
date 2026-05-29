@@ -63,6 +63,11 @@ class TestLLMFallbackSwitch(unittest.TestCase):
         })
         self.assertEqual(result[0], "fallback")
 
+    def test_input_types_returns_dict(self):
+        result = LLM_Fallback_Node.INPUT_TYPES()
+        self.assertIn("required", result)
+        self.assertIn("Original Input", result["required"])
+
     def test_has_description(self):
         self.assertTrue(hasattr(LLM_Fallback_Node, "DESCRIPTION"))
         self.assertIsInstance(LLM_Fallback_Node.DESCRIPTION, str)
