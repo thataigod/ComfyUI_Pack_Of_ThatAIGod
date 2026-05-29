@@ -2,6 +2,11 @@ import { app } from "../../scripts/app.js";
 import { api } from "../../scripts/api.js";
 import { ComfyWidgets } from "../../scripts/widgets.js";
 
+const LLM_WIDGET_HEIGHT = 130;
+const LLM_WIDGET_TOTAL_HEIGHT = LLM_WIDGET_HEIGHT + 20;
+const SPACER_HEIGHT = 10;
+const MIN_NODE_WIDTH = 400;
+
 app.registerExtension({
     name: "ThatAIGod.DynamicFeatures",
     async beforeRegisterNodeDef(nodeType, nodeData, app) {
@@ -24,19 +29,18 @@ app.registerExtension({
                     w.inputEl.style.fontFamily = "monospace";
                     
                     // --- CSS Enforcements (Reduced Height) ---
-                    // 2/3rd of 200px is approx 130px
-                    w.inputEl.style.height = "130px";
-                    w.inputEl.style.minHeight = "130px";
-                    w.inputEl.style.maxHeight = "130px";
+                    w.inputEl.style.height = LLM_WIDGET_HEIGHT + "px";
+                    w.inputEl.style.minHeight = LLM_WIDGET_HEIGHT + "px";
+                    w.inputEl.style.maxHeight = LLM_WIDGET_HEIGHT + "px";
                     w.inputEl.style.overflowY = "scroll"; 
                     w.inputEl.style.resize = "none";      
                     w.inputEl.style.whiteSpace = "pre-wrap"; 
                     
                     w.name = "Full LLM Response or Any Errors"; 
                     
-                    // --- LAYOUT: 130px Content + 20px Gap = 150px ---
+                    // --- LAYOUT: content + gap ---
                     w.computeSize = function(width) {
-                        return [width, 150]; 
+                        return [width, LLM_WIDGET_TOTAL_HEIGHT]; 
                     };
 
                 } catch (e) {
@@ -51,13 +55,13 @@ app.registerExtension({
                 // 3. Spacer Widget (Bottom Buffer)
                 const spacer = this.addWidget("label", "", ""); 
                 spacer.computeSize = function(width) {
-                    return [width, 10];
+                    return [width, SPACER_HEIGHT];
                 };
 
                 // 4. Force Resize
                 requestAnimationFrame(() => {
                     const sz = this.computeSize();
-                    if (this.size[0] < 400) this.size[0] = 400;
+                    if (this.size[0] < MIN_NODE_WIDTH) this.size[0] = MIN_NODE_WIDTH;
                     if (this.size[1] < sz[1]) this.size[1] = sz[1];
                     this.onResize?.(this.size);
                 });

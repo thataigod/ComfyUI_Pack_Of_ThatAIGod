@@ -268,3 +268,5 @@ NODE_CLASS_MAPPINGS = {
 NODE_DISPLAY_NAME_MAPPINGS = {
     "WildcardReader": "Wildcard Reader",
 }
+
+__all__: list[str] = ["WildcardReader", "NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]

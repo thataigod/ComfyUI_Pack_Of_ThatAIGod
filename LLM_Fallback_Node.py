@@ -43,3 +43,5 @@ NODE_CLASS_MAPPINGS = {
 NODE_DISPLAY_NAME_MAPPINGS = {
     "LLM_Fallback_Node": "LLM Fallback Switch",
 }
+
+__all__: list[str] = ["LLM_Fallback_Node", "NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]

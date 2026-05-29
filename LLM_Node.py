@@ -291,3 +291,5 @@ NODE_CLASS_MAPPINGS = {
 NODE_DISPLAY_NAME_MAPPINGS = {
     "LLM_Node": "LLM Chat (OpenRouter/Local)",
 }
+
+__all__: list[str] = ["LLM_Node", "NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]

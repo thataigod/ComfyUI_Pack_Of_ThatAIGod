@@ -102,3 +102,5 @@ NODE_CLASS_MAPPINGS = {
 NODE_DISPLAY_NAME_MAPPINGS = {
     "SequentialImageLoader": "Sequential Image Loader",
 }
+
+__all__: list[str] = ["SequentialImageLoader", "NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]

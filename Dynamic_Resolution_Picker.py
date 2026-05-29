@@ -193,3 +193,5 @@ NODE_CLASS_MAPPINGS = {
 NODE_DISPLAY_NAME_MAPPINGS = {
     "DynamicResolution": "Dynamic Resolution Picker",
 }
+
+__all__: list[str] = ["DynamicResolution", "NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]
