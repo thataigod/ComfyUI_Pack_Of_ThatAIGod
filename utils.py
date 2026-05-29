@@ -1,4 +1,5 @@
 import logging
+import importlib
 from typing import Any
 
 
@@ -38,13 +39,7 @@ def compute_aspect_ratio_dimensions(
 
 def safe_import(module_name: str) -> Any | None:
     try:
-        return __import__(
-            f".{module_name}",
-            globals(),
-            locals(),
-            ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"],
-            level=1,
-        )
+        return importlib.import_module(module_name)
     except ImportError as e:
         logger = get_logger()
         logger.warning(

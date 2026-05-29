@@ -62,7 +62,7 @@ class TestUtils(unittest.TestCase):
         self.assertIsNone(result)
 
     def test_safe_import_existing_module(self):
-        with patch("builtins.__import__", return_value=unittest.mock.MagicMock()):
+        with patch("importlib.import_module", return_value=unittest.mock.MagicMock()):
             result = safe_import("utils")
             self.assertIsNotNone(result)
 
