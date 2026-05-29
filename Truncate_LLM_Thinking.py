@@ -1,11 +1,15 @@
 import re
+from typing import Any
+
 
 class TruncateThinking:
-    def __init__(self):
-        pass
+    RETURN_TYPES: tuple[str, ...] = ("STRING", "STRING")
+    RETURN_NAMES: tuple[str, ...] = ("Cleaned Text", "Thinking Content")
+    FUNCTION: str = "truncate"
+    CATEGORY: str = "ThatAIGod/Text Utils"
 
     @classmethod
-    def INPUT_TYPES(s):
+    def INPUT_TYPES(cls) -> dict[str, Any]:
         return {
             "required": {
                 "Text": ("STRING", {"forceInput": True}),
@@ -14,35 +18,23 @@ class TruncateThinking:
             }
         }
 
-    RETURN_TYPES = ("STRING", "STRING")
-    RETURN_NAMES = ("Cleaned Text", "Thinking Content")
-    FUNCTION = "truncate"
-    CATEGORY = "ThatAIGod/Text Utils"
-
-    def truncate(self, **kwargs):
-        text = kwargs.get("Text", "")
-        start_token = kwargs.get("Start Token", "<think>")
-        end_token = kwargs.get("End Token", "</think>")
+    def truncate(self, **kwargs: Any) -> tuple[str, str]:
+        text: str = kwargs.get("Text", "")
+        start_token: str = kwargs.get("Start Token", "<think>")
+        end_token: str = kwargs.get("End Token", "</think>")
 
         if not text:
             return ("", "")
 
-        # 1. Construct Regex
-        # re.escape ensures that if user uses special chars like '[', it doesn't break regex
-        # (.*?) matches any character (non-greedy) until the end token
-        # flags=re.DOTALL ensures that '.' matches newlines, allowing multi-line thoughts
         pattern = re.compile(
             re.escape(start_token) + r"(.*?)" + re.escape(end_token),
             flags=re.DOTALL
         )
 
-        # 2. Extract Thinking Content
-        # findall returns a list of all matches (in case model hallucinated multiple think blocks)
-        thoughts_found = pattern.findall(text)
-        thinking_content = "\n\n".join(thoughts_found).strip()
+        thoughts_found: list[str] = pattern.findall(text)
+        thinking_content: str = "\n\n".join(thoughts_found).strip()
 
-        # 3. Remove Thinking Content to get Clean Text
-        cleaned_text = pattern.sub("", text).strip()
+        cleaned_text: str = pattern.sub("", text).strip()
 
         return (cleaned_text, thinking_content)
 
