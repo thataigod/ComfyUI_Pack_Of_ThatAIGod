@@ -82,7 +82,21 @@ class LLM_Node:
     CATEGORY: str = "ThatAIGod/LLM"
 
     @classmethod
-    def VALIDATE_INPUTS(cls, **kwargs: Any) -> bool:
+    def VALIDATE_INPUTS(cls, **kwargs: Any) -> bool | str:
+        mode: str = kwargs.get("Mode", "OpenRouter")
+        api_key_env: str = kwargs.get("API Key Env Var", "OPENROUTER_API_KEY")
+        temperature: float = kwargs.get("Temperature", 0.7)
+        max_tokens: int = kwargs.get("Max Tokens", 1024)
+
+        if mode == "OpenRouter" and not os.environ.get(api_key_env.strip()):
+            return f"API key not found in environment variable '{api_key_env}'"
+
+        if temperature < 0.0 or temperature > 2.0:
+            return "Temperature must be between 0.0 and 2.0"
+
+        if max_tokens < 1:
+            return "Max Tokens must be at least 1"
+
         return True
 
     def encode_image_to_base64(self, image_tensor: torch.Tensor) -> str:
