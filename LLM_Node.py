@@ -20,6 +20,9 @@ from llm_utils import (
     LlmConfigBuilder, LlmStreamer,
     CACHE_MAX_SIZE, MAX_ERROR_BODY_LENGTH,
     DEFAULT_MODELS,
+    encode_image_to_base64 as _encode_image_to_base64,
+    fetch_openrouter_credits as _fetch_openrouter_credits,
+    push_error_to_ui as _push_error_to_ui,
 )
 
 logger = logging.getLogger("ThatAIGod")
@@ -127,39 +130,13 @@ class LLM_Node:
         return True
 
     def encode_image_to_base64(self, image_tensor: torch.Tensor) -> str:
-        arr: np.ndarray = (255.0 * image_tensor[0].cpu().numpy()).astype("uint8")
-        img: Image.Image = Image.fromarray(arr, "RGB")
-        buffered: io.BytesIO = io.BytesIO()
-        img.save(buffered, format="JPEG", quality=90)
-        return base64.b64encode(buffered.getvalue()).decode("utf-8")
+        return _encode_image_to_base64(image_tensor)
 
     def fetch_openrouter_credits(self, api_key: str) -> str | None:
-        try:
-            req: urllib.request.Request = urllib.request.Request(
-                "https://openrouter.ai/api/v1/credits",
-                headers={
-                    "Authorization": f"Bearer {api_key}",
-                    "User-Agent": "ThatAIGod-ComfyUI-Node/1.0",
-                },
-            )
-            with urllib.request.urlopen(req, timeout=3) as response:
-                data: dict[str, Any] = json.loads(response.read().decode("utf-8"))
-                if "data" in data:
-                    d: dict[str, Any] = data["data"]
-                    total: float = float(d.get("total_credits", 0))
-                    usage: float = float(d.get("total_usage", 0))
-                    remaining: float = total - usage
-                    return f"${remaining:.2f}"
-        except Exception:
-            return None
-        return None
+        return _fetch_openrouter_credits(api_key)
 
     def push_error_to_ui(self, unique_id: str | None, error_msg: str) -> None:
-        if unique_id:
-            PromptServer.instance.send_sync(
-                "that_ai_god.stream",
-                {"node": unique_id, "type": "update", "delta": f"\n\n[ERROR]: {error_msg}"},
-            )
+        _push_error_to_ui(unique_id, error_msg)
 
     def _build_config(self, kwargs: dict[str, Any]) -> dict[str, Any]:
         return self._config_builder.build_config(kwargs)

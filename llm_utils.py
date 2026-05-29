@@ -1,6 +1,5 @@
 import os
 import json
-import hashlib
 import asyncio
 import urllib.request
 import urllib.error
@@ -9,7 +8,6 @@ import socket
 import base64
 import io
 import logging
-from collections import OrderedDict
 from typing import Any, Iterator
 from PIL import Image
 import numpy as np
@@ -21,9 +19,7 @@ from server import PromptServer
 logger = logging.getLogger("ThatAIGod")
 
 CACHE_MAX_SIZE: int = 10
-MODEL_FETCH_TIMEOUT: int = 2
 CREDITS_FETCH_TIMEOUT: int = 3
-MAX_MODELS_IN_DROPDOWN: int = 200
 MAX_ERROR_BODY_LENGTH: int = 500
 
 DEFAULT_MODELS: list[str] = [
@@ -34,31 +30,6 @@ DEFAULT_MODELS: list[str] = [
     "anthropic/claude-3.5-sonnet",
     "openai/gpt-4o",
 ]
-
-
-class LlmCache:
-    def __init__(self, max_size: int = CACHE_MAX_SIZE) -> None:
-        self._cache: OrderedDict[Any, tuple[str, bool, str]] = OrderedDict()
-        self._max_size: int = max_size
-
-    def get(self, key: tuple[Any, ...]) -> tuple[str, bool, str] | None:
-        if key in self._cache:
-            self._cache.move_to_end(key)
-            return self._cache[key]
-        return None
-
-    def put(self, key: tuple[Any, ...], value: tuple[str, bool, str]) -> None:
-        self._cache[key] = value
-        # Evict oldest entry when cache exceeds capacity
-        if len(self._cache) > self._max_size:
-            self._cache.popitem(last=False)
-
-    def clear(self) -> None:
-        self._cache.clear()
-
-    @property
-    def size(self) -> int:
-        return len(self._cache)
 
 
 class LlmConfigBuilder:
@@ -243,29 +214,3 @@ def push_error_to_ui(unique_id: str | None, error_msg: str) -> None:
             "that_ai_god.stream",
             {"node": unique_id, "type": "update", "delta": f"\n\n[ERROR]: {error_msg}"},
         )
-
-
-_model_cache: list[str] | None = None
-
-
-def get_initial_model_list() -> list[str]:
-    global _model_cache
-    if _model_cache is not None:
-        return _model_cache
-
-    try:
-        url: str = "https://openrouter.ai/api/v1/models"
-        req: urllib.request.Request = urllib.request.Request(
-            url, headers={"User-Agent": "ThatAIGod-ComfyUI-Node/1.0"}
-        )
-        with urllib.request.urlopen(req, timeout=MODEL_FETCH_TIMEOUT) as response:
-            data: dict[str, Any] = json.loads(response.read().decode("utf-8"))
-            if "data" in data and isinstance(data["data"], list):
-                fetched_models: list[str] = [m["id"] for m in data["data"]]
-                _model_cache = fetched_models[:MAX_MODELS_IN_DROPDOWN]
-                return _model_cache
-            logger.warning("Unexpected API response format from OpenRouter models endpoint")
-    except Exception as e:
-        logger.warning("Failed to fetch model list from OpenRouter: %s", e)
-
-    return list(DEFAULT_MODELS)
