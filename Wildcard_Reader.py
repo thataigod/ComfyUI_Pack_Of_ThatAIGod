@@ -5,6 +5,9 @@ from typing import Any
 
 
 class WildcardReader:
+    _file_index_cache: dict[str, dict[str, list[str]]] = {}
+    _file_index_mtime: dict[str, float] = {}
+
     def __init__(self) -> None:
         self._deck_cache: dict[str, list[str]] = {}
 
@@ -76,21 +79,28 @@ class WildcardReader:
         current_dir: str = os.path.dirname(os.path.realpath(__file__))
         wildcards_dir: str = os.path.join(current_dir, "wildcards")
 
-        file_index: dict[str, list[str]] = {}
-
         if not os.path.exists(wildcards_dir):
             os.makedirs(wildcards_dir, exist_ok=True)
 
-        for root, dirs, files in os.walk(wildcards_dir):
-            dirs.sort()
-            files.sort()
-            for f in files:
-                if f.endswith(".txt"):
-                    if f not in file_index:
-                        file_index[f] = []
-                    abs_path: str = os.path.join(root, f)
-                    rel_path: str = os.path.relpath(abs_path, wildcards_dir).replace("\\", "/")
-                    file_index[f].append(rel_path)
+        # Cache file index with mtime-based invalidation
+        cache_key: str = wildcards_dir
+        current_mtime: float = os.path.getmtime(wildcards_dir)
+        if cache_key not in self._file_index_cache or current_mtime > self._file_index_mtime.get(cache_key, 0):
+            file_index: dict[str, list[str]] = {}
+            for root, dirs, files in os.walk(wildcards_dir):
+                dirs.sort()
+                files.sort()
+                for f in files:
+                    if f.endswith(".txt"):
+                        if f not in file_index:
+                            file_index[f] = []
+                        abs_path: str = os.path.join(root, f)
+                        rel_path: str = os.path.relpath(abs_path, wildcards_dir).replace("\\", "/")
+                        file_index[f].append(rel_path)
+            self._file_index_cache[cache_key] = file_index
+            self._file_index_mtime[cache_key] = current_mtime
+        else:
+            file_index = self._file_index_cache[cache_key]
 
         def get_line_from_file(wildcard_tag: str) -> str:
             clean_tag: str = wildcard_tag.strip("_")
