@@ -57,6 +57,8 @@ class SequentialImageLoader:
             img_path: str = os.path.join(directory_path, current_filename)
             i: Image.Image = Image.open(img_path)
             i = ImageOps.exif_transpose(i)
+            i.info.pop("exif", None)
+            i.info.pop("dpi", None)
 
             if i.mode != 'RGB':
                 i = i.convert('RGB')
