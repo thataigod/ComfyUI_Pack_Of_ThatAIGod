@@ -3,11 +3,8 @@ import random
 import re
 
 class WildcardReader:
-    # Persistent cache for "No Repeat" mode: { "filename": ["line1", "line2"] }
-    _deck_cache = {}
-
     def __init__(self):
-        pass
+        self._deck_cache = {}
 
     @classmethod
     def INPUT_TYPES(s):
