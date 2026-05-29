@@ -107,6 +107,13 @@ app.registerExtension({
                 } else {
                     let rawUrl = localUrlWidget ? localUrlWidget.value : "http://localhost:1234/v1";
                     if(rawUrl) {
+                        // Ensure URL has protocol for parsing
+                        const normalizedUrl = rawUrl.includes("://") ? rawUrl : "http://" + rawUrl;
+                        const allowedHosts = ["localhost", "127.0.0.1", "::1"];
+                        const parsed = new URL(normalizedUrl);
+                        if (!allowedHosts.includes(parsed.hostname)) {
+                            throw new Error(`Local URL must be localhost (got ${parsed.hostname})`);
+                        }
                         rawUrl = rawUrl.replace(/\/chat\/completions\/?$/, ""); 
                         rawUrl = rawUrl.replace(/\/v1\/?$/, ""); 
                         rawUrl = rawUrl.replace(/\/$/, ""); 
