@@ -1,0 +1,22 @@
+[project]
+name = "comfyui-pack-of-thataigod"
+version = "1.0.0"
+description = "Custom node pack for ComfyUI with LLM integration, image utilities, and wildcard prompt generation"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "thataigod", email = "thataigod@gmail.com" },
+]
+dependencies = [
+    "Pillow>=10.0.0",
+    "numpy",
+    "torch",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
