@@ -1,10 +1,8 @@
-import sys
-import os
 import json
-import socket
+import os
+import sys
 import unittest
-from unittest.mock import patch, MagicMock, AsyncMock
-from typing import Any
+from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -12,17 +10,19 @@ server_mock = MagicMock()
 server_mock.PromptServer.instance.send_sync = MagicMock()
 sys.modules["server"] = server_mock
 
-import urllib.error
-import aiohttp
 import asyncio
+import urllib.error
+
+import aiohttp
 
 from llm_utils import (
-    LlmStreamer, LlmConfigBuilder,
+    LlmConfigBuilder,
+    LlmStreamer,
+    _async_fetch_stream,
+    _run_async_stream,
     encode_image_to_base64,
     fetch_openrouter_credits,
     push_error_to_ui,
-    _run_async_stream, _async_fetch_stream,
-    CACHE_MAX_SIZE, MAX_ERROR_BODY_LENGTH, CREDITS_FETCH_TIMEOUT,
 )
 
 
@@ -108,7 +108,7 @@ class TestRunAsyncStream(unittest.TestCase):
                 _run_async_stream("http://url", {}, "key", 30)
 
     def test_run_async_stream_raises_timeout_on_socket_timeout(self):
-        with patch("llm_utils._async_fetch_stream", side_effect=socket.timeout("timed out")):
+        with patch("llm_utils._async_fetch_stream", side_effect=TimeoutError("timed out")):
             with self.assertRaises(urllib.error.URLError):
                 _run_async_stream("http://url", {}, "key", 30)
 
@@ -197,7 +197,9 @@ class TestEncodeImage(unittest.TestCase):
         self.assertGreater(len(result), 0)
 
     def test_encode_image_to_base64_valid(self):
-        import base64, torch
+        import base64
+
+        import torch
         dummy = torch.ones((1, 64, 64, 3)) * 127
         result = encode_image_to_base64(dummy)
         decoded = base64.b64decode(result)

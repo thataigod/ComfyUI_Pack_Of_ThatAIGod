@@ -1,27 +1,32 @@
-import os
-import json
 import hashlib
-import urllib.request
-import urllib.error
-from urllib.parse import urlparse
-import socket
-import io
-import base64
-import time
+import json
 import logging
+import os
+import socket
+import time
+import urllib.error
+import urllib.request
 from collections import OrderedDict
-from typing import Any, Iterator
-from PIL import Image
-import numpy as np
+from collections.abc import Iterator
+from typing import Any
+
 import torch
 from server import PromptServer
 
 from llm_utils import (
-    LlmConfigBuilder, LlmStreamer,
-    CACHE_MAX_SIZE, MAX_ERROR_BODY_LENGTH,
+    CACHE_MAX_SIZE,
     DEFAULT_MODELS,
+    MAX_ERROR_BODY_LENGTH,
+    LlmConfigBuilder,
+    LlmStreamer,
+)
+from llm_utils import (
     encode_image_to_base64 as _encode_image_to_base64,
+)
+from llm_utils import (
     fetch_openrouter_credits as _fetch_openrouter_credits,
+)
+from llm_utils import (
     push_error_to_ui as _push_error_to_ui,
 )
 
@@ -241,9 +246,11 @@ class LLM_Node:
             latency: float = end_time - start_time
             generated_content: str = "".join(full_content).strip()
 
+            api_key_was: str = api_key
+            del api_key
             info_parts: list[str] = [f"Latency: {latency:.2f}s"]
             if cfg["mode"] == "OpenRouter":
-                credits: str | None = self.fetch_openrouter_credits(api_key)
+                credits: str | None = self.fetch_openrouter_credits(api_key_was)
                 if credits:
                     info_parts.append(f"Credits: {credits}")
             final_info: str = " | ".join(info_parts)

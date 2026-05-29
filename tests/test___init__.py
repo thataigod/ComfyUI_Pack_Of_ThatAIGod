@@ -1,7 +1,7 @@
-import sys
-import os
-import types
 import importlib
+import os
+import sys
+import types
 import unittest
 from unittest.mock import patch
 

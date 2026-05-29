@@ -1,20 +1,21 @@
-import os
-import json
 import asyncio
-import urllib.request
-import urllib.error
-from urllib.parse import urlparse
-import socket
 import base64
+import http.client
 import io
+import json
 import logging
-from typing import Any, Iterator
-from PIL import Image
+import os
+import urllib.error
+import urllib.request
+from collections.abc import Iterator
+from typing import Any
+from urllib.parse import urlparse
+
+import aiohttp
 import numpy as np
 import torch
-import aiohttp
+from PIL import Image
 from server import PromptServer
-
 
 logger = logging.getLogger("ThatAIGod")
 
@@ -146,6 +147,7 @@ async def _async_fetch_stream(
     url: str, payload: dict[str, Any], api_key: str, timeout: int
 ) -> list[bytes]:
     headers: dict[str, str] = {**_STREAM_HEADERS, "Authorization": f"Bearer {api_key}"}
+    del api_key
     async with aiohttp.ClientSession() as session:
         async with session.post(
             url,
@@ -157,25 +159,33 @@ async def _async_fetch_stream(
             return [line async for line in response.content]
 
 
+_LOOP: asyncio.AbstractEventLoop | None = None
+
+
+def _get_loop() -> asyncio.AbstractEventLoop:
+    global _LOOP
+    if _LOOP is None or _LOOP.is_closed():
+        _LOOP = asyncio.new_event_loop()
+        asyncio.set_event_loop(_LOOP)
+    return _LOOP
+
+
 def _run_async_stream(
     url: str, payload: dict[str, Any], api_key: str, timeout: int
 ) -> list[bytes]:
-    loop = asyncio.new_event_loop()
+    loop = _get_loop()
     try:
-        asyncio.set_event_loop(loop)
         return loop.run_until_complete(
             _async_fetch_stream(url, payload, api_key, timeout)
         )
     except aiohttp.ClientResponseError as e:
         raise urllib.error.HTTPError(
-            url, e.status, e.message, None, None
+            url, e.status, e.message, http.client.HTTPMessage(), None
         )
-    except (asyncio.TimeoutError, socket.timeout):
-        raise urllib.error.URLError(socket.timeout())
+    except (TimeoutError, asyncio.TimeoutError):
+        raise urllib.error.URLError(TimeoutError())
     except aiohttp.ClientError as e:
         raise urllib.error.URLError(str(e))
-    finally:
-        loop.close()
 
 
 def encode_image_to_base64(image_tensor: torch.Tensor) -> str:

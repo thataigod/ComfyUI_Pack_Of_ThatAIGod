@@ -1,7 +1,6 @@
-import logging
 import importlib
+import logging
 from typing import Any
-
 
 DEFAULT_MIN_DIMENSION: int = 64
 DEFAULT_MAX_DIMENSION: int = 16384

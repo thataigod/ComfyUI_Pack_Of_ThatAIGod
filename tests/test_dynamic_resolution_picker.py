@@ -1,8 +1,10 @@
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import unittest
 import random
+import unittest
+
 from Dynamic_Resolution_Picker import DynamicResolution
 
 

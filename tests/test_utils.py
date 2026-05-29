@@ -1,15 +1,15 @@
-import sys
 import os
+import sys
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils import (
-    get_logger,
     clamp_dimension,
-    round_to_multiple,
-    round_down_to_multiple,
     compute_aspect_ratio_dimensions,
+    get_logger,
+    round_down_to_multiple,
+    round_to_multiple,
     safe_import,
 )
 

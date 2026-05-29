@@ -1,11 +1,11 @@
+import logging
 import os
 import re
-import logging
 from typing import Any
-from PIL import Image, ImageOps
+
 import numpy as np
 import torch
-
+from PIL import Image, ImageOps
 
 logger = logging.getLogger("ThatAIGod")
 

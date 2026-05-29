@@ -4,7 +4,6 @@ import random
 import re
 from typing import Any
 
-
 logger: logging.Logger = logging.getLogger("ThatAIGod")
 
 _WILDCARD_PATTERN: re.Pattern[str] = re.compile(r"__([a-zA-Z0-9_\-\/\\\.]+)__")
@@ -114,7 +113,7 @@ class WildcardReader:
                 if f.endswith(".txt"):
                     if f not in file_index:
                         file_index[f] = []
-                    abs_path: str = os.path.join(root, f)
+                    abs_path = os.path.join(root, f)
                     rel_path: str = os.path.relpath(abs_path, wildcards_dir).replace("\\", "/")
                     file_index[f].append(rel_path)
                     mtimes[abs_path] = os.path.getmtime(abs_path)
@@ -156,7 +155,7 @@ class WildcardReader:
             deck = WildcardReader._deck_cache
             if final_path not in deck or len(deck[final_path]) == 0:
                 try:
-                    with open(final_path, "r", encoding="utf-8") as f:
+                    with open(final_path, encoding="utf-8") as f:
                         lines: list[str] = [
                             line.strip() for line in f if line.strip() and not line.startswith("#")
                         ]
@@ -164,13 +163,13 @@ class WildcardReader:
                         return ""
                     rng.shuffle(lines)
                     deck[final_path] = lines
-                except (OSError, IOError, UnicodeDecodeError):
+                except (OSError, UnicodeDecodeError):
                     logger.warning("Failed to read wildcard file: %s", final_path)
                     return f"__{wildcard_tag}__"
             return deck[final_path].pop(0)
         else:
             try:
-                with open(final_path, "r", encoding="utf-8") as f:
+                with open(final_path, encoding="utf-8") as f:
                     lines = [
                         line.strip() for line in f if line.strip() and not line.startswith("#")
                     ]
@@ -180,7 +179,7 @@ class WildcardReader:
                     return rng.choice(sorted(lines))
                 else:
                     return rng.choice(lines)
-            except (OSError, IOError, UnicodeDecodeError):
+            except (OSError, UnicodeDecodeError):
                 logger.warning("Failed to read wildcard file: %s", final_path)
                 return f"__{wildcard_tag}__"
 

@@ -1,15 +1,15 @@
-import sys
-import os
-import tempfile
-import shutil
 import math
+import os
+import shutil
+import sys
+import tempfile
 import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import Wildcard_Reader
-from Wildcard_Reader import WildcardReader, _WILDCARD_PATTERN
+from Wildcard_Reader import _WILDCARD_PATTERN, WildcardReader
 
 
 class TestWildcardReader(unittest.TestCase):
@@ -289,7 +289,7 @@ class TestWildcardReader(unittest.TestCase):
     def test_deck_mode_file_io_error_returns_unresolved(self):
         self._create_wildcard_file("colors.txt", ["red"])
         WildcardReader._deck_cache.clear()
-        with patch("builtins.open", side_effect=IOError("permission denied")):
+        with patch("builtins.open", side_effect=OSError("permission denied")):
             result = self.node.process(
                 text="__colors__",
                 mode="Random (No Repeat)", seed=0, delimiter=", "
@@ -298,7 +298,7 @@ class TestWildcardReader(unittest.TestCase):
 
     def test_non_deck_file_io_error_returns_unresolved(self):
         self._create_wildcard_file("colors.txt", ["red"])
-        with patch("builtins.open", side_effect=IOError("permission denied")):
+        with patch("builtins.open", side_effect=OSError("permission denied")):
             result = self.node.process(
                 text="__colors__",
                 mode="Deterministic (Seed)", seed=0, delimiter=", "

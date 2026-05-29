@@ -8,4 +8,6 @@ output/
 .coverage
 .coverage.*
 htmlcov/
+coverage.xml
+build/
 

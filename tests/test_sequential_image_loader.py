@@ -1,9 +1,12 @@
-import sys
 import os
+import sys
 import tempfile
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import unittest
+
 from PIL import Image
+
 from Sequential_Image_Loader import SequentialImageLoader
 
 

@@ -1,10 +1,9 @@
-import sys
-import os
 import json
-import socket
+import os
+import sys
 import unittest
-from unittest.mock import patch, MagicMock
 from typing import Any
+from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -12,8 +11,9 @@ server_mock = MagicMock()
 server_mock.PromptServer.instance.send_sync = MagicMock()
 sys.modules["server"] = server_mock
 
-from LLM_Node import LLM_Node
 import urllib.error
+
+from LLM_Node import LLM_Node
 
 
 def _make_kwargs(overrides: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -109,7 +109,7 @@ class TestLLMNode(unittest.TestCase):
             "data": [{"id": "model1"}, {"id": "model2"}]
         }).encode("utf-8")
         mock_response.__enter__.return_value = mock_response
-        with patch.object(urllib.request, "urlopen", return_value=mock_response) as mock_urlopen:
+        with patch.object(urllib.request, "urlopen", return_value=mock_response):
             result = LLM_Node.get_initial_model_list()
             self.assertEqual(result, ["model1", "model2"])
             self.assertEqual(LLM_Node._model_cache, ["model1", "model2"])
@@ -142,6 +142,7 @@ class TestLLMNode(unittest.TestCase):
 
     def test_encode_image_to_base64_is_valid_base64(self):
         import base64
+
         import torch
         dummy_image = torch.ones((1, 64, 64, 3)) * 127
         result = self.node.encode_image_to_base64(dummy_image)
@@ -454,7 +455,7 @@ class TestLLMNode(unittest.TestCase):
     def test_generate_timeout_returns_error_tuple(self):
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
             with patch("LLM_Node.PromptServer"):
-                with patch.object(LLM_Node._streamer, "stream_response", side_effect=urllib.error.URLError(socket.timeout())):
+                with patch.object(LLM_Node._streamer, "stream_response", side_effect=urllib.error.URLError(TimeoutError())):
                     result = self.node.generate(**_make_kwargs())
                     text, status, info = result
                     self.assertEqual(text, "")

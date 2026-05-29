@@ -1,8 +1,8 @@
 import logging
 from typing import Any
-import torch
-import comfy.utils
 
+import comfy.utils
+import torch
 
 logger: logging.Logger = logging.getLogger("ThatAIGod")
 
