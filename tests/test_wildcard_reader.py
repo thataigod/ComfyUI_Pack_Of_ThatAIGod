@@ -2,6 +2,7 @@ import sys
 import os
 import tempfile
 import shutil
+import math
 import unittest
 from unittest.mock import patch
 
@@ -185,6 +186,58 @@ class TestWildcardReader(unittest.TestCase):
         from Wildcard_Reader import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
         self.assertIn("WildcardReader", NODE_CLASS_MAPPINGS)
         self.assertIn("WildcardReader", NODE_DISPLAY_NAME_MAPPINGS)
+
+    def test_is_changed_deterministic_returns_seed(self):
+        result = WildcardReader.IS_CHANGED(
+            text="hello", mode="Deterministic (Seed)", seed=42, delimiter=", "
+        )
+        self.assertEqual(result, 42)
+
+    def test_is_changed_full_random_returns_nan(self):
+        result = WildcardReader.IS_CHANGED(
+            text="hello", mode="Full Random", seed=0, delimiter=", "
+        )
+        self.assertTrue(math.isnan(result))
+
+    def test_is_changed_no_repeat_returns_nan(self):
+        result = WildcardReader.IS_CHANGED(
+            text="hello", mode="Random (No Repeat)", seed=0, delimiter=", "
+        )
+        self.assertTrue(math.isnan(result))
+
+    def test_no_repeat_deck_mode_exhausts_and_refills(self):
+        self._create_wildcard_file("colors.txt", ["red", "green", "blue"])
+        WildcardReader._deck_cache.clear()
+        first_three = set()
+        for i in range(3):
+            r = self.node.process(
+                text="__colors__",
+                mode="Random (No Repeat)",
+                seed=0,
+                delimiter=", ",
+            )
+            first_three.add(r[0])
+        self.assertEqual(len(first_three), 3, "First 3 draws should exhaust the deck with 3 unique items")
+
+        fourth = self.node.process(
+            text="__colors__",
+            mode="Random (No Repeat)",
+            seed=1,
+            delimiter=", ",
+        )
+        self.assertIn(fourth[0], ["red", "green", "blue"], "4th draw should refill deck with a valid item")
+
+    def test_no_repeat_deck_resets_on_new_seed_sequence(self):
+        self._create_wildcard_file("colors.txt", ["red", "green"])
+        WildcardReader._deck_cache.clear()
+        r1 = self.node.process(
+            text="__colors__", mode="Random (No Repeat)", seed=1, delimiter=", "
+        )
+        r2 = self.node.process(
+            text="__colors__", mode="Random (No Repeat)", seed=1, delimiter=", "
+        )
+        self.assertNotEqual(r1[0], r2[0],
+            "Two consecutive draws from a 2-item deck with same seed should differ")
 
 
 if __name__ == "__main__":

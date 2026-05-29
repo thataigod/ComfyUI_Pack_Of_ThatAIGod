@@ -8,6 +8,7 @@ from utils import (
     get_logger,
     clamp_dimension,
     round_to_multiple,
+    round_down_to_multiple,
     compute_aspect_ratio_dimensions,
     safe_import,
 )
@@ -65,6 +66,21 @@ class TestUtils(unittest.TestCase):
         with patch("importlib.import_module", return_value=unittest.mock.MagicMock()):
             result = safe_import("utils")
             self.assertIsNotNone(result)
+
+    def test_round_down_to_multiple_within_range(self):
+        self.assertEqual(round_down_to_multiple(100, 8), 96)
+
+    def test_round_down_to_multiple_exact(self):
+        self.assertEqual(round_down_to_multiple(104, 8), 104)
+
+    def test_round_down_to_multiple_below_multiple(self):
+        self.assertEqual(round_down_to_multiple(5, 8), 0)
+
+    def test_round_down_to_multiple_custom_multiple(self):
+        self.assertEqual(round_down_to_multiple(50, 16), 48)
+
+    def test_round_down_to_multiple_zero_value(self):
+        self.assertEqual(round_down_to_multiple(0, 8), 0)
 
 
 if __name__ == "__main__":

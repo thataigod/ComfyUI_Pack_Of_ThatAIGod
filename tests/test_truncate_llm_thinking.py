@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import unittest
-from Truncate_LLM_Thinking import TruncateThinking, _WILDCARD_PATTERN
+from Truncate_LLM_Thinking import TruncateThinking
 
 
 class TestTruncateThinking(unittest.TestCase):

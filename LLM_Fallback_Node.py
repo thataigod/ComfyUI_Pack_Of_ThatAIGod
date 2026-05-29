@@ -21,7 +21,7 @@ class LLM_Fallback_Node:
             },
         }
 
-    def switch(self, **kwargs: Any) -> tuple[str]:
+    def switch(self, **kwargs: Any) -> tuple[str, ...]:
         generated_text = kwargs.get("Generated Text", "")
         original_input = kwargs.get("Original Input", "")
         status = kwargs.get("Status (Boolean)", False)

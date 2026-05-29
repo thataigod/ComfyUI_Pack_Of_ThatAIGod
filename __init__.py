@@ -1,22 +1,9 @@
 import logging
-import importlib
 from typing import Any
+from utils import safe_import
 
 
 logger: logging.Logger = logging.getLogger("ThatAIGod")
-
-
-def safe_import(module_name: str) -> Any | None:
-    try:
-        return importlib.import_module(module_name)
-    except ImportError as e:
-        logger.warning(
-            "%s: failed to import %s: %s",
-            module_name,
-            module_name,
-            e,
-        )
-        return None
 
 
 __version__: str = "1.1.0"

@@ -88,6 +88,13 @@ class TestUpscaleByMaxSide(unittest.TestCase):
         self.assertIn("UpscaleByMaxSide", NODE_CLASS_MAPPINGS)
         self.assertIn("UpscaleByMaxSide", NODE_DISPLAY_NAME_MAPPINGS)
 
+    def test_center_cropping_divisibility_adjusts_dimensions(self):
+        img = torch.zeros((1, 500, 700, 3))
+        result = self.node.upscale(**{"Image": img, "Max Side": 1024, "Divisibility": 64, "Method": "bilinear"})
+        w, h = result[1], result[2]
+        self.assertEqual(w % 64, 0)
+        self.assertEqual(h % 64, 0)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -2,9 +2,6 @@ import re
 from typing import Any
 
 
-_WILDCARD_PATTERN: re.Pattern[str] = re.compile(r"__([a-zA-Z0-9_\-\/\\\.]+)__")
-
-
 class TruncateThinking:
     DESCRIPTION = "Removes thinking/reasoning blocks (e.g. <think>...</think>) from LLM output. Returns cleaned text and the extracted thinking content separately."
 

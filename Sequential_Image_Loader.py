@@ -48,7 +48,7 @@ class SequentialImageLoader:
         directory_path: str = kwargs.get("Directory Path", "")
         index: int = kwargs.get("seed", 0)
 
-        if not directory_path or not os.path.exists(directory_path):
+        if not directory_path or not os.path.isdir(directory_path):
             raise ValueError(f"Directory not found: {directory_path}")
 
         valid_extensions: tuple[str, ...] = (

@@ -1,6 +1,7 @@
 import sys
 import os
 import json
+import socket
 import unittest
 from unittest.mock import patch, MagicMock
 from typing import Any
@@ -361,6 +362,16 @@ class TestLLMNode(unittest.TestCase):
         from LLM_Node import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
         self.assertIn("LLM_Node", NODE_CLASS_MAPPINGS)
         self.assertIn("LLM_Node", NODE_DISPLAY_NAME_MAPPINGS)
+
+    def test_generate_timeout_returns_error_tuple(self):
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
+            with patch("LLM_Node.PromptServer"):
+                with patch.object(urllib.request, "urlopen", side_effect=urllib.error.URLError(socket.timeout())):
+                    result = self.node.generate(**_make_kwargs())
+                    text, status, info = result
+                    self.assertEqual(text, "")
+                    self.assertFalse(status)
+                    self.assertIn("timed out", info.lower())
 
 
 if __name__ == "__main__":

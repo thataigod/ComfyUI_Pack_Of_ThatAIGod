@@ -1,31 +1,7 @@
 import math
 import random
 from typing import Any
-
-
-def _clamp_dimension(value: int, min_val: int = 64, max_val: int = 16384) -> int:
-    return max(min_val, min(value, max_val))
-
-
-def _round_to_multiple(value: int, multiple: int = 8) -> int:
-    return int(round(value / multiple) * multiple)
-
-
-def _compute_aspect_ratio_dimensions(
-    max_side: int, ratio: float,
-) -> tuple[int, int]:
-    if ratio > 1.0:
-        w = float(max_side)
-        h = max_side / ratio
-    elif ratio < 1.0:
-        h = float(max_side)
-        w = max_side * ratio
-    else:
-        w = float(max_side)
-        h = float(max_side)
-    width_int = max(_round_to_multiple(int(round(w))), 64)
-    height_int = max(_round_to_multiple(int(round(h))), 64)
-    return width_int, height_int
+from utils import clamp_dimension, compute_aspect_ratio_dimensions
 
 _PORTRAITS: dict[str, float] = {
     "Portrait 2:3 (Classic)": 2 / 3,
@@ -149,14 +125,14 @@ class DynamicResolution:
         scale_factor: float = kwargs.get("Scale Factor", 1.5)
         seed: int = kwargs.get("seed", 0)
 
-        max_side = _clamp_dimension(max_side, 64, 16384)
+        max_side = clamp_dimension(max_side, 64, 16384)
         scale_factor = max(0.1, min(scale_factor, 8.0))
 
         rng: random.Random = random.Random(seed)
         target_label, ratio_float = self._resolve_ratio(aspect_ratio_label, rng)
 
         keywords: str = _KEYWORD_MAP.get(target_label, f"{target_label}, Aspect Ratio")
-        width_int, height_int = _compute_aspect_ratio_dimensions(max_side, ratio_float)
+        width_int, height_int = compute_aspect_ratio_dimensions(max_side, ratio_float)
 
         guide_size: int = min(width_int, height_int)
         max_size_val: int = max(width_int, height_int)
