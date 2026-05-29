@@ -36,6 +36,9 @@ class UpscaleByMaxSide:
             scale_h = max_side
             scale_w = int(max_side * ratio)
 
+        scale_w = max(scale_w, divisibility)
+        scale_h = max(scale_h, divisibility)
+
         samples = image.movedim(-1, 1)
         s = comfy.utils.common_upscale(samples, scale_w, scale_h, method, "disabled")
         s = s.movedim(1, -1)
