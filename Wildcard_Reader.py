@@ -11,6 +11,12 @@ _MAX_WILDCARD_ITERATIONS: int = 50
 
 
 class WildcardReader:
+    """Resolves __wildcard__ tokens in text with random lines from matching .txt files.
+
+    Supports deterministic (seed-based), full random, and no-repeat deck modes.
+    Files are cached by mtime for performance.
+    """
+
     DESCRIPTION = "Replaces __wildcard__ tokens in text with random lines from matching text files in the wildcards directory. Supports deterministic (seed-based), full random, and no-repeat deck modes."
 
     _file_index_cache: dict[str, dict[str, list[str]]] = {}

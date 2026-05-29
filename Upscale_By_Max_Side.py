@@ -17,6 +17,11 @@ MAX_DIVISIBILITY: int = 128
 
 
 class UpscaleByMaxSide:
+    """Upscales an image so its longest side matches a target pixel value.
+
+    Preserves aspect ratio and enforces divisibility constraints via center-crop.
+    """
+
     DESCRIPTION = "Upscales an image so its longest side matches a target pixel value, with configurable method and divisibility constraints."
 
     RETURN_TYPES: tuple[str, ...] = ("IMAGE", "INT", "INT")

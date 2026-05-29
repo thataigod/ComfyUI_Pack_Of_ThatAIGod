@@ -15,6 +15,11 @@ VALID_IMAGE_EXTENSIONS: tuple[str, ...] = (
 
 
 class SequentialImageLoader:
+    """Loads images sequentially from a directory using seed-based indexing.
+
+    Supports natural sort ordering and multiple image formats (PNG, JPG, WEBP, BMP, TIFF).
+    """
+
     DESCRIPTION = "Loads images sequentially from a directory using a seed as the index. Supports natural sort ordering and multiple image formats."
 
     RETURN_TYPES: tuple[str, ...] = ("IMAGE", "STRING", "STRING")

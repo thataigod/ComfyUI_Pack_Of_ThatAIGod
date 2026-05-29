@@ -38,6 +38,8 @@ DEFAULT_MODELS: list[str] = [
 
 
 class LlmConfigBuilder:
+    """Builds configuration dicts, API payloads, and message lists for LLM API calls."""
+
     @staticmethod
     def build_config(kwargs: dict[str, Any]) -> dict[str, Any]:
         return {
@@ -115,6 +117,8 @@ class LlmConfigBuilder:
 
 
 class LlmStreamer:
+    """Handles streaming LLM responses via aiohttp with async-to-sync bridging."""
+
     @staticmethod
     def stream_response(
         url: str, payload: dict[str, Any], api_key: str, timeout: int
@@ -219,6 +223,14 @@ def _run_async_stream(
 
 
 def encode_image_to_base64(image_tensor: torch.Tensor) -> str:
+    """Encode a ComfyUI image tensor to a base64 JPEG string.
+
+    Args:
+        image_tensor: A (1, H, W, 3) float32 tensor with values in [0, 1].
+
+    Returns:
+        Base64-encoded JPEG string.
+    """
     arr: np.ndarray = (255.0 * image_tensor[0].cpu().numpy()).astype("uint8")
     img: Image.Image = Image.fromarray(arr, "RGB")
     buffered: io.BytesIO = io.BytesIO()
@@ -227,6 +239,10 @@ def encode_image_to_base64(image_tensor: torch.Tensor) -> str:
 
 
 def fetch_openrouter_credits(api_key: str) -> str | None:
+    """Fetch remaining OpenRouter credit balance as a formatted string (e.g. '$7.50').
+
+    Returns None on any failure.
+    """
     try:
         req: urllib.request.Request = urllib.request.Request(
             "https://openrouter.ai/api/v1/credits",

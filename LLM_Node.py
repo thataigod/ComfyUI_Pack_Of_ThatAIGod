@@ -37,6 +37,12 @@ MAX_MODELS_IN_DROPDOWN: int = 200
 
 
 class LLM_Node:
+    """ComfyUI node for LLM chat via OpenRouter or local servers.
+
+    Supports streaming responses, vision (image) inputs, response caching,
+    and credit balance display for OpenRouter.
+    """
+
     DESCRIPTION = "Sends prompts to OpenRouter or a local LLM server with streaming response, vision support, caching, and credit checking."
 
     _model_cache: list[str] | None = None

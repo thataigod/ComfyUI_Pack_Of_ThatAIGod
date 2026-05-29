@@ -3,6 +3,11 @@ from typing import Any
 
 
 class TruncateThinking:
+    """Removes thinking/reasoning blocks from LLM output using configurable token markers.
+
+    Returns cleaned text and extracted thinking content separately.
+    """
+
     DESCRIPTION = "Removes thinking/reasoning blocks (e.g. <think>...</think>) from LLM output. Returns cleaned text and the extracted thinking content separately."
 
     RETURN_TYPES: tuple[str, ...] = ("STRING", "STRING")

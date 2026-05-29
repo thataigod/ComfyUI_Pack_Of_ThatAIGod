@@ -361,6 +361,8 @@ class TestWildcardReader(unittest.TestCase):
         lines1 = self.node._get_file_lines(path)
         self.assertEqual(lines1, ["red"])
         self._create_wildcard_file("colors.txt", ["red", "blue"])
+        current_mtime = os.path.getmtime(path)
+        os.utime(path, (current_mtime + 10, current_mtime + 10))
         lines2 = self.node._get_file_lines(path)
         self.assertEqual(lines2, ["red", "blue"])
 

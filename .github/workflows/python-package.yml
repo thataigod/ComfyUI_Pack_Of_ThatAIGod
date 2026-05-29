@@ -29,11 +29,7 @@ jobs:
         ruff check .
     - name: Type-check with mypy
       run: |
-        # Workaround: copy files to temp dir with valid package name
-        mkdir -p /tmp/thatnode
-        cp *.py /tmp/thatnode/
-        cd /tmp/thatnode
-        mypy *.py --ignore-missing-imports --follow-imports=skip
+        mypy *.py --ignore-missing-imports --follow-imports=skip --exclude="tests/" --exclude=".github/"
     - name: Test with pytest and coverage
       run: |
         pytest

@@ -50,6 +50,12 @@ _SORTED_ALL_ITEMS: list[tuple[str, float]] = sorted(_ALL_RATIOS.items())
 
 
 class DynamicResolution:
+    """Calculates image dimensions from a max side pixel value and aspect ratio.
+
+    Supports 12 preset aspect ratios, random selection (portrait/landscape/all),
+    optional scaling, and outputs keywords for prompt injection.
+    """
+
     DESCRIPTION = "Calculates width and height from a max side pixel value and aspect ratio, with optional random selection and scaling."
 
     RETURN_TYPES: tuple[str, ...] = (
