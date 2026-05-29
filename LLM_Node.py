@@ -197,7 +197,7 @@ class LLM_Node:
                 return ("", False, err)
 
         image_hash: str | None = (
-            hashlib.md5(b64_image.encode()).hexdigest() if b64_image else None
+            hashlib.sha256(b64_image.encode()).hexdigest() if b64_image else None
         )
         # Cache key includes all inputs + image hash so identical prompts with different images don't collide
         cache_key: tuple[Any, ...] = (

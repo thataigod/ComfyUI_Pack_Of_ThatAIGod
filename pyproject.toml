@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-pack-of-thataigod"
-version = "1.1.0"
+version = "1.2.0"
 description = "Custom node pack for ComfyUI with LLM integration, image utilities, and wildcard prompt generation"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -40,7 +40,7 @@ ignore = ["E501", "N801", "N802", "N806", "N815", "N816", "N999"]
 "build/*" = ["ALL"]
 "Dynamic_Resolution_Picker.py" = ["S311"]
 "Wildcard_Reader.py" = ["S311"]
-"LLM_Node.py" = ["S310", "S324"]
+"LLM_Node.py" = ["S310"]
 "llm_utils.py" = ["S310"]
 
 [tool.mypy]

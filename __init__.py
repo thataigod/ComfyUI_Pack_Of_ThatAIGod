@@ -6,7 +6,7 @@ from utils import safe_import
 logger: logging.Logger = logging.getLogger("ThatAIGod")
 
 
-__version__: str = "1.1.0"
+__version__: str = "1.2.0"
 
 NODE_CLASS_MAPPINGS: dict[str, Any] = {}
 NODE_DISPLAY_NAME_MAPPINGS: dict[str, str] = {}

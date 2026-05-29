@@ -35,4 +35,4 @@ jobs:
         mypy *.py --ignore-missing-imports --follow-imports=skip
     - name: Test with pytest and coverage
       run: |
-        pytest
+        pytest --cov-fail-under=100
