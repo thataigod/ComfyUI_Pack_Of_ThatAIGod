@@ -19,13 +19,29 @@ from server import PromptServer
 
 logger = logging.getLogger("ThatAIGod")
 
+CACHE_MAX_SIZE: int = 10
+MODEL_FETCH_TIMEOUT: int = 2
+CREDITS_FETCH_TIMEOUT: int = 3
+MAX_MODELS_IN_DROPDOWN: int = 200
+MAX_ERROR_BODY_LENGTH: int = 500
+DEFAULT_TEMPERATURE: float = 0.7
+DEFAULT_MAX_TOKENS: int = 1024
+DEFAULT_TIMEOUT_SECONDS: int = 30
+MIN_TEMPERATURE: float = 0.0
+MAX_TEMPERATURE: float = 2.0
+MIN_MAX_TOKENS: int = 1
+MAX_MAX_TOKENS: int = 128000
+MIN_TIMEOUT: int = 1
+MAX_TIMEOUT: int = 300
+MODEL_FETCH_LIMIT: int = 200
+
 
 class LLM_Node:
     DESCRIPTION = "Sends prompts to OpenRouter or a local LLM server with streaming response, vision support, caching, and credit checking."
 
     _model_cache: list[str] | None = None
     _response_cache: OrderedDict[Any, tuple[str, bool, str]] = OrderedDict()
-    _cache_max_size: int = 10
+    _cache_max_size: int = CACHE_MAX_SIZE
 
     @classmethod
     def get_initial_model_list(cls) -> list[str]:
@@ -46,11 +62,11 @@ class LLM_Node:
             req: urllib.request.Request = urllib.request.Request(
                 url, headers={"User-Agent": "ThatAIGod-ComfyUI-Node/1.0"}
             )
-            with urllib.request.urlopen(req, timeout=2) as response:
+            with urllib.request.urlopen(req, timeout=MODEL_FETCH_TIMEOUT) as response:
                 data: dict[str, Any] = json.loads(response.read().decode("utf-8"))
                 if "data" in data and isinstance(data["data"], list):
                     fetched_models: list[str] = [m["id"] for m in data["data"]]
-                    cls._model_cache = fetched_models[:200]
+                    cls._model_cache = fetched_models[:MAX_MODELS_IN_DROPDOWN]
                     return cls._model_cache
                 logger.warning("Unexpected API response format from OpenRouter models endpoint")
         except Exception as e:
@@ -138,7 +154,7 @@ class LLM_Node:
                     "User-Agent": "ThatAIGod-ComfyUI-Node/1.0",
                 },
             )
-            with urllib.request.urlopen(req, timeout=3) as response:
+            with urllib.request.urlopen(req, timeout=CREDITS_FETCH_TIMEOUT) as response:
                 data: dict[str, Any] = json.loads(response.read().decode("utf-8"))
                 if "data" in data:
                     d: dict[str, Any] = data["data"]
@@ -360,7 +376,7 @@ class LLM_Node:
             return result
 
         except urllib.error.HTTPError as e:
-            error_body: str = e.read().decode("utf-8")[:500]
+            error_body: str = e.read().decode("utf-8")[:MAX_ERROR_BODY_LENGTH]
             err_msg = f"HTTP Error {e.code}: {e.reason}\nDetails: {error_body}"
             self.push_error_to_ui(unique_id, err_msg)
             return ("", False, err_msg)

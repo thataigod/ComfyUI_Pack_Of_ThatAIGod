@@ -3,19 +3,24 @@ import importlib
 from typing import Any
 
 
+DEFAULT_MIN_DIMENSION: int = 64
+DEFAULT_MAX_DIMENSION: int = 16384
+DEFAULT_MULTIPLE: int = 8
+
+
 def get_logger() -> logging.Logger:
     return logging.getLogger("ThatAIGod")
 
 
-def clamp_dimension(value: int, min_val: int = 64, max_val: int = 16384) -> int:
+def clamp_dimension(value: int, min_val: int = DEFAULT_MIN_DIMENSION, max_val: int = DEFAULT_MAX_DIMENSION) -> int:
     return max(min_val, min(value, max_val))
 
 
-def round_to_multiple(value: int, multiple: int = 8) -> int:
+def round_to_multiple(value: int, multiple: int = DEFAULT_MULTIPLE) -> int:
     return int(round(value / multiple) * multiple)
 
 
-def round_down_to_multiple(value: int, multiple: int = 8) -> int:
+def round_down_to_multiple(value: int, multiple: int = DEFAULT_MULTIPLE) -> int:
     return (value // multiple) * multiple
 
 
@@ -32,8 +37,8 @@ def compute_aspect_ratio_dimensions(
         w = float(max_side)
         h = float(max_side)
 
-    width_int = max(round_to_multiple(int(round(w))), 64)
-    height_int = max(round_to_multiple(int(round(h))), 64)
+    width_int = max(round_to_multiple(int(round(w))), DEFAULT_MIN_DIMENSION)
+    height_int = max(round_to_multiple(int(round(h))), DEFAULT_MIN_DIMENSION)
     return width_int, height_int
 
 

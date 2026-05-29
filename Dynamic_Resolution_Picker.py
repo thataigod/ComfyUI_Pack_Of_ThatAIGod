@@ -1,7 +1,12 @@
 import math
 import random
 from typing import Any
-from utils import clamp_dimension, compute_aspect_ratio_dimensions
+from utils import clamp_dimension, compute_aspect_ratio_dimensions, DEFAULT_MIN_DIMENSION, DEFAULT_MAX_DIMENSION
+
+MIN_SCALE_FACTOR: float = 0.1
+MAX_SCALE_FACTOR: float = 8.0
+DEFAULT_SCALE_FACTOR: float = 1.5
+DEFAULT_MAX_SIDE_PIXELS: int = 1024
 
 _PORTRAITS: dict[str, float] = {
     "Portrait 2:3 (Classic)": 2 / 3,
@@ -94,12 +99,12 @@ class DynamicResolution:
             "required": {
                 "Max Side Pixels": (
                     "INT",
-                    {"default": 1024, "min": 64, "max": 16384, "step": 8},
+                    {"default": DEFAULT_MAX_SIDE_PIXELS, "min": DEFAULT_MIN_DIMENSION, "max": DEFAULT_MAX_DIMENSION, "step": 8},
                 ),
                 "Aspect Ratio": (ratio_options, {"default": "Square 1:1"}),
                 "Scale Factor": (
                     "FLOAT",
-                    {"default": 1.5, "min": 0.1, "max": 8.0, "step": 0.05},
+                    {"default": DEFAULT_SCALE_FACTOR, "min": MIN_SCALE_FACTOR, "max": MAX_SCALE_FACTOR, "step": 0.05},
                 ),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}),
             },
@@ -125,8 +130,8 @@ class DynamicResolution:
         scale_factor: float = kwargs.get("Scale Factor", 1.5)
         seed: int = kwargs.get("seed", 0)
 
-        max_side = clamp_dimension(max_side, 64, 16384)
-        scale_factor = max(0.1, min(scale_factor, 8.0))
+        max_side = clamp_dimension(max_side, DEFAULT_MIN_DIMENSION, DEFAULT_MAX_DIMENSION)
+        scale_factor = max(MIN_SCALE_FACTOR, min(scale_factor, MAX_SCALE_FACTOR))
 
         rng: random.Random = random.Random(seed)
         target_label, ratio_float = self._resolve_ratio(aspect_ratio_label, rng)

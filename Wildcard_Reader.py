@@ -8,6 +8,7 @@ from typing import Any
 logger: logging.Logger = logging.getLogger("ThatAIGod")
 
 _WILDCARD_PATTERN: re.Pattern[str] = re.compile(r"__([a-zA-Z0-9_\-\/\\\.]+)__")
+_MAX_WILDCARD_ITERATIONS: int = 50
 
 
 class WildcardReader:
@@ -201,7 +202,7 @@ class WildcardReader:
         processed_text: str = text if text else ""
 
         iteration: int = 0
-        max_iterations: int = 50
+        max_iterations: int = _MAX_WILDCARD_ITERATIONS
 
         while iteration < max_iterations:
             matches: list[str] = list(set(_WILDCARD_PATTERN.findall(processed_text)))

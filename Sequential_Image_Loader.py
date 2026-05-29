@@ -9,6 +9,10 @@ import torch
 
 logger = logging.getLogger("ThatAIGod")
 
+VALID_IMAGE_EXTENSIONS: tuple[str, ...] = (
+    ".png", ".jpg", ".jpeg", ".webp", ".bmp", ".tiff",
+)
+
 
 class SequentialImageLoader:
     DESCRIPTION = "Loads images sequentially from a directory using a seed as the index. Supports natural sort ordering and multiple image formats."
@@ -51,18 +55,10 @@ class SequentialImageLoader:
         if not directory_path or not os.path.isdir(directory_path):
             raise ValueError(f"Directory not found: {directory_path}")
 
-        valid_extensions: tuple[str, ...] = (
-            ".png",
-            ".jpg",
-            ".jpeg",
-            ".webp",
-            ".bmp",
-            ".tiff",
-        )
         files: list[str] = [
             f
             for f in os.listdir(directory_path)
-            if f.lower().endswith(valid_extensions)
+            if f.lower().endswith(VALID_IMAGE_EXTENSIONS)
         ]
         files.sort(key=self.natural_sort_key)
 

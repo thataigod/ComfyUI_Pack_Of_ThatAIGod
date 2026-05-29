@@ -6,6 +6,15 @@ import comfy.utils
 
 logger: logging.Logger = logging.getLogger("ThatAIGod")
 
+DEFAULT_MAX_SIDE: int = 1024
+DEFAULT_DIVISIBILITY: int = 8
+DEFAULT_UPSCALE_METHOD: str = "lanczos"
+MIN_MAX_SIDE: int = 64
+MAX_MAX_SIDE: int = 16384
+DIVISIBILITY_STEP: int = 1
+MIN_DIVISIBILITY: int = 1
+MAX_DIVISIBILITY: int = 128
+
 
 class UpscaleByMaxSide:
     DESCRIPTION = "Upscales an image so its longest side matches a target pixel value, with configurable method and divisibility constraints."
@@ -20,11 +29,11 @@ class UpscaleByMaxSide:
         return {
             "required": {
                 "Image": ("IMAGE",),
-                "Max Side": ("INT", {"default": 1024, "min": 64, "max": 16384, "step": 8}),
-                "Divisibility": ("INT", {"default": 8, "min": 1, "max": 128, "step": 1}),
+                "Max Side": ("INT", {"default": DEFAULT_MAX_SIDE, "min": MIN_MAX_SIDE, "max": MAX_MAX_SIDE, "step": 8}),
+                "Divisibility": ("INT", {"default": DEFAULT_DIVISIBILITY, "min": MIN_DIVISIBILITY, "max": MAX_DIVISIBILITY, "step": DIVISIBILITY_STEP}),
                 "Method": (
                     ["lanczos", "bicubic", "bilinear", "nearest-exact", "area"],
-                    {"default": "lanczos"},
+                    {"default": DEFAULT_UPSCALE_METHOD},
                 ),
             }
         }
@@ -34,9 +43,9 @@ class UpscaleByMaxSide:
         if image is None:
             raise ValueError("Image input is required but was not provided.")
 
-        max_side: int = kwargs.get("Max Side", 1024)
-        divisibility: int = kwargs.get("Divisibility", 8)
-        method: str = kwargs.get("Method", "lanczos")
+        max_side: int = kwargs.get("Max Side", DEFAULT_MAX_SIDE)
+        divisibility: int = kwargs.get("Divisibility", DEFAULT_DIVISIBILITY)
+        method: str = kwargs.get("Method", DEFAULT_UPSCALE_METHOD)
 
         _, h, w, _ = image.shape
         ratio = w / h
