@@ -15,6 +15,7 @@ class WildcardReader:
 
     _file_index_cache: dict[str, dict[str, list[str]]] = {}
     _file_mtimes: dict[str, dict[str, float]] = {}
+    _file_content_cache: dict[str, tuple[float, list[str]]] = {}
     _deck_cache: dict[str, list[str]] = {}
 
     @classmethod
@@ -122,6 +123,27 @@ class WildcardReader:
         self._file_mtimes[cache_key] = mtimes
         return file_index
 
+    def _get_file_lines(self, file_path: str) -> list[str] | None:
+        try:
+            current_mtime = os.path.getmtime(file_path)
+        except OSError:
+            return None
+
+        cached = WildcardReader._file_content_cache.get(file_path)
+        if cached is not None:
+            cached_mtime, cached_lines = cached
+            if cached_mtime == current_mtime:
+                return cached_lines
+
+        try:
+            with open(file_path, encoding="utf-8") as f:
+                lines = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+            WildcardReader._file_content_cache[file_path] = (current_mtime, lines)
+            return lines
+        except (OSError, UnicodeDecodeError):
+            logger.warning("Failed to read wildcard file: %s", file_path)
+            return None
+
     def _get_line_from_file(
         self, wildcard_tag: str, file_index: dict[str, list[str]], wildcards_dir: str, mode: str, rng: random.Random
     ) -> str:
@@ -154,34 +176,25 @@ class WildcardReader:
         if mode == "Random (No Repeat)":
             deck = WildcardReader._deck_cache
             if final_path not in deck or len(deck[final_path]) == 0:
-                try:
-                    with open(final_path, encoding="utf-8") as f:
-                        lines: list[str] = [
-                            line.strip() for line in f if line.strip() and not line.startswith("#")
-                        ]
-                    if not lines:
-                        return ""
-                    rng.shuffle(lines)
-                    deck[final_path] = lines
-                except (OSError, UnicodeDecodeError):
-                    logger.warning("Failed to read wildcard file: %s", final_path)
+                lines = self._get_file_lines(final_path)
+                if lines is None:
                     return f"__{wildcard_tag}__"
-            return deck[final_path].pop(0)
-        else:
-            try:
-                with open(final_path, encoding="utf-8") as f:
-                    lines = [
-                        line.strip() for line in f if line.strip() and not line.startswith("#")
-                    ]
                 if not lines:
                     return ""
-                if mode == "Deterministic (Seed)":
-                    return rng.choice(sorted(lines))
-                else:
-                    return rng.choice(lines)
-            except (OSError, UnicodeDecodeError):
-                logger.warning("Failed to read wildcard file: %s", final_path)
+                shuffled = list(lines)
+                rng.shuffle(shuffled)
+                deck[final_path] = shuffled
+            return deck[final_path].pop(0)
+        else:
+            lines = self._get_file_lines(final_path)
+            if lines is None:
                 return f"__{wildcard_tag}__"
+            if not lines:
+                return ""
+            if mode == "Deterministic (Seed)":
+                return rng.choice(sorted(lines))
+            else:
+                return rng.choice(lines)
 
     def process(self, text: str, mode: str, seed: int, delimiter: str, **kwargs: Any) -> tuple[str]:
         prepend_text: str = kwargs.get("Prependable Text", "")

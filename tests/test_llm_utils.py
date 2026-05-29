@@ -243,5 +243,149 @@ class TestPushError(unittest.TestCase):
             mock_send.assert_not_called()
 
 
+class TestRetryLogic(unittest.TestCase):
+    def _make_async_cm(self, obj):
+        cm = MagicMock()
+        cm.__aenter__ = AsyncMock(return_value=obj)
+        cm.__aexit__ = AsyncMock(return_value=False)
+        return cm
+
+    def _make_raising_cm(self, exc):
+        cm = MagicMock()
+
+        async def raise_on_enter(_self=None):
+            raise exc
+
+        cm.__aenter__ = raise_on_enter
+        cm.__aexit__ = AsyncMock(return_value=False)
+        return cm
+
+    def test_retry_on_429_then_success(self):
+        resp_429 = MagicMock()
+        resp_429.status = 429
+        resp_429.headers = {}
+        resp_429.raise_for_status = MagicMock()
+
+        resp_200 = MagicMock()
+        resp_200.status = 200
+        resp_200.raise_for_status = MagicMock()
+        resp_200.content = AsyncIter([b"data\n"])
+
+        call_count = [0]
+        def post_side_effect(*args, **kwargs):
+            call_count[0] += 1
+            if call_count[0] == 1:
+                return self._make_async_cm(resp_429)
+            return self._make_async_cm(resp_200)
+
+        mock_session = MagicMock()
+        mock_session.post = MagicMock(side_effect=post_side_effect)
+
+        async def run():
+            with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
+                with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
+                    return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+
+        result = asyncio.run(run())
+        self.assertEqual(mock_session.post.call_count, 2)
+
+    def test_no_retry_on_401(self):
+        resp_401 = MagicMock()
+        resp_401.status = 401
+        resp_401.raise_for_status = MagicMock(side_effect=aiohttp.ClientResponseError(
+            status=401, message="Unauthorized", request_info=MagicMock(), history=()
+        ))
+
+        mock_session = MagicMock()
+        mock_session.post.return_value = self._make_async_cm(resp_401)
+
+        async def run():
+            with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
+                with self.assertRaises(aiohttp.ClientResponseError):
+                    await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+
+        asyncio.run(run())
+
+    def test_retry_exhausted_returns_last_error_data(self):
+        resp_502 = MagicMock()
+        resp_502.status = 502
+        resp_502.headers = {}
+        resp_502.raise_for_status = MagicMock()
+        resp_502.content = AsyncIter([b"error data\n"])
+
+        mock_session = MagicMock()
+        mock_session.post.return_value = self._make_async_cm(resp_502)
+
+        async def run():
+            with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
+                with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
+                    return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+
+        result = asyncio.run(run())
+        self.assertEqual(mock_session.post.call_count, 3)
+
+    def test_retry_on_client_error_then_success(self):
+        call_count = [0]
+        resp_ok = MagicMock()
+        resp_ok.status = 200
+        resp_ok.raise_for_status = MagicMock()
+        resp_ok.content = AsyncIter([b"data\n"])
+
+        def post_side_effect(*args, **kwargs):
+            call_count[0] += 1
+            if call_count[0] == 1:
+                return self._make_raising_cm(aiohttp.ClientError("connection reset"))
+            return self._make_async_cm(resp_ok)
+
+        mock_session = MagicMock()
+        mock_session.post = MagicMock(side_effect=post_side_effect)
+
+        async def run():
+            with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
+                with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
+                    return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+
+        result = asyncio.run(run())
+        self.assertEqual(mock_session.post.call_count, 2)
+
+    def test_retry_on_timeout_then_success(self):
+        call_count = [0]
+        resp_ok = MagicMock()
+        resp_ok.status = 200
+        resp_ok.raise_for_status = MagicMock()
+        resp_ok.content = AsyncIter([b"data\n"])
+
+        def post_side_effect(*args, **kwargs):
+            call_count[0] += 1
+            if call_count[0] == 1:
+                return self._make_raising_cm(TimeoutError("timed out"))
+            return self._make_async_cm(resp_ok)
+
+        mock_session = MagicMock()
+        mock_session.post = MagicMock(side_effect=post_side_effect)
+
+        async def run():
+            with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
+                with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
+                    return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+
+        result = asyncio.run(run())
+        self.assertEqual(mock_session.post.call_count, 2)
+
+
+class AsyncMock:
+    def __init__(self, return_value=None, **kwargs):
+        self._return_value = return_value
+
+    def __call__(self, *args, **kwargs):
+        return self
+
+    def __await__(self):
+        return self._async().__await__()
+
+    async def _async(self):
+        return self._return_value
+
+
 if __name__ == "__main__":
     unittest.main()

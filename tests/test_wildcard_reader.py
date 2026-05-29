@@ -28,6 +28,7 @@ class TestWildcardReader(unittest.TestCase):
 
         WildcardReader._file_index_cache.clear()
         WildcardReader._file_mtimes.clear()
+        WildcardReader._file_content_cache.clear()
         WildcardReader._deck_cache.clear()
 
     def tearDown(self):
@@ -340,6 +341,31 @@ class TestWildcardReader(unittest.TestCase):
         mtimes = WildcardReader._file_mtimes.get(self.wildcards_dir, {})
         colors_path = os.path.join(self.wildcards_dir, "colors.txt")
         self.assertIn(colors_path, mtimes)
+
+    def test_file_content_cache_returns_same_lines(self):
+        self._create_wildcard_file("colors.txt", ["red", "green"])
+        path = os.path.join(self.wildcards_dir, "colors.txt")
+        lines1 = self.node._get_file_lines(path)
+        lines2 = self.node._get_file_lines(path)
+        self.assertEqual(lines1, lines2)
+        self.assertIn(path, WildcardReader._file_content_cache)
+
+    def test_file_content_cache_returns_none_on_io_error(self):
+        path = os.path.join(self.wildcards_dir, "nonexistent.txt")
+        result = self.node._get_file_lines(path)
+        self.assertIsNone(result)
+
+    def test_file_content_cache_invalidates_on_mtime_change(self):
+        self._create_wildcard_file("colors.txt", ["red"])
+        path = os.path.join(self.wildcards_dir, "colors.txt")
+        lines1 = self.node._get_file_lines(path)
+        self.assertEqual(lines1, ["red"])
+        self._create_wildcard_file("colors.txt", ["red", "blue"])
+        lines2 = self.node._get_file_lines(path)
+        self.assertEqual(lines2, ["red", "blue"])
+
+    def test_content_cache_cleared_in_setup(self):
+        self.assertNotIn("anything", WildcardReader._file_content_cache)
 
 
 if __name__ == "__main__":

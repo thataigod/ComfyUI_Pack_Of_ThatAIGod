@@ -5,6 +5,7 @@ import io
 import json
 import logging
 import os
+import time
 import urllib.error
 import urllib.request
 from collections.abc import Iterator
@@ -22,6 +23,9 @@ logger = logging.getLogger("ThatAIGod")
 CACHE_MAX_SIZE: int = 10
 CREDITS_FETCH_TIMEOUT: int = 3
 MAX_ERROR_BODY_LENGTH: int = 500
+MAX_RETRIES: int = 3
+RETRY_BACKOFF_BASE: float = 1.0
+RETRYABLE_STATUS_CODES: frozenset[int] = frozenset({429, 502, 503})
 
 DEFAULT_MODELS: list[str] = [
     "mistralai/devstral-2512:free",
@@ -147,15 +151,42 @@ async def _async_fetch_stream(
     url: str, payload: dict[str, Any], api_key: str, timeout: int
 ) -> list[bytes]:
     headers: dict[str, str] = {**_STREAM_HEADERS, "Authorization": f"Bearer {api_key}"}
-    async with aiohttp.ClientSession() as session:
-        async with session.post(
-            url,
-            json=payload,
-            headers=headers,
-            timeout=aiohttp.ClientTimeout(total=timeout),
-        ) as response:
-            response.raise_for_status()
-            return [line async for line in response.content]
+    last_error: Exception | None = None
+    for attempt in range(MAX_RETRIES):
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.post(
+                    url,
+                    json=payload,
+                    headers=headers,
+                    timeout=aiohttp.ClientTimeout(total=timeout),
+                ) as response:
+                    if response.status in RETRYABLE_STATUS_CODES and attempt < MAX_RETRIES - 1:
+                        retry_after = float(response.headers.get("Retry-After", RETRY_BACKOFF_BASE * (2 ** attempt)))
+                        logger.warning("Retryable HTTP %d, retrying in %.1fs (attempt %d/%d)", response.status, retry_after, attempt + 1, MAX_RETRIES)
+                        await asyncio.sleep(retry_after)
+                        continue
+                    response.raise_for_status()
+                    return [line async for line in response.content]
+        except aiohttp.ClientResponseError as e:
+            if e.status in RETRYABLE_STATUS_CODES and attempt < MAX_RETRIES - 1:
+                wait = RETRY_BACKOFF_BASE * (2 ** attempt)
+                logger.warning("Retryable error %d, retrying in %.1fs (attempt %d/%d)", e.status, wait, attempt + 1, MAX_RETRIES)
+                await asyncio.sleep(wait)
+                last_error = e
+                continue
+            raise
+        except (aiohttp.ClientError, TimeoutError, asyncio.TimeoutError) as e:
+            if attempt < MAX_RETRIES - 1:
+                wait = RETRY_BACKOFF_BASE * (2 ** attempt)
+                logger.warning("Network error, retrying in %.1fs (attempt %d/%d): %s", wait, attempt + 1, MAX_RETRIES, e)
+                await asyncio.sleep(wait)
+                last_error = e
+                continue
+            raise
+    if last_error is not None:
+        raise last_error
+    return []
 
 
 _LOOP: asyncio.AbstractEventLoop | None = None
