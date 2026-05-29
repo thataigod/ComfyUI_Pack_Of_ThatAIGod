@@ -221,7 +221,7 @@ class TestLLMNode(unittest.TestCase):
     def test_generate_http_error_returns_error_tuple(self):
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
             with patch("LLM_Node.PromptServer"):
-                with patch.object(urllib.request, "urlopen", side_effect=urllib.error.HTTPError(
+                with patch.object(LLM_Node._streamer, "stream_response", side_effect=urllib.error.HTTPError(
                     "http://example.com", 401, "Unauthorized", {}, None
                 )):
                     result = self.node.generate(**_make_kwargs())
@@ -251,17 +251,15 @@ class TestLLMNode(unittest.TestCase):
             self.assertNotIn("must be localhost", info)
 
     def test_generate_streaming_success(self):
-        mock_response = MagicMock()
         chunks = [
             b'data: {"choices":[{"delta":{"content":"Hello"}}]}\n',
             b'data: {"choices":[{"delta":{"content":" world"}}]}\n',
             b'data: [DONE]\n',
         ]
-        mock_response.__enter__.return_value.__iter__.return_value = chunks
 
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
             with patch("LLM_Node.PromptServer"):
-                with patch.object(urllib.request, "urlopen", return_value=mock_response):
+                with patch.object(LLM_Node._streamer, "stream_response", return_value=iter(chunks)):
                     result = self.node.generate(**_make_kwargs())
                     text, status, info = result
                     self.assertEqual(text, "Hello world")
@@ -405,15 +403,13 @@ class TestLLMNode(unittest.TestCase):
                     self.assertIn("bad image", info)
 
     def test_generate_with_unique_id_streaming_shows_credits(self):
-        mock_response = MagicMock()
         chunks = [
             b'data: {"choices":[{"delta":{"content":"Hello"}}]}\n',
             b'data: [DONE]\n',
         ]
-        mock_response.__enter__.return_value.__iter__.return_value = chunks
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
             with patch("LLM_Node.PromptServer.instance.send_sync") as mock_send:
-                with patch.object(urllib.request, "urlopen", return_value=mock_response):
+                with patch.object(LLM_Node._streamer, "stream_response", return_value=iter(chunks)):
                     with patch.object(self.node, "fetch_openrouter_credits", return_value="$5.00"):
                         result = self.node.generate(**_make_kwargs({
                             "unique_id": "uid_99",
@@ -433,7 +429,7 @@ class TestLLMNode(unittest.TestCase):
     def test_generic_exception_in_generate_returns_error_tuple(self):
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
             with patch("LLM_Node.PromptServer"):
-                with patch.object(urllib.request, "urlopen", side_effect=RuntimeError("something broke")):
+                with patch.object(LLM_Node._streamer, "stream_response", side_effect=RuntimeError("something broke")):
                     result = self.node.generate(**_make_kwargs())
                     text, status, info = result
                     self.assertEqual(text, "")
@@ -458,7 +454,7 @@ class TestLLMNode(unittest.TestCase):
     def test_generate_timeout_returns_error_tuple(self):
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
             with patch("LLM_Node.PromptServer"):
-                with patch.object(urllib.request, "urlopen", side_effect=urllib.error.URLError(socket.timeout())):
+                with patch.object(LLM_Node._streamer, "stream_response", side_effect=urllib.error.URLError(socket.timeout())):
                     result = self.node.generate(**_make_kwargs())
                     text, status, info = result
                     self.assertEqual(text, "")

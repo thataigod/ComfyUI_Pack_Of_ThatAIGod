@@ -1,6 +1,7 @@
 import os
 import json
 import hashlib
+import asyncio
 import urllib.request
 import urllib.error
 from urllib.parse import urlparse
@@ -13,6 +14,7 @@ from typing import Any, Iterator
 from PIL import Image
 import numpy as np
 import torch
+import aiohttp
 from server import PromptServer
 
 
@@ -141,18 +143,8 @@ class LlmStreamer:
     def stream_response(
         url: str, payload: dict[str, Any], api_key: str, timeout: int
     ) -> Iterator[bytes]:
-        headers: dict[str, str] = {
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-            "User-Agent": "ThatAIGod-ComfyUI-Node/1.0",
-            "X-Title": "ComfyUI-Pack-Of-ThatAIGod",
-        }
-        data: bytes = json.dumps(payload).encode("utf-8")
-        req: urllib.request.Request = urllib.request.Request(
-            url, data=data, headers=headers, method="POST"
-        )
-        with urllib.request.urlopen(req, timeout=timeout) as response:
-            yield from response
+        chunks: list[bytes] = _run_async_stream(url, payload, api_key, timeout)
+        yield from chunks
 
     @staticmethod
     def parse_stream_chunk(line: bytes) -> str | None:
@@ -170,6 +162,49 @@ class LlmStreamer:
             except (json.JSONDecodeError, KeyError, IndexError):
                 pass
         return ""
+
+
+_STREAM_HEADERS: dict[str, str] = {
+    "Content-Type": "application/json",
+    "User-Agent": "ThatAIGod-ComfyUI-Node/1.0",
+    "X-Title": "ComfyUI-Pack-Of-ThatAIGod",
+}
+
+
+async def _async_fetch_stream(
+    url: str, payload: dict[str, Any], api_key: str, timeout: int
+) -> list[bytes]:
+    headers: dict[str, str] = {**_STREAM_HEADERS, "Authorization": f"Bearer {api_key}"}
+    async with aiohttp.ClientSession() as session:
+        async with session.post(
+            url,
+            json=payload,
+            headers=headers,
+            timeout=aiohttp.ClientTimeout(total=timeout),
+        ) as response:
+            response.raise_for_status()
+            return [line async for line in response.content]
+
+
+def _run_async_stream(
+    url: str, payload: dict[str, Any], api_key: str, timeout: int
+) -> list[bytes]:
+    loop = asyncio.new_event_loop()
+    try:
+        asyncio.set_event_loop(loop)
+        return loop.run_until_complete(
+            _async_fetch_stream(url, payload, api_key, timeout)
+        )
+    except aiohttp.ClientResponseError as e:
+        raise urllib.error.HTTPError(
+            url, e.status, e.message, None, None
+        )
+    except (asyncio.TimeoutError, socket.timeout):
+        raise urllib.error.URLError(socket.timeout())
+    except aiohttp.ClientError as e:
+        raise urllib.error.URLError(str(e))
+    finally:
+        loop.close()
 
 
 def encode_image_to_base64(image_tensor: torch.Tensor) -> str:
