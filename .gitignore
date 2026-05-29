@@ -4,4 +4,5 @@ __pycache__/
 *.tmp
 *.log
 output/
+*.egg-info/
 
