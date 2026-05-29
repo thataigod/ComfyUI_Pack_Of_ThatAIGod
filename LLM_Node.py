@@ -5,8 +5,8 @@ import urllib.request
 import urllib.error
 from urllib.parse import urlparse
 import socket
-import base64
 import io
+import base64
 import time
 import logging
 from collections import OrderedDict
@@ -16,24 +16,16 @@ import numpy as np
 import torch
 from server import PromptServer
 
+from llm_utils import (
+    LlmConfigBuilder, LlmStreamer,
+    CACHE_MAX_SIZE, MAX_ERROR_BODY_LENGTH,
+    DEFAULT_MODELS,
+)
 
 logger = logging.getLogger("ThatAIGod")
 
-CACHE_MAX_SIZE: int = 10
 MODEL_FETCH_TIMEOUT: int = 2
-CREDITS_FETCH_TIMEOUT: int = 3
 MAX_MODELS_IN_DROPDOWN: int = 200
-MAX_ERROR_BODY_LENGTH: int = 500
-DEFAULT_TEMPERATURE: float = 0.7
-DEFAULT_MAX_TOKENS: int = 1024
-DEFAULT_TIMEOUT_SECONDS: int = 30
-MIN_TEMPERATURE: float = 0.0
-MAX_TEMPERATURE: float = 2.0
-MIN_MAX_TOKENS: int = 1
-MAX_MAX_TOKENS: int = 128000
-MIN_TIMEOUT: int = 1
-MAX_TIMEOUT: int = 300
-MODEL_FETCH_LIMIT: int = 200
 
 
 class LLM_Node:
@@ -43,19 +35,15 @@ class LLM_Node:
     _response_cache: OrderedDict[Any, tuple[str, bool, str]] = OrderedDict()
     _cache_max_size: int = CACHE_MAX_SIZE
 
+    _config_builder: LlmConfigBuilder = LlmConfigBuilder()
+    _streamer: LlmStreamer = LlmStreamer()
+
     @classmethod
     def get_initial_model_list(cls) -> list[str]:
         if cls._model_cache is not None:
             return cls._model_cache
 
-        defaults: list[str] = [
-            "mistralai/devstral-2512:free",
-            "z-ai/glm-4.5-air:free",
-            "tngtech/tng-r1t-chimera:free",
-            "amazon/nova-2-lite-v1:free",
-            "anthropic/claude-3.5-sonnet",
-            "openai/gpt-4o",
-        ]
+        defaults: list[str] = list(DEFAULT_MODELS)
 
         try:
             url: str = "https://openrouter.ai/api/v1/models"
@@ -154,7 +142,7 @@ class LLM_Node:
                     "User-Agent": "ThatAIGod-ComfyUI-Node/1.0",
                 },
             )
-            with urllib.request.urlopen(req, timeout=CREDITS_FETCH_TIMEOUT) as response:
+            with urllib.request.urlopen(req, timeout=3) as response:
                 data: dict[str, Any] = json.loads(response.read().decode("utf-8"))
                 if "data" in data:
                     d: dict[str, Any] = data["data"]
@@ -164,6 +152,7 @@ class LLM_Node:
                     return f"${remaining:.2f}"
         except Exception:
             return None
+        return None
 
     def push_error_to_ui(self, unique_id: str | None, error_msg: str) -> None:
         if unique_id:
@@ -173,114 +162,24 @@ class LLM_Node:
             )
 
     def _build_config(self, kwargs: dict[str, Any]) -> dict[str, Any]:
-        return {
-            "mode": kwargs.get("Mode", "OpenRouter"),
-            "model_name": kwargs.get("Model", "mistralai/devstral-2512:free"),
-            "system_prompt": kwargs.get("System Prompt", ""),
-            "user_prompt": kwargs.get("User Prompt", ""),
-            "temperature": kwargs.get("Temperature", 0.7),
-            "max_tokens": kwargs.get("Max Tokens", 1024),
-            "seed": kwargs.get("seed", 0),
-            "timeout_seconds": kwargs.get("Timeout (Seconds)", 30),
-            "unique_id": kwargs.get("unique_id", None),
-            "api_key_env_var": kwargs.get("API Key Env Var", "OPENROUTER_API_KEY"),
-            "local_url": kwargs.get("Local URL", "http://localhost:1234/v1"),
-            "vision_image": kwargs.get("Image(s)", None),
-        }
+        return self._config_builder.build_config(kwargs)
 
-    def _resolve_api_config(
-        self, cfg: dict[str, Any]
-    ) -> tuple[str, str, str | None]:
-        mode = cfg["mode"]
-        if mode == "OpenRouter":
-            base_url = "https://openrouter.ai/api/v1/chat/completions"
-            api_key = os.environ.get(cfg["api_key_env_var"].strip(), "")
-            if not api_key:
-                return ("", "", "Error: No API Key found in " + cfg["api_key_env_var"] + ".")
-        else:
-            base_url = cfg["local_url"].strip().rstrip("/")
-            parsed = urlparse(base_url)
-            if parsed.hostname not in ("localhost", "127.0.0.1", "::1", ""):
-                return ("", "", f"Error: Local URL must be localhost (got {parsed.hostname}).")
-            if not base_url.endswith("/chat/completions"):
-                base_url += "/chat/completions"
-            api_key = "lm-studio"
+    def _resolve_api_config(self, cfg: dict[str, Any]) -> tuple[str, str, str | None]:
+        return self._config_builder.resolve_api_config(cfg)
 
-        final_user_content: str = cfg["user_prompt"]
-        if not final_user_content.strip() and cfg["vision_image"] is None:
-            return ("", "", "Error: User prompt is empty.")
+    def _build_messages(self, system_prompt: str, user_prompt: str, b64_image: str | None) -> list[dict[str, Any]]:
+        return self._config_builder.build_messages(system_prompt, user_prompt, b64_image)
 
-        return (base_url, api_key, None)
+    def _build_payload(self, cfg: dict[str, Any], messages: list[dict[str, Any]]) -> dict[str, Any]:
+        return self._config_builder.build_payload(cfg, messages)
 
-    def _build_messages(
-        self, system_prompt: str, user_prompt: str, b64_image: str | None
-    ) -> list[dict[str, Any]]:
-        messages: list[dict[str, Any]] = [{"role": "system", "content": system_prompt}]
-        if b64_image:
-            messages.append(
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "text", "text": user_prompt},
-                        {
-                            "type": "image_url",
-                            "image_url": {"url": f"data:image/jpeg;base64,{b64_image}"},
-                        },
-                    ],
-                }
-            )
-        else:
-            messages.append({"role": "user", "content": user_prompt})
-        return messages
-
-    def _build_payload(
-        self, cfg: dict[str, Any], messages: list[dict[str, Any]]
-    ) -> dict[str, Any]:
-        payload: dict[str, Any] = {
-            "model": cfg["model_name"],
-            "messages": messages,
-            "temperature": cfg["temperature"],
-            "max_tokens": cfg["max_tokens"],
-            "stream": True,
-        }
-        if cfg["seed"] != 0:
-            payload["seed"] = cfg["seed"]
-        return payload
-
-    def _stream_response(
-        self, url: str, payload: dict[str, Any], api_key: str, timeout: int
-    ) -> Iterator[bytes]:
-        headers: dict[str, str] = {
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-            "User-Agent": "ThatAIGod-ComfyUI-Node/1.0",
-            "X-Title": "ComfyUI-Pack-Of-ThatAIGod",
-        }
-        data: bytes = json.dumps(payload).encode("utf-8")
-        req: urllib.request.Request = urllib.request.Request(
-            url, data=data, headers=headers, method="POST"
-        )
-        with urllib.request.urlopen(req, timeout=timeout) as response:
-            yield from response
+    def _stream_response(self, url: str, payload: dict[str, Any], api_key: str, timeout: int) -> Iterator[bytes]:
+        return self._streamer.stream_response(url, payload, api_key, timeout)
 
     def _parse_stream_chunk(self, line: bytes) -> str | None:
-        decoded_line: str = line.decode("utf-8").strip()
-        if decoded_line.startswith("data: "):
-            data_str: str = decoded_line[6:]
-            if data_str == "[DONE]":
-                return None
-            try:
-                json_chunk: dict[str, Any] = json.loads(data_str)
-                if "choices" in json_chunk and len(json_chunk["choices"]) > 0:
-                    delta: dict[str, Any] = json_chunk["choices"][0].get("delta", {})
-                    return delta.get("content", "")
-            except (json.JSONDecodeError, KeyError, IndexError):
-                pass
-        return ""
+        return self._streamer.parse_stream_chunk(line)
 
-    def _cache_get(
-        self, key: tuple[Any, ...]
-    ) -> tuple[str, bool, str] | None:
+    def _cache_get(self, key: tuple[Any, ...]) -> tuple[str, bool, str] | None:
         if key in self._response_cache:
             self._response_cache.move_to_end(key)
             return self._response_cache[key]
