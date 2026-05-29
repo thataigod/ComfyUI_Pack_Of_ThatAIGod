@@ -95,6 +95,7 @@ class WildcardReader:
                     if f.endswith(".txt"):
                         abs_path = os.path.join(root, f)
                         current_mtime = os.path.getmtime(abs_path)
+                        # Rebuild index if any file was modified since last cache
                         if abs_path not in cached_mtimes or cached_mtimes[abs_path] != current_mtime:
                             needs_refresh = True
                             break
@@ -147,6 +148,7 @@ class WildcardReader:
 
         real_wildcards: str = os.path.realpath(wildcards_dir)
         real_final: str = os.path.realpath(final_path)
+        # Prevent path traversal: resolved path must be within wildcards directory
         if not real_final.startswith(real_wildcards + os.sep) and real_final != real_wildcards:
             return f"__{wildcard_tag}__"
 

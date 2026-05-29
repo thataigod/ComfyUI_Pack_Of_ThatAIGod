@@ -47,6 +47,7 @@ class LlmCache:
 
     def put(self, key: tuple[Any, ...], value: tuple[str, bool, str]) -> None:
         self._cache[key] = value
+        # Evict oldest entry when cache exceeds capacity
         if len(self._cache) > self._max_size:
             self._cache.popitem(last=False)
 
@@ -155,6 +156,7 @@ class LlmStreamer:
 
     @staticmethod
     def parse_stream_chunk(line: bytes) -> str | None:
+        # Parse SSE format: "data: {json}" or "data: [DONE]"
         decoded_line: str = line.decode("utf-8").strip()
         if decoded_line.startswith("data: "):
             data_str: str = decoded_line[6:]

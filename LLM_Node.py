@@ -211,6 +211,7 @@ class LLM_Node:
         image_hash: str | None = (
             hashlib.md5(b64_image.encode()).hexdigest() if b64_image else None
         )
+        # Cache key includes all inputs + image hash so identical prompts with different images don't collide
         cache_key: tuple[Any, ...] = (
             cfg["mode"],
             cfg["model_name"],

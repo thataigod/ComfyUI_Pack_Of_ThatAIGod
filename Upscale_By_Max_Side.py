@@ -70,6 +70,7 @@ class UpscaleByMaxSide:
         target_w = max(target_w, divisibility)
         target_h = max(target_h, divisibility)
 
+        # Center-crop to enforce divisibility after upscale preserves aspect ratio
         if target_w != scale_w or target_h != scale_h:
             h_start = (scale_h - target_h) // 2
             w_start = (scale_w - target_w) // 2

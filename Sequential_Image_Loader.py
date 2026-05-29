@@ -43,6 +43,7 @@ class SequentialImageLoader:
 
     @staticmethod
     def natural_sort_key(s: str) -> list[tuple[int, int | str]]:
+        # Split on digit boundaries; sort numeric parts as ints, text as lowercase
         return [
             (0, int(text)) if text.isdigit() else (1, text.lower())
             for text in re.split(r"(\d+)", s)

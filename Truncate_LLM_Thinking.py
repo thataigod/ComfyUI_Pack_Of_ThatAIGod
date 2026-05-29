@@ -37,6 +37,7 @@ class TruncateThinking:
         last_end = text.rfind(end_token, 0, max_length)
         if last_end != -1:
             safe_end = last_end + len(end_token)
+        # Ensure we don't cut in the middle of a thinking block
 
         search_start = last_end + len(end_token) if last_end != -1 else 0
         next_start = text.find(start_token, search_start, max_length)
