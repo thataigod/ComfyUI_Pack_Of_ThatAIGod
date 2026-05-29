@@ -26,6 +26,11 @@ class TruncateThinking:
         if not text:
             return ("", "")
 
+        # Cap input size to prevent ReDoS on very long text
+        max_length: int = 100000
+        if len(text) > max_length:
+            text = text[:max_length]
+
         pattern = re.compile(
             re.escape(start_token) + r"(.*?)" + re.escape(end_token),
             flags=re.DOTALL
