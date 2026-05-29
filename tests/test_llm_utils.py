@@ -286,7 +286,7 @@ class TestRetryLogic(unittest.TestCase):
                 with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
                     return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
 
-        result = asyncio.run(run())
+        asyncio.run(run())
         self.assertEqual(mock_session.post.call_count, 2)
 
     def test_no_retry_on_401(self):
@@ -321,7 +321,7 @@ class TestRetryLogic(unittest.TestCase):
                 with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
                     return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
 
-        result = asyncio.run(run())
+        asyncio.run(run())
         self.assertEqual(mock_session.post.call_count, 3)
 
     def test_retry_on_client_error_then_success(self):
@@ -345,7 +345,7 @@ class TestRetryLogic(unittest.TestCase):
                 with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
                     return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
 
-        result = asyncio.run(run())
+        asyncio.run(run())
         self.assertEqual(mock_session.post.call_count, 2)
 
     def test_retry_on_timeout_then_success(self):
@@ -369,7 +369,7 @@ class TestRetryLogic(unittest.TestCase):
                 with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
                     return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
 
-        result = asyncio.run(run())
+        asyncio.run(run())
         self.assertEqual(mock_session.post.call_count, 2)
 
 
