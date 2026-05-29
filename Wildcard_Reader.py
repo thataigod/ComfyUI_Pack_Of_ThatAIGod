@@ -1,15 +1,17 @@
+import logging
 import os
 import random
 import re
 from typing import Any
 
 
+logger: logging.Logger = logging.getLogger("ThatAIGod")
+
+
 class WildcardReader:
     _file_index_cache: dict[str, dict[str, list[str]]] = {}
     _file_index_mtime: dict[str, float] = {}
-
-    def __init__(self) -> None:
-        self._deck_cache: dict[str, list[str]] = {}
+    _deck_cache: dict[str, list[str]] = {}
 
     @classmethod
     def INPUT_TYPES(cls) -> dict[str, Any]:
@@ -129,17 +131,18 @@ class WildcardReader:
                 return f"__{wildcard_tag}__"
 
             if mode == "Random (No Repeat)":
-                if final_path not in self._deck_cache or len(self._deck_cache[final_path]) == 0:
+                if final_path not in WildcardReader._deck_cache or len(WildcardReader._deck_cache[final_path]) == 0:
                     try:
                         with open(final_path, 'r', encoding='utf-8') as f:
                             lines: list[str] = [line.strip() for line in f if line.strip() and not line.startswith('#')]
                         if not lines:
                             return ""
                         rng.shuffle(lines)
-                        self._deck_cache[final_path] = lines
-                    except Exception:
+                        WildcardReader._deck_cache[final_path] = lines
+                    except (OSError, IOError, UnicodeDecodeError):
+                        logger.warning("Failed to read wildcard file: %s", final_path)
                         return f"__{wildcard_tag}__"
-                return self._deck_cache[final_path].pop(0)
+                return WildcardReader._deck_cache[final_path].pop(0)
             else:
                 try:
                     with open(final_path, 'r', encoding='utf-8') as f:
@@ -150,7 +153,8 @@ class WildcardReader:
                         return rng.choice(sorted(lines))
                     else:
                         return rng.choice(lines)
-                except Exception:
+                except (OSError, IOError, UnicodeDecodeError):
+                    logger.warning("Failed to read wildcard file: %s", final_path)
                     return f"__{wildcard_tag}__"
 
         processed_text: str = text if text else ""

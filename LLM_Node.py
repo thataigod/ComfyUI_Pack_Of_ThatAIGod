@@ -22,10 +22,11 @@ logger = logging.getLogger("ThatAIGod")
 class LLM_Node:
     _model_cache: list[str] | None = None
     _response_cache: dict[Any, tuple[str, bool, str]] = {}
+    _cache_max_size: int = 10
 
     @classmethod
     def get_initial_model_list(cls) -> list[str]:
-        if cls._model_cache:
+        if cls._model_cache is not None:
             return cls._model_cache
 
         defaults: list[str] = [
@@ -45,7 +46,7 @@ class LLM_Node:
                 if "data" in data and isinstance(data["data"], list):
                     fetched_models: list[str] = [m["id"] for m in data["data"]]
                     cls._model_cache = fetched_models[:200]
-                    return fetched_models
+                    return cls._model_cache
         except Exception:
             pass
 
@@ -184,7 +185,7 @@ class LLM_Node:
         else:
             base_url = local_url.strip().rstrip('/')
             parsed = urlparse(base_url)
-            if parsed.hostname not in ("localhost", "127.0.0.1", ""):
+            if parsed.hostname not in ("localhost", "127.0.0.1", "::1", ""):
                 err = f"Error: Local URL must be localhost (got {parsed.hostname})."
                 self.push_error_to_ui(unique_id, err)
                 return ("", False, err)
@@ -222,7 +223,6 @@ class LLM_Node:
             "Content-Type": "application/json",
             "User-Agent": "ThatAIGod-ComfyUI-Node/1.0",
             "X-Title": "ComfyUI-Pack-Of-ThatAIGod",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
 
         start_time: float = time.time()
@@ -264,12 +264,11 @@ class LLM_Node:
                     credits: str | None = self.fetch_openrouter_credits(api_key)
                     if credits:
                         info_parts.append(f"Credits: {credits}")
-                api_key = ""
                 final_info: str = " | ".join(info_parts)
 
                 result: tuple[str, bool, str] = (generated_content, True, final_info)
                 self._response_cache[cache_key] = result
-                if len(self._response_cache) > 10:
+                if len(self._response_cache) > LLM_Node._cache_max_size:
                     oldest_key: Any = next(iter(self._response_cache))
                     del self._response_cache[oldest_key]
                 return result

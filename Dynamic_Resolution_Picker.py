@@ -1,7 +1,46 @@
-import torch
 import math
 import random
 from typing import Any
+
+_PORTRAITS: dict[str, float] = {
+    "Portrait 2:3 (Classic)": 2/3,
+    "Portrait 3:4 (Standard)": 3/4,
+    "Portrait 4:5 (Social)": 4/5,
+    "Portrait 9:16 (Mobile)": 9/16,
+}
+
+_LANDSCAPES: dict[str, float] = {
+    "Landscape 3:2 (Classic)": 3/2,
+    "Landscape 4:3 (Standard)": 4/3,
+    "Landscape 5:4 (Display)": 5/4,
+    "Landscape 16:9 (HD)": 16/9,
+    "Landscape 16:10 (Monitor)": 16/10,
+    "Landscape 21:9 (Ultrawide)": 21/9,
+    "Landscape 1.85:1 (Cinema)": 1.85,
+}
+
+_SQUARE: dict[str, float] = {"Square 1:1": 1.0}
+
+_ALL_RATIOS: dict[str, float] = {**_PORTRAITS, **_LANDSCAPES, **_SQUARE}
+
+_KEYWORD_MAP: dict[str, str] = {
+    "Square 1:1": "Square, 1:1 Aspect Ratio, Boxed Composition",
+    "Portrait 2:3 (Classic)": "Portrait, 2:3 Aspect Ratio, Vertical Orientation",
+    "Portrait 3:4 (Standard)": "Portrait, 3:4 Aspect Ratio, Vertical Format",
+    "Portrait 4:5 (Social)": "Portrait, 4:5 Aspect Ratio, Vertical Composition",
+    "Portrait 9:16 (Mobile)": "Portrait, 9:16 Aspect Ratio, Full Screen Vertical",
+    "Landscape 3:2 (Classic)": "Landscape, 3:2 Aspect Ratio, Horizontal Orientation",
+    "Landscape 4:3 (Standard)": "Landscape, 4:3 Aspect Ratio, Standard View",
+    "Landscape 5:4 (Display)": "Landscape, 5:4 Aspect Ratio, Wide Format",
+    "Landscape 16:9 (HD)": "Landscape, 16:9 Aspect Ratio, Widescreen Format",
+    "Landscape 16:10 (Monitor)": "Landscape, 16:10 Aspect Ratio, Wide Display",
+    "Landscape 21:9 (Ultrawide)": "Landscape, 21:9 Aspect Ratio, Ultra-Wide Panoramic",
+    "Landscape 1.85:1 (Cinema)": "Landscape, 1.85:1 Aspect Ratio, Theatrical Format",
+}
+
+_SORTED_PORTRAIT_ITEMS: list[tuple[str, float]] = sorted(_PORTRAITS.items())
+_SORTED_LANDSCAPE_ITEMS: list[tuple[str, float]] = sorted(_LANDSCAPES.items())
+_SORTED_ALL_ITEMS: list[tuple[str, float]] = sorted(_ALL_RATIOS.items())
 
 
 class DynamicResolution:
@@ -27,7 +66,7 @@ class DynamicResolution:
             "Landscape 16:9 (HD)",
             "Landscape 16:10 (Monitor)",
             "Landscape 21:9 (Ultrawide)",
-            "Landscape 1.85:1 (Cinema)"
+            "Landscape 1.85:1 (Cinema)",
         ]
 
         return {
@@ -45,70 +84,40 @@ class DynamicResolution:
         scale_factor: float = kwargs.get("Scale Factor", 1.5)
         seed: int = kwargs.get("seed", 0)
 
+        if max_side < 64 or max_side > 16384:
+            max_side = max(64, min(max_side, 16384))
+
+        scale_factor = max(0.1, min(scale_factor, 8.0))
+
         rng: random.Random = random.Random(seed)
-
-        portraits: dict[str, float] = {
-            "Portrait 2:3 (Classic)": 2/3,
-            "Portrait 3:4 (Standard)": 3/4,
-            "Portrait 4:5 (Social)": 4/5,
-            "Portrait 9:16 (Mobile)": 9/16
-        }
-        landscapes: dict[str, float] = {
-            "Landscape 3:2 (Classic)": 3/2,
-            "Landscape 4:3 (Standard)": 4/3,
-            "Landscape 5:4 (Display)": 5/4,
-            "Landscape 16:9 (HD)": 16/9,
-            "Landscape 16:10 (Monitor)": 16/10,
-            "Landscape 21:9 (Ultrawide)": 21/9,
-            "Landscape 1.85:1 (Cinema)": 1.85
-        }
-        square: dict[str, float] = {"Square 1:1": 1.0}
-
-        keyword_map: dict[str, str] = {
-            "Square 1:1": "Square, 1:1 Aspect Ratio, Boxed Composition",
-            "Portrait 2:3 (Classic)": "Portrait, 2:3 Aspect Ratio, Vertical Orientation",
-            "Portrait 3:4 (Standard)": "Portrait, 3:4 Aspect Ratio, Vertical Format",
-            "Portrait 4:5 (Social)": "Portrait, 4:5 Aspect Ratio, Vertical Composition",
-            "Portrait 9:16 (Mobile)": "Portrait, 9:16 Aspect Ratio, Full Screen Vertical",
-            "Landscape 3:2 (Classic)": "Landscape, 3:2 Aspect Ratio, Horizontal Orientation",
-            "Landscape 4:3 (Standard)": "Landscape, 4:3 Aspect Ratio, Standard View",
-            "Landscape 5:4 (Display)": "Landscape, 5:4 Aspect Ratio, Wide Format",
-            "Landscape 16:9 (HD)": "Landscape, 16:9 Aspect Ratio, Widescreen Format",
-            "Landscape 16:10 (Monitor)": "Landscape, 16:10 Aspect Ratio, Wide Display",
-            "Landscape 21:9 (Ultrawide)": "Landscape, 21:9 Aspect Ratio, Ultra-Wide Panoramic",
-            "Landscape 1.85:1 (Cinema)": "Landscape, 1.85:1 Aspect Ratio, Theatrical Format"
-        }
 
         target_label: str = aspect_ratio_label
         ratio_float: float = 1.0
 
         if "Random" in aspect_ratio_label:
             if aspect_ratio_label == "Random (Portrait)":
-                target_label, ratio_float = rng.choice(sorted(list(portraits.items())))
+                target_label, ratio_float = rng.choice(_SORTED_PORTRAIT_ITEMS)
             elif aspect_ratio_label == "Random (Landscape)":
-                target_label, ratio_float = rng.choice(sorted(list(landscapes.items())))
+                target_label, ratio_float = rng.choice(_SORTED_LANDSCAPE_ITEMS)
             else:
-                all_ratios: dict[str, float] = {**portraits, **landscapes, **square}
-                target_label, ratio_float = rng.choice(sorted(list(all_ratios.items())))
+                target_label, ratio_float = rng.choice(_SORTED_ALL_ITEMS)
+        elif target_label in _ALL_RATIOS:
+            ratio_float = _ALL_RATIOS[target_label]
         else:
-            all_known: dict[str, float] = {**portraits, **landscapes, **square}
-            if target_label in all_known:
-                ratio_float = all_known[target_label]
-            else:
-                ratio_float = 1.0
-                target_label = "Square 1:1"
+            ratio_float = 1.0
+            target_label = "Square 1:1"
 
-        keywords: str = keyword_map.get(target_label, f"{target_label}, Aspect Ratio")
+        keywords: str = _KEYWORD_MAP.get(target_label, f"{target_label}, Aspect Ratio")
 
         if ratio_float > 1.0:
-            width = max_side
-            height = max_side / ratio_float
+            width: float = float(max_side)
+            height: float = max_side / ratio_float
         elif ratio_float < 1.0:
-            height = max_side
+            height = float(max_side)
             width = max_side * ratio_float
         else:
-            width = max_side
-            height = max_side
+            width = float(max_side)
+            height = float(max_side)
 
         width_int: int = max(int(round(width / 8) * 8), 64)
         height_int: int = max(int(round(height / 8) * 8), 64)
@@ -139,9 +148,9 @@ class DynamicResolution:
                 "scaled_height": [scaled_height],
                 "scale_factor": [scale_factor],
                 "guide_size": [guide_size],
-                "max_size": [max_size_val]
+                "max_size": [max_size_val],
             },
-            "result": (width_int, height_int, scaled_width, scaled_height, scale_factor, keywords, guide_size, max_size_val)
+            "result": (width_int, height_int, scaled_width, scaled_height, scale_factor, keywords, guide_size, max_size_val),
         }
 
 NODE_CLASS_MAPPINGS = {

@@ -1,6 +1,9 @@
+import logging
 import torch
 from typing import Any
 import comfy.utils
+
+logger: logging.Logger = logging.getLogger("ThatAIGod")
 
 
 class UpscaleByMaxSide:
@@ -52,6 +55,7 @@ class UpscaleByMaxSide:
         if target_w != scale_w or target_h != scale_h:
             h_start = (scale_h - target_h) // 2
             w_start = (scale_w - target_w) // 2
+            logger.info("Center-cropping from %dx%d to %dx%d to meet divisibility=%d", scale_w, scale_h, target_w, target_h, divisibility)
             s = s[:, h_start:h_start + target_h, w_start:w_start + target_w, :]
 
         return (s, target_w, target_h)

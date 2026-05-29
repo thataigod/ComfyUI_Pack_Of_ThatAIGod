@@ -143,6 +143,10 @@ app.registerExtension({
                     }
                 } catch (error) {
                     console.error(error);
+                    const errorWidget = this.widgets.find(w => w.name === "Full LLM Response or Any Errors");
+                    if (errorWidget) {
+                        errorWidget.value = `[ERROR] Failed to fetch models: ${error.message || error}`;
+                    }
                     if (modelWidget.value === "Fetching...") {
                         modelWidget.value = "anthropic/claude-3.5-sonnet"; 
                     }
@@ -228,10 +232,10 @@ app.registerExtension({
                             } else {
                                 textWidget.value += value;
                             }
-                            setTimeout(() => {
+                            queueMicrotask(() => {
                                 wildSelector.value = "Select a file from the wildcards directory";
                                 app.graph.setDirtyCanvas(true);
-                            }, 50);
+                            });
                         }
                     };
                 }

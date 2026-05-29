@@ -10,25 +10,25 @@ from Wildcard_Reader import WildcardReader
 class TestWildcardReader(unittest.TestCase):
     def setUp(self):
         self.node = WildcardReader()
-        self.temp_dir = tempfile.mkdtemp()
-        self.original_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        self.wildcards_dir = os.path.join(self.original_dir, "wildcards")
+        self.module_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        self.wildcards_dir = os.path.join(self.module_dir, "wildcards")
         self.backup_dir = None
 
         if os.path.exists(self.wildcards_dir):
             self.backup_dir = tempfile.mkdtemp()
             shutil.move(self.wildcards_dir, os.path.join(self.backup_dir, "wildcards"))
 
-        os.makedirs("wildcards", exist_ok=True)
+        os.makedirs(self.wildcards_dir, exist_ok=True)
 
     def tearDown(self):
-        shutil.rmtree("wildcards", ignore_errors=True)
+        shutil.rmtree(self.wildcards_dir, ignore_errors=True)
         if self.backup_dir and os.path.exists(os.path.join(self.backup_dir, "wildcards")):
-            shutil.move(os.path.join(self.backup_dir, "wildcards"), self.original_dir)
-        shutil.rmtree(self.temp_dir, ignore_errors=True)
+            shutil.move(os.path.join(self.backup_dir, "wildcards"), self.module_dir)
+            self.wildcards_dir = os.path.join(self.module_dir, "wildcards")
 
     def _create_wildcard_file(self, filename, lines):
-        path = os.path.join("wildcards", filename)
+        path = os.path.join(self.wildcards_dir, filename)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w", encoding="utf-8") as f:
             f.write("\n".join(lines))
 
