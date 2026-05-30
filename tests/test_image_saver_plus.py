@@ -7,7 +7,7 @@ import types
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 folder_paths_mock = types.ModuleType("folder_paths")
-folder_paths_mock.get_output_directory = lambda: "/tmp"
+folder_paths_mock.get_output_directory = lambda: tempfile.gettempdir()  # noqa: S108
 
 
 class _SaveImagePathTracker:

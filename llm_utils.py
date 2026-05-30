@@ -240,7 +240,7 @@ def _run_async_stream(url: str, payload: dict[str, Any], api_key: str, timeout: 
         exc: Exception = _error[0]
         if isinstance(exc, aiohttp.ClientResponseError):
             raise urllib.error.HTTPError(url, exc.status, exc.message, http.client.HTTPMessage(), None)
-        if isinstance(exc, (TimeoutError, asyncio.TimeoutError)):
+        if isinstance(exc, TimeoutError | asyncio.TimeoutError):
             raise urllib.error.URLError(TimeoutError())
         if isinstance(exc, aiohttp.ClientError):
             raise urllib.error.URLError(str(exc))
