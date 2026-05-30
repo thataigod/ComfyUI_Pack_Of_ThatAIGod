@@ -40,6 +40,20 @@ def _resolve_date_format(format_str: str) -> str:
     return datetime.now().strftime(fmt)
 
 
+def _find_next_counter(folder: str, filename_template: str) -> int:
+    if not os.path.isdir(folder):
+        return 1
+    prefix_part, suffix_part = filename_template.split("%counter%", 1)
+    escaped: str = re.escape(prefix_part) + r"(\d{5})" + re.escape(suffix_part) + r"(?:\.[a-zA-Z0-9]+)?$"
+    pattern: re.Pattern[str] = re.compile(escaped)
+    max_c: int = 0
+    for fname in os.listdir(folder):
+        m = pattern.match(fname)
+        if m:
+            max_c = max(max_c, int(m.group(1)))
+    return max_c + 1
+
+
 class ImageSaverPlus:
     DESCRIPTION = "Saves images with format selection, quality control, and optional text sidecar file."
 
@@ -126,6 +140,9 @@ class ImageSaverPlus:
         full_output_folder, filename, counter, subfolder, filename_prefix = folder_paths.get_save_image_path(
             filename_prefix, self.output_dir, images[0].shape[1], images[0].shape[0]
         )
+
+        if "%counter%" in filename:
+            counter = _find_next_counter(full_output_folder, filename)
 
         results: list[dict[str, str]] = []
         for batch_number, image in enumerate(images):

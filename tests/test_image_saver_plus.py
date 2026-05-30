@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import sys
 import types
 
@@ -225,6 +226,39 @@ class TestImageSaverPlus(unittest.TestCase):
         pngs = [f for f in files if f.endswith(".png")]
         self.assertEqual(len(pngs), 1)
         self.assertRegex(pngs[0], r"^\d{8}_\d{5}_PreFaceFix\.png$")
+
+    def test_counter_does_not_overwrite(self):
+        self.node.save_images(images=self.dummy_image, filename_prefix="cnt_%counter%_test")
+        self.node.save_images(images=self.dummy_image, filename_prefix="cnt_%counter%_test")
+        files = [f for f in os.listdir(self.temp_dir) if f.endswith(".png")]
+        self.assertEqual(len(files), 2)
+        counters = set()
+        for f in files:
+            m = re.match(r"cnt_(\d{5})_test\.png", f)
+            if m:
+                counters.add(int(m.group(1)))
+        self.assertEqual(len(counters), 2)
+        self.assertIn(1, counters)
+        self.assertIn(2, counters)
+
+
+class TestFindNextCounter(unittest.TestCase):
+    def test_nonexistent_folder_returns_one(self):
+        result = Image_Saver_Plus._find_next_counter(r"C:\does_not_exist_xyz", "img_%counter%")
+        self.assertEqual(result, 1)
+
+    def test_empty_folder_returns_one(self):
+        with tempfile.TemporaryDirectory() as d:
+            result = Image_Saver_Plus._find_next_counter(d, "img_%counter%")
+            self.assertEqual(result, 1)
+
+    def test_finds_max_counter_among_matching_files(self):
+        with tempfile.TemporaryDirectory() as d:
+            for i in (1, 3, 5):
+                with open(os.path.join(d, f"img_{i:05d}_test.txt"), "w") as f:
+                    f.write("")
+            result = Image_Saver_Plus._find_next_counter(d, "img_%counter%_test")
+            self.assertEqual(result, 6)
 
 
 class TestDatePatternRegex(unittest.TestCase):
