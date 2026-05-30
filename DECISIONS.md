@@ -164,3 +164,28 @@ This document records significant architectural and tooling decisions to prevent
 - **This naming must NOT be changed back to `utils.py`** — it will break ComfyUI loading.
 
 **Do NOT rename `_utils.py` back to `utils.py`.**
+
+---
+
+### D12: `_run_async` Replaces `_get_loop` + `run_until_complete`
+
+**Date:** 2026-05-30  
+**Status:** Accepted (critical)  
+**Context:** The original async-to-sync bridge used `_get_loop()` which created a new event loop via `asyncio.new_event_loop()` + `asyncio.set_event_loop()`, cached it in a global `_LOOP`, and called `loop.run_until_complete()`. This fails when ComfyUI's own event loop is already running in the same thread, producing `RuntimeError: Cannot run the event loop while another loop is running`.
+
+**Decision:** Replace with `_run_async(coro)` helper that:
+1. Calls `asyncio.get_running_loop()` to detect if a loop is already running.
+2. **No running loop:** Uses `asyncio.run(coro)` directly (creates, runs, and closes its own loop).
+3. **Running loop present (ComfyUI):** Dispatches `asyncio.run(coro)` to a `ThreadPoolExecutor(max_workers=4)` so the new loop runs in its own thread without colliding.
+
+**Alternatives Considered:**
+- `loop.run_until_complete()` on a new loop: Fails when another loop is running in the same thread (the root cause).
+- `asyncio.ensure_future()` on the running loop: Requires the calling code to be async-compatible, which ComfyUI node `generate()` methods are not (they are sync).
+- `nest_asyncio` patch: External dependency, modifies global runtime behavior.
+
+**Consequences:**
+- Removes `_LOOP` global, `_get_loop()`, `_close_loop()`, and the `atexit` import.
+- Adds `_EXECUTOR` module-level thread pool (`concurrent.futures.ThreadPoolExecutor`).
+- Thread dispatch adds ~1ms overhead per call when ComfyUI's loop is running.
+- The thread pool is bounded (max 4 workers), so concurrent LLM calls may queue.
+- Tests cover both branches (`test_run_async_no_loop` and `test_run_async_from_loop`).
