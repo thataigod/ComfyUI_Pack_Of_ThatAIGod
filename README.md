@@ -5,8 +5,9 @@ A custom node pack for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) prov
 ## Features
 
 - **LLM Chat** - Connect to OpenRouter API or local LLM servers (LM Studio) with streaming responses
+- **Image Saver Plus** - Save images with format selection, quality control, template variables, and text sidecars
 - **Dynamic Resolution Picker** - Calculate optimal width/height for any aspect ratio
-- **Wildcard Reader** - Resolve `__wildcard__` placeholders from curated text files
+- **Wildcard Reader** - Resolve `__wildcard__` placeholders from curated text files with `{A/B/C}` choice syntax
 - **Sequential Image Loader** - Iterate through directory images with natural sorting
 - **Upscale By Max Side** - Aspect-ratio-preserving upscaler
 - **Truncate LLM Thinking** - Strip thinking/reasoning blocks from LLM output
@@ -85,12 +86,14 @@ Connects to OpenRouter or a local LLM server for text generation with streaming 
 | Generated Text | STRING | The LLM response |
 | Status (Boolean) | BOOLEAN | `True` if generation succeeded |
 | Information | STRING | Latency and credit info |
+| Reasoning Content | STRING | Model's reasoning/thinking text (if provided) |
 
 **Features:**
 - Streaming responses displayed in real-time via WebSocket
 - Response caching (last 10 requests) for faster re-runs
 - Vision support - connect images for multimodal models
 - Credit balance display for OpenRouter
+- Reasoning content extracted separately from the clean response
 
 ### LLM Fallback Switch
 
@@ -138,6 +141,25 @@ Calculates optimal image dimensions based on aspect ratio and scale factor.
 - Landscape: 3:2, 4:3, 5:4, 16:9, 16:10, 21:9, 1.85:1
 - Random (Any, Portrait, or Landscape)
 
+### Image Saver Plus
+
+Category: `ThatAIGod/Image Utils`
+
+Saves images with format selection, quality/compression control, filename template variables, and optional text sidecar files.
+
+| Input | Type | Description |
+|-------|------|-------------|
+| images | IMAGE | The images to save |
+| filename_prefix | STRING | Prefix with template variables. Supports `%width%`, `%height%`, `%date:FORMAT%` (e.g. `%date:yyyy_MM_dd%`), `%year%`, `%month%`, `%day%`, `%hour%`, `%minute%`, `%second%`, `%counter%` (sequential number, place anywhere), and `%batch_num%` |
+| file_format | Dropdown | `png`, `jpeg`, or `webp` |
+| quality | INT | Quality for JPEG/WebP (1-100, default 95) |
+| compress_level | INT | PNG compression (0-9, default 4) |
+| save_text | STRING | Optional text to save as a `.txt` sidecar alongside each image |
+
+**Examples:**
+- `ComfyUI/Chroma/%date:yyyy_MM_dd%/PiX_%date:yyyyMMdd%_%counter%_PreFaceFix` produces `ComfyUI/Chroma/2026_05_30/PiX_20260530_00001_PreFaceFix.png`
+- Using `%counter%` in the filename prevents overwrites — the counter scans existing files and increments automatically
+
 ### Wildcard Reader
 
 Category: `ThatAIGod/Text Utils`
@@ -162,6 +184,9 @@ Resolves `__wildcard__` placeholders by randomly selecting lines from `.txt` fil
 - **Deterministic (Seed)** - Same seed = same output every time
 - **Full Random** - Completely random selection each run
 - **Random (No Repeat)** - Shuffles and draws without replacement until depleted
+
+**Inline Choice Syntax:**
+Use `{option1/option2/option3}` in your text to randomly pick one option (separated by `/`). Works alongside `__wildcard__` tags and respects the same mode/seed settings.
 
 **Nested Wildcards:**
 Wildcard files can reference other wildcards. For example, `all_colors_male.txt` contains:

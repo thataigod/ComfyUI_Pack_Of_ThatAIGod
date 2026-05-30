@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.3.0] - 2026-05-30
+
+### Added
+- Image Saver Plus node with format selection (PNG/JPEG/WebP), quality/compression control, and optional text sidecar
+- `%date:FORMAT%` template variable support (e.g. `%date:yyyy_MM_dd%`) in filename prefixes
+- `%counter%` template variable for placing the sequential number anywhere in the filename
+- `{A/B/C}` inline choice syntax in Wildcard Reader
+- 4th "Reasoning Content" output socket on LLM Chat node
+- Streaming now extracts reasoning content separately from the clean response
+
+### Changed
+- Counter scanning now uses actual filesystem state to prevent overwrites when `%counter%` is used
+- Wildcard `{A/B/C}` choices resolved after wildcard expansion
+
 ## [1.2.0] - 2026-05-30
 
 ### Added
