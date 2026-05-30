@@ -132,3 +132,24 @@ This document records significant architectural and tooling decisions to prevent
 **Context:** `Truncate_LLM_Thinking.truncate()` calls `re.compile()` on every invocation.
 
 **Decision:** Keep as-is. The `start_token` and `end_token` are user-configurable inputs, so the pattern changes per call. Python's `re` module caches compiled patterns internally (up to 512), making pre-compilation unnecessary.
+
+---
+
+### D11: Local Module Named `_utils.py` (Not `utils.py`)
+
+**Date:** 2026-05-30  
+**Status:** Accepted (critical)  
+**Context:** ComfyUI ships with its own `utils/` package at `ComfyUI/utils/__init__.py`. When a custom node directory contains `utils.py`, Python's import system resolves `from utils import ...` to ComfyUI's `utils` package instead of the local file, causing `ImportError: cannot import name 'safe_import' from 'utils'`.
+
+**Decision:** Rename local utility module to `_utils.py` (underscore prefix). All imports use `from _utils import ...`.
+
+**Alternatives Considered:**
+- `node_utils.py`: Works but `_utils.py` is shorter and the underscore signals "internal".
+- Relative imports (`from .utils import`): Doesn't work because ComfyUI loads custom nodes as standalone modules, not packages.
+
+**Consequences:**
+- All `from utils import ...` must be `from _utils import ...`.
+- The `_` prefix follows Python convention for private/internal modules.
+- **This naming must NOT be changed back to `utils.py`** — it will break ComfyUI loading.
+
+**Do NOT rename `_utils.py` back to `utils.py`.**
