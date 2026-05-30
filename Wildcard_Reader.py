@@ -7,6 +7,7 @@ from typing import Any
 logger: logging.Logger = logging.getLogger("ThatAIGod")
 
 _WILDCARD_PATTERN: re.Pattern[str] = re.compile(r"__([a-zA-Z0-9_\-\/\\\.]+)__")
+_CHOICE_PATTERN: re.Pattern[str] = re.compile(r"\{([^}]+)\}")
 _MAX_WILDCARD_ITERATIONS: int = 50
 _MAX_CONTENT_CACHE_SIZE: int = 100
 
@@ -248,6 +249,15 @@ class WildcardReader:
             if not found_replacement:
                 break
             iteration += 1
+
+        def _choice_replacer(m: re.Match[str]) -> str:
+            inner = m.group(1)
+            if "/" not in inner:
+                return m.group(0)
+            options = [s.strip() for s in inner.split("/") if s.strip()]
+            return rng.choice(options) if options else m.group(0)
+
+        processed_text = _CHOICE_PATTERN.sub(_choice_replacer, processed_text)
 
         processed_text = processed_text.strip()
 

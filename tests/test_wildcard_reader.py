@@ -394,5 +394,51 @@ class TestWildcardReader(unittest.TestCase):
             Wildcard_Reader._MAX_CONTENT_CACHE_SIZE = original_size
 
 
+    def test_choice_pattern_single_choice(self):
+        result = self.node.process(
+            text="{A/B}",
+            mode="Deterministic (Seed)", seed=42, delimiter=", "
+        )
+        self.assertIn(result[0], ["A", "B"])
+
+    def test_choice_pattern_deterministic(self):
+        r1 = self.node.process(text="{X/Y/Z}", mode="Deterministic (Seed)", seed=1, delimiter=", ")
+        r2 = self.node.process(text="{X/Y/Z}", mode="Deterministic (Seed)", seed=1, delimiter=", ")
+        self.assertEqual(r1, r2)
+
+    def test_choice_pattern_multiple_in_text(self):
+        result = self.node.process(
+            text="{A/B} and {C/D}",
+            mode="Deterministic (Seed)", seed=42, delimiter=", "
+        )
+        first, second = result[0].split(" and ")
+        self.assertIn(first, ["A", "B"])
+        self.assertIn(second, ["C", "D"])
+
+    def test_choice_pattern_no_slash_unchanged(self):
+        result = self.node.process(
+            text="{hello}",
+            mode="Deterministic (Seed)", seed=0, delimiter=", "
+        )
+        self.assertEqual(result[0], "{hello}")
+
+    def test_choice_pattern_after_wildcard_resolution(self):
+        self._create_wildcard_file("colors.txt", ["red", "blue"])
+        result = self.node.process(
+            text="__colors__ {big/small}",
+            mode="Deterministic (Seed)", seed=42, delimiter=", "
+        )
+        parts = result[0].split(" ")
+        self.assertIn(parts[0], ["red", "blue"])
+        self.assertIn(parts[1], ["big", "small"])
+
+    def test_choice_pattern_empty_options_falls_back(self):
+        result = self.node.process(
+            text="{A//B}",
+            mode="Deterministic (Seed)", seed=42, delimiter=", "
+        )
+        self.assertIn(result[0], ["A", "B"])
+
+
 if __name__ == "__main__":
     unittest.main()
