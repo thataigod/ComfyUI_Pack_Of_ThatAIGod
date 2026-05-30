@@ -1,14 +1,15 @@
 import asyncio
 import base64
-import concurrent.futures
 import http.client
 import io
 import json
 import logging
 import os
+import queue
+import threading
 import urllib.error
 import urllib.request
-from collections.abc import Iterator
+from collections.abc import AsyncIterator, Iterator
 from typing import Any
 from urllib.parse import urlparse
 
@@ -83,9 +84,7 @@ class LlmConfigBuilder:
         return (base_url, api_key, None)
 
     @staticmethod
-    def build_messages(
-        system_prompt: str, user_prompt: str, b64_image: str | None
-    ) -> list[dict[str, Any]]:
+    def build_messages(system_prompt: str, user_prompt: str, b64_image: str | None) -> list[dict[str, Any]]:
         messages: list[dict[str, Any]] = [{"role": "system", "content": system_prompt}]
         if b64_image:
             messages.append(
@@ -122,28 +121,33 @@ class LlmStreamer:
     """Handles streaming LLM responses via aiohttp with async-to-sync bridging."""
 
     @staticmethod
-    def stream_response(
-        url: str, payload: dict[str, Any], api_key: str, timeout: int
-    ) -> Iterator[bytes]:
-        chunks: list[bytes] = _run_async_stream(url, payload, api_key, timeout)
-        yield from chunks
+    def stream_response(url: str, payload: dict[str, Any], api_key: str, timeout: int) -> Iterator[bytes]:
+        yield from _run_async_stream(url, payload, api_key, timeout)
 
     @staticmethod
-    def parse_stream_chunk(line: bytes) -> str | None:
-        # Parse SSE format: "data: {json}" or "data: [DONE]"
+    def parse_stream_chunk(line: bytes) -> tuple[str | None, str, str]:
+        """Parse an SSE line. Returns (combined, reasoning, content).
+        - combined: combined string for UI streaming (None for [DONE])
+        - reasoning: reasoning text from this chunk
+        - content: content text from this chunk
+        """
         decoded_line: str = line.decode("utf-8").strip()
         if decoded_line.startswith("data: "):
             data_str: str = decoded_line[6:]
             if data_str == "[DONE]":
-                return None
+                return (None, "", "")
             try:
                 json_chunk: dict[str, Any] = json.loads(data_str)
                 if "choices" in json_chunk and len(json_chunk["choices"]) > 0:
                     delta: dict[str, Any] = json_chunk["choices"][0].get("delta", {})
-                    return delta.get("content", "")
+                    content: str = delta.get("content", "")
+                    reasoning: str = delta.get("reasoning", "") or delta.get("reasoning_content", "")
+                    if reasoning or content:
+                        return (reasoning + content, reasoning, content)
+                    return ("", "", "")
             except (json.JSONDecodeError, KeyError, IndexError):
                 pass
-        return ""
+        return ("", "", "")
 
 
 _STREAM_HEADERS: dict[str, str] = {
@@ -153,9 +157,8 @@ _STREAM_HEADERS: dict[str, str] = {
 }
 
 
-async def _async_fetch_stream(
-    url: str, payload: dict[str, Any], api_key: str, timeout: int
-) -> list[bytes]:
+async def _async_fetch_stream(url: str, payload: dict[str, Any], api_key: str, timeout: int) -> AsyncIterator[bytes]:
+    """Async generator that yields SSE lines as they arrive from the API."""
     headers: dict[str, str] = {**_STREAM_HEADERS, "Authorization": f"Bearer {api_key}"}
     for attempt in range(MAX_RETRIES):
         try:
@@ -167,64 +170,81 @@ async def _async_fetch_stream(
                     timeout=aiohttp.ClientTimeout(total=timeout),
                 ) as response:
                     if response.status in RETRYABLE_STATUS_CODES and attempt < MAX_RETRIES - 1:
-                        retry_after = float(response.headers.get("Retry-After", RETRY_BACKOFF_BASE * (2 ** attempt)))
-                        logger.warning("Retryable HTTP %d, retrying in %.1fs (attempt %d/%d)", response.status, retry_after, attempt + 1, MAX_RETRIES)
+                        retry_after = float(response.headers.get("Retry-After", RETRY_BACKOFF_BASE * (2**attempt)))
+                        logger.warning(
+                            "Retryable HTTP %d, retrying in %.1fs (attempt %d/%d)",
+                            response.status,
+                            retry_after,
+                            attempt + 1,
+                            MAX_RETRIES,
+                        )
                         await asyncio.sleep(retry_after)
                         continue
                     response.raise_for_status()
-                    return [line async for line in response.content]
+                    async for line in response.content:
+                        yield line
+                    return
         except aiohttp.ClientResponseError as e:
             if e.status in RETRYABLE_STATUS_CODES and attempt < MAX_RETRIES - 1:
-                wait = RETRY_BACKOFF_BASE * (2 ** attempt)
-                logger.warning("Retryable error %d, retrying in %.1fs (attempt %d/%d)", e.status, wait, attempt + 1, MAX_RETRIES)
+                wait = RETRY_BACKOFF_BASE * (2**attempt)
+                logger.warning(
+                    "Retryable error %d, retrying in %.1fs (attempt %d/%d)", e.status, wait, attempt + 1, MAX_RETRIES
+                )
                 await asyncio.sleep(wait)
                 continue
             raise
         except (aiohttp.ClientError, TimeoutError, asyncio.TimeoutError) as e:
             if attempt < MAX_RETRIES - 1:
-                wait = RETRY_BACKOFF_BASE * (2 ** attempt)
+                wait = RETRY_BACKOFF_BASE * (2**attempt)
                 logger.warning("Network error, retrying in %.1fs (attempt %d/%d): %s", wait, attempt + 1, MAX_RETRIES, e)
                 await asyncio.sleep(wait)
                 continue
             raise
-    return []  # pragma: no cover
 
 
-_EXECUTOR: concurrent.futures.ThreadPoolExecutor = concurrent.futures.ThreadPoolExecutor(max_workers=4)
+def _run_async_stream(url: str, payload: dict[str, Any], api_key: str, timeout: int) -> Iterator[bytes]:
+    """Run the async streaming generator in a thread, yielding chunks one by one as they arrive."""
+    q: queue.Queue = queue.Queue(maxsize=50)
+    _SENTINEL: object = object()
+    _error: list[Exception] = []
 
+    async def _producer() -> None:
+        try:
+            async for line in _async_fetch_stream(url, payload, api_key, timeout):
+                q.put(line)
+        except Exception as e:
+            _error.append(e)
+        finally:
+            q.put(_SENTINEL)
 
-def _run_async(coro):
-    """Run a coroutine from a sync context.
+    def _target() -> None:
+        try:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(_producer())
+            loop.close()
+        except Exception as e:  # pragma: no cover
+            _error.append(e)  # pragma: no cover
+            q.put(_SENTINEL)  # pragma: no cover
 
-    Detects whether an event loop is already running in this thread (e.g.
-    ComfyUI's own loop) and dispatches accordingly:
-    - No running loop: use ``asyncio.run()`` directly.
-    - Running loop present: submit to a thread-pool so the new loop does not
-      collide with the existing one.
-    """
-    try:
-        asyncio.get_running_loop()
-    except RuntimeError:
-        return asyncio.run(coro)
+    t: threading.Thread = threading.Thread(target=_target, daemon=True)
+    t.start()
 
-    return _EXECUTOR.submit(asyncio.run, coro).result()
+    while True:
+        item: object = q.get()
+        if item is _SENTINEL:
+            break
+        yield item  # type: ignore[misc]
 
-
-def _run_async_stream(
-    url: str, payload: dict[str, Any], api_key: str, timeout: int
-) -> list[bytes]:
-    try:
-        return _run_async(
-            _async_fetch_stream(url, payload, api_key, timeout)
-        )
-    except aiohttp.ClientResponseError as e:
-        raise urllib.error.HTTPError(
-            url, e.status, e.message, http.client.HTTPMessage(), None
-        )
-    except (TimeoutError, asyncio.TimeoutError):
-        raise urllib.error.URLError(TimeoutError())
-    except aiohttp.ClientError as e:
-        raise urllib.error.URLError(str(e))
+    if _error:
+        exc: Exception = _error[0]
+        if isinstance(exc, aiohttp.ClientResponseError):
+            raise urllib.error.HTTPError(url, exc.status, exc.message, http.client.HTTPMessage(), None)
+        if isinstance(exc, (TimeoutError, asyncio.TimeoutError)):
+            raise urllib.error.URLError(TimeoutError())
+        if isinstance(exc, aiohttp.ClientError):
+            raise urllib.error.URLError(str(exc))
+        raise exc  # pragma: no cover
 
 
 def encode_image_to_base64(image_tensor: torch.Tensor) -> str:

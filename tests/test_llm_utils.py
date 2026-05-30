@@ -20,7 +20,6 @@ from llm_utils import (
     LlmConfigBuilder,
     LlmStreamer,
     _async_fetch_stream,
-    _run_async,
     _run_async_stream,
     encode_image_to_base64,
     fetch_openrouter_credits,
@@ -38,6 +37,27 @@ class TestLlmStreamerStreamResponse(unittest.TestCase):
         with patch("llm_utils._run_async_stream", return_value=[]):
             result = list(LlmStreamer.stream_response("http://url", {}, "key", 30))
             self.assertEqual(result, [])
+
+    def test_parse_chunk_reasoning_only(self):
+        line = b'data: {"choices":[{"delta":{"reasoning":"thinking step"}}]}\n'
+        combined, reasoning, content = LlmStreamer.parse_stream_chunk(line)
+        self.assertEqual(combined, "thinking step")
+        self.assertEqual(reasoning, "thinking step")
+        self.assertEqual(content, "")
+
+    def test_parse_chunk_reasoning_and_content(self):
+        line = b'data: {"choices":[{"delta":{"reasoning":"deep think","content":"answer"}}]}\n'
+        combined, reasoning, content = LlmStreamer.parse_stream_chunk(line)
+        self.assertEqual(combined, "deep thinkanswer")
+        self.assertEqual(reasoning, "deep think")
+        self.assertEqual(content, "answer")
+
+    def test_parse_chunk_reasoning_content_field(self):
+        line = b'data: {"choices":[{"delta":{"reasoning_content":"alt reason"}}]}\n'
+        combined, reasoning, content = LlmStreamer.parse_stream_chunk(line)
+        self.assertEqual(combined, "alt reason")
+        self.assertEqual(reasoning, "alt reason")
+        self.assertEqual(content, "")
 
 
 class AsyncIter:
@@ -77,7 +97,10 @@ class TestAsyncFetchStream(unittest.TestCase):
         async def run():
             mock_session = self._make_mock_session([b"line1\n", b"line2\n"])
             with patch("aiohttp.ClientSession", return_value=mock_session):
-                return await _async_fetch_stream("http://test/url", {"model": "x"}, "sk-key", 10)
+                chunks: list[bytes] = []
+                async for line in _async_fetch_stream("http://test/url", {"model": "x"}, "sk-key", 10):
+                    chunks.append(line)
+                return chunks
 
         result = asyncio.run(run())
         self.assertEqual(result, [b"line1\n", b"line2\n"])
@@ -87,7 +110,8 @@ class TestAsyncFetchStream(unittest.TestCase):
 
         async def run():
             with patch("aiohttp.ClientSession", return_value=mock_session):
-                return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+                async for _ in _async_fetch_stream("http://test/url", {}, "sk-key", 10):
+                    pass
 
         asyncio.run(run())
         args, kwargs = mock_session.post.call_args
@@ -97,32 +121,49 @@ class TestAsyncFetchStream(unittest.TestCase):
 
 class TestRunAsyncStream(unittest.TestCase):
     def test_run_async_stream_propagates_error_on_http_error(self):
-        with patch("llm_utils._async_fetch_stream", side_effect=aiohttp.ClientResponseError(
-            status=403, message="Forbidden", request_info=MagicMock(), history=()
-        )):
+        async def _mock_error(*args, **kwargs):
+            raise aiohttp.ClientResponseError(status=403, message="Forbidden", request_info=MagicMock(), history=())
+            yield b"never"  # pragma: no cover
+
+        with patch("llm_utils._async_fetch_stream", _mock_error):
             with self.assertRaises(urllib.error.HTTPError) as ctx:
-                _run_async_stream("http://url", {}, "key", 30)
+                list(_run_async_stream("http://url", {}, "key", 30))
             self.assertEqual(ctx.exception.code, 403)
 
     def test_run_async_stream_raises_timeout(self):
-        with patch("llm_utils._async_fetch_stream", side_effect=asyncio.TimeoutError):
+        async def _mock_error(*args, **kwargs):
+            raise asyncio.TimeoutError()
+            yield b"never"  # pragma: no cover
+
+        with patch("llm_utils._async_fetch_stream", _mock_error):
             with self.assertRaises(urllib.error.URLError):
-                _run_async_stream("http://url", {}, "key", 30)
+                list(_run_async_stream("http://url", {}, "key", 30))
 
     def test_run_async_stream_raises_timeout_on_socket_timeout(self):
-        with patch("llm_utils._async_fetch_stream", side_effect=TimeoutError("timed out")):
+        async def _mock_error(*args, **kwargs):
+            raise TimeoutError("timed out")
+            yield b"never"  # pragma: no cover
+
+        with patch("llm_utils._async_fetch_stream", _mock_error):
             with self.assertRaises(urllib.error.URLError):
-                _run_async_stream("http://url", {}, "key", 30)
+                list(_run_async_stream("http://url", {}, "key", 30))
 
     def test_run_async_stream_raises_on_generic_client_error(self):
-        with patch("llm_utils._async_fetch_stream", side_effect=aiohttp.ClientError("connection failed")):
+        async def _mock_error(*args, **kwargs):
+            raise aiohttp.ClientError("connection failed")
+            yield b"never"  # pragma: no cover
+
+        with patch("llm_utils._async_fetch_stream", _mock_error):
             with self.assertRaises(urllib.error.URLError) as ctx:
-                _run_async_stream("http://url", {}, "key", 30)
+                list(_run_async_stream("http://url", {}, "key", 30))
             self.assertIn("connection failed", str(ctx.exception.reason))
 
     def test_run_async_stream_success(self):
-        with patch("llm_utils._async_fetch_stream", return_value=[b"data"]):
-            result = _run_async_stream("http://url", {}, "key", 30)
+        async def _mock_success(*args, **kwargs):
+            yield b"data"
+
+        with patch("llm_utils._async_fetch_stream", _mock_success):
+            result = list(_run_async_stream("http://url", {}, "key", 30))
             self.assertEqual(result, [b"data"])
 
 
@@ -133,41 +174,61 @@ class TestLlmConfigBuilder(unittest.TestCase):
 
     def test_resolve_api_config_openrouter_success(self):
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-key"}):
-            url, key, err = LlmConfigBuilder.resolve_api_config({
-                "mode": "OpenRouter", "api_key_env_var": "OPENROUTER_API_KEY",
-                "user_prompt": "hi", "vision_image": None,
-            })
+            url, key, err = LlmConfigBuilder.resolve_api_config(
+                {
+                    "mode": "OpenRouter",
+                    "api_key_env_var": "OPENROUTER_API_KEY",
+                    "user_prompt": "hi",
+                    "vision_image": None,
+                }
+            )
             self.assertIsNone(err)
 
     def test_resolve_api_config_openrouter_missing_key(self):
         with patch.dict(os.environ, {}, clear=True):
-            url, key, err = LlmConfigBuilder.resolve_api_config({
-                "mode": "OpenRouter", "api_key_env_var": "OPENROUTER_API_KEY",
-                "user_prompt": "hi", "vision_image": None,
-            })
+            url, key, err = LlmConfigBuilder.resolve_api_config(
+                {
+                    "mode": "OpenRouter",
+                    "api_key_env_var": "OPENROUTER_API_KEY",
+                    "user_prompt": "hi",
+                    "vision_image": None,
+                }
+            )
             self.assertIsNotNone(err)
 
     def test_resolve_api_config_empty_prompt_no_image(self):
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-key"}):
-            url, key, err = LlmConfigBuilder.resolve_api_config({
-                "mode": "OpenRouter", "api_key_env_var": "OPENROUTER_API_KEY",
-                "user_prompt": "   ", "vision_image": None,
-            })
+            url, key, err = LlmConfigBuilder.resolve_api_config(
+                {
+                    "mode": "OpenRouter",
+                    "api_key_env_var": "OPENROUTER_API_KEY",
+                    "user_prompt": "   ",
+                    "vision_image": None,
+                }
+            )
             self.assertIsNotNone(err)
 
     def test_resolve_api_config_local_success(self):
-        url, key, err = LlmConfigBuilder.resolve_api_config({
-            "mode": "Local", "local_url": "http://localhost:1234/v1",
-            "user_prompt": "hi", "vision_image": None,
-        })
+        url, key, err = LlmConfigBuilder.resolve_api_config(
+            {
+                "mode": "Local",
+                "local_url": "http://localhost:1234/v1",
+                "user_prompt": "hi",
+                "vision_image": None,
+            }
+        )
         self.assertIsNone(err)
         self.assertTrue(url.endswith("/chat/completions"))
 
     def test_resolve_api_config_local_rejects_external(self):
-        url, key, err = LlmConfigBuilder.resolve_api_config({
-            "mode": "Local", "local_url": "http://evil.com:9999",
-            "user_prompt": "hi", "vision_image": None,
-        })
+        url, key, err = LlmConfigBuilder.resolve_api_config(
+            {
+                "mode": "Local",
+                "local_url": "http://evil.com:9999",
+                "user_prompt": "hi",
+                "vision_image": None,
+            }
+        )
         self.assertIsNotNone(err)
 
     def test_build_messages_with_image(self):
@@ -193,6 +254,7 @@ class TestLlmConfigBuilder(unittest.TestCase):
 class TestEncodeImage(unittest.TestCase):
     def test_encode_image_to_base64(self):
         import torch
+
         dummy = torch.zeros((1, 64, 64, 3))
         result = encode_image_to_base64(dummy)
         self.assertIsInstance(result, str)
@@ -202,6 +264,7 @@ class TestEncodeImage(unittest.TestCase):
         import base64
 
         import torch
+
         dummy = torch.ones((1, 64, 64, 3)) * 127
         result = encode_image_to_base64(dummy)
         decoded = base64.b64decode(result)
@@ -211,9 +274,7 @@ class TestEncodeImage(unittest.TestCase):
 class TestFetchCredits(unittest.TestCase):
     def test_fetch_openrouter_credits_success(self):
         mock_resp = MagicMock()
-        mock_resp.read.return_value = json.dumps({
-            "data": {"total_credits": 20.0, "total_usage": 5.0}
-        }).encode("utf-8")
+        mock_resp.read.return_value = json.dumps({"data": {"total_credits": 20.0, "total_usage": 5.0}}).encode("utf-8")
         mock_resp.__enter__.return_value = mock_resp
         with patch.object(urllib.request, "urlopen", return_value=mock_resp):
             result = fetch_openrouter_credits("sk-key")
@@ -262,6 +323,13 @@ class TestRetryLogic(unittest.TestCase):
         cm.__aexit__ = AsyncMock(return_value=False)
         return cm
 
+    @staticmethod
+    async def _collect(async_gen):
+        chunks: list[bytes] = []
+        async for line in async_gen:
+            chunks.append(line)
+        return chunks
+
     def test_retry_on_429_then_success(self):
         resp_429 = MagicMock()
         resp_429.status = 429
@@ -274,6 +342,7 @@ class TestRetryLogic(unittest.TestCase):
         resp_200.content = AsyncIter([b"data\n"])
 
         call_count = [0]
+
         def post_side_effect(*args, **kwargs):
             call_count[0] += 1
             if call_count[0] == 1:
@@ -286,7 +355,7 @@ class TestRetryLogic(unittest.TestCase):
         async def run():
             with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
                 with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
-                    return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+                    return await self._collect(_async_fetch_stream("http://test/url", {}, "sk-key", 10))
 
         asyncio.run(run())
         self.assertEqual(mock_session.post.call_count, 2)
@@ -294,9 +363,9 @@ class TestRetryLogic(unittest.TestCase):
     def test_no_retry_on_401(self):
         resp_401 = MagicMock()
         resp_401.status = 401
-        resp_401.raise_for_status = MagicMock(side_effect=aiohttp.ClientResponseError(
-            status=401, message="Unauthorized", request_info=MagicMock(), history=()
-        ))
+        resp_401.raise_for_status = MagicMock(
+            side_effect=aiohttp.ClientResponseError(status=401, message="Unauthorized", request_info=MagicMock(), history=())
+        )
 
         mock_session = MagicMock()
         mock_session.post.return_value = self._make_async_cm(resp_401)
@@ -304,7 +373,8 @@ class TestRetryLogic(unittest.TestCase):
         async def run():
             with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
                 with self.assertRaises(aiohttp.ClientResponseError):
-                    await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+                    async for _ in _async_fetch_stream("http://test/url", {}, "sk-key", 10):
+                        pass
 
         asyncio.run(run())
 
@@ -321,7 +391,7 @@ class TestRetryLogic(unittest.TestCase):
         async def run():
             with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
                 with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
-                    return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+                    return await self._collect(_async_fetch_stream("http://test/url", {}, "sk-key", 10))
 
         asyncio.run(run())
         self.assertEqual(mock_session.post.call_count, 3)
@@ -345,7 +415,7 @@ class TestRetryLogic(unittest.TestCase):
         async def run():
             with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
                 with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
-                    return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+                    return await self._collect(_async_fetch_stream("http://test/url", {}, "sk-key", 10))
 
         asyncio.run(run())
         self.assertEqual(mock_session.post.call_count, 2)
@@ -369,7 +439,7 @@ class TestRetryLogic(unittest.TestCase):
         async def run():
             with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
                 with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
-                    return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+                    return await self._collect(_async_fetch_stream("http://test/url", {}, "sk-key", 10))
 
         asyncio.run(run())
         self.assertEqual(mock_session.post.call_count, 2)
@@ -384,10 +454,9 @@ class TestRetryLogic(unittest.TestCase):
         def post_side_effect(*args, **kwargs):
             call_count[0] += 1
             if call_count[0] == 1:
-                return self._make_raising_cm(aiohttp.ClientResponseError(
-                    status=502, message="Bad Gateway",
-                    request_info=MagicMock(), history=()
-                ))
+                return self._make_raising_cm(
+                    aiohttp.ClientResponseError(status=502, message="Bad Gateway", request_info=MagicMock(), history=())
+                )
             return self._make_async_cm(resp_ok)
 
         mock_session = MagicMock()
@@ -396,7 +465,7 @@ class TestRetryLogic(unittest.TestCase):
         async def run():
             with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
                 with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
-                    return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+                    return await self._collect(_async_fetch_stream("http://test/url", {}, "sk-key", 10))
 
         result = asyncio.run(run())
         self.assertEqual(call_count[0], 2)
@@ -411,7 +480,8 @@ class TestRetryLogic(unittest.TestCase):
             with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
                 with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
                     try:
-                        await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+                        async for _ in _async_fetch_stream("http://test/url", {}, "sk-key", 10):
+                            pass
                         self.fail("Expected an exception")
                     except aiohttp.ClientError:
                         pass
@@ -420,25 +490,10 @@ class TestRetryLogic(unittest.TestCase):
         self.assertEqual(mock_session.post.call_count, 3)
 
 
-class TestRunAsync(unittest.TestCase):
-    def test_run_async_no_loop(self):
-        async def dummy():
-            return 42
-        result = _run_async(dummy())
-        self.assertEqual(result, 42)
-
-    def test_run_async_from_loop(self):
-        async def run():
-            async def dummy():
-                return 99
-            result = _run_async(dummy())
-            self.assertEqual(result, 99)
-        asyncio.run(run())
-
-
 class TestEncodeImageEdgeCases(unittest.TestCase):
     def test_encode_image_oversized_raises(self):
         import torch
+
         large = torch.zeros((1, MAX_IMAGE_DIMENSION + 1, 64, 3))
         with self.assertRaises(ValueError):
             encode_image_to_base64(large)
@@ -447,9 +502,7 @@ class TestEncodeImageEdgeCases(unittest.TestCase):
 class TestCreditsCache(unittest.TestCase):
     def test_fetch_openrouter_credits_cache_hit(self):
         mock_resp = MagicMock()
-        mock_resp.read.return_value = json.dumps({
-            "data": {"total_credits": 50.0, "total_usage": 10.0}
-        }).encode("utf-8")
+        mock_resp.read.return_value = json.dumps({"data": {"total_credits": 50.0, "total_usage": 10.0}}).encode("utf-8")
         mock_resp.__enter__.return_value = mock_resp
 
         with patch.object(urllib.request, "urlopen", return_value=mock_resp):

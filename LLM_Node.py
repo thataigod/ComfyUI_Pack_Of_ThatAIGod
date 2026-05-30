@@ -46,7 +46,7 @@ class LLM_Node:
     DESCRIPTION = "Sends prompts to OpenRouter or a local LLM server with streaming response, vision support, caching, and credit checking."
 
     _model_cache: list[str] | None = None
-    _response_cache: OrderedDict[Any, tuple[str, bool, str]] = OrderedDict()
+    _response_cache: OrderedDict[Any, tuple[str, bool, str, str]] = OrderedDict()
     _cache_max_size: int = CACHE_MAX_SIZE
 
     _config_builder: LlmConfigBuilder = LlmConfigBuilder()
@@ -117,8 +117,8 @@ class LLM_Node:
             },
         }
 
-    RETURN_TYPES: tuple[str, ...] = ("STRING", "BOOLEAN", "STRING")
-    RETURN_NAMES: tuple[str, ...] = ("Generated Text", "Status (Boolean)", "Information")
+    RETURN_TYPES: tuple[str, ...] = ("STRING", "BOOLEAN", "STRING", "STRING")
+    RETURN_NAMES: tuple[str, ...] = ("Generated Text", "Status (Boolean)", "Information", "Reasoning Content")
     FUNCTION: str = "generate"
     CATEGORY: str = "ThatAIGod/LLM"
 
@@ -164,21 +164,21 @@ class LLM_Node:
     def _stream_response(self, url: str, payload: dict[str, Any], api_key: str, timeout: int) -> Iterator[bytes]:
         return self._streamer.stream_response(url, payload, api_key, timeout)
 
-    def _parse_stream_chunk(self, line: bytes) -> str | None:
+    def _parse_stream_chunk(self, line: bytes) -> tuple[str | None, str, str]:
         return self._streamer.parse_stream_chunk(line)
 
-    def _cache_get(self, key: tuple[Any, ...]) -> tuple[str, bool, str] | None:
+    def _cache_get(self, key: tuple[Any, ...]) -> tuple[str, bool, str, str] | None:
         if key in self._response_cache:
             self._response_cache.move_to_end(key)
             return self._response_cache[key]
         return None
 
-    def _cache_put(self, key: tuple[Any, ...], value: tuple[str, bool, str]) -> None:
+    def _cache_put(self, key: tuple[Any, ...], value: tuple[str, bool, str, str]) -> None:
         self._response_cache[key] = value
         if len(self._response_cache) > LLM_Node._cache_max_size:
             self._response_cache.popitem(last=False)
 
-    def generate(self, **kwargs: Any) -> tuple[str, bool, str]:
+    def generate(self, **kwargs: Any) -> tuple[str, bool, str, str]:
         cfg: dict[str, Any] = self._build_config(kwargs)
         unique_id = cfg["unique_id"]
 
@@ -194,7 +194,7 @@ class LLM_Node:
             except Exception as e:
                 err = f"Error processing image: {str(e)}"
                 self.push_error_to_ui(unique_id, err)
-                return ("", False, err)
+                return ("", False, err, "")
 
         image_hash: str | None = (
             hashlib.sha256(b64_image.encode()).hexdigest() if b64_image else None
@@ -214,18 +214,19 @@ class LLM_Node:
         cached = self._cache_get(cache_key)
         if cached is not None:
             logger.info("Returning cached LLM response for seed %s", cfg["seed"])
-            cached_text, status, info = cached
+            cached_text, status, info, cached_reasoning = cached
             if unique_id:
+                combined = f"<think>{cached_reasoning}</think>{cached_text}" if cached_reasoning else cached_text
                 PromptServer.instance.send_sync(
                     "that_ai_god.stream",
-                    {"node": unique_id, "type": "update", "delta": cached_text},
+                    {"node": unique_id, "type": "update", "delta": combined},
                 )
-            return (cached_text, status, info)
+            return (cached_text, status, info, cached_reasoning)
 
         base_url, api_key, api_error = self._resolve_api_config(cfg)
         if api_error:
             self.push_error_to_ui(unique_id, api_error)
-            return ("", False, api_error)
+            return ("", False, api_error, "")
 
         messages = self._build_messages(cfg["system_prompt"], cfg["user_prompt"], b64_image)
         payload = self._build_payload(cfg, messages)
@@ -233,24 +234,29 @@ class LLM_Node:
         start_time: float = time.time()
 
         try:
-            full_content: list[str] = []
+            clean_parts: list[str] = []
+            reasoning_parts: list[str] = []
             for line in self._stream_response(
                 base_url, payload, api_key, cfg["timeout_seconds"]
             ):
-                content = self._parse_stream_chunk(line)
-                if content is None:
+                combined_text, reasoning_part, content_part = self._parse_stream_chunk(line)
+                if combined_text is None:
                     break
-                if content:
-                    full_content.append(content)
+                if combined_text:
                     if unique_id:
                         PromptServer.instance.send_sync(
                             "that_ai_god.stream",
-                            {"node": unique_id, "type": "update", "delta": content},
+                            {"node": unique_id, "type": "update", "delta": combined_text},
                         )
+                    if reasoning_part:
+                        reasoning_parts.append(reasoning_part)
+                    if content_part:
+                        clean_parts.append(content_part)
 
             end_time: float = time.time()
             latency: float = end_time - start_time
-            generated_content: str = "".join(full_content).strip()
+            generated_content: str = "".join(clean_parts).strip()
+            reasoning_content: str = "".join(reasoning_parts).strip()
 
             api_key_was: str = api_key
             info_parts: list[str] = [f"Latency: {latency:.2f}s"]
@@ -260,7 +266,7 @@ class LLM_Node:
                     info_parts.append(f"Credits: {credits}")
             final_info: str = " | ".join(info_parts)
 
-            result: tuple[str, bool, str] = (generated_content, True, final_info)
+            result: tuple[str, bool, str, str] = (generated_content, True, final_info, reasoning_content)
             self._cache_put(cache_key, result)
             return result
 
@@ -268,7 +274,7 @@ class LLM_Node:
             error_body: str = e.read().decode("utf-8")[:MAX_ERROR_BODY_LENGTH]
             err_msg = f"HTTP Error {e.code}: {e.reason}\nDetails: {error_body}"
             self.push_error_to_ui(unique_id, err_msg)
-            return ("", False, err_msg)
+            return ("", False, err_msg, "")
 
         except urllib.error.URLError as e:
             if isinstance(e.reason, socket.timeout):
@@ -276,12 +282,12 @@ class LLM_Node:
             else:
                 err = f"Connection Error: {e.reason}"
             self.push_error_to_ui(unique_id, err)
-            return ("", False, err)
+            return ("", False, err, "")
 
         except Exception as e:
             err = f"Unknown Error: {str(e)}"
             self.push_error_to_ui(unique_id, err)
-            return ("", False, err)
+            return ("", False, err, "")
 
 
 NODE_CLASS_MAPPINGS = {

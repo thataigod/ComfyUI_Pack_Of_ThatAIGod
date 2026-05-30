@@ -44,50 +44,60 @@ class TestLLMNode(unittest.TestCase):
 
     def test_validate_inputs_missing_api_key_returns_error(self):
         with patch.dict(os.environ, {}, clear=True):
-            result = LLM_Node.VALIDATE_INPUTS(**{
-                "Mode": "OpenRouter",
-                "API Key Env Var": "OPENROUTER_API_KEY",
-                "Temperature": 0.7,
-                "Max Tokens": 1024,
-            })
+            result = LLM_Node.VALIDATE_INPUTS(
+                **{
+                    "Mode": "OpenRouter",
+                    "API Key Env Var": "OPENROUTER_API_KEY",
+                    "Temperature": 0.7,
+                    "Max Tokens": 1024,
+                }
+            )
             self.assertIsInstance(result, str)
             self.assertIn("API key not found", result)
 
     def test_validate_inputs_with_api_key_returns_true(self):
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
-            result = LLM_Node.VALIDATE_INPUTS(**{
-                "Mode": "OpenRouter",
-                "API Key Env Var": "OPENROUTER_API_KEY",
-                "Temperature": 0.7,
-                "Max Tokens": 1024,
-            })
+            result = LLM_Node.VALIDATE_INPUTS(
+                **{
+                    "Mode": "OpenRouter",
+                    "API Key Env Var": "OPENROUTER_API_KEY",
+                    "Temperature": 0.7,
+                    "Max Tokens": 1024,
+                }
+            )
             self.assertTrue(result)
 
     def test_validate_inputs_local_mode_skips_api_key_check(self):
-        result = LLM_Node.VALIDATE_INPUTS(**{
-            "Mode": "Local",
-            "API Key Env Var": "OPENROUTER_API_KEY",
-            "Temperature": 0.7,
-            "Max Tokens": 1024,
-        })
+        result = LLM_Node.VALIDATE_INPUTS(
+            **{
+                "Mode": "Local",
+                "API Key Env Var": "OPENROUTER_API_KEY",
+                "Temperature": 0.7,
+                "Max Tokens": 1024,
+            }
+        )
         self.assertTrue(result)
 
     def test_validate_inputs_temperature_out_of_range(self):
-        result = LLM_Node.VALIDATE_INPUTS(**{
-            "Mode": "Local",
-            "API Key Env Var": "OPENROUTER_API_KEY",
-            "Temperature": 3.0,
-            "Max Tokens": 1024,
-        })
+        result = LLM_Node.VALIDATE_INPUTS(
+            **{
+                "Mode": "Local",
+                "API Key Env Var": "OPENROUTER_API_KEY",
+                "Temperature": 3.0,
+                "Max Tokens": 1024,
+            }
+        )
         self.assertIsInstance(result, str)
 
     def test_validate_inputs_max_tokens_too_low(self):
-        result = LLM_Node.VALIDATE_INPUTS(**{
-            "Mode": "Local",
-            "API Key Env Var": "OPENROUTER_API_KEY",
-            "Temperature": 0.7,
-            "Max Tokens": 0,
-        })
+        result = LLM_Node.VALIDATE_INPUTS(
+            **{
+                "Mode": "Local",
+                "API Key Env Var": "OPENROUTER_API_KEY",
+                "Temperature": 0.7,
+                "Max Tokens": 0,
+            }
+        )
         self.assertIsInstance(result, str)
 
     def test_get_initial_model_list_returns_cached(self):
@@ -105,9 +115,7 @@ class TestLLMNode(unittest.TestCase):
     def test_get_initial_model_list_fetches_and_caches(self):
         LLM_Node._model_cache = None
         mock_response = MagicMock()
-        mock_response.read.return_value = json.dumps({
-            "data": [{"id": "model1"}, {"id": "model2"}]
-        }).encode("utf-8")
+        mock_response.read.return_value = json.dumps({"data": [{"id": "model1"}, {"id": "model2"}]}).encode("utf-8")
         mock_response.__enter__.return_value = mock_response
         with patch.object(urllib.request, "urlopen", return_value=mock_response):
             result = LLM_Node.get_initial_model_list()
@@ -129,12 +137,14 @@ class TestLLMNode(unittest.TestCase):
             result = self.node.generate(**_make_kwargs({
                 "User Prompt": "", "System Prompt": ""
             }))
-            text, status, info = result
+            text, status, info, reasoning = result
             self.assertEqual(text, "")
             self.assertFalse(status)
+            self.assertEqual(reasoning, "")
 
     def test_encode_image_to_base64_returns_string(self):
         import torch
+
         dummy_image = torch.zeros((1, 64, 64, 3))
         result = self.node.encode_image_to_base64(dummy_image)
         self.assertIsInstance(result, str)
@@ -144,6 +154,7 @@ class TestLLMNode(unittest.TestCase):
         import base64
 
         import torch
+
         dummy_image = torch.ones((1, 64, 64, 3)) * 127
         result = self.node.encode_image_to_base64(dummy_image)
         decoded = base64.b64decode(result)
@@ -156,12 +167,14 @@ class TestLLMNode(unittest.TestCase):
 
     def test_fetch_openrouter_credits_returns_string_on_success(self):
         mock_response = MagicMock()
-        mock_response.read.return_value = json.dumps({
-            "data": {
-                "total_credits": 10.0,
-                "total_usage": 2.5,
+        mock_response.read.return_value = json.dumps(
+            {
+                "data": {
+                    "total_credits": 10.0,
+                    "total_usage": 2.5,
+                }
             }
-        }).encode("utf-8")
+        ).encode("utf-8")
         mock_response.__enter__.return_value = mock_response
         with patch.object(urllib.request, "urlopen", return_value=mock_response):
             result = self.node.fetch_openrouter_credits("test-key")
@@ -169,14 +182,12 @@ class TestLLMNode(unittest.TestCase):
 
     def test_response_cache_hit_returns_cached_value(self):
         cache_key = ("OpenRouter", "test-model", "", "hello", 0.7, 1024, 0, None)
-        LLM_Node._response_cache[cache_key] = ("cached reply", True, "cached info")
+        LLM_Node._response_cache[cache_key] = ("cached reply", True, "cached info", "")
 
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
             with patch("LLM_Node.PromptServer"):
-                result = self.node.generate(**_make_kwargs({
-                    "User Prompt": "hello", "System Prompt": ""
-                }))
-                text, status, info = result
+                result = self.node.generate(**_make_kwargs({"User Prompt": "hello", "System Prompt": ""}))
+                text, status, info, _ = result
                 self.assertEqual(text, "cached reply")
                 self.assertTrue(status)
 
@@ -186,11 +197,12 @@ class TestLLMNode(unittest.TestCase):
 
     def test_cache_get_moves_to_end_on_hit(self):
         from collections import OrderedDict
+
         LLM_Node._response_cache = OrderedDict()
         key1 = ("key1",)
         key2 = ("key2",)
-        LLM_Node._response_cache[key1] = ("val1", True, "")
-        LLM_Node._response_cache[key2] = ("val2", True, "")
+        LLM_Node._response_cache[key1] = ("val1", True, "", "")
+        LLM_Node._response_cache[key2] = ("val2", True, "", "")
 
         self.node._cache_get(key1)
         keys = list(LLM_Node._response_cache.keys())
@@ -201,10 +213,10 @@ class TestLLMNode(unittest.TestCase):
         LLM_Node._cache_max_size = 3
 
         for i in range(3):
-            self.node._cache_put((f"key{i}",), (f"val{i}", True, ""))
+            self.node._cache_put((f"key{i}",), (f"val{i}", True, "", ""))
         self.assertEqual(len(LLM_Node._response_cache), 3)
 
-        self.node._cache_put(("key3",), ("val3", True, ""))
+        self.node._cache_put(("key3",), ("val3", True, "", ""))
         self.assertEqual(len(LLM_Node._response_cache), 3)
         self.assertNotIn(("key0",), LLM_Node._response_cache)
 
@@ -213,56 +225,66 @@ class TestLLMNode(unittest.TestCase):
         LLM_Node._cache_max_size = 3
 
         for i in range(3):
-            self.node._cache_put((f"key{i}",), (f"val{i}", True, ""))
+            self.node._cache_put((f"key{i}",), (f"val{i}", True, "", ""))
         self.node._cache_get(("key0",))
-        self.node._cache_put(("key3",), ("val3", True, ""))
+        self.node._cache_put(("key3",), ("val3", True, "", ""))
         self.assertIn(("key0",), LLM_Node._response_cache)
         self.assertNotIn(("key1",), LLM_Node._response_cache)
 
     def test_generate_http_error_returns_error_tuple(self):
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
             with patch("LLM_Node.PromptServer"):
-                with patch.object(LLM_Node._streamer, "stream_response", side_effect=urllib.error.HTTPError(
-                    "http://example.com", 401, "Unauthorized", {}, None
-                )):
+                with patch.object(
+                    LLM_Node._streamer,
+                    "stream_response",
+                    side_effect=urllib.error.HTTPError("http://example.com", 401, "Unauthorized", {}, None),
+                ):
                     result = self.node.generate(**_make_kwargs())
-                    text, status, info = result
+                    text, status, info, _ = result
                     self.assertEqual(text, "")
                     self.assertFalse(status)
                     self.assertIn("HTTP Error", info)
 
     def test_local_url_rejects_non_localhost(self):
         with patch("LLM_Node.PromptServer"):
-            result = self.node.generate(**_make_kwargs({
-                "Mode": "Local",
-                "Local URL": "http://evil-server.com:1234/v1",
-            }))
-            text, status, info = result
+            result = self.node.generate(
+                **_make_kwargs(
+                    {
+                        "Mode": "Local",
+                        "Local URL": "http://evil-server.com:1234/v1",
+                    }
+                )
+            )
+            text, status, info, _ = result
             self.assertEqual(text, "")
             self.assertFalse(status)
             self.assertIn("must be localhost", info)
 
     def test_local_url_allows_ipv6_localhost(self):
         with patch("LLM_Node.PromptServer"):
-            result = self.node.generate(**_make_kwargs({
-                "Mode": "Local",
-                "Local URL": "http://[::1]:1234/v1",
-            }))
-            text, status, info = result
+            result = self.node.generate(
+                **_make_kwargs(
+                    {
+                        "Mode": "Local",
+                        "Local URL": "http://[::1]:1234/v1",
+                    }
+                )
+            )
+            text, status, info, _ = result
             self.assertNotIn("must be localhost", info)
 
     def test_generate_streaming_success(self):
         chunks = [
             b'data: {"choices":[{"delta":{"content":"Hello"}}]}\n',
             b'data: {"choices":[{"delta":{"content":" world"}}]}\n',
-            b'data: [DONE]\n',
+            b"data: [DONE]\n",
         ]
 
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
             with patch("LLM_Node.PromptServer"):
                 with patch.object(LLM_Node._streamer, "stream_response", return_value=iter(chunks)):
                     result = self.node.generate(**_make_kwargs())
-                    text, status, info = result
+                    text, status, info, _ = result
                     self.assertEqual(text, "Hello world")
                     self.assertTrue(status)
 
@@ -289,19 +311,27 @@ class TestLLMNode(unittest.TestCase):
         self.assertIn("chat/completions", url)
 
     def test_resolve_api_config_local_rejects_external(self):
-        cfg = self.node._build_config(_make_kwargs({
-            "Mode": "Local",
-            "Local URL": "http://evil.com:1234/v1",
-        }))
+        cfg = self.node._build_config(
+            _make_kwargs(
+                {
+                    "Mode": "Local",
+                    "Local URL": "http://evil.com:1234/v1",
+                }
+            )
+        )
         url, key, error = self.node._resolve_api_config(cfg)
         self.assertIsNotNone(error)
         self.assertIn("must be localhost", error)
 
     def test_resolve_api_config_local_appends_chat_completions(self):
-        cfg = self.node._build_config(_make_kwargs({
-            "Mode": "Local",
-            "Local URL": "http://localhost:1234/v1",
-        }))
+        cfg = self.node._build_config(
+            _make_kwargs(
+                {
+                    "Mode": "Local",
+                    "Local URL": "http://localhost:1234/v1",
+                }
+            )
+        )
         url, key, error = self.node._resolve_api_config(cfg)
         self.assertIsNone(error)
         self.assertTrue(url.endswith("/chat/completions"))
@@ -330,28 +360,53 @@ class TestLLMNode(unittest.TestCase):
 
     def test_parse_stream_chunk_returns_content(self):
         line = b'data: {"choices":[{"delta":{"content":"hello"}}]}\n'
-        result = self.node._parse_stream_chunk(line)
-        self.assertEqual(result, "hello")
+        combined, reasoning, content = self.node._parse_stream_chunk(line)
+        self.assertEqual(combined, "hello")
+        self.assertEqual(reasoning, "")
+        self.assertEqual(content, "hello")
 
     def test_parse_stream_chunk_done_returns_none(self):
         line = b"data: [DONE]\n"
-        result = self.node._parse_stream_chunk(line)
-        self.assertIsNone(result)
+        combined, reasoning, content = self.node._parse_stream_chunk(line)
+        self.assertIsNone(combined)
 
     def test_parse_stream_chunk_empty_returns_empty(self):
         line = b"data: {\"choices\":[{\"delta\":{}}]}\n"
-        result = self.node._parse_stream_chunk(line)
-        self.assertEqual(result, "")
+        combined, reasoning, content = self.node._parse_stream_chunk(line)
+        self.assertEqual(combined, "")
+        self.assertEqual(reasoning, "")
+        self.assertEqual(content, "")
 
     def test_parse_stream_chunk_malformed_json_returns_empty(self):
         line = b"data: not-json\n"
-        result = self.node._parse_stream_chunk(line)
-        self.assertEqual(result, "")
+        combined, reasoning, content = self.node._parse_stream_chunk(line)
+        self.assertEqual(combined, "")
 
     def test_parse_stream_chunk_non_data_line_returns_empty(self):
         line = b"ping: something\n"
-        result = self.node._parse_stream_chunk(line)
-        self.assertEqual(result, "")
+        combined, reasoning, content = self.node._parse_stream_chunk(line)
+        self.assertEqual(combined, "")
+
+    def test_parse_chunk_reasoning_only(self):
+        line = b'data: {"choices":[{"delta":{"reasoning":"thinking step"}}]}\n'
+        combined, reasoning, content = self.node._parse_stream_chunk(line)
+        self.assertEqual(combined, "thinking step")
+        self.assertEqual(reasoning, "thinking step")
+        self.assertEqual(content, "")
+
+    def test_parse_chunk_reasoning_and_content(self):
+        line = b'data: {"choices":[{"delta":{"reasoning":"deep think","content":"answer"}}]}\n'
+        combined, reasoning, content = self.node._parse_stream_chunk(line)
+        self.assertEqual(combined, "deep thinkanswer")
+        self.assertEqual(reasoning, "deep think")
+        self.assertEqual(content, "answer")
+
+    def test_parse_chunk_reasoning_content_field(self):
+        line = b'data: {"choices":[{"delta":{"reasoning_content":"alt reason"}}]}\n'
+        combined, reasoning, content = self.node._parse_stream_chunk(line)
+        self.assertEqual(combined, "alt reason")
+        self.assertEqual(reasoning, "alt reason")
+        self.assertEqual(content, "")
 
     def test_fetch_openrouter_credits_no_data_key_returns_none(self):
         mock_response = MagicMock()
@@ -371,19 +426,22 @@ class TestLLMNode(unittest.TestCase):
 
     def test_generate_with_unique_id_and_cached_streams_to_ui(self):
         cache_key = ("OpenRouter", "test-model", "", "hello", 0.7, 1024, 0, None)
-        LLM_Node._response_cache[cache_key] = ("cached reply", True, "cached info")
+        LLM_Node._response_cache[cache_key] = ("cached reply", True, "cached info", "")
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
             with patch("LLM_Node.PromptServer.instance.send_sync") as mock_send:
-                result = self.node.generate(**_make_kwargs({
-                    "User Prompt": "hello", "System Prompt": "",
-                    "unique_id": "uid_42",
-                }))
-                text, status, info = result
+                result = self.node.generate(
+                    **_make_kwargs(
+                        {
+                            "User Prompt": "hello",
+                            "System Prompt": "",
+                            "unique_id": "uid_42",
+                        }
+                    )
+                )
+                text, status, info, _ = result
                 self.assertEqual(text, "cached reply")
                 self.assertTrue(status)
-                mock_send.assert_any_call(
-                    "that_ai_god.stream", {"node": "uid_42", "type": "start"}
-                )
+                mock_send.assert_any_call("that_ai_god.stream", {"node": "uid_42", "type": "start"})
                 mock_send.assert_any_call(
                     "that_ai_god.stream",
                     {"node": "uid_42", "type": "update", "delta": "cached reply"},
@@ -394,11 +452,17 @@ class TestLLMNode(unittest.TestCase):
             with patch("LLM_Node.PromptServer"):
                 with patch.object(self.node, "encode_image_to_base64", side_effect=ValueError("bad image")):
                     import torch
+
                     bad_img = torch.zeros((1, 64, 64, 3))
-                    result = self.node.generate(**_make_kwargs({
-                        "Image(s)": bad_img, "unique_id": "uid_42",
-                    }))
-                    text, status, info = result
+                    result = self.node.generate(
+                        **_make_kwargs(
+                            {
+                                "Image(s)": bad_img,
+                                "unique_id": "uid_42",
+                            }
+                        )
+                    )
+                    text, status, info, _ = result
                     self.assertEqual(text, "")
                     self.assertFalse(status)
                     self.assertIn("bad image", info)
@@ -406,22 +470,24 @@ class TestLLMNode(unittest.TestCase):
     def test_generate_with_unique_id_streaming_shows_credits(self):
         chunks = [
             b'data: {"choices":[{"delta":{"content":"Hello"}}]}\n',
-            b'data: [DONE]\n',
+            b"data: [DONE]\n",
         ]
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
             with patch("LLM_Node.PromptServer.instance.send_sync") as mock_send:
                 with patch.object(LLM_Node._streamer, "stream_response", return_value=iter(chunks)):
                     with patch.object(self.node, "fetch_openrouter_credits", return_value="$5.00"):
-                        result = self.node.generate(**_make_kwargs({
-                            "unique_id": "uid_99",
-                        }))
-                        text, status, info = result
+                        result = self.node.generate(
+                            **_make_kwargs(
+                                {
+                                    "unique_id": "uid_99",
+                                }
+                            )
+                        )
+                        text, status, info, _ = result
                         self.assertEqual(text, "Hello")
                         self.assertTrue(status)
                         self.assertIn("Credits: $5.00", info)
-                        mock_send.assert_any_call(
-                            "that_ai_god.stream", {"node": "uid_99", "type": "start"}
-                        )
+                        mock_send.assert_any_call("that_ai_god.stream", {"node": "uid_99", "type": "start"})
                         mock_send.assert_any_call(
                             "that_ai_god.stream",
                             {"node": "uid_99", "type": "update", "delta": "Hello"},
@@ -432,7 +498,7 @@ class TestLLMNode(unittest.TestCase):
             with patch("LLM_Node.PromptServer"):
                 with patch.object(LLM_Node._streamer, "stream_response", side_effect=RuntimeError("something broke")):
                     result = self.node.generate(**_make_kwargs())
-                    text, status, info = result
+                    text, status, info, _ = result
                     self.assertEqual(text, "")
                     self.assertFalse(status)
                     self.assertIn("something broke", info)
@@ -449,18 +515,43 @@ class TestLLMNode(unittest.TestCase):
 
     def test_mappings_exported(self):
         from LLM_Node import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
         self.assertIn("LLM_Node", NODE_CLASS_MAPPINGS)
         self.assertIn("LLM_Node", NODE_DISPLAY_NAME_MAPPINGS)
 
     def test_generate_timeout_returns_error_tuple(self):
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
             with patch("LLM_Node.PromptServer"):
-                with patch.object(LLM_Node._streamer, "stream_response", side_effect=urllib.error.URLError(TimeoutError())):
+                with patch.object(
+                    LLM_Node._streamer,
+                    "stream_response",
+                    side_effect=urllib.error.URLError(TimeoutError()),
+                ):
                     result = self.node.generate(**_make_kwargs())
-                    text, status, info = result
+                    text, status, info, _ = result
                     self.assertEqual(text, "")
                     self.assertFalse(status)
                     self.assertIn("timed out", info.lower())
+
+    def test_generate_separates_reasoning_from_content(self):
+        chunks = [
+            b'data: {"choices":[{"delta":{"reasoning":"thinking step 1"}}]}\n',
+            b'data: {"choices":[{"delta":{"reasoning":"thinking step 2"}}]}\n',
+            b'data: {"choices":[{"delta":{"content":"final answer"}}]}\n',
+            b"data: [DONE]\n",
+        ]
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
+            with patch("LLM_Node.PromptServer"):
+                with patch.object(
+                    LLM_Node._streamer,
+                    "stream_response",
+                    return_value=iter(chunks),
+                ):
+                    result = self.node.generate(**_make_kwargs())
+                    text, status, info, reasoning = result
+                    self.assertEqual(text, "final answer")
+                    self.assertTrue(status)
+                    self.assertEqual(reasoning, "thinking step 1thinking step 2")
 
 
 if __name__ == "__main__":
