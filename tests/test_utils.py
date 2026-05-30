@@ -4,7 +4,7 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from utils import (
+from _utils import (
     clamp_dimension,
     compute_aspect_ratio_dimensions,
     get_logger,

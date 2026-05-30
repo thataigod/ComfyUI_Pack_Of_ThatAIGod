@@ -1,7 +1,7 @@
 import random
 from typing import Any
 
-from utils import DEFAULT_MAX_DIMENSION, DEFAULT_MIN_DIMENSION, clamp_dimension, compute_aspect_ratio_dimensions
+from _utils import DEFAULT_MAX_DIMENSION, DEFAULT_MIN_DIMENSION, clamp_dimension, compute_aspect_ratio_dimensions
 
 MIN_SCALE_FACTOR: float = 0.1
 MAX_SCALE_FACTOR: float = 8.0

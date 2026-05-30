@@ -5,7 +5,7 @@ import types
 import unittest
 from unittest.mock import patch
 
-import utils
+import _utils
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -27,7 +27,7 @@ class TestInit(unittest.TestCase):
         if '__init__' in sys.modules:
             del sys.modules['__init__']
 
-        with patch.object(utils, "safe_import") as mock_safe:
+        with patch.object(_utils, "safe_import") as mock_safe:
             def side_effect(name):
                 if name == "LLM_Node":
                     return None

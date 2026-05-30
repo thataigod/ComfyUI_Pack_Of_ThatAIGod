@@ -1,7 +1,7 @@
 import logging
 from typing import Any
 
-from utils import safe_import
+from _utils import safe_import
 
 logger: logging.Logger = logging.getLogger("ThatAIGod")
 
