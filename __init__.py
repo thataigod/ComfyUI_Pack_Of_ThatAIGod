@@ -1,7 +1,15 @@
 import logging
+import os
+import sys
 from typing import Any
 
-from _utils import safe_import
+# ComfyUI uses importlib with filesystem-path module names, so the
+# package directory is NOT on sys.path by default.  Insert it so that
+# sibling imports (from _utils, importlib.import_module) can resolve.
+_node_dir: str = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _node_dir)
+
+from _utils import safe_import  # noqa: E402
 
 logger: logging.Logger = logging.getLogger("ThatAIGod")
 
