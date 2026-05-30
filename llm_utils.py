@@ -187,6 +187,7 @@ async def _async_fetch_stream(
                 await asyncio.sleep(wait)
                 continue
             raise
+    return []  # pragma: no cover
 
 
 _EXECUTOR: concurrent.futures.ThreadPoolExecutor = concurrent.futures.ThreadPoolExecutor(max_workers=4)
