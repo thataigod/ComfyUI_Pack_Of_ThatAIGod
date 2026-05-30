@@ -27,9 +27,7 @@ def round_down_to_multiple(value: int, multiple: int = DEFAULT_MULTIPLE) -> int:
     return (value // multiple) * multiple
 
 
-def compute_aspect_ratio_dimensions(
-    max_side: int, ratio: float
-) -> tuple[int, int]:
+def compute_aspect_ratio_dimensions(max_side: int, ratio: float) -> tuple[int, int]:
     """Compute width and height from a max side length and aspect ratio.
 
     Args:

@@ -61,9 +61,7 @@ class LLM_Node:
 
         try:
             url: str = "https://openrouter.ai/api/v1/models"
-            req: urllib.request.Request = urllib.request.Request(
-                url, headers={"User-Agent": "ThatAIGod-ComfyUI-Node/1.0"}
-            )
+            req: urllib.request.Request = urllib.request.Request(url, headers={"User-Agent": "ThatAIGod-ComfyUI-Node/1.0"})
             with urllib.request.urlopen(req, timeout=MODEL_FETCH_TIMEOUT) as response:
                 data: dict[str, Any] = json.loads(response.read().decode("utf-8"))
                 if "data" in data and isinstance(data["data"], list):
@@ -183,9 +181,7 @@ class LLM_Node:
         unique_id = cfg["unique_id"]
 
         if unique_id:
-            PromptServer.instance.send_sync(
-                "that_ai_god.stream", {"node": unique_id, "type": "start"}
-            )
+            PromptServer.instance.send_sync("that_ai_god.stream", {"node": unique_id, "type": "start"})
 
         b64_image: str | None = None
         if cfg["vision_image"] is not None:
@@ -196,9 +192,7 @@ class LLM_Node:
                 self.push_error_to_ui(unique_id, err)
                 return ("", False, err, "")
 
-        image_hash: str | None = (
-            hashlib.sha256(b64_image.encode()).hexdigest() if b64_image else None
-        )
+        image_hash: str | None = hashlib.sha256(b64_image.encode()).hexdigest() if b64_image else None
         # Cache key includes all inputs + image hash so identical prompts with different images don't collide
         cache_key: tuple[Any, ...] = (
             cfg["mode"],
@@ -236,9 +230,7 @@ class LLM_Node:
         try:
             clean_parts: list[str] = []
             reasoning_parts: list[str] = []
-            for line in self._stream_response(
-                base_url, payload, api_key, cfg["timeout_seconds"]
-            ):
+            for line in self._stream_response(base_url, payload, api_key, cfg["timeout_seconds"]):
                 combined_text, reasoning_part, content_part = self._parse_stream_chunk(line)
                 if combined_text is None:
                     break

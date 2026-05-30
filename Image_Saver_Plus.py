@@ -129,9 +129,7 @@ class ImageSaverPlus:
         prompt: dict[str, Any] | None = None,
         extra_pnginfo: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        filename_prefix = _DATE_PATTERN.sub(
-            lambda m: _resolve_date_format(m.group(1)), filename_prefix
-        )
+        filename_prefix = _DATE_PATTERN.sub(lambda m: _resolve_date_format(m.group(1)), filename_prefix)
         full_output_folder: str
         filename: str
         counter: int
@@ -157,27 +155,30 @@ class ImageSaverPlus:
 
             file_path: str = os.path.join(full_output_folder, file)
 
-            if file_format == "png":
-                metadata: PngInfo | None = None
-                if prompt is not None:
-                    metadata = PngInfo()
-                    metadata.add_text("prompt", json.dumps(prompt))
-                if extra_pnginfo is not None:
-                    if metadata is None:
+            try:
+                if file_format == "png":
+                    metadata: PngInfo | None = None
+                    if prompt is not None:
                         metadata = PngInfo()
-                    for k, v in extra_pnginfo.items():
-                        metadata.add_text(k, json.dumps(v))
-                img.save(file_path, pnginfo=metadata, compress_level=compress_level)
-            elif file_format == "jpeg":
-                img.save(file_path, quality=quality)
-            elif file_format == "webp":
-                img.save(file_path, quality=quality)
+                        metadata.add_text("prompt", json.dumps(prompt))
+                    if extra_pnginfo is not None:
+                        if metadata is None:
+                            metadata = PngInfo()
+                        for k, v in extra_pnginfo.items():
+                            metadata.add_text(k, json.dumps(v))
+                    img.save(file_path, pnginfo=metadata, compress_level=compress_level)
+                elif file_format == "jpeg":
+                    img.save(file_path, quality=quality)
+                elif file_format == "webp":
+                    img.save(file_path, quality=quality)
 
-            if save_text:
-                text_file: str = f"{base_file}.txt"
-                text_path: str = os.path.join(full_output_folder, text_file)
-                with open(text_path, "w", encoding="utf-8") as f:
-                    f.write(save_text)
+                if save_text:
+                    text_file: str = f"{base_file}.txt"
+                    text_path: str = os.path.join(full_output_folder, text_file)
+                    with open(text_path, "w", encoding="utf-8") as f:
+                        f.write(save_text)
+            except OSError as e:
+                logger.error("Failed to save %s: %s", file_path, e)
 
             results.append({"filename": file, "subfolder": subfolder, "type": self.type})
             counter += 1

@@ -24,7 +24,7 @@ class WildcardReader:
     _file_index_cache: dict[str, dict[str, list[str]]] = {}
     _file_mtimes: dict[str, dict[str, float]] = {}
     _file_content_cache: dict[str, tuple[float, list[str]]] = {}
-    _deck_cache: dict[str, list[str]] = {}
+    _deck_cache: dict[str, tuple[float, list[str]]] = {}
 
     @classmethod
     def INPUT_TYPES(cls) -> dict[str, Any]:
@@ -185,7 +185,12 @@ class WildcardReader:
 
         if mode == "Random (No Repeat)":
             deck = WildcardReader._deck_cache
-            if final_path not in deck or len(deck[final_path]) == 0:
+            try:
+                current_mtime = os.path.getmtime(final_path)
+            except OSError:
+                return f"__{wildcard_tag}__"
+            cached = deck.get(final_path)
+            if cached is None or cached[0] != current_mtime or len(cached[1]) == 0:
                 lines = self._get_file_lines(final_path)
                 if lines is None:
                     return f"__{wildcard_tag}__"
@@ -193,8 +198,9 @@ class WildcardReader:
                     return ""
                 shuffled = list(lines)
                 rng.shuffle(shuffled)
-                deck[final_path] = shuffled
-            return deck[final_path].pop(0)
+                deck[final_path] = (current_mtime, shuffled)
+                cached = deck[final_path]
+            return cached[1].pop(0)
         else:
             lines = self._get_file_lines(final_path)
             if lines is None:

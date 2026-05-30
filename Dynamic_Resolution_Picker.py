@@ -56,7 +56,9 @@ class DynamicResolution:
     optional scaling, and outputs keywords for prompt injection.
     """
 
-    DESCRIPTION = "Calculates width and height from a max side pixel value and aspect ratio, with optional random selection and scaling."
+    DESCRIPTION = (
+        "Calculates width and height from a max side pixel value and aspect ratio, with optional random selection and scaling."
+    )
 
     RETURN_TYPES: tuple[str, ...] = (
         "INT",
@@ -105,7 +107,12 @@ class DynamicResolution:
             "required": {
                 "Max Side Pixels": (
                     "INT",
-                    {"default": DEFAULT_MAX_SIDE_PIXELS, "min": DEFAULT_MIN_DIMENSION, "max": DEFAULT_MAX_DIMENSION, "step": 8},
+                    {
+                        "default": DEFAULT_MAX_SIDE_PIXELS,
+                        "min": DEFAULT_MIN_DIMENSION,
+                        "max": DEFAULT_MAX_DIMENSION,
+                        "step": 8,
+                    },
                 ),
                 "Aspect Ratio": (ratio_options, {"default": "Square 1:1"}),
                 "Scale Factor": (
@@ -116,9 +123,7 @@ class DynamicResolution:
             },
         }
 
-    def _resolve_ratio(
-        self, aspect_ratio_label: str, rng: random.Random
-    ) -> tuple[str, float]:
+    def _resolve_ratio(self, aspect_ratio_label: str, rng: random.Random) -> tuple[str, float]:
         if "Random" in aspect_ratio_label:
             if aspect_ratio_label == "Random (Portrait)":
                 return rng.choice(_SORTED_PORTRAIT_ITEMS)

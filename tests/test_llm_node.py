@@ -134,9 +134,7 @@ class TestLLMNode(unittest.TestCase):
     @patch("LLM_Node.PromptServer")
     def test_generate_empty_prompt_returns_error(self, mock_ps):
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
-            result = self.node.generate(**_make_kwargs({
-                "User Prompt": "", "System Prompt": ""
-            }))
+            result = self.node.generate(**_make_kwargs({"User Prompt": "", "System Prompt": ""}))
             text, status, info, reasoning = result
             self.assertEqual(text, "")
             self.assertFalse(status)
@@ -371,7 +369,7 @@ class TestLLMNode(unittest.TestCase):
         self.assertIsNone(combined)
 
     def test_parse_stream_chunk_empty_returns_empty(self):
-        line = b"data: {\"choices\":[{\"delta\":{}}]}\n"
+        line = b'data: {"choices":[{"delta":{}}]}\n'
         combined, reasoning, content = self.node._parse_stream_chunk(line)
         self.assertEqual(combined, "")
         self.assertEqual(reasoning, "")

@@ -10,7 +10,12 @@ from PIL import Image, ImageOps
 logger = logging.getLogger("ThatAIGod")
 
 VALID_IMAGE_EXTENSIONS: tuple[str, ...] = (
-    ".png", ".jpg", ".jpeg", ".webp", ".bmp", ".tiff",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".webp",
+    ".bmp",
+    ".tiff",
 )
 
 
@@ -49,10 +54,7 @@ class SequentialImageLoader:
     @staticmethod
     def natural_sort_key(s: str) -> list[tuple[int, int | str]]:
         # Split on digit boundaries; sort numeric parts as ints, text as lowercase
-        return [
-            (0, int(text)) if text.isdigit() else (1, text.lower())
-            for text in re.split(r"(\d+)", s)
-        ]
+        return [(0, int(text)) if text.isdigit() else (1, text.lower()) for text in re.split(r"(\d+)", s)]
 
     def load_next(self, **kwargs: Any) -> tuple[torch.Tensor, str, str]:
         directory_path: str = kwargs.get("Directory Path", "")
@@ -63,11 +65,7 @@ class SequentialImageLoader:
             placeholder = torch.zeros((1, 64, 64, 3))
             return (placeholder, "ERROR", f"Directory not found: {directory_path}")
 
-        files: list[str] = [
-            f
-            for f in os.listdir(directory_path)
-            if f.lower().endswith(VALID_IMAGE_EXTENSIONS)
-        ]
+        files: list[str] = [f for f in os.listdir(directory_path) if f.lower().endswith(VALID_IMAGE_EXTENSIONS)]
         files.sort(key=self.natural_sort_key)
 
         total_files: int = len(files)
@@ -85,16 +83,21 @@ class SequentialImageLoader:
         logger.info("Processing %s: %s", stats, current_filename)
 
         img_path: str = os.path.join(directory_path, current_filename)
-        i: Image.Image = Image.open(img_path)
-        i = ImageOps.exif_transpose(i)
-        i.info.pop("exif", None)
-        i.info.pop("dpi", None)
+        try:
+            i: Image.Image = Image.open(img_path)
+            i = ImageOps.exif_transpose(i)
+            i.info.pop("exif", None)
+            i.info.pop("dpi", None)
+        except (OSError, ValueError) as e:
+            logger.error("Failed to open image %s: %s", img_path, e)
+            placeholder = torch.zeros((1, 64, 64, 3))
+            return (placeholder, "ERROR", f"Failed to load image: {current_filename}")
 
         if i.mode != "RGB":
             i = i.convert("RGB")
 
         image: np.ndarray = np.array(i).astype(np.float32) / 255.0
-        image_tensor: torch.Tensor = torch.from_numpy(image)[None,]
+        image_tensor: torch.Tensor = torch.from_numpy(image)[None]
 
         return (image_tensor, filename_no_ext, stats)
 
