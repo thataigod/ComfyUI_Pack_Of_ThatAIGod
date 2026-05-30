@@ -16,9 +16,12 @@ import urllib.error
 import aiohttp
 
 from llm_utils import (
+    MAX_IMAGE_DIMENSION,
     LlmConfigBuilder,
     LlmStreamer,
     _async_fetch_stream,
+    _close_loop,
+    _get_loop,
     _run_async_stream,
     encode_image_to_base64,
     fetch_openrouter_credits,
@@ -371,6 +374,83 @@ class TestRetryLogic(unittest.TestCase):
 
         asyncio.run(run())
         self.assertEqual(mock_session.post.call_count, 2)
+
+    def test_retry_on_client_response_error_then_success(self):
+        call_count = [0]
+        resp_ok = MagicMock()
+        resp_ok.status = 200
+        resp_ok.raise_for_status = MagicMock()
+        resp_ok.content = AsyncIter([b"data\n"])
+
+        def post_side_effect(*args, **kwargs):
+            call_count[0] += 1
+            if call_count[0] == 1:
+                return self._make_raising_cm(aiohttp.ClientResponseError(
+                    status=502, message="Bad Gateway",
+                    request_info=MagicMock(), history=()
+                ))
+            return self._make_async_cm(resp_ok)
+
+        mock_session = MagicMock()
+        mock_session.post = MagicMock(side_effect=post_side_effect)
+
+        async def run():
+            with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
+                with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
+                    return await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+
+        result = asyncio.run(run())
+        self.assertEqual(call_count[0], 2)
+        self.assertEqual(result, [b"data\n"])
+
+    def test_retry_on_client_error_exhausted(self):
+        mock_session = MagicMock()
+        exc = aiohttp.ClientError("connection failed repeatedly")
+        mock_session.post.return_value = self._make_raising_cm(exc)
+
+        async def run():
+            with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
+                with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
+                    try:
+                        await _async_fetch_stream("http://test/url", {}, "sk-key", 10)
+                        self.fail("Expected an exception")
+                    except aiohttp.ClientError:
+                        pass
+
+        asyncio.run(run())
+        self.assertEqual(mock_session.post.call_count, 3)
+
+
+class TestEventLoop(unittest.TestCase):
+    def test_close_loop(self):
+        loop = _get_loop()
+        self.assertIsNotNone(loop)
+        _close_loop()
+        self.assertTrue(loop.is_closed())
+
+
+class TestEncodeImageEdgeCases(unittest.TestCase):
+    def test_encode_image_oversized_raises(self):
+        import torch
+        large = torch.zeros((1, MAX_IMAGE_DIMENSION + 1, 64, 3))
+        with self.assertRaises(ValueError):
+            encode_image_to_base64(large)
+
+
+class TestCreditsCache(unittest.TestCase):
+    def test_fetch_openrouter_credits_cache_hit(self):
+        mock_resp = MagicMock()
+        mock_resp.read.return_value = json.dumps({
+            "data": {"total_credits": 50.0, "total_usage": 10.0}
+        }).encode("utf-8")
+        mock_resp.__enter__.return_value = mock_resp
+
+        with patch.object(urllib.request, "urlopen", return_value=mock_resp):
+            first = fetch_openrouter_credits("cache-test-key-2")
+            self.assertEqual(first, "$40.00")
+
+        second = fetch_openrouter_credits("cache-test-key-2")
+        self.assertEqual(second, "$40.00")
 
 
 class AsyncMock:

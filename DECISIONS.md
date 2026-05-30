@@ -100,11 +100,11 @@ This document records significant architectural and tooling decisions to prevent
 
 **Date:** 2026-05-30  
 **Status:** Accepted  
-**Context:** Most source modules achieve 100% coverage. `llm_utils.py` has known gaps (91%) in retry-fallback paths, event-loop cleanup, image-dimension validation, and credits-cache-hit branch — these require network mocking or `atexit` interaction and are hard to unit-test.
+**Context:** All 10 source (production) modules achieve 100% line coverage. The only uncovered lines are in test files (`if __name__ == "__main__"` guards), which is standard and expected.
 
-**Decision:** Maintain 100% coverage target for all source modules where practical. Known gaps in `llm_utils.py` are accepted as technical debt.
+**Decision:** Every source module must maintain 100% line coverage. Any new production code must include corresponding tests.
 
-**Enforcement:** `pytest --cov-fail-under=100` runs in CI, but the global total (source + test files) is 99% due to uncovered `if __name__ == "__main__"` guards in test files and the `llm_utils.py` gaps. This is visible in CI output and accepted.
+**Enforcement:** `pytest --cov-fail-under=100` runs in CI. The global total includes test files, so a 99% result is acceptable as long as all source modules show 100%.
 
 ---
 

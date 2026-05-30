@@ -369,6 +369,30 @@ class TestWildcardReader(unittest.TestCase):
     def test_content_cache_cleared_in_setup(self):
         self.assertNotIn("anything", WildcardReader._file_content_cache)
 
+    def test_content_cache_eviction(self):
+        original_size = Wildcard_Reader._MAX_CONTENT_CACHE_SIZE
+        Wildcard_Reader._MAX_CONTENT_CACHE_SIZE = 2
+        try:
+            self._create_wildcard_file("a.txt", ["a"])
+            self._create_wildcard_file("b.txt", ["b"])
+            self._create_wildcard_file("c.txt", ["c"])
+
+            path_a = os.path.join(self.wildcards_dir, "a.txt")
+            path_b = os.path.join(self.wildcards_dir, "b.txt")
+            path_c = os.path.join(self.wildcards_dir, "c.txt")
+
+            self.node._get_file_lines(path_a)
+            self.node._get_file_lines(path_b)
+            self.assertIn(path_a, WildcardReader._file_content_cache)
+            self.assertIn(path_b, WildcardReader._file_content_cache)
+
+            self.node._get_file_lines(path_c)
+            self.assertNotIn(path_a, WildcardReader._file_content_cache)
+            self.assertIn(path_b, WildcardReader._file_content_cache)
+            self.assertIn(path_c, WildcardReader._file_content_cache)
+        finally:
+            Wildcard_Reader._MAX_CONTENT_CACHE_SIZE = original_size
+
 
 if __name__ == "__main__":
     unittest.main()

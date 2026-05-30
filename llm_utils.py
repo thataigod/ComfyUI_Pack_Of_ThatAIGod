@@ -157,7 +157,6 @@ async def _async_fetch_stream(
     url: str, payload: dict[str, Any], api_key: str, timeout: int
 ) -> list[bytes]:
     headers: dict[str, str] = {**_STREAM_HEADERS, "Authorization": f"Bearer {api_key}"}
-    last_error: Exception | None = None
     for attempt in range(MAX_RETRIES):
         try:
             async with aiohttp.ClientSession() as session:
@@ -179,7 +178,6 @@ async def _async_fetch_stream(
                 wait = RETRY_BACKOFF_BASE * (2 ** attempt)
                 logger.warning("Retryable error %d, retrying in %.1fs (attempt %d/%d)", e.status, wait, attempt + 1, MAX_RETRIES)
                 await asyncio.sleep(wait)
-                last_error = e
                 continue
             raise
         except (aiohttp.ClientError, TimeoutError, asyncio.TimeoutError) as e:
@@ -187,12 +185,8 @@ async def _async_fetch_stream(
                 wait = RETRY_BACKOFF_BASE * (2 ** attempt)
                 logger.warning("Network error, retrying in %.1fs (attempt %d/%d): %s", wait, attempt + 1, MAX_RETRIES, e)
                 await asyncio.sleep(wait)
-                last_error = e
                 continue
             raise
-    if last_error is not None:
-        raise last_error
-    return []
 
 
 _LOOP: asyncio.AbstractEventLoop | None = None
