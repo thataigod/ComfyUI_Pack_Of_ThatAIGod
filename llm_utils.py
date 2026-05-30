@@ -1,4 +1,5 @@
 import asyncio
+import atexit
 import base64
 import http.client
 import io
@@ -21,10 +22,12 @@ logger = logging.getLogger("ThatAIGod")
 
 CACHE_MAX_SIZE: int = 10
 CREDITS_FETCH_TIMEOUT: int = 3
+CREDITS_CACHE_TTL: int = 60
 MAX_ERROR_BODY_LENGTH: int = 500
 MAX_RETRIES: int = 3
 RETRY_BACKOFF_BASE: float = 1.0
 RETRYABLE_STATUS_CODES: frozenset[int] = frozenset({429, 502, 503})
+MAX_IMAGE_DIMENSION: int = 8192
 
 DEFAULT_MODELS: list[str] = [
     "mistralai/devstral-2512:free",
@@ -92,7 +95,7 @@ class LlmConfigBuilder:
                         {"type": "text", "text": user_prompt},
                         {
                             "type": "image_url",
-                            "image_url": {"url": f"data:image/jpeg;base64,{b64_image}"},
+                            "image_url": {"url": f"data:image/png;base64,{b64_image}"},
                         },
                     ],
                 }
@@ -200,7 +203,15 @@ def _get_loop() -> asyncio.AbstractEventLoop:
     if _LOOP is None or _LOOP.is_closed():
         _LOOP = asyncio.new_event_loop()
         asyncio.set_event_loop(_LOOP)
+        atexit.register(_close_loop)
     return _LOOP
+
+
+def _close_loop() -> None:
+    global _LOOP
+    if _LOOP is not None and not _LOOP.is_closed():
+        _LOOP.close()
+        _LOOP = None
 
 
 def _run_async_stream(
@@ -222,26 +233,42 @@ def _run_async_stream(
 
 
 def encode_image_to_base64(image_tensor: torch.Tensor) -> str:
-    """Encode a ComfyUI image tensor to a base64 JPEG string.
+    """Encode a ComfyUI image tensor to a base64 PNG string.
 
     Args:
         image_tensor: A (1, H, W, 3) float32 tensor with values in [0, 1].
 
     Returns:
-        Base64-encoded JPEG string.
+        Base64-encoded PNG string.
     """
     arr: np.ndarray = (255.0 * image_tensor[0].cpu().numpy()).astype("uint8")
+    if arr.shape[0] > MAX_IMAGE_DIMENSION or arr.shape[1] > MAX_IMAGE_DIMENSION:
+        raise ValueError(
+            f"Image dimensions {arr.shape[1]}x{arr.shape[0]} exceed maximum {MAX_IMAGE_DIMENSION}x{MAX_IMAGE_DIMENSION}"
+        )
     img: Image.Image = Image.fromarray(arr, "RGB")
     buffered: io.BytesIO = io.BytesIO()
-    img.save(buffered, format="JPEG", quality=90)
+    img.save(buffered, format="PNG")
     return base64.b64encode(buffered.getvalue()).decode("utf-8")
+
+
+_credits_cache: dict[str, tuple[float, str]] = {}
 
 
 def fetch_openrouter_credits(api_key: str) -> str | None:
     """Fetch remaining OpenRouter credit balance as a formatted string (e.g. '$7.50').
 
+    Results are cached for CREDITS_CACHE_TTL seconds to avoid redundant API calls.
     Returns None on any failure.
     """
+    import time as _time
+
+    now = _time.time()
+    if api_key in _credits_cache:
+        cached_time, cached_value = _credits_cache[api_key]
+        if now - cached_time < CREDITS_CACHE_TTL:
+            return cached_value
+
     try:
         req: urllib.request.Request = urllib.request.Request(
             "https://openrouter.ai/api/v1/credits",
@@ -257,7 +284,9 @@ def fetch_openrouter_credits(api_key: str) -> str | None:
                 total: float = float(d.get("total_credits", 0))
                 usage: float = float(d.get("total_usage", 0))
                 remaining: float = total - usage
-                return f"${remaining:.2f}"
+                result = f"${remaining:.2f}"
+                _credits_cache[api_key] = (now, result)
+                return result
     except Exception as e:
         logger.debug("Failed to fetch OpenRouter credits: %s", e)
         return None
