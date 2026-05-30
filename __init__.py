@@ -23,6 +23,7 @@ _import_errors: list[str] = []
 
 _modules: list[str] = [
     "Dynamic_Resolution_Picker",
+    "Image_Saver_Plus",
     "Wildcard_Reader",
     "Sequential_Image_Loader",
     "Truncate_LLM_Thinking",
