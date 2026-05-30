@@ -50,7 +50,7 @@ This document records significant architectural and tooling decisions to prevent
 
 ---
 
-### D4: Wildcard File Content Cache Keyed by Path + mtime
+### D4: Wildcard File Content Cache Keyed by Path + mtime (with FIFO Eviction)
 
 **Date:** 2026-05-30  
 **Status:** Accepted  
@@ -58,9 +58,12 @@ This document records significant architectural and tooling decisions to prevent
 
 **Decision:** Add `_file_content_cache: dict[str, tuple[float, list[str]]]` mapping file path to `(mtime, lines)`. Cache invalidates when mtime changes.
 
+**Cache eviction:** Bounded to `_MAX_CONTENT_CACHE_SIZE = 100` entries via FIFO eviction (`pop(next(iter(...)))`). 100 entries is sufficient for typical wildcard directories and prevents unbounded memory growth.
+
 **Consequences:**
 - Eliminates redundant disk reads for repeated wildcard resolution.
 - On Windows, mtime granularity may be 1 second — tests use `os.utime()` to force mtime changes.
+- Oldest entries are evicted first when the 100-entry limit is reached.
 
 ---
 
@@ -97,11 +100,11 @@ This document records significant architectural and tooling decisions to prevent
 
 **Date:** 2026-05-30  
 **Status:** Accepted  
-**Context:** Coverage report shows 100% on all source modules. Test files themselves show ~99% (missing `if __name__ == "__main__"` lines, which is expected).
+**Context:** Most source modules achieve 100% coverage. `llm_utils.py` has known gaps (91%) in retry-fallback paths, event-loop cleanup, image-dimension validation, and credits-cache-hit branch — these require network mocking or `atexit` interaction and are hard to unit-test.
 
-**Decision:** Maintain 100% source code coverage. Any new code must have corresponding tests.
+**Decision:** Maintain 100% coverage target for all source modules where practical. Known gaps in `llm_utils.py` are accepted as technical debt.
 
-**Enforcement:** `pytest --cov` runs in CI. Coverage drop below 100% should be treated as a CI failure.
+**Enforcement:** `pytest --cov-fail-under=100` runs in CI, but the global total (source + test files) is 99% due to uncovered `if __name__ == "__main__"` guards in test files and the `llm_utils.py` gaps. This is visible in CI output and accepted.
 
 ---
 
@@ -135,20 +138,28 @@ This document records significant architectural and tooling decisions to prevent
 
 ---
 
-### D11: Local Module Named `_utils.py` (Not `utils.py`)
+### D11: Local Module Named `_utils.py` + `sys.path` Workaround
 
 **Date:** 2026-05-30  
 **Status:** Accepted (critical)  
-**Context:** ComfyUI ships with its own `utils/` package at `ComfyUI/utils/__init__.py`. When a custom node directory contains `utils.py`, Python's import system resolves `from utils import ...` to ComfyUI's `utils` package instead of the local file, causing `ImportError: cannot import name 'safe_import' from 'utils'`.
+**Context:** Two issues:
 
-**Decision:** Rename local utility module to `_utils.py` (underscore prefix). All imports use `from _utils import ...`.
+1. ComfyUI ships with its own `utils/` package at `ComfyUI/utils/__init__.py`. When a custom node directory contains `utils.py`, Python's import system resolves `from utils import ...` to ComfyUI's `utils` package instead of the local file, causing `ImportError: cannot import name 'safe_import' from 'utils'`.
+
+2. ComfyUI loads custom nodes via `importlib.util.spec_from_file_location()` using a filesystem-path-derived module name (e.g. `C:\...\ComfyUI-Pack-Of-ThatAIGod` with dots replaced). The package directory is NOT added to `sys.path`, so sibling imports (`from _utils import ...`, `importlib.import_module("Dynamic_Resolution_Picker")`) fail with `ModuleNotFoundError`.
+
+**Decision:**
+- Rename local utility module to `_utils.py` (underscore prefix).
+- Insert the node directory at `sys.path[0]` before any sibling imports in `__init__.py`.
 
 **Alternatives Considered:**
 - `node_utils.py`: Works but `_utils.py` is shorter and the underscore signals "internal".
-- Relative imports (`from .utils import`): Doesn't work because ComfyUI loads custom nodes as standalone modules, not packages.
+- Relative imports (`from ._utils import`): Don't work reliably because ComfyUI doesn't load custom nodes as proper packages (module name is a mangled filesystem path).
+- Relying on ComfyUI adding the directory to `sys.path`: Not guaranteed — experience shows it's not on the path.
 
 **Consequences:**
-- All `from utils import ...` must be `from _utils import ...`.
+- All imports use `from _utils import ...`.
+- `__init__.py` has a `sys.path.insert(0, _node_dir)` before any import, with `# noqa: E402` since ruff flags module-level imports not at the top.
 - The `_` prefix follows Python convention for private/internal modules.
 - **This naming must NOT be changed back to `utils.py`** — it will break ComfyUI loading.
 
