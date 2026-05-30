@@ -5,12 +5,11 @@ import re
 from datetime import datetime
 from typing import Any
 
+import folder_paths
 import numpy as np
 import torch
 from PIL import Image
 from PIL.PngImagePlugin import PngInfo
-
-import folder_paths
 
 logger: logging.Logger = logging.getLogger("ThatAIGod")
 
