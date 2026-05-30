@@ -1,0 +1,12 @@
+formal wear, classic Black Tuxedo, White, fabric: satin
+formal wear, three-piece suit, __neutral_colors_male__, fabric: wool
+formal wear, velvet blazer, __jeweltone_colors_male__, __neutral_colors_male__, fabric: velvet
+formal wear, white dinner jacket, White, Black, fabric: silk
+formal wear, pinstripe suit, __neutral_colors_male__, fabric: wool
+formal wear, double-breasted suit, __muted_colors_male__, fabric: wool
+formal wear, two-piece business suit, __neutral_colors_male__, fabric: wool
+formal wear, tweed blazer, __earthtone_colors_male__, fabric: tweed
+semi-formal, dress shirt and trousers, __pastel_colors_male__, __neutral_colors_male__, fabric: cotton
+semi-formal, sports blazer with chinos, __muted_colors_male__, __neutral_colors_male__, fabric: linen
+semi-formal, linen suit, __pastel_colors_male__, __neutral_colors_male__, fabric: linen
+semi-formal, Bundhgala shirt (Nehru collar), __muted_colors_male__, fabric: cotton

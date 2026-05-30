@@ -1,0 +1,12 @@
+casual wear, slim-fit jeans and t-shirt, __muted_colors_male__, fabric: denim
+casual wear, polo shirt with chinos, __pastel_colors_male__, __neutral_colors_male__, fabric: cotton
+casual wear, denim jacket, __neutral_colors_male__, fabric: denim
+casual wear, plaid flannel shirt, __muted_colors_male__, __earthtone_colors_male__, fabric: flannel
+casual wear, rugged leather jacket, __earthtone_colors_male__, __neutral_colors_male__, fabric: leather
+casual wear, stylish bomber jacket, __muted_colors_male__, __bright_colors_male__, fabric: satin
+casual wear, hoodie and joggers set, __muted_colors_male__, __neutral_colors_male__, fabric: fleece
+casual wear, short cotton Kurta with jeans, __earthtone_colors_male__, __pastel_colors_male__, fabric: cotton
+casual wear, linen shirt with shorts, __pastel_colors_male__, __neutral_colors_male__, fabric: linen
+casual wear, cable-knit sweater, __muted_colors_male__, fabric: wool
+casual wear, block-printed button-down shirt, __earthtone_colors_male__, __bright_colors_male__, fabric: cotton
+casual wear, cargo pants, __earthtone_colors_male__, fabric: canvas

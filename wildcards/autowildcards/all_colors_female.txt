@@ -1,0 +1,8 @@
+__neutral_colors_female__
+__earthtone_colors_female__
+__jeweltone_colors_female__
+__pastel_colors_female__
+__bright_colors_female__
+__muted_colors_female__
+__metallic_colors_female__
+__neon_colors_female__

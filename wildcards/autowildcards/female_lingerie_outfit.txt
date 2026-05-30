@@ -1,0 +1,7 @@
+lingerie, lace teddy, __jeweltone_colors_female__, fabric: lace
+lingerie, silk babydoll, __pastel_colors_female__, fabric: silk
+lingerie, matching lace bra and panties, __neutral_colors_female__, fabric: lace
+lingerie, satin corset, __metallic_colors_female__, fabric: satin
+lingerie, sheer chiffon chemise, __pastel_colors_female__, fabric: chiffon
+lingerie, leather-like bustier, Black, fabric: faux leather
+lingerie, sheer bodysuit, __neutral_colors_female__, fabric: mesh

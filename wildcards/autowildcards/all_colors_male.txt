@@ -1,0 +1,8 @@
+__neutral_colors_male__
+__earthtone_colors_male__
+__jeweltone_colors_male__
+__pastel_colors_male__
+__bright_colors_male__
+__muted_colors_male__
+__metallic_colors_male__
+__neon_colors_male__

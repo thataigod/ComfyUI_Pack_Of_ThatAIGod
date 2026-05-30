@@ -1,0 +1,8 @@
+costume, fantasy, ancient Indian queen, __jeweltone_colors_female__, __metallic_colors_female__
+costume, sci-fi, rebel princess, __neutral_colors_female__
+costume, gothic, vampire countess, __jeweltone_colors_female__
+costume, fantasy, forest nymph, __earthtone_colors_female__
+costume, cyberpunk, hacker, __neon_colors_female__
+costume, fantasy, celestial goddess, __metallic_colors_female__, __pastel_colors_female__
+costume, fantasy, sorceress, __jeweltone_colors_female__
+costume, historical, pirate captain, __earthtone_colors_female__

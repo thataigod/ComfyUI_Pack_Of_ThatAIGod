@@ -1,0 +1,32 @@
+costume, dc comics, Tactical Batsuit, Black, Gray, unmasked
+costume, dc comics, Classic Superman Suit, Blue, Red, Yellow
+costume, dc comics, The Joker, __jeweltone_colors_male__, __bright_colors_male__
+costume, dc comics, Green Lantern, Green, Black, unmasked
+costume, dc comics, John Constantine, __earthtone_colors_male__, __neutral_colors_male__
+costume, dc comics, Green Arrow, __earthtone_colors_male__, hood down
+costume, marvel comics, Star-Lord's Ravager Outfit, __jeweltone_colors_male__, __earthtone_colors_male__, unmasked
+costume, marvel comics, Captain America Suit, __bright_colors_male__, __neutral_colors_male__, unhelmeted
+costume, marvel comics, Doctor Strange, __jeweltone_colors_male__
+costume, marvel comics, Asgardian Armor (Thor), __metallic_colors_male__, __jeweltone_colors_male__, unhelmeted
+costume, marvel comics, The Punisher's Tactical Gear, Black, White
+costume, marvel comics, Wolverine's X-Men Uniform, __bright_colors_male__, __jeweltone_colors_male__, unmasked
+costume, star wars, Jedi Master Robes, __earthtone_colors_male__, __neutral_colors_male__
+costume, star wars, Sith Acolyte Robes, Black, Red, unmasked
+costume, star wars, Bounty Hunter's Attire, __earthtone_colors_male__, unhelmeted
+costume, star wars, Imperial Officer Uniform, Black, Gray
+costume, star wars, Rebel Alliance Pilot, __bright_colors_male__, White, helmet held
+costume, star wars, Smuggler's Outfit, __neutral_colors_male__
+costume, warhammer 40k, Imperial Commissar, Black, Red, Gold
+costume, warhammer 40k, Imperial Guardsman, Khaki, Green, unhelmeted
+costume, warhammer 40k, Chaos Cultist Leader, Black, Red, unmasked
+costume, warhammer 40k, Rogue Trader, __jeweltone_colors_male__, __metallic_colors_male__
+costume, warhammer 40k, Inquisitor, Black, Red
+costume, gaming, Renaissance Assassin, White, Red, hood down
+costume, gaming, Witcher's Kaer Morhen Armor, Black, Brown
+costume, gaming, Cyberpunk Mercenary, Black, __neon_colors_male__
+costume, gaming, SOLDIER 1st Class, Purple, Black
+costume, gaming, Knight of the Erdtree, __metallic_colors_male__, unhelmeted
+costume, gaming, S.T.A.R.S. Operative, __jeweltone_colors_male__, Black
+costume, gaming, God of War (Kratos-style), Red, Brown, spartan
+costume, gaming, Sneaking Suit (Solid Snake-style), __muted_colors_male__
+costume, noir, Detective, __neutral_colors_male__, fedora hat

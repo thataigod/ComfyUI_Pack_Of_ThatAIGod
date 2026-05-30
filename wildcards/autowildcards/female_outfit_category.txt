@@ -1,0 +1,6 @@
+__female_traditional_outfit__
+__female_formal_outfit__
+__female_casual_outfit__
+__female_athletic_outfit__
+__female_swimwear_outfit__
+__female_lingerie_outfit__

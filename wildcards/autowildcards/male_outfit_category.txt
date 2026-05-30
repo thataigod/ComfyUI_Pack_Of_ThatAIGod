@@ -1,0 +1,5 @@
+__male_traditional_outfit__
+__male_formal_outfit__
+__male_casual_outfit__
+__male_athletic_outfit__
+__male_costume_outfit__

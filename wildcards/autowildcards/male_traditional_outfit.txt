@@ -1,0 +1,8 @@
+traditional wear, embroidered Sherwani, __jeweltone_colors_male__, __metallic_colors_male__, fabric: silk
+traditional wear, Dhoti with Angavastram, __neutral_colors_male__, __metallic_colors_male__, fabric: silk
+traditional wear, Jodhpuri Bandhgala Suit, __muted_colors_male__, __neutral_colors_male__, fabric: wool
+traditional wear, Linen Kurta with Pajama, __earthtone_colors_male__, __pastel_colors_male__, fabric: linen
+traditional wear, Nehru Jacket over Kurta, __jeweltone_colors_male__, __neutral_colors_male__, fabric: velvet
+traditional wear, Pathani Suit, __neutral_colors_male__, __earthtone_colors_male__, fabric: cotton
+traditional wear, Chikankari Angarkha, __pastel_colors_male__, fabric: cotton
+traditional wear, block-printed Kurta, __bright_colors_male__, __neutral_colors_male__, fabric: cotton

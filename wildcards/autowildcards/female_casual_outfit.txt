@@ -1,0 +1,8 @@
+casual wear, high-waisted jeans, crop top, __neutral_colors_female__, fabric: denim
+casual wear, floral sundress, __pastel_colors_female__, fabric: cotton
+casual wear, Kurti with leggings, __earthtone_colors_female__, fabric: cotton
+casual wear, tank top, denim mini-skirt, __bright_colors_female__, fabric: denim
+casual wear, oversized sweater, __muted_colors_female__, fabric: wool
+casual wear, athletic leggings, sports top, __neon_colors_female__, fabric: lycra
+casual wear, button-down shirt, linen pants, __neutral_colors_female__, fabric: linen
+casual wear, jumpsuit, __earthtone_colors_female__, fabric: cotton

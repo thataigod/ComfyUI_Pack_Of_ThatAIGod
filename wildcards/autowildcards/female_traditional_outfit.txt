@@ -1,0 +1,8 @@
+traditional wear, Kanjeevaram saree, __jeweltone_colors_female__, __metallic_colors_female__, fabric: silk
+traditional wear, Anarkali suit, __earthtone_colors_female__, fabric: silk
+traditional wear, Ghagra Choli, __bright_colors_female__, __metallic_colors_female__, fabric: silk
+traditional wear, Salwar Kameez, __pastel_colors_female__, fabric: cotton
+traditional wear, Bandhani saree, __muted_colors_female__, fabric: silk
+traditional wear, half-saree, __bright_colors_female__, fabric: silk
+traditional wear, Banarasi lehenga, __metallic_colors_female__, __jeweltone_colors_female__, fabric: silk
+traditional wear, cotton saree, __muted_colors_female__, fabric: cotton

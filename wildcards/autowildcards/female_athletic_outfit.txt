@@ -1,0 +1,8 @@
+athletic wear, performance t-shirt and track pants, __bright_colors_female__, __neutral_colors_female__
+athletic wear, full tracksuit, __muted_colors_female__, __neon_colors_female__,
+active wear, fleece pullover, __earthtone_colors_female__
+athletic wear, sports jersey, __bright_colors_female__
+athleisure wear, stylish hoodie with joggers, __muted_colors_female__, __neutral_colors_female__
+athletic wear, yoga top and comfortable pants, __pastel_colors_female__, __neutral_colors_female__
+active wear, running jacket, __neon_colors_female__
+athletic wear, tennis dress, __pastel_colors_female__, White

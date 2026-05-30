@@ -1,0 +1,8 @@
+athletic wear, performance t-shirt, __bright_colors_male__, __neutral_colors_male__, fabric: polyester
+athletic wear, full tracksuit, __muted_colors_male__, __neon_colors_male__, fabric: nylon
+active wear, fleece pullover, __earthtone_colors_male__, fabric: fleece
+athletic wear, Indian cricket team jersey, Blue, __bright_colors_male__, fabric: polyester
+athleisure wear, stylish hoodie with joggers, __muted_colors_male__, __neutral_colors_male__, fabric: fleece
+active wear, long-sleeve performance shirt, __neutral_colors_male__, __neon_colors_male__, fabric: polyester
+athletic wear, warm-up jacket, __muted_colors_male__, __bright_colors_male__, fabric: nylon
+active wear, yoga kurta, __pastel_colors_male__, __neutral_colors_male__, fabric: cotton

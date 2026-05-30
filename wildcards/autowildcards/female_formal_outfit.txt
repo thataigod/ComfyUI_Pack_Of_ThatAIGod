@@ -1,0 +1,8 @@
+formal wear, evening gown, __jeweltone_colors_female__, fabric: silk
+formal wear, pantsuit, __neutral_colors_female__, fabric: crepe
+formal wear, cocktail dress, __metallic_colors_female__, fabric: satin
+formal wear, mermaid-style dress, __muted_colors_female__, fabric: velvet
+formal wear, velvet gown, __jeweltone_colors_female__, fabric: velvet
+formal wear, A-line dress, __pastel_colors_female__, fabric: satin
+formal wear, Little Black Dress, Black, fabric: crepe
+formal wear, sequined gown, __metallic_colors_female__, fabric: sequined

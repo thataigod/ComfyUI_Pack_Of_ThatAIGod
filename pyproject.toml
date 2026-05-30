@@ -1,0 +1,64 @@
+[project]
+name = "comfyui-pack-of-thataigod"
+version = "1.2.0"
+description = "Custom node pack for ComfyUI with LLM integration, image utilities, and wildcard prompt generation"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "thataigod", email = "thataigod@gmail.com" },
+]
+dependencies = [
+    "Pillow>=10.0.0,<12.0.0",
+    "numpy>=1.21,<3.0",
+    "torch>=2.0.0,<3.0",
+    "aiohttp>=3.9.0,<4.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --cov --cov-report=term-missing --no-header"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.coverage.run]
+omit = ["tests/*"]
+
+[tool.ruff]
+line-length = 127
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "S"]
+ignore = ["E501", "N801", "N802", "N806", "N815", "N816", "N999"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S311", "E402"]
+"build/*" = ["ALL"]
+"Dynamic_Resolution_Picker.py" = ["S311"]
+"Wildcard_Reader.py" = ["S311"]
+"LLM_Node.py" = ["S310"]
+"llm_utils.py" = ["S310"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true
+disallow_untyped_defs = false
+disallow_any_unimported = false
+warn_unused_ignores = true
+exclude = ["tests/", ".github/"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0",
+]

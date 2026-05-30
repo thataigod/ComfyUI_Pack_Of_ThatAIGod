@@ -1,0 +1,7 @@
+swimwear, one-piece swimsuit, __bright_colors_female__, fabric: lycra
+swimwear, string bikini, __metallic_colors_female__, fabric: lycra
+swimwear, high-waisted bikini, __pastel_colors_female__, fabric: lycra
+swimwear, monokini with cutouts, __neon_colors_female__, fabric: lycra
+swimwear, sporty bikini, __neutral_colors_female__, fabric: lycra
+swimwear, crochet bikini, __earthtone_colors_female__, fabric: crochet
+swimwear, animal print bikini, __earthtone_colors_female__, fabric: lycra
