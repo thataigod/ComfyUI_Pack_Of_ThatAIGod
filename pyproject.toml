@@ -27,6 +27,9 @@ testpaths = ["tests"]
 addopts = "-v --cov --cov-report=term-missing --no-header"
 filterwarnings = ["ignore::DeprecationWarning"]
 
+[tool.coverage.run]
+omit = ["tests/*"]
+
 [tool.ruff]
 line-length = 127
 target-version = "py310"
