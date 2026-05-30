@@ -68,13 +68,15 @@ class TestSequentialImageLoader(unittest.TestCase):
         filenames = [result0[1], result1[1], result2[1]]
         self.assertEqual(filenames, ["10image", "file1", "file2"])
 
-    def test_invalid_directory_raises_error(self):
-        with self.assertRaises(ValueError):
-            self.node.load_next(**{"Directory Path": "C:\\nonexistent_dir_xyz", "seed": 0})
+    def test_invalid_directory_returns_error_tuple(self):
+        result = self.node.load_next(**{"Directory Path": "C:\\nonexistent_dir_xyz", "seed": 0})
+        self.assertEqual(result[1], "ERROR")
+        self.assertIn("Directory not found", result[2])
 
-    def test_empty_directory_raises_error(self):
-        with self.assertRaises(FileNotFoundError):
-            self.node.load_next(**{"Directory Path": self.temp_dir, "seed": 0})
+    def test_empty_directory_returns_error_tuple(self):
+        result = self.node.load_next(**{"Directory Path": self.temp_dir, "seed": 0})
+        self.assertEqual(result[1], "ERROR")
+        self.assertIn("No supported image files", result[2])
 
     def test_multiple_extensions_accepted(self):
         self._create_image("img1.png")
@@ -86,9 +88,9 @@ class TestSequentialImageLoader(unittest.TestCase):
         result = self.node.load_next(**{"Directory Path": self.temp_dir, "seed": 5})
         self.assertIn(result[1], ["img1", "img2", "img3", "img4", "img5", "img6"])
 
-    def test_empty_directory_path_raises_error(self):
-        with self.assertRaises(ValueError):
-            self.node.load_next(**{"Directory Path": "", "seed": 0})
+    def test_empty_directory_path_returns_error_tuple(self):
+        result = self.node.load_next(**{"Directory Path": "", "seed": 0})
+        self.assertEqual(result[1], "ERROR")
 
     def test_input_types_returns_dict(self):
         result = SequentialImageLoader.INPUT_TYPES()

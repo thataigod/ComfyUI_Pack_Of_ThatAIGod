@@ -102,3 +102,33 @@ This document records significant architectural and tooling decisions to prevent
 **Decision:** Maintain 100% source code coverage. Any new code must have corresponding tests.
 
 **Enforcement:** `pytest --cov` runs in CI. Coverage drop below 100% should be treated as a CI failure.
+
+---
+
+### D8: `os.walk` on Every Call (M3) — Accepted
+
+**Date:** 2026-05-30  
+**Status:** Accepted  
+**Context:** `WildcardReader._build_file_index` calls `os.walk()` on every `process()` call, even though mtime caching prevents re-reading file contents.
+
+**Decision:** Keep as-is. Wildcard directories are small (typically <50 files). The overhead of `os.walk()` on a small directory is negligible (<1ms). The existing mtime-based cache prevents re-reading file contents, which is the expensive operation.
+
+---
+
+### D9: `_MAX_WILDCARD_ITERATIONS = 50` (L1) — Accepted
+
+**Date:** 2026-05-30  
+**Status:** Accepted  
+**Context:** The maximum number of nested wildcard resolutions is hardcoded to 50.
+
+**Decision:** Keep as-is. 50 iterations is generous for nested wildcards. In practice, most wildcard files reference at most 1-2 levels of nesting. Making this configurable adds UI complexity for no practical benefit.
+
+---
+
+### D10: Regex Not Pre-compiled (M4) — Accepted
+
+**Date:** 2026-05-30  
+**Status:** Accepted  
+**Context:** `Truncate_LLM_Thinking.truncate()` calls `re.compile()` on every invocation.
+
+**Decision:** Keep as-is. The `start_token` and `end_token` are user-configurable inputs, so the pattern changes per call. Python's `re` module caches compiled patterns internally (up to 512), making pre-compilation unnecessary.

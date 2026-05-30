@@ -67,7 +67,7 @@ app.registerExtension({
                 });
 
                 // 5. WebSocket Listener
-                api.addEventListener("that_ai_god.stream", (event) => {
+                const streamHandler = (event) => {
                     if (String(event.detail.node) !== String(this.id)) return;
                     
                     const w = this.widgets.find(w => w.name === "Full LLM Response or Any Errors");
@@ -81,7 +81,15 @@ app.registerExtension({
                             w.inputEl.scrollTop = w.inputEl.scrollHeight;
                         }
                     }
-                });
+                };
+                api.addEventListener("that_ai_god.stream", streamHandler);
+
+                // Cleanup listener when node is removed
+                const onRemoved = nodeType.prototype.onRemoved;
+                nodeType.prototype.onRemoved = function () {
+                    api.removeEventListener("that_ai_god.stream", streamHandler);
+                    return onRemoved ? onRemoved.apply(this, arguments) : undefined;
+                };
 
                 // 6. Mode Listener
                 const modeWidget = this.widgets.find(w => w.name === "Mode");

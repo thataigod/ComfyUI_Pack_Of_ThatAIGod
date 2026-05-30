@@ -59,7 +59,9 @@ class SequentialImageLoader:
         index: int = kwargs.get("seed", 0)
 
         if not directory_path or not os.path.isdir(directory_path):
-            raise ValueError(f"Directory not found: {directory_path}")
+            logger.error("Directory not found: %s", directory_path)
+            placeholder = torch.zeros((1, 64, 64, 3))
+            return (placeholder, "ERROR", f"Directory not found: {directory_path}")
 
         files: list[str] = [
             f
@@ -70,7 +72,9 @@ class SequentialImageLoader:
 
         total_files: int = len(files)
         if total_files == 0:
-            raise FileNotFoundError(f"No supported image files found in {directory_path}")
+            logger.error("No supported image files found in %s", directory_path)
+            placeholder = torch.zeros((1, 64, 64, 3))
+            return (placeholder, "ERROR", f"No supported image files found in {directory_path}")
 
         safe_index: int = index % total_files
         current_filename: str = files[safe_index]

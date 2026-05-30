@@ -8,6 +8,7 @@ logger: logging.Logger = logging.getLogger("ThatAIGod")
 
 _WILDCARD_PATTERN: re.Pattern[str] = re.compile(r"__([a-zA-Z0-9_\-\/\\\.]+)__")
 _MAX_WILDCARD_ITERATIONS: int = 50
+_MAX_CONTENT_CACHE_SIZE: int = 100
 
 
 class WildcardReader:
@@ -144,6 +145,8 @@ class WildcardReader:
         try:
             with open(file_path, encoding="utf-8") as f:
                 lines = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+            if len(WildcardReader._file_content_cache) >= _MAX_CONTENT_CACHE_SIZE:
+                WildcardReader._file_content_cache.pop(next(iter(WildcardReader._file_content_cache)))
             WildcardReader._file_content_cache[file_path] = (current_mtime, lines)
             return lines
         except (OSError, UnicodeDecodeError):
@@ -153,7 +156,7 @@ class WildcardReader:
     def _get_line_from_file(
         self, wildcard_tag: str, file_index: dict[str, list[str]], wildcards_dir: str, mode: str, rng: random.Random
     ) -> str:
-        clean_tag: str = wildcard_tag.strip("_")
+        clean_tag: str = wildcard_tag.strip("_").replace("\\", "/")
 
         if not clean_tag.endswith(".txt"):
             search_filename: str = clean_tag + ".txt"
