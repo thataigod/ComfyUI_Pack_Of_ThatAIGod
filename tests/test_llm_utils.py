@@ -20,8 +20,7 @@ from llm_utils import (
     LlmConfigBuilder,
     LlmStreamer,
     _async_fetch_stream,
-    _close_loop,
-    _get_loop,
+    _run_async,
     _run_async_stream,
     encode_image_to_base64,
     fetch_openrouter_credits,
@@ -421,12 +420,20 @@ class TestRetryLogic(unittest.TestCase):
         self.assertEqual(mock_session.post.call_count, 3)
 
 
-class TestEventLoop(unittest.TestCase):
-    def test_close_loop(self):
-        loop = _get_loop()
-        self.assertIsNotNone(loop)
-        _close_loop()
-        self.assertTrue(loop.is_closed())
+class TestRunAsync(unittest.TestCase):
+    def test_run_async_no_loop(self):
+        async def dummy():
+            return 42
+        result = _run_async(dummy())
+        self.assertEqual(result, 42)
+
+    def test_run_async_from_loop(self):
+        async def run():
+            async def dummy():
+                return 99
+            result = _run_async(dummy())
+            self.assertEqual(result, 99)
+        asyncio.run(run())
 
 
 class TestEncodeImageEdgeCases(unittest.TestCase):

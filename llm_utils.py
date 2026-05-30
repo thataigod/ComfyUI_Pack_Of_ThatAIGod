@@ -1,6 +1,6 @@
 import asyncio
-import atexit
 import base64
+import concurrent.futures
 import http.client
 import io
 import json
@@ -189,31 +189,31 @@ async def _async_fetch_stream(
             raise
 
 
-_LOOP: asyncio.AbstractEventLoop | None = None
+_EXECUTOR: concurrent.futures.ThreadPoolExecutor = concurrent.futures.ThreadPoolExecutor(max_workers=4)
 
 
-def _get_loop() -> asyncio.AbstractEventLoop:
-    global _LOOP
-    if _LOOP is None or _LOOP.is_closed():
-        _LOOP = asyncio.new_event_loop()
-        asyncio.set_event_loop(_LOOP)
-        atexit.register(_close_loop)
-    return _LOOP
+def _run_async(coro):
+    """Run a coroutine from a sync context.
 
+    Detects whether an event loop is already running in this thread (e.g.
+    ComfyUI's own loop) and dispatches accordingly:
+    - No running loop: use ``asyncio.run()`` directly.
+    - Running loop present: submit to a thread-pool so the new loop does not
+      collide with the existing one.
+    """
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(coro)
 
-def _close_loop() -> None:
-    global _LOOP
-    if _LOOP is not None and not _LOOP.is_closed():
-        _LOOP.close()
-        _LOOP = None
+    return _EXECUTOR.submit(asyncio.run, coro).result()
 
 
 def _run_async_stream(
     url: str, payload: dict[str, Any], api_key: str, timeout: int
 ) -> list[bytes]:
-    loop = _get_loop()
     try:
-        return loop.run_until_complete(
+        return _run_async(
             _async_fetch_stream(url, payload, api_key, timeout)
         )
     except aiohttp.ClientResponseError as e:
