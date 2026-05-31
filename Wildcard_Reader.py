@@ -258,8 +258,6 @@ class WildcardReader:
 
         def _choice_replacer(m: re.Match[str]) -> str:
             inner = m.group(1)
-            if "/" not in inner:
-                return m.group(0)
             options = [s.strip() for s in inner.split("/") if s.strip()]
             return rng.choice(options) if options else m.group(0)
 

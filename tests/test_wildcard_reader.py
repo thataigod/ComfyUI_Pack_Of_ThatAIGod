@@ -401,7 +401,7 @@ class TestWildcardReader(unittest.TestCase):
 
     def test_choice_pattern_no_slash_unchanged(self):
         result = self.node.process(text="{hello}", mode="Deterministic (Seed)", seed=0, delimiter=", ")
-        self.assertEqual(result[0], "{hello}")
+        self.assertEqual(result[0], "hello")
 
     def test_choice_pattern_after_wildcard_resolution(self):
         self._create_wildcard_file("colors.txt", ["red", "blue"])
