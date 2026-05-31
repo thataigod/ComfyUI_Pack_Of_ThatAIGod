@@ -80,6 +80,8 @@ app.registerExtension({
                         if (w.inputEl) {
                             w.inputEl.scrollTop = w.inputEl.scrollHeight;
                         }
+                    } else if (event.detail.type === "clear") {
+                        w.value = "";
                     }
                 };
                 api.addEventListener("that_ai_god.stream", streamHandler);
