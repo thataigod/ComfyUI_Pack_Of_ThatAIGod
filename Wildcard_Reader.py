@@ -258,7 +258,7 @@ class WildcardReader:
 
         def _choice_replacer(m: re.Match[str]) -> str:
             inner = m.group(1)
-            options = [s.strip() for s in inner.split("/") if s.strip()]
+            options = [s.strip() for s in inner.split("|") if s.strip()]
             return rng.choice(options) if options else m.group(0)
 
         processed_text = _CHOICE_PATTERN.sub(_choice_replacer, processed_text)
