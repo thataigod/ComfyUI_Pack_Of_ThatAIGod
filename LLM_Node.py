@@ -230,15 +230,30 @@ class LLM_Node:
         try:
             clean_parts: list[str] = []
             reasoning_parts: list[str] = []
+            reasoning_open = False
             for line in self._stream_response(base_url, payload, api_key, cfg["timeout_seconds"]):
                 combined_text, reasoning_part, content_part = self._parse_stream_chunk(line)
                 if combined_text is None:
                     break
                 if combined_text:
+                    ui_text = combined_text
+                    if reasoning_part and not reasoning_open:
+                        if content_part:
+                            ui_text = "<think>" + reasoning_part + "</think>" + content_part
+                        else:
+                            ui_text = "<think>" + combined_text
+                            reasoning_open = True
+                    elif reasoning_part and reasoning_open:
+                        if content_part:
+                            ui_text = reasoning_part + "</think>" + content_part
+                            reasoning_open = False
+                    elif content_part and reasoning_open:
+                        ui_text = "</think>" + content_part
+                        reasoning_open = False
                     if unique_id:
                         PromptServer.instance.send_sync(
                             "that_ai_god.stream",
-                            {"node": unique_id, "type": "update", "delta": combined_text},
+                            {"node": unique_id, "type": "update", "delta": ui_text},
                         )
                     if reasoning_part:
                         reasoning_parts.append(reasoning_part)
