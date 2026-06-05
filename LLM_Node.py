@@ -231,8 +231,6 @@ class LLM_Node:
             clean_parts: list[str] = []
             reasoning_parts: list[str] = []
             cleared_for_content = False
-            sent_reasoning = ""
-            sent_content = ""
             for line in self._stream_response(base_url, payload, api_key, cfg["timeout_seconds"]):
                 combined_text, reasoning_part, content_part = self._parse_stream_chunk(line)
                 if combined_text is None:
@@ -247,27 +245,15 @@ class LLM_Node:
                             )
                     if unique_id:
                         if cleared_for_content and content_part:
-                            if content_part.startswith(sent_content):
-                                delta = content_part[len(sent_content):]
-                            else:
-                                delta = content_part
-                            if delta:
-                                PromptServer.instance.send_sync(
-                                    "that_ai_god.stream",
-                                    {"node": unique_id, "type": "update", "delta": delta},
-                                )
-                            sent_content = content_part
+                            PromptServer.instance.send_sync(
+                                "that_ai_god.stream",
+                                {"node": unique_id, "type": "update", "delta": content_part},
+                            )
                         elif not cleared_for_content:
-                            if combined_text.startswith(sent_reasoning):
-                                delta = combined_text[len(sent_reasoning):]
-                            else:
-                                delta = combined_text
-                            if delta:
-                                PromptServer.instance.send_sync(
-                                    "that_ai_god.stream",
-                                    {"node": unique_id, "type": "update", "delta": delta},
-                                )
-                            sent_reasoning = combined_text
+                            PromptServer.instance.send_sync(
+                                "that_ai_god.stream",
+                                {"node": unique_id, "type": "update", "delta": combined_text},
+                            )
                     if reasoning_part:
                         reasoning_parts.append(reasoning_part)
                     if content_part:

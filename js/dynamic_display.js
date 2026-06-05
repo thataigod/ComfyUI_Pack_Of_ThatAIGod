@@ -85,13 +85,7 @@ app.registerExtension({
                     }
                 };
                 api.addEventListener("that_ai_god.stream", streamHandler);
-
-                // Cleanup listener when node is removed
-                const onRemoved = nodeType.prototype.onRemoved;
-                nodeType.prototype.onRemoved = function () {
-                    api.removeEventListener("that_ai_god.stream", streamHandler);
-                    return onRemoved ? onRemoved.apply(this, arguments) : undefined;
-                };
+                this._thatAiGodStreamHandler = streamHandler;
 
                 // 6. Mode Listener
                 const modeWidget = this.widgets.find(w => w.name === "Mode");
@@ -104,6 +98,14 @@ app.registerExtension({
                 }
 
                 return r;
+            };
+
+            const onRemoved = nodeType.prototype.onRemoved;
+            nodeType.prototype.onRemoved = function () {
+                if (this._thatAiGodStreamHandler) {
+                    api.removeEventListener("that_ai_god.stream", this._thatAiGodStreamHandler);
+                }
+                return onRemoved ? onRemoved.apply(this, arguments) : undefined;
             };
 
             nodeType.prototype.refreshModels = async function() {
