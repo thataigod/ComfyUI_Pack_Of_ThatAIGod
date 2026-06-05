@@ -551,6 +551,40 @@ class TestLLMNode(unittest.TestCase):
                     self.assertTrue(status)
                     self.assertEqual(reasoning, "thinking step 1thinking step 2")
 
+    def test_generate_with_unique_id_clears_reasoning_on_content(self):
+        chunks = [
+            b'data: {"choices":[{"delta":{"reasoning":"thinking step 1"}}]}\n',
+            b'data: {"choices":[{"delta":{"reasoning":"thinking step 2"}}]}\n',
+            b'data: {"choices":[{"delta":{"content":"final answer"}}]}\n',
+            b"data: [DONE]\n",
+        ]
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
+            with patch("LLM_Node.PromptServer.instance.send_sync") as mock_send:
+                with patch.object(
+                    LLM_Node._streamer,
+                    "stream_response",
+                    return_value=iter(chunks),
+                ):
+                    result = self.node.generate(
+                        **_make_kwargs({"unique_id": "uid_99"})
+                    )
+                    text, status, info, reasoning = result
+                    self.assertEqual(text, "final answer")
+                    self.assertTrue(status)
+                    self.assertEqual(reasoning, "thinking step 1thinking step 2")
+                    mock_send.assert_any_call(
+                        "that_ai_god.stream",
+                        {"node": "uid_99", "type": "start"},
+                    )
+                    mock_send.assert_any_call(
+                        "that_ai_god.stream",
+                        {"node": "uid_99", "type": "clear"},
+                    )
+                    mock_send.assert_any_call(
+                        "that_ai_god.stream",
+                        {"node": "uid_99", "type": "update", "delta": "final answer"},
+                    )
+
 
 if __name__ == "__main__":
     unittest.main()
