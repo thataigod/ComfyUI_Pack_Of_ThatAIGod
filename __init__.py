@@ -14,7 +14,7 @@ from _utils import safe_import  # noqa: E402
 logger: logging.Logger = logging.getLogger("ThatAIGod")
 
 
-__version__: str = "1.2.0"
+__version__: str = "1.3.0"
 
 NODE_CLASS_MAPPINGS: dict[str, Any] = {}
 NODE_DISPLAY_NAME_MAPPINGS: dict[str, str] = {}
@@ -47,4 +47,4 @@ if _import_errors:
 
 WEB_DIRECTORY: str = "./js"
 
-__all__: list[str] = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS', 'WEB_DIRECTORY']
+__all__: list[str] = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS", "WEB_DIRECTORY"]

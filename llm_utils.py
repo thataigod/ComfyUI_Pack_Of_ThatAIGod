@@ -167,7 +167,7 @@ async def _async_fetch_stream(url: str, payload: dict[str, Any], api_key: str, t
                     url,
                     json=payload,
                     headers=headers,
-                    timeout=aiohttp.ClientTimeout(total=timeout),
+                    timeout=aiohttp.ClientTimeout(total=None, sock_connect=timeout),
                 ) as response:
                     if response.status in RETRYABLE_STATUS_CODES and attempt < MAX_RETRIES - 1:
                         retry_after = float(response.headers.get("Retry-After", RETRY_BACKOFF_BASE * (2**attempt)))
@@ -181,7 +181,10 @@ async def _async_fetch_stream(url: str, payload: dict[str, Any], api_key: str, t
                         await asyncio.sleep(retry_after)
                         continue
                     response.raise_for_status()
-                    async for line in response.content:
+                    it = response.content.__aiter__()
+                    first_chunk = await asyncio.wait_for(it.__anext__(), timeout=timeout)
+                    yield first_chunk
+                    async for line in it:
                         yield line
                     return
         except aiohttp.ClientResponseError as e:

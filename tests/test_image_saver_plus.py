@@ -160,6 +160,7 @@ class TestImageSaverPlus(unittest.TestCase):
 
     def test_mappings_exported(self):
         from Image_Saver_Plus import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
         self.assertIn("ImageSaverPlus", NODE_CLASS_MAPPINGS)
         self.assertIn("ImageSaverPlus", NODE_DISPLAY_NAME_MAPPINGS)
 
@@ -206,7 +207,6 @@ class TestImageSaverPlus(unittest.TestCase):
         result = Image_Saver_Plus._resolve_date_format("yyyy_MM_dd")
         self.assertRegex(result, r"\d{4}_\d{2}_\d{2}")
 
-
     def test_counter_placeholder_in_default_position(self):
         self.node.save_images(images=self.dummy_image, filename_prefix="nocounter")
         saved = self._find_by_prefix("nocounter", "png")
@@ -226,6 +226,20 @@ class TestImageSaverPlus(unittest.TestCase):
         pngs = [f for f in files if f.endswith(".png")]
         self.assertEqual(len(pngs), 1)
         self.assertRegex(pngs[0], r"^\d{8}_\d{5}_PreFaceFix\.png$")
+
+    def test_save_error_logged_no_crash(self):
+        with patch("PIL.Image.Image.save") as mock_save:
+            mock_save.side_effect = OSError("Disk full")
+            self.node.save_images(images=self.dummy_image, filename_prefix="err")
+            mock_save.assert_called_once()
+
+    def test_text_sidecar_write_error_logged_no_crash(self):
+        with patch("builtins.open", side_effect=OSError("Permission denied")):
+            self.node.save_images(
+                images=self.dummy_image,
+                filename_prefix="txterr",
+                save_text="hello",
+            )
 
     def test_counter_does_not_overwrite(self):
         self.node.save_images(images=self.dummy_image, filename_prefix="cnt_%counter%_test")

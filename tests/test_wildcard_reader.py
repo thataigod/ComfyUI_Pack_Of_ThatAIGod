@@ -185,25 +185,20 @@ class TestWildcardReader(unittest.TestCase):
 
     def test_mappings_exported(self):
         from Wildcard_Reader import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
         self.assertIn("WildcardReader", NODE_CLASS_MAPPINGS)
         self.assertIn("WildcardReader", NODE_DISPLAY_NAME_MAPPINGS)
 
     def test_is_changed_deterministic_returns_seed(self):
-        result = WildcardReader.IS_CHANGED(
-            text="hello", mode="Deterministic (Seed)", seed=42, delimiter=", "
-        )
+        result = WildcardReader.IS_CHANGED(text="hello", mode="Deterministic (Seed)", seed=42, delimiter=", ")
         self.assertEqual(result, 42)
 
     def test_is_changed_full_random_returns_nan(self):
-        result = WildcardReader.IS_CHANGED(
-            text="hello", mode="Full Random", seed=0, delimiter=", "
-        )
+        result = WildcardReader.IS_CHANGED(text="hello", mode="Full Random", seed=0, delimiter=", ")
         self.assertTrue(math.isnan(result))
 
     def test_is_changed_no_repeat_returns_nan(self):
-        result = WildcardReader.IS_CHANGED(
-            text="hello", mode="Random (No Repeat)", seed=0, delimiter=", "
-        )
+        result = WildcardReader.IS_CHANGED(text="hello", mode="Random (No Repeat)", seed=0, delimiter=", ")
         self.assertTrue(math.isnan(result))
 
     def test_no_repeat_deck_mode_exhausts_and_refills(self):
@@ -231,15 +226,9 @@ class TestWildcardReader(unittest.TestCase):
     def test_no_repeat_deck_resets_on_new_seed_sequence(self):
         self._create_wildcard_file("colors.txt", ["red", "green"])
         WildcardReader._deck_cache.clear()
-        r1 = self.node.process(
-            text="__colors__", mode="Random (No Repeat)", seed=1, delimiter=", "
-        )
-        r2 = self.node.process(
-            text="__colors__", mode="Random (No Repeat)", seed=1, delimiter=", "
-        )
-        self.assertNotEqual(r1[0], r2[0],
-            "Two consecutive draws from a 2-item deck with same seed should differ")
-
+        r1 = self.node.process(text="__colors__", mode="Random (No Repeat)", seed=1, delimiter=", ")
+        r2 = self.node.process(text="__colors__", mode="Random (No Repeat)", seed=1, delimiter=", ")
+        self.assertNotEqual(r1[0], r2[0], "Two consecutive draws from a 2-item deck with same seed should differ")
 
     def test_input_types_without_wildcards_dir(self):
         shutil.rmtree(self.wildcards_dir)
@@ -262,57 +251,54 @@ class TestWildcardReader(unittest.TestCase):
 
     def test_wildcard_tag_with_txt_suffix(self):
         self._create_wildcard_file("colors.txt", ["red", "green"])
-        result = self.node.process(
-            text="__colors.txt__",
-            mode="Deterministic (Seed)", seed=0, delimiter=", "
-        )
+        result = self.node.process(text="__colors.txt__", mode="Deterministic (Seed)", seed=0, delimiter=", ")
         self.assertIn(result[0], ["red", "green"])
 
     def test_wildcard_in_subdir_via_file_index(self):
         os.makedirs(os.path.join(self.wildcards_dir, "sub"), exist_ok=True)
         self._create_wildcard_file("sub/colors.txt", ["blue"])
         WildcardReader._file_index_cache.clear()
-        result = self.node.process(
-            text="__colors__",
-            mode="Deterministic (Seed)", seed=0, delimiter=", "
-        )
+        result = self.node.process(text="__colors__", mode="Deterministic (Seed)", seed=0, delimiter=", ")
         self.assertEqual(result[0], "blue")
 
     def test_deck_mode_empty_file_returns_empty(self):
         self._create_wildcard_file("empty.txt", ["# only a comment"])
         WildcardReader._deck_cache.clear()
-        result = self.node.process(
-            text="__empty__",
-            mode="Random (No Repeat)", seed=0, delimiter=", "
-        )
+        result = self.node.process(text="__empty__", mode="Random (No Repeat)", seed=0, delimiter=", ")
         self.assertEqual(result[0], "")
+
+    def test_deck_mode_mtime_error_returns_unresolved(self):
+        self._create_wildcard_file("colors.txt", ["red"])
+        colors_path = os.path.join(self.wildcards_dir, "colors.txt")
+        WildcardReader._deck_cache.clear()
+        # Pre-populate file index + mtimes so _build_file_index returns from cache
+        WildcardReader._file_index_cache[self.wildcards_dir] = {"colors.txt": ["colors.txt"]}
+        WildcardReader._file_mtimes[self.wildcards_dir] = {colors_path: os.path.getmtime(colors_path)}
+        # Patch _build_file_index to return cached index without walking
+        with patch.object(
+            WildcardReader, "_build_file_index", return_value=WildcardReader._file_index_cache[self.wildcards_dir]
+        ):
+            os.remove(colors_path)
+            result = self.node.process(text="__colors__", mode="Random (No Repeat)", seed=0, delimiter=", ")
+        self.assertEqual(result[0], "__colors__")
 
     def test_deck_mode_file_io_error_returns_unresolved(self):
         self._create_wildcard_file("colors.txt", ["red"])
         WildcardReader._deck_cache.clear()
         with patch("builtins.open", side_effect=OSError("permission denied")):
-            result = self.node.process(
-                text="__colors__",
-                mode="Random (No Repeat)", seed=0, delimiter=", "
-            )
+            result = self.node.process(text="__colors__", mode="Random (No Repeat)", seed=0, delimiter=", ")
         self.assertEqual(result[0], "__colors__")
 
     def test_non_deck_file_io_error_returns_unresolved(self):
         self._create_wildcard_file("colors.txt", ["red"])
         with patch("builtins.open", side_effect=OSError("permission denied")):
-            result = self.node.process(
-                text="__colors__",
-                mode="Deterministic (Seed)", seed=0, delimiter=", "
-            )
+            result = self.node.process(text="__colors__", mode="Deterministic (Seed)", seed=0, delimiter=", ")
         self.assertEqual(result[0], "__colors__")
 
     def test_process_creates_wildcards_dir_when_missing(self):
         shutil.rmtree(self.wildcards_dir)
         self.assertFalse(os.path.exists(self.wildcards_dir))
-        result = self.node.process(
-            text="hello world",
-            mode="Deterministic (Seed)", seed=0, delimiter=", "
-        )
+        result = self.node.process(text="hello world", mode="Deterministic (Seed)", seed=0, delimiter=", ")
         self.assertTrue(os.path.isdir(self.wildcards_dir))
         self.assertEqual(result[0], "hello world")
 
@@ -321,26 +307,31 @@ class TestWildcardReader(unittest.TestCase):
         WildcardReader._file_index_cache.clear()
         original_realpath = os.path.realpath
         with patch("Wildcard_Reader.os.path.realpath") as mock_realpath:
+
             def side_effect(path):
                 if path.endswith("colors.txt"):
                     return "Z:/outside/traversal.txt"
                 return original_realpath(path)
+
             mock_realpath.side_effect = side_effect
-            result = self.node.process(
-                text="__colors__",
-                mode="Deterministic (Seed)", seed=0, delimiter=", "
-            )
+            result = self.node.process(text="__colors__", mode="Deterministic (Seed)", seed=0, delimiter=", ")
         self.assertEqual(result[0], "__colors__")
 
-    def test_no_repeat_deck_mode_tracks_mtime(self):
-        self._create_wildcard_file("colors.txt", ["red", "green"])
-        WildcardReader._file_index_cache.clear()
-        WildcardReader._file_mtimes.clear()
-        index = self.node._build_file_index(self.wildcards_dir)
-        self.assertIn("colors.txt", index)
-        mtimes = WildcardReader._file_mtimes.get(self.wildcards_dir, {})
-        colors_path = os.path.join(self.wildcards_dir, "colors.txt")
-        self.assertIn(colors_path, mtimes)
+    def test_no_repeat_deck_cache_invalidates_on_mtime_change(self):
+        self._create_wildcard_file("colors.txt", ["red", "green", "blue"])
+        WildcardReader._deck_cache.clear()
+        path = os.path.join(self.wildcards_dir, "colors.txt")
+        draws1 = set()
+        for _ in range(3):
+            r = self.node.process(text="__colors__", mode="Random (No Repeat)", seed=0, delimiter=", ")
+            draws1.add(r[0])
+        self.assertEqual(len(draws1), 3)
+        self._create_wildcard_file("colors.txt", ["yellow"])
+        current_mtime = os.path.getmtime(path)
+        os.utime(path, (current_mtime + 10, current_mtime + 10))
+        WildcardReader._file_content_cache.pop(path, None)
+        r = self.node.process(text="__colors__", mode="Random (No Repeat)", seed=0, delimiter=", ")
+        self.assertEqual(r[0], "yellow", "Deck should invalidate and re-read file after mtime change")
 
     def test_file_content_cache_returns_same_lines(self):
         self._create_wildcard_file("colors.txt", ["red", "green"])
@@ -393,50 +384,34 @@ class TestWildcardReader(unittest.TestCase):
         finally:
             Wildcard_Reader._MAX_CONTENT_CACHE_SIZE = original_size
 
-
     def test_choice_pattern_single_choice(self):
-        result = self.node.process(
-            text="{A/B}",
-            mode="Deterministic (Seed)", seed=42, delimiter=", "
-        )
+        result = self.node.process(text="{A|B}", mode="Deterministic (Seed)", seed=42, delimiter=", ")
         self.assertIn(result[0], ["A", "B"])
 
     def test_choice_pattern_deterministic(self):
-        r1 = self.node.process(text="{X/Y/Z}", mode="Deterministic (Seed)", seed=1, delimiter=", ")
-        r2 = self.node.process(text="{X/Y/Z}", mode="Deterministic (Seed)", seed=1, delimiter=", ")
+        r1 = self.node.process(text="{X|Y|Z}", mode="Deterministic (Seed)", seed=1, delimiter=", ")
+        r2 = self.node.process(text="{X|Y|Z}", mode="Deterministic (Seed)", seed=1, delimiter=", ")
         self.assertEqual(r1, r2)
 
     def test_choice_pattern_multiple_in_text(self):
-        result = self.node.process(
-            text="{A/B} and {C/D}",
-            mode="Deterministic (Seed)", seed=42, delimiter=", "
-        )
+        result = self.node.process(text="{A|B} and {C|D}", mode="Deterministic (Seed)", seed=42, delimiter=", ")
         first, second = result[0].split(" and ")
         self.assertIn(first, ["A", "B"])
         self.assertIn(second, ["C", "D"])
 
     def test_choice_pattern_no_slash_unchanged(self):
-        result = self.node.process(
-            text="{hello}",
-            mode="Deterministic (Seed)", seed=0, delimiter=", "
-        )
-        self.assertEqual(result[0], "{hello}")
+        result = self.node.process(text="{hello}", mode="Deterministic (Seed)", seed=0, delimiter=", ")
+        self.assertEqual(result[0], "hello")
 
     def test_choice_pattern_after_wildcard_resolution(self):
         self._create_wildcard_file("colors.txt", ["red", "blue"])
-        result = self.node.process(
-            text="__colors__ {big/small}",
-            mode="Deterministic (Seed)", seed=42, delimiter=", "
-        )
+        result = self.node.process(text="__colors__ {big|small}", mode="Deterministic (Seed)", seed=42, delimiter=", ")
         parts = result[0].split(" ")
         self.assertIn(parts[0], ["red", "blue"])
         self.assertIn(parts[1], ["big", "small"])
 
     def test_choice_pattern_empty_options_falls_back(self):
-        result = self.node.process(
-            text="{A//B}",
-            mode="Deterministic (Seed)", seed=42, delimiter=", "
-        )
+        result = self.node.process(text="{A||B}", mode="Deterministic (Seed)", seed=42, delimiter=", ")
         self.assertIn(result[0], ["A", "B"])
 
 

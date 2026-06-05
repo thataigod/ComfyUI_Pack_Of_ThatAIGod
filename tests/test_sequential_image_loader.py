@@ -17,6 +17,7 @@ class TestSequentialImageLoader(unittest.TestCase):
 
     def tearDown(self):
         import shutil
+
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
     def _create_image(self, name, size=(64, 64)):
@@ -110,12 +111,21 @@ class TestSequentialImageLoader(unittest.TestCase):
 
     def test_mappings_exported(self):
         from Sequential_Image_Loader import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
         self.assertIn("SequentialImageLoader", NODE_CLASS_MAPPINGS)
         self.assertIn("SequentialImageLoader", NODE_DISPLAY_NAME_MAPPINGS)
 
     def test_natural_sort_key_digit_first(self):
         result = SequentialImageLoader.natural_sort_key("img10")
         self.assertIsInstance(result, list)
+
+    def test_corrupt_image_returns_error(self):
+        path = os.path.join(self.temp_dir, "corrupt.png")
+        with open(path, "wb") as f:
+            f.write(b"not a real png file")
+        result = self.node.load_next(**{"Directory Path": self.temp_dir, "seed": 0})
+        self.assertEqual(result[1], "ERROR")
+        self.assertIn("Failed to load image", result[2])
 
     def test_natural_sort_key_pure_string(self):
         result = SequentialImageLoader.natural_sort_key("hello")

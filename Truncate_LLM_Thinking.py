@@ -32,9 +32,7 @@ class TruncateThinking:
         }
 
     @staticmethod
-    def _truncate_long_text(
-        text: str, start_token: str, end_token: str, max_length: int = 100000
-    ) -> str:
+    def _truncate_long_text(text: str, start_token: str, end_token: str, max_length: int = 100000) -> str:
         if len(text) <= max_length:
             return text
 

@@ -4,11 +4,11 @@ import types
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-comfy_mock = types.ModuleType('comfy')
-comfy_mock.utils = types.ModuleType('comfy.utils')
+comfy_mock = types.ModuleType("comfy")
+comfy_mock.utils = types.ModuleType("comfy.utils")
 comfy_mock.utils.common_upscale = None
-sys.modules['comfy'] = comfy_mock
-sys.modules['comfy.utils'] = comfy_mock.utils
+sys.modules["comfy"] = comfy_mock
+sys.modules["comfy.utils"] = comfy_mock.utils
 
 import unittest
 
@@ -18,13 +18,18 @@ import torch
 class TestUpscaleByMaxSide(unittest.TestCase):
     def setUp(self):
         import comfy.utils
+
         self.original_upscale = comfy.utils.common_upscale
-        comfy.utils.common_upscale = lambda samples, w, h, method, crop: torch.nn.functional.interpolate(samples, size=(h, w), mode="bilinear")
+        comfy.utils.common_upscale = lambda samples, w, h, method, crop: torch.nn.functional.interpolate(
+            samples, size=(h, w), mode="bilinear"
+        )
         from Upscale_By_Max_Side import UpscaleByMaxSide
+
         self.node = UpscaleByMaxSide()
 
     def tearDown(self):
         import comfy.utils
+
         comfy.utils.common_upscale = self.original_upscale
 
     def _make_image(self, h, w):
@@ -82,17 +87,20 @@ class TestUpscaleByMaxSide(unittest.TestCase):
 
     def test_input_types_returns_dict(self):
         from Upscale_By_Max_Side import UpscaleByMaxSide
+
         result = UpscaleByMaxSide.INPUT_TYPES()
         self.assertIn("required", result)
         self.assertIn("Image", result["required"])
 
     def test_has_description(self):
         from Upscale_By_Max_Side import UpscaleByMaxSide
+
         self.assertTrue(hasattr(UpscaleByMaxSide, "DESCRIPTION"))
         self.assertIsInstance(UpscaleByMaxSide.DESCRIPTION, str)
 
     def test_mappings_exported(self):
         from Upscale_By_Max_Side import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
         self.assertIn("UpscaleByMaxSide", NODE_CLASS_MAPPINGS)
         self.assertIn("UpscaleByMaxSide", NODE_DISPLAY_NAME_MAPPINGS)
 

@@ -35,7 +35,15 @@ class UpscaleByMaxSide:
             "required": {
                 "Image": ("IMAGE",),
                 "Max Side": ("INT", {"default": DEFAULT_MAX_SIDE, "min": MIN_MAX_SIDE, "max": MAX_MAX_SIDE, "step": 8}),
-                "Divisibility": ("INT", {"default": DEFAULT_DIVISIBILITY, "min": MIN_DIVISIBILITY, "max": MAX_DIVISIBILITY, "step": DIVISIBILITY_STEP}),
+                "Divisibility": (
+                    "INT",
+                    {
+                        "default": DEFAULT_DIVISIBILITY,
+                        "min": MIN_DIVISIBILITY,
+                        "max": MAX_DIVISIBILITY,
+                        "step": DIVISIBILITY_STEP,
+                    },
+                ),
                 "Method": (
                     ["lanczos", "bicubic", "bilinear", "nearest-exact", "area"],
                     {"default": DEFAULT_UPSCALE_METHOD},

@@ -2,7 +2,9 @@ from typing import Any
 
 
 class LLM_Fallback_Node:
-    DESCRIPTION = "Routes between the original input and the generated LLM output based on the status boolean from the LLM node."
+    DESCRIPTION = (
+        "Routes between the original input and the generated LLM output based on the status boolean from the LLM node."
+    )
 
     RETURN_TYPES: tuple[str, ...] = ("STRING",)
     RETURN_NAMES: tuple[str, ...] = ("Final Text",)

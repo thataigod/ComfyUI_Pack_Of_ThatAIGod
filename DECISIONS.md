@@ -167,25 +167,28 @@ This document records significant architectural and tooling decisions to prevent
 
 ---
 
-### D12: `_run_async` Replaces `_get_loop` + `run_until_complete`
+### D12: `_run_async_stream` Replaces `_get_loop` + `run_until_complete`
 
 **Date:** 2026-05-30  
 **Status:** Accepted (critical)  
 **Context:** The original async-to-sync bridge used `_get_loop()` which created a new event loop via `asyncio.new_event_loop()` + `asyncio.set_event_loop()`, cached it in a global `_LOOP`, and called `loop.run_until_complete()`. This fails when ComfyUI's own event loop is already running in the same thread, producing `RuntimeError: Cannot run the event loop while another loop is running`.
 
-**Decision:** Replace with `_run_async(coro)` helper that:
-1. Calls `asyncio.get_running_loop()` to detect if a loop is already running.
-2. **No running loop:** Uses `asyncio.run(coro)` directly (creates, runs, and closes its own loop).
-3. **Running loop present (ComfyUI):** Dispatches `asyncio.run(coro)` to a `ThreadPoolExecutor(max_workers=4)` so the new loop runs in its own thread without colliding.
+**Decision:** Replace with `_run_async_stream()` — a generator function that runs the async producer on a dedicated daemon thread, bridging results back to the sync caller via a `queue.Queue`. This avoids event loop collision entirely by keeping the async work on its own thread.
+
+**How it works:**
+1. Creates a daemon `threading.Thread` that creates a fresh event loop via `asyncio.new_event_loop()`, sets it on the thread, and runs the async producer to completion.
+2. The producer yields SSE lines into a bounded `queue.Queue` (maxsize=50), providing backpressure.
+3. The sync caller iterates the queue, yielding chunks as they arrive.
+4. Errors from the async thread are captured and re-raised in the sync caller after the sentinel.
 
 **Alternatives Considered:**
 - `loop.run_until_complete()` on a new loop: Fails when another loop is running in the same thread (the root cause).
 - `asyncio.ensure_future()` on the running loop: Requires the calling code to be async-compatible, which ComfyUI node `generate()` methods are not (they are sync).
 - `nest_asyncio` patch: External dependency, modifies global runtime behavior.
+- `ThreadPoolExecutor` dispatch: Considered but the simpler `threading.Thread` approach avoids executor lifecycle management.
 
 **Consequences:**
 - Removes `_LOOP` global, `_get_loop()`, `_close_loop()`, and the `atexit` import.
-- Adds `_EXECUTOR` module-level thread pool (`concurrent.futures.ThreadPoolExecutor`).
-- Thread dispatch adds ~1ms overhead per call when ComfyUI's loop is running.
-- The thread pool is bounded (max 4 workers), so concurrent LLM calls may queue.
-- Tests cover both branches (`test_run_async_no_loop` and `test_run_async_from_loop`).
+- Daemon thread means no explicit cleanup needed — thread exits when the process ends.
+- Bounded queue (maxsize=50) provides backpressure against fast producers.
+- Thread + queue bridge adds ~1ms overhead per streaming call.
