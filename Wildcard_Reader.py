@@ -1,3 +1,23 @@
+"""Wildcard Reader node for ComfyUI.
+
+Provides :class:`WildcardReader`, which resolves ``__wildcard__`` placeholder
+tokens in text by randomly selecting lines from matching ``.txt`` files in the
+``wildcards/`` directory.
+
+Key features:
+
+* Three selection modes: deterministic (seed-based), full random, and no-repeat deck
+* Nested wildcard resolution — wildcard files may themselves contain ``__tags__``
+  (up to :data:`_MAX_WILDCARD_ITERATIONS` levels deep)
+* ``{option1|option2|option3}`` inline choice syntax (pipe-separated)
+* Mtime-based file content cache to avoid redundant disk reads (see DECISIONS.md D4)
+* Path-traversal protection — wildcard names are resolved only within the
+  ``wildcards/`` directory
+* Prepend / Append text inputs combined with a configurable delimiter
+
+See ``wildcards/README.md`` for the wildcard file naming scheme and examples.
+"""
+
 import logging
 import os
 import random
@@ -6,9 +26,14 @@ from typing import Any
 
 logger: logging.Logger = logging.getLogger("ThatAIGod")
 
-_WILDCARD_PATTERN: re.Pattern[str] = re.compile(r"__([a-zA-Z0-9_\-\/\\\.]+)__")
+# Matches __tag__ tokens; allows letters, digits, underscores, hyphens, slashes,
+# backslashes, and dots so that subdirectory paths work (e.g. __autowildcards/colors__).
+_WILDCARD_PATTERN: re.Pattern[str] = re.compile(r"__([a-zA-Z0-9_\-\/\\\\.]+)__")
+# Matches {choice1|choice2|...} inline choice blocks (pipe-separated).
 _CHOICE_PATTERN: re.Pattern[str] = re.compile(r"\{([^}]+)\}")
+# Maximum number of nested wildcard resolution passes to prevent infinite loops.
 _MAX_WILDCARD_ITERATIONS: int = 50
+# Maximum number of file-content cache entries before FIFO eviction (see DECISIONS.md D4).
 _MAX_CONTENT_CACHE_SIZE: int = 100
 
 
@@ -16,18 +41,27 @@ class WildcardReader:
     """Resolves __wildcard__ tokens in text with random lines from matching .txt files.
 
     Supports deterministic (seed-based), full random, and no-repeat deck modes.
-    Files are cached by mtime for performance.
+    Files are cached by mtime for performance (see DECISIONS.md D4).
     """
 
     DESCRIPTION = "Replaces __wildcard__ tokens in text with random lines from matching text files in the wildcards directory. Supports deterministic (seed-based), full random, and no-repeat deck modes."
 
+    # Class-level caches shared across all instances (ComfyUI uses singletons).
+    # _file_index_cache: wildcards_dir → {filename → [relative_paths]}
     _file_index_cache: dict[str, dict[str, list[str]]] = {}
+    # _file_mtimes: wildcards_dir → {absolute_path → mtime}
     _file_mtimes: dict[str, dict[str, float]] = {}
+    # _file_content_cache: absolute_path → (mtime, lines)
     _file_content_cache: dict[str, tuple[float, list[str]]] = {}
+    # _deck_cache: absolute_path → (mtime, shuffled_deck_list)
     _deck_cache: dict[str, tuple[float, list[str]]] = {}
 
     @classmethod
     def INPUT_TYPES(cls) -> dict[str, Any]:
+        """Return the ComfyUI input schema for this node.
+
+        Scans the ``wildcards/`` directory at startup to populate the dropdown.
+        """
         current_dir: str = os.path.dirname(os.path.realpath(__file__))
         wildcards_dir: str = os.path.join(current_dir, "wildcards")
 
@@ -65,19 +99,59 @@ class WildcardReader:
                         "multiline": True,
                         "dynamic": True,
                         "placeholder": "Text in this field is evaluated for wildcards. Example: 'A woman wearing a __colors__ top'",
+                        "tooltip": (
+                            "Text containing __wildcard__ tokens and/or {choice1|choice2} inline choices. "
+                            "Wildcards are resolved recursively up to 50 levels deep."
+                        ),
                     },
                 ),
-                "Select to add Wildcard": (options_list,),
+                "Select to add Wildcard": (
+                    options_list,
+                    {"tooltip": "Select a wildcard file to append its tag to the text field above."},
+                ),
                 "mode": (
                     ["Deterministic (Seed)", "Full Random", "Random (No Repeat)"],
-                    {"default": "Deterministic (Seed)"},
+                    {
+                        "default": "Deterministic (Seed)",
+                        "tooltip": (
+                            "Deterministic: same seed always produces the same output. "
+                            "Full Random: new random choice every run. "
+                            "Random (No Repeat): shuffles and draws without replacement."
+                        ),
+                    },
                 ),
-                "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}),
-                "delimiter": ("STRING", {"default": ", "}),
+                "seed": (
+                    "INT",
+                    {
+                        "default": 0,
+                        "min": 0,
+                        "max": 0xFFFFFFFFFFFFFFFF,
+                        "tooltip": "Seed for Deterministic mode. Ignored in Full Random and Random (No Repeat) modes.",
+                    },
+                ),
+                "delimiter": (
+                    "STRING",
+                    {
+                        "default": ", ",
+                        "tooltip": "Separator inserted between Prependable Text, the resolved text, and Appendable Text.",
+                    },
+                ),
             },
             "optional": {
-                "Prependable Text": ("STRING", {"forceInput": True}),
-                "Appendable Text": ("STRING", {"forceInput": True}),
+                "Prependable Text": (
+                    "STRING",
+                    {
+                        "forceInput": True,
+                        "tooltip": "Text added before the resolved wildcard text, separated by the delimiter.",
+                    },
+                ),
+                "Appendable Text": (
+                    "STRING",
+                    {
+                        "forceInput": True,
+                        "tooltip": "Text added after the resolved wildcard text, separated by the delimiter.",
+                    },
+                ),
             },
         }
 
@@ -88,11 +162,35 @@ class WildcardReader:
 
     @classmethod
     def IS_CHANGED(cls, text: str, mode: str, seed: int, delimiter: str, **kwargs: Any) -> float | int:
+        """Tell ComfyUI when to re-execute this node.
+
+        Returns ``float("nan")`` for non-deterministic modes, which causes ComfyUI
+        to treat the node as always changed and re-execute it on every run.
+        For Deterministic mode the seed value is returned; the node is only
+        re-executed when the seed changes.
+        """
         if mode != "Deterministic (Seed)":
             return float("nan")
         return seed
 
     def _build_file_index(self, wildcards_dir: str) -> dict[str, list[str]]:
+        """Build or return a cached index mapping basename → list of relative paths.
+
+        The index maps each ``.txt`` basename (e.g. ``"colors.txt"``) to the list of
+        relative paths (from *wildcards_dir*) where a file with that name exists.
+        This supports subdirectory files while still allowing short ``__tag__`` syntax
+        that resolves to the first matching file.
+
+        The cache is keyed by *wildcards_dir* and is invalidated if any ``.txt`` file's
+        mtime has changed since the last build (see DECISIONS.md D4 and D8).
+
+        Args:
+            wildcards_dir: Absolute path to the wildcards root directory.
+
+        Returns:
+            A dict mapping filename basename (``"foo.txt"``) to a sorted list of
+            relative paths (``["foo.txt", "autowildcards/foo.txt"]``).
+        """
         cache_key: str = wildcards_dir
         needs_refresh = cache_key not in self._file_index_cache
 
@@ -132,6 +230,23 @@ class WildcardReader:
         return file_index
 
     def _get_file_lines(self, file_path: str) -> list[str] | None:
+        """Return the non-empty, non-comment lines of *file_path* from the content cache.
+
+        The cache entry is keyed by absolute path and stores ``(mtime, lines)``.
+        If the file's mtime has changed the cached entry is replaced.  When the cache
+        reaches :data:`_MAX_CONTENT_CACHE_SIZE` entries the oldest entry is evicted
+        (FIFO — see DECISIONS.md D4).
+
+        Lines starting with ``#`` are treated as comments and excluded.  Blank lines
+        are also excluded.
+
+        Args:
+            file_path: Absolute path to the wildcard ``.txt`` file.
+
+        Returns:
+            A list of stripped non-empty, non-comment lines, or ``None`` if the
+            file cannot be read (``OSError`` or ``UnicodeDecodeError``).
+        """
         try:
             current_mtime = os.path.getmtime(file_path)
         except OSError:
@@ -157,6 +272,36 @@ class WildcardReader:
     def _get_line_from_file(
         self, wildcard_tag: str, file_index: dict[str, list[str]], wildcards_dir: str, mode: str, rng: random.Random
     ) -> str:
+        """Resolve a single wildcard tag to a randomly selected line from its file.
+
+        Resolution strategy:
+
+        1. Strip surrounding underscores and normalise path separators.
+        2. Look for an exact file at ``wildcards_dir / tag.txt``.
+        3. If not found, fall back to the file index by basename.
+        4. Apply a path-traversal check — the resolved path must be inside
+           *wildcards_dir* to prevent reading arbitrary files.
+        5. Select a line according to *mode*:
+           - ``"Random (No Repeat)"`` — use the deck cache (shuffle-then-pop).
+           - ``"Deterministic (Seed)"`` — sort lines then pick with ``rng.choice``.
+           - ``"Full Random"`` — pick with ``rng.choice`` (unsorted).
+
+        Returns the original ``__tag__`` string unchanged if the file cannot be
+        found or read, so that unresolved wildcards are visible in the output.
+
+        Args:
+            wildcard_tag: The tag string between the double underscores (e.g.
+                ``"colors"`` or ``"autowildcards/neutral_colors_male"``).
+            file_index: Index dict from :meth:`_build_file_index`.
+            wildcards_dir: Absolute path to the wildcards root directory.
+            mode: One of ``"Deterministic (Seed)"``, ``"Full Random"``,
+                ``"Random (No Repeat)"``.
+            rng: Seeded (or unseeded for random modes) :class:`random.Random` instance.
+
+        Returns:
+            A randomly selected line from the file, or the original
+            ``"__tag__"`` string if the file could not be resolved.
+        """
         clean_tag: str = wildcard_tag.strip("_").replace("\\", "/")
 
         if not clean_tag.endswith(".txt"):
@@ -213,6 +358,35 @@ class WildcardReader:
                 return rng.choice(lines)
 
     def process(self, text: str, mode: str, seed: int, delimiter: str, **kwargs: Any) -> tuple[str]:
+        """Resolve all wildcard tokens in *text* and return the final string.
+
+        Processing steps:
+
+        1. Initialise the RNG: seeded with *seed* for Deterministic mode, unseeded
+           for the two random modes.
+        2. Build (or return cached) file index for the wildcards directory.
+        3. Iteratively resolve ``__wildcard__`` tokens up to
+           :data:`_MAX_WILDCARD_ITERATIONS` times.  Each pass resolves one unique
+           tag at a time (sorted for determinism) until no resolvable tags remain
+           or the iteration cap is hit.
+        4. Resolve ``{choice1|choice2|...}`` inline choices with :data:`_CHOICE_PATTERN`
+           (processed after all wildcard expansion, so wildcard values can themselves
+           contain inline choices).
+        5. Strip leading/trailing whitespace.
+        6. Join Prependable Text, the resolved text, and Appendable Text with
+           *delimiter*.
+
+        Args:
+            text: Input text containing ``__wildcard__`` tags and/or ``{a|b}`` choices.
+            mode: Selection mode — ``"Deterministic (Seed)"``, ``"Full Random"``,
+                or ``"Random (No Repeat)"``.
+            seed: RNG seed (used in Deterministic mode only).
+            delimiter: Separator string for prepend/append joining.
+            **kwargs: Optional ``"Prependable Text"`` and ``"Appendable Text"`` strings.
+
+        Returns:
+            A 1-tuple ``(resolved_text,)`` containing the fully resolved string.
+        """
         prepend_text: str = kwargs.get("Prependable Text", "")
         append_text: str = kwargs.get("Appendable Text", "")
 

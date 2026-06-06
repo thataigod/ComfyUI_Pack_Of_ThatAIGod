@@ -1,5 +1,7 @@
 # ComfyUI Pack Of ThatAIGod
 
+[![CI](https://github.com/thataigod/ComfyUI-Pack-Of-ThatAIGod/actions/workflows/python-package.yml/badge.svg)](https://github.com/thataigod/ComfyUI-Pack-Of-ThatAIGod/actions/workflows/python-package.yml)
+
 A custom node pack for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) providing LLM integration, image utilities, resolution management, and wildcard-based prompt generation.
 
 ## Features
@@ -75,11 +77,11 @@ Connects to OpenRouter or a local LLM server for text generation with streaming 
 | User Prompt | STRING | Your input text (supports dynamic connections) |
 | Temperature | FLOAT | Randomness (0.0 = deterministic, 2.0 = max creative) |
 | Max Tokens | INT | Maximum response length (1-128000) |
-| seed | INT | For deterministic generation |
+| seed | INT | For deterministic generation. **Note:** seed `0` is treated as "no seed" and is omitted from the request payload; use any non-zero value for reproducible outputs |
 | Timeout (Seconds) | INT | Request timeout (1-300) |
 | API Key Env Var | Dropdown | Which environment variable holds your API key |
 | Local URL | STRING | Local LLM server endpoint |
-| Image(s) | IMAGE | Optional image input for vision models |
+| Image(s) | IMAGE | Optional image input for vision models. Images larger than 8192×8192 pixels will raise an error |
 
 | Output | Type | Description |
 |--------|------|-------------|
@@ -150,7 +152,7 @@ Saves images with format selection, quality/compression control, filename templa
 | Input | Type | Description |
 |-------|------|-------------|
 | images | IMAGE | The images to save |
-| filename_prefix | STRING | Prefix with template variables. Supports `%width%`, `%height%`, `%date:FORMAT%` (e.g. `%date:yyyy_MM_dd%`), `%year%`, `%month%`, `%day%`, `%hour%`, `%minute%`, `%second%`, `%counter%` (sequential number, place anywhere), and `%batch_num%` |
+| filename_prefix | STRING | Prefix with template variables. Supports `%width%`, `%height%`, `%date:FORMAT%` (e.g. `%date:yyyy_MM_dd%`), `%year%`, `%month%`, `%day%`, `%hour%`, `%minute%`, `%second%` (shorthand for the most common date parts), `%counter%` (sequential number, place anywhere in the filename), and `%batch_num%` |
 | file_format | Dropdown | `png`, `jpeg`, or `webp` |
 | quality | INT | Quality for JPEG/WebP (1-100, default 95) |
 | compress_level | INT | PNG compression (0-9, default 4) |
@@ -186,7 +188,7 @@ Resolves `__wildcard__` placeholders by randomly selecting lines from `.txt` fil
 - **Random (No Repeat)** - Shuffles and draws without replacement until depleted
 
 **Inline Choice Syntax:**
-Use `{option1/option2/option3}` in your text to randomly pick one option (separated by `/`). Works alongside `__wildcard__` tags and respects the same mode/seed settings.
+Use `{option1|option2|option3}` in your text to randomly pick one option (separated by `|`). Works alongside `__wildcard__` tags and respects the same mode/seed settings.
 
 **Nested Wildcards:**
 Wildcard files can reference other wildcards. For example, `all_colors_male.txt` contains:
@@ -285,7 +287,7 @@ wildcards/
 
 ```
 A woman wearing a __female_casual_outfit__ in __bright_colors_female__ colors,
-standing in a __subject_female__ pose
+standing in a __subject_female__ pose, {smiling|looking serious|laughing}
 ```
 
 ## UI Features

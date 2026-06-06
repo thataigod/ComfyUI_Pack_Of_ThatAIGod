@@ -1,3 +1,18 @@
+"""Core LLM utility module for ComfyUI-Pack-Of-ThatAIGod.
+
+Provides helper classes and functions used by :mod:`LLM_Node`:
+
+* :class:`LlmConfigBuilder` — builds flat config dicts, OpenAI-style message lists,
+  and JSON request payloads from ComfyUI ``**kwargs``.
+* :class:`LlmStreamer` — streams SSE responses via ``aiohttp`` and parses delta chunks.
+* :func:`encode_image_to_base64` — converts a ComfyUI image tensor to a base64 PNG string.
+* :func:`fetch_openrouter_credits` — fetches the remaining OpenRouter credit balance (cached).
+* :func:`push_error_to_ui` — sends an error message to the ComfyUI streaming widget.
+
+The async streaming pipeline bridges ``aiohttp`` (async) to ComfyUI's synchronous node
+execution model via a daemon thread + bounded ``queue.Queue``.  See DECISIONS.md D12.
+"""
+
 import asyncio
 import base64
 import http.client
@@ -21,13 +36,21 @@ from server import PromptServer
 
 logger = logging.getLogger("ThatAIGod")
 
+# Maximum number of LLM responses held in the LRU cache on LLM_Node.
 CACHE_MAX_SIZE: int = 10
+# Timeout in seconds for the OpenRouter credits API call.
 CREDITS_FETCH_TIMEOUT: int = 3
+# How long (seconds) to cache a credits result before re-fetching.
 CREDITS_CACHE_TTL: int = 60
+# Maximum number of characters read from an HTTP error response body.
 MAX_ERROR_BODY_LENGTH: int = 500
+# Number of streaming retry attempts for transient errors.
 MAX_RETRIES: int = 3
+# Base delay (seconds) for exponential backoff between retries.
 RETRY_BACKOFF_BASE: float = 1.0
+# HTTP status codes that warrant an automatic retry.
 RETRYABLE_STATUS_CODES: frozenset[int] = frozenset({429, 502, 503})
+# Maximum allowed image dimension (width or height) for vision inputs.
 MAX_IMAGE_DIMENSION: int = 8192
 
 DEFAULT_MODELS: list[str] = [
@@ -45,6 +68,21 @@ class LlmConfigBuilder:
 
     @staticmethod
     def build_config(kwargs: dict[str, Any]) -> dict[str, Any]:
+        """Extract and normalise ComfyUI node ``**kwargs`` into a flat config dict.
+
+        All keys use snake_case and have safe defaults so that downstream code never
+        needs to call ``kwargs.get(...)`` directly.
+
+        Args:
+            kwargs: The raw keyword arguments passed to the node's execution method,
+                typically containing ComfyUI input widget values.
+
+        Returns:
+            A dict with keys: ``mode``, ``model_name``, ``system_prompt``,
+            ``user_prompt``, ``temperature``, ``max_tokens``, ``seed``,
+            ``timeout_seconds``, ``unique_id``, ``api_key_env_var``,
+            ``local_url``, ``vision_image``.
+        """
         return {
             "mode": kwargs.get("Mode", "OpenRouter"),
             "model_name": kwargs.get("Model", "mistralai/devstral-2512:free"),
@@ -62,6 +100,28 @@ class LlmConfigBuilder:
 
     @staticmethod
     def resolve_api_config(cfg: dict[str, Any]) -> tuple[str, str, str | None]:
+        """Resolve the API base URL and authentication key from *cfg*.
+
+        Returns a 3-tuple ``(base_url, api_key, error_message)``.  On success
+        ``error_message`` is ``None``; on failure ``base_url`` and ``api_key``
+        are empty strings and ``error_message`` contains a human-readable
+        description suitable for display in the UI.
+
+        Validation rules:
+        - OpenRouter mode: the environment variable named by ``cfg["api_key_env_var"]``
+          must be set and non-empty.
+        - Local mode: the hostname of ``cfg["local_url"]`` must be ``localhost``,
+          ``127.0.0.1``, or ``::1`` (security restriction, see README).
+        - Either mode: ``cfg["user_prompt"]`` must be non-empty unless a vision
+          image is also provided.
+
+        Args:
+            cfg: Config dict produced by :meth:`build_config`.
+
+        Returns:
+            ``(base_url, api_key, None)`` on success, or
+            ``("", "", error_string)`` on validation failure.
+        """
         mode = cfg["mode"]
         if mode == "OpenRouter":
             base_url = "https://openrouter.ai/api/v1/chat/completions"
@@ -85,6 +145,22 @@ class LlmConfigBuilder:
 
     @staticmethod
     def build_messages(system_prompt: str, user_prompt: str, b64_image: str | None) -> list[dict[str, Any]]:
+        """Build an OpenAI-style messages list for the chat completions API.
+
+        When *b64_image* is provided the user message uses the multimodal content
+        format (a list with a ``text`` part and an ``image_url`` part).  Otherwise
+        the user message is a plain string.
+
+        Args:
+            system_prompt: The system instruction text.
+            user_prompt: The user's input text.
+            b64_image: Optional base64-encoded PNG string for vision models.  When
+                provided the image is embedded as a data-URI (``data:image/png;base64,...``).
+
+        Returns:
+            A list of message dicts suitable for the ``"messages"`` field of the
+            chat completions request payload.
+        """
         messages: list[dict[str, Any]] = [{"role": "system", "content": system_prompt}]
         if b64_image:
             messages.append(
@@ -105,6 +181,24 @@ class LlmConfigBuilder:
 
     @staticmethod
     def build_payload(cfg: dict[str, Any], messages: list[dict[str, Any]]) -> dict[str, Any]:
+        """Build the JSON request payload for the chat completions API.
+
+        ``stream`` is always ``True`` because all LLM responses are consumed via
+        server-sent events.
+
+        **seed behaviour:** when ``cfg["seed"]`` is ``0`` the ``seed`` field is
+        omitted from the payload entirely.  Most LLM APIs interpret a missing
+        seed as "non-deterministic"; sending ``seed=0`` may be treated as a
+        specific seed value on some backends, which would cause unexpected
+        determinism.
+
+        Args:
+            cfg: Config dict produced by :meth:`build_config`.
+            messages: Message list produced by :meth:`build_messages`.
+
+        Returns:
+            A dict ready to be JSON-serialised and POSTed to the API endpoint.
+        """
         payload: dict[str, Any] = {
             "model": cfg["model_name"],
             "messages": messages,
@@ -118,18 +212,51 @@ class LlmConfigBuilder:
 
 
 class LlmStreamer:
-    """Handles streaming LLM responses via aiohttp with async-to-sync bridging."""
+    """Handles streaming LLM responses via aiohttp with async-to-sync bridging.
+
+    See DECISIONS.md D12 for the rationale behind the thread + queue architecture.
+    """
 
     @staticmethod
     def stream_response(url: str, payload: dict[str, Any], api_key: str, timeout: int) -> Iterator[bytes]:
+        """Stream SSE lines from the chat completions API.
+
+        Delegates to :func:`_run_async_stream`, which runs the async aiohttp
+        producer on a dedicated daemon thread and bridges results back via a
+        bounded ``queue.Queue``.
+
+        Args:
+            url: Full API endpoint URL.
+            payload: JSON-serialisable request payload.
+            api_key: Bearer token for the ``Authorization`` header.
+            timeout: Socket connect timeout in seconds.
+
+        Yields:
+            Raw SSE line bytes (e.g. ``b"data: {...}\\n"``).
+        """
         yield from _run_async_stream(url, payload, api_key, timeout)
 
     @staticmethod
     def parse_stream_chunk(line: bytes) -> tuple[str | None, str, str]:
-        """Parse an SSE line. Returns (combined, reasoning, content).
-        - combined: combined string for UI streaming (None for [DONE])
-        - reasoning: reasoning text from this chunk
-        - content: content text from this chunk
+        """Parse an SSE line from the streaming response.
+
+        Returns a 3-tuple ``(combined, reasoning, content)``:
+
+        * ``combined``: the concatenation of reasoning and content text for this
+          chunk, used for the streaming UI preview.  ``None`` signals the end of
+          the stream (``[DONE]`` sentinel).
+        * ``reasoning``: reasoning/thinking text from the ``delta.reasoning``
+          or ``delta.reasoning_content`` field (empty string if absent).
+        * ``content``: regular response text from the ``delta.content`` field
+          (empty string if absent).
+
+        Non-data lines (e.g. blank lines, comments) return ``("", "", "")``.
+
+        Args:
+            line: A raw bytes line from the SSE stream.
+
+        Returns:
+            ``(combined, reasoning, content)`` as described above.
         """
         decoded_line: str = line.decode("utf-8").strip()
         if decoded_line.startswith("data: "):
@@ -150,6 +277,8 @@ class LlmStreamer:
         return ("", "", "")
 
 
+# Standard headers sent with every streaming request.
+# The X-Title header is an OpenRouter convention for identifying the calling application.
 _STREAM_HEADERS: dict[str, str] = {
     "Content-Type": "application/json",
     "User-Agent": "ThatAIGod-ComfyUI-Node/1.0",
@@ -158,7 +287,13 @@ _STREAM_HEADERS: dict[str, str] = {
 
 
 async def _async_fetch_stream(url: str, payload: dict[str, Any], api_key: str, timeout: int) -> AsyncIterator[bytes]:
-    """Async generator that yields SSE lines as they arrive from the API."""
+    """Async generator that yields SSE lines as they arrive from the API.
+
+    Retries up to :data:`MAX_RETRIES` times on :data:`RETRYABLE_STATUS_CODES`
+    (429, 502, 503) and transient network errors, using exponential backoff with
+    the ``Retry-After`` header when available.  See DECISIONS.md D2 for why
+    ``asyncio.sleep`` is used instead of ``time.sleep``.
+    """
     headers: dict[str, str] = {**_STREAM_HEADERS, "Authorization": f"Bearer {api_key}"}
     for attempt in range(MAX_RETRIES):
         try:
@@ -206,7 +341,16 @@ async def _async_fetch_stream(url: str, payload: dict[str, Any], api_key: str, t
 
 
 def _run_async_stream(url: str, payload: dict[str, Any], api_key: str, timeout: int) -> Iterator[bytes]:
-    """Run the async streaming generator in a thread, yielding chunks one by one as they arrive."""
+    """Run the async streaming generator in a thread, yielding chunks one by one as they arrive.
+
+    Creates a daemon :class:`threading.Thread` that owns a fresh event loop and
+    runs :func:`_async_fetch_stream`.  Chunks are passed back to the calling thread
+    via a bounded :class:`queue.Queue` (maxsize=50) that provides natural backpressure.
+    A sentinel object signals end-of-stream.  Any exception raised in the producer
+    thread is re-raised in the calling thread after the sentinel is received.
+
+    See DECISIONS.md D12 for the full rationale behind this architecture.
+    """
     q: queue.Queue = queue.Queue(maxsize=50)
     _SENTINEL: object = object()
     _error: list[Exception] = []
@@ -254,10 +398,15 @@ def encode_image_to_base64(image_tensor: torch.Tensor) -> str:
     """Encode a ComfyUI image tensor to a base64 PNG string.
 
     Args:
-        image_tensor: A (1, H, W, 3) float32 tensor with values in [0, 1].
+        image_tensor: A ``(1, H, W, 3)`` float32 tensor with values in ``[0, 1]``.
+            Only the first image in a batch is encoded (index 0).
 
     Returns:
-        Base64-encoded PNG string.
+        Base64-encoded PNG string suitable for embedding in a ``data:image/png;base64,``
+        data-URI.
+
+    Raises:
+        ValueError: If either dimension exceeds :data:`MAX_IMAGE_DIMENSION` (8192 px).
     """
     arr: np.ndarray = (255.0 * image_tensor[0].cpu().numpy()).astype("uint8")
     if arr.shape[0] > MAX_IMAGE_DIMENSION or arr.shape[1] > MAX_IMAGE_DIMENSION:
@@ -270,16 +419,25 @@ def encode_image_to_base64(image_tensor: torch.Tensor) -> str:
     return base64.b64encode(buffered.getvalue()).decode("utf-8")
 
 
+# In-memory cache mapping API key → (fetch_timestamp, formatted_balance).
+# Results are valid for CREDITS_CACHE_TTL seconds to reduce redundant API calls.
 _credits_cache: dict[str, tuple[float, str]] = {}
 
 
 def fetch_openrouter_credits(api_key: str) -> str | None:
-    """Fetch remaining OpenRouter credit balance as a formatted string (e.g. '$7.50').
+    """Fetch remaining OpenRouter credit balance as a formatted string (e.g. ``'$7.50'``).
 
-    Results are cached for CREDITS_CACHE_TTL seconds to avoid redundant API calls.
-    Returns None on any failure.
+    Results are cached for :data:`CREDITS_CACHE_TTL` seconds to avoid redundant
+    API calls on every generation.
+
+    Args:
+        api_key: OpenRouter bearer token.
+
+    Returns:
+        Formatted balance string (e.g. ``"$7.50"``), or ``None`` on any failure
+        (network error, malformed response, etc.).
     """
-    import time as _time
+    import time as _time  # Imported locally to avoid ruff flagging unused import (see DECISIONS.md D2)
 
     now = _time.time()
     if api_key in _credits_cache:
@@ -312,6 +470,17 @@ def fetch_openrouter_credits(api_key: str) -> str | None:
 
 
 def push_error_to_ui(unique_id: str | None, error_msg: str) -> None:
+    """Send *error_msg* to the streaming preview widget for the node identified by *unique_id*.
+
+    Uses ``PromptServer.instance.send_sync`` to push a WebSocket message that the
+    frontend ``dynamic_display.js`` extension handles as an ``"update"`` event.
+    Has no effect when *unique_id* is ``None`` (e.g. during batch-mode execution
+    without a running UI).
+
+    Args:
+        unique_id: The ComfyUI node ID string, or ``None`` if the UI is not active.
+        error_msg: Human-readable error message to display in the streaming widget.
+    """
     if unique_id:
         PromptServer.instance.send_sync(
             "that_ai_god.stream",

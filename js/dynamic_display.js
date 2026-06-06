@@ -1,10 +1,53 @@
+/**
+ * @fileoverview ComfyUI frontend extension for ComfyUI-Pack-Of-ThatAIGod.
+ *
+ * Extends three node types:
+ *
+ *  1. **LLM_Node** — Adds a read-only streaming text preview widget that updates
+ *     in real time via WebSocket.  Also adds a "Refresh Models" button that fetches
+ *     the current model list from OpenRouter or the local server and rebuilds the
+ *     Model dropdown.
+ *
+ *  2. **DynamicResolution** — Listens for the node's output values and updates the
+ *     output-pin labels and an info text widget with the calculated dimensions.
+ *
+ *  3. **WildcardReader** — Intercepts the "Select to add Wildcard" dropdown change
+ *     and appends the selected __tag__ to the text widget, then resets the dropdown.
+ *
+ * ## WebSocket Event Protocol
+ *
+ * The Python backend emits `that_ai_god.stream` events via `PromptServer.send_sync`.
+ * Each event payload has the shape:
+ *
+ * ```json
+ * { "node": "<node_id>", "type": "<event_type>", "delta": "<text_chunk>" }
+ * ```
+ *
+ * | `type`    | Meaning |
+ * |-----------|---------|
+ * | `"start"` | Generation started; clear the preview widget |
+ * | `"update"`| Append `delta` to the preview widget |
+ * | `"clear"` | Clear the preview (used when switching from reasoning to content) |
+ *
+ * ## Constants
+ *
+ * @constant {number} LLM_WIDGET_HEIGHT - Height (px) of the streaming preview textarea.
+ *     130 px shows roughly 5-6 lines at the default font size.
+ * @constant {number} LLM_WIDGET_TOTAL_HEIGHT - LLM_WIDGET_HEIGHT + 20 px for padding.
+ * @constant {number} SPACER_HEIGHT - Blank gap between the preview widget and node border.
+ * @constant {number} MIN_NODE_WIDTH - Minimum node width (px) for readability.
+ */
 import { app } from "../../scripts/app.js";
 import { api } from "../../scripts/api.js";
 import { ComfyWidgets } from "../../scripts/widgets.js";
 
+/** Height (px) of the streaming preview textarea — shows ~5 lines at default font size. */
 const LLM_WIDGET_HEIGHT = 130;
+/** Total height including bottom padding. */
 const LLM_WIDGET_TOTAL_HEIGHT = LLM_WIDGET_HEIGHT + 20;
+/** Vertical spacer between the streaming widget and the node border. */
 const SPACER_HEIGHT = 10;
+/** Minimum node width (px) for the LLM Chat node to remain readable. */
 const MIN_NODE_WIDTH = 400;
 
 app.registerExtension({

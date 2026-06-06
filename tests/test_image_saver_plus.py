@@ -207,6 +207,53 @@ class TestImageSaverPlus(unittest.TestCase):
         result = Image_Saver_Plus._resolve_date_format("yyyy_MM_dd")
         self.assertRegex(result, r"\d{4}_\d{2}_\d{2}")
 
+    def test_year_shorthand(self):
+        result = self.node.save_images(images=self.dummy_image, filename_prefix="%year%_img")
+        self.assertIn("ui", result)
+        files = [f for f in os.listdir(self.temp_dir) if f.endswith(".png")]
+        self.assertTrue(any(re.search(r"\d{4}_img", f) for f in files))
+
+    def test_month_shorthand(self):
+        result = self.node.save_images(images=self.dummy_image, filename_prefix="img_%month%")
+        self.assertIn("ui", result)
+        files = [f for f in os.listdir(self.temp_dir) if f.endswith(".png")]
+        self.assertTrue(any(re.search(r"img_\d{2}", f) for f in files))
+
+    def test_day_shorthand(self):
+        result = self.node.save_images(images=self.dummy_image, filename_prefix="img_%day%")
+        self.assertIn("ui", result)
+        files = [f for f in os.listdir(self.temp_dir) if f.endswith(".png")]
+        self.assertTrue(any(re.search(r"img_\d{2}", f) for f in files))
+
+    def test_hour_shorthand(self):
+        result = self.node.save_images(images=self.dummy_image, filename_prefix="img_%hour%h")
+        self.assertIn("ui", result)
+        files = [f for f in os.listdir(self.temp_dir) if f.endswith(".png")]
+        self.assertTrue(any(re.search(r"img_\d{2}h", f) for f in files))
+
+    def test_minute_shorthand(self):
+        result = self.node.save_images(images=self.dummy_image, filename_prefix="img_%minute%m")
+        self.assertIn("ui", result)
+        files = [f for f in os.listdir(self.temp_dir) if f.endswith(".png")]
+        self.assertTrue(any(re.search(r"img_\d{2}m", f) for f in files))
+
+    def test_second_shorthand(self):
+        result = self.node.save_images(images=self.dummy_image, filename_prefix="img_%second%s")
+        self.assertIn("ui", result)
+        files = [f for f in os.listdir(self.temp_dir) if f.endswith(".png")]
+        self.assertTrue(any(re.search(r"img_\d{2}s", f) for f in files))
+
+    def test_combined_shorthand_vars(self):
+        result = self.node.save_images(images=self.dummy_image, filename_prefix="%year%-%month%-%day%")
+        self.assertIn("ui", result)
+        files = [f for f in os.listdir(self.temp_dir) if f.endswith(".png")]
+        self.assertTrue(any(re.search(r"\d{4}-\d{2}-\d{2}", f) for f in files))
+
+    def test_shorthand_vars_constant_exists(self):
+        self.assertTrue(hasattr(Image_Saver_Plus, "_SHORTHAND_VARS"))
+        self.assertIsInstance(Image_Saver_Plus._SHORTHAND_VARS, list)
+        self.assertEqual(len(Image_Saver_Plus._SHORTHAND_VARS), 6)
+
     def test_counter_placeholder_in_default_position(self):
         self.node.save_images(images=self.dummy_image, filename_prefix="nocounter")
         saved = self._find_by_prefix("nocounter", "png")

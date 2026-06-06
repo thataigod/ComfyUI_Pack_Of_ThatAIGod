@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-pack-of-thataigod"
-version = "1.2.0"
+version = "1.3.0"
 description = "Custom node pack for ComfyUI with LLM integration, image utilities, and wildcard prompt generation"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -24,7 +24,7 @@ where = ["."]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-v --cov --cov-report=term-missing --no-header"
+addopts = "-v --cov --cov-report=term-missing --no-header --cov-fail-under=100"
 filterwarnings = ["ignore::DeprecationWarning"]
 
 [tool.coverage.run]
@@ -36,6 +36,10 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "S"]
+# N801/N802/N806: ComfyUI uses PascalCase class attributes (RETURN_TYPES, FUNCTION, etc.) by convention.
+# N815/N816: mixed-case ComfyUI attribute names (e.g. WEB_DIRECTORY) are required by the framework.
+# N999: project directory name contains hyphens which are invalid Python identifiers but valid on GitHub.
+# E501: long lines are acceptable in this project (line-length = 127).
 ignore = ["E501", "N801", "N802", "N806", "N815", "N816", "N999"]
 
 [tool.ruff.lint.per-file-ignores]
@@ -50,6 +54,10 @@ ignore = ["E501", "N801", "N802", "N806", "N815", "N816", "N999"]
 python_version = "3.10"
 strict = true
 ignore_missing_imports = true
+# disallow_untyped_defs = false: ComfyUI's INPUT_TYPES(), IS_CHANGED(), and VALIDATE_INPUTS()
+# classmethods use **kwargs patterns that mypy cannot fully resolve with strict untyped-def checking.
+# All public function signatures carry type annotations; this setting only relaxes mypy's
+# inference for internal methods where the annotation is implicit from **kwargs: Any.
 disallow_untyped_defs = false
 disallow_any_unimported = false
 warn_unused_ignores = true
