@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 - Image Saver Plus node with format selection (PNG/JPEG/WebP), quality/compression control, and optional text sidecar
 - `%date:FORMAT%` template variable support (e.g. `%date:yyyy_MM_dd%`) in filename prefixes
 - `%counter%` template variable for placing the sequential number anywhere in the filename
-- `{A/B/C}` inline choice syntax in Wildcard Reader
+- `{A|B|C}` inline choice syntax in Wildcard Reader (pipe-separated; pick one option at random)
 - 4th "Reasoning Content" output socket on LLM Chat node
 - Streaming now extracts reasoning content separately from the clean response
 

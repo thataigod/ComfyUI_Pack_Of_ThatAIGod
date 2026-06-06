@@ -12,6 +12,12 @@ This document records significant architectural and tooling decisions to prevent
 
 **Decision:** Copy `.py` files to `/tmp/thatnode/` (a valid package name) before running mypy.
 
+**Status history:**
+- **v1.1.0 (original):** Implemented the `/tmp/thatnode/` copy workaround.
+- **v1.2.0 (attempted fix):** Replaced with `mypy *.py` directly in the project root using `--ignore-missing-imports`. This caused the CHANGELOG 1.2.0 entry "Fixed CI mypy step to run directly in project root instead of temp directory copy hack".
+- **v1.2.0 (reverted):** The simplified approach failed on some CI configurations with `ComfyUI-Pack-Of-ThatAIGod contains __init__.py but is not a valid Python package name`. The `/tmp/thatnode/` workaround was restored.
+- **Current status:** The `/tmp/thatnode/` copy workaround is active and stable.
+
 **Alternatives Considered:**
 - `--explicit-package-bases` flag: Breaks glob expansion on some platforms.
 - Renaming the repo directory: Not possible (GitHub repo name is fixed).
@@ -192,3 +198,27 @@ This document records significant architectural and tooling decisions to prevent
 - Daemon thread means no explicit cleanup needed — thread exits when the process ends.
 - Bounded queue (maxsize=50) provides backpressure against fast producers.
 - Thread + queue bridge adds ~1ms overhead per streaming call.
+
+---
+
+### D13: Inline Choice Syntax Uses `|` (Pipe) as Delimiter
+
+**Date:** 2026-06-06
+**Status:** Accepted
+
+**Context:** The Wildcard Reader supports inline choice syntax — e.g., `{red|blue|green}` — that randomly picks one option. A delimiter character must be chosen that is unlikely to appear in prompt text.
+
+**Decision:** Use `|` (pipe) as the delimiter.
+
+**Alternatives Considered:**
+- `/` (slash): Natural-looking but appears frequently in paths, ratios (e.g. `16:9`), and everyday text.
+- `,` (comma): Extremely common in prompt text (e.g. `detailed, sharp focus, cinematic lighting`). Would require escaping in nearly every real-world prompt.
+- `;` (semicolon): Less common but still used in prompt text for list-like structures.
+
+**Consequences:**
+- `|` is rare in natural prompt text, minimising accidental matches.
+- The character visually resembles an "or" separator (as in `a | b`), which is intuitive.
+- Users accustomed to `/` from other wildcard tools may find this unexpected — this is why
+  the README and CHANGELOG explicitly document the `|` separator.
+- **Do NOT change the delimiter without a migration path**, as existing workflow `.json` files
+  that use `{A|B}` syntax would break.

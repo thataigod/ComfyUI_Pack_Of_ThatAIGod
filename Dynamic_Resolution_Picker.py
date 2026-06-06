@@ -1,3 +1,16 @@
+"""Dynamic Resolution Picker node for ComfyUI.
+
+Provides :class:`DynamicResolution`, which calculates optimal image dimensions
+(width × height) from a maximum-side pixel budget and an aspect ratio preset.
+
+Supports:
+* 12 named aspect-ratio presets (portrait, landscape, square)
+* 3 random-selection modes (any, portrait-only, landscape-only)
+* Optional scale factor for upscale targets
+* Keyword output for aspect-ratio prompt injection
+* Live output-pin value labels via the ``that_ai_god.stream`` WebSocket extension
+"""
+
 import random
 from typing import Any
 
@@ -44,6 +57,8 @@ _KEYWORD_MAP: dict[str, str] = {
     "Landscape 1.85:1 (Cinema)": "Landscape, 1.85:1 Aspect Ratio, Theatrical Format",
 }
 
+# Pre-sorted lists used by rng.choice() so that random selection is deterministic
+# for a given seed regardless of dict insertion order.
 _SORTED_PORTRAIT_ITEMS: list[tuple[str, float]] = sorted(_PORTRAITS.items())
 _SORTED_LANDSCAPE_ITEMS: list[tuple[str, float]] = sorted(_LANDSCAPES.items())
 _SORTED_ALL_ITEMS: list[tuple[str, float]] = sorted(_ALL_RATIOS.items())
@@ -85,6 +100,7 @@ class DynamicResolution:
 
     @classmethod
     def INPUT_TYPES(cls) -> dict[str, Any]:
+        """Return the ComfyUI input schema for this node."""
         ratio_options: list[str] = [
             "Random (Any)",
             "Random (Portrait)",
@@ -112,18 +128,54 @@ class DynamicResolution:
                         "min": DEFAULT_MIN_DIMENSION,
                         "max": DEFAULT_MAX_DIMENSION,
                         "step": 8,
+                        "tooltip": "Target pixel count for the longest side of the base (unscaled) image.",
                     },
                 ),
-                "Aspect Ratio": (ratio_options, {"default": "Square 1:1"}),
+                "Aspect Ratio": (
+                    ratio_options,
+                    {
+                        "default": "Square 1:1",
+                        "tooltip": "Aspect ratio preset. Random modes use the seed for reproducible selection.",
+                    },
+                ),
                 "Scale Factor": (
                     "FLOAT",
-                    {"default": DEFAULT_SCALE_FACTOR, "min": MIN_SCALE_FACTOR, "max": MAX_SCALE_FACTOR, "step": 0.05},
+                    {
+                        "default": DEFAULT_SCALE_FACTOR,
+                        "min": MIN_SCALE_FACTOR,
+                        "max": MAX_SCALE_FACTOR,
+                        "step": 0.05,
+                        "tooltip": "Multiplier applied to base dimensions to produce Scaled Width/Height outputs.",
+                    },
                 ),
-                "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}),
+                "seed": (
+                    "INT",
+                    {
+                        "default": 0,
+                        "min": 0,
+                        "max": 0xFFFFFFFFFFFFFFFF,
+                        "tooltip": "Seed for Random aspect ratio modes. Same seed always produces the same ratio.",
+                    },
+                ),
             },
         }
 
     def _resolve_ratio(self, aspect_ratio_label: str, rng: random.Random) -> tuple[str, float]:
+        """Resolve the aspect ratio label to a ``(label, ratio_float)`` pair.
+
+        For fixed presets the ratio is looked up in :data:`_ALL_RATIOS`.  For the
+        three ``Random (...)`` options, :meth:`random.Random.choice` is called on the
+        appropriate pre-sorted items list so that the result is deterministic for a
+        given *rng* state.
+
+        Args:
+            aspect_ratio_label: The string selected in the Aspect Ratio dropdown.
+            rng: Seeded :class:`random.Random` instance.
+
+        Returns:
+            A ``(label, ratio_float)`` tuple where ``ratio_float`` is the
+            width-to-height ratio (e.g. ``16/9 ≈ 1.778``).
+        """
         if "Random" in aspect_ratio_label:
             if aspect_ratio_label == "Random (Portrait)":
                 return rng.choice(_SORTED_PORTRAIT_ITEMS)
@@ -136,6 +188,26 @@ class DynamicResolution:
         return "Square 1:1", 1.0
 
     def calculate(self, **kwargs: Any) -> dict[str, Any]:
+        """Calculate image dimensions and return results for both the UI and downstream nodes.
+
+        Computes base dimensions (rounded to 8 px), scaled dimensions, and supporting
+        metadata for the chosen aspect ratio.  Results are returned in a ComfyUI
+        ``{"ui": {...}, "result": (...)}`` dict so that the frontend extension can
+        update the output-pin labels in real time.
+
+        Args:
+            **kwargs: ComfyUI widget values.  Expected keys: ``"Max Side Pixels"``,
+                ``"Aspect Ratio"``, ``"Scale Factor"``, ``"seed"``.
+
+        Returns:
+            A dict with:
+
+            * ``"ui"`` — values consumed by ``js/dynamic_display.js`` to update
+              the node's output labels and info text widget.
+            * ``"result"`` — an 8-tuple ``(width, height, scaled_width,
+              scaled_height, scale_factor, keywords, guide_size, max_size)``
+              forwarded to connected downstream nodes.
+        """
         max_side: int = kwargs.get("Max Side Pixels", 1024)
         aspect_ratio_label: str = kwargs.get("Aspect Ratio", "Square 1:1")
         scale_factor: float = kwargs.get("Scale Factor", 1.5)
@@ -158,6 +230,7 @@ class DynamicResolution:
         scaled_width: int = int(round(s_width / 8) * 8)
         scaled_height: int = int(round(s_height / 8) * 8)
 
+        # Megapixel count for the info display widget only; not a node output.
         actual_mp: float = (width_int * height_int) / 1000000
 
         info_string: str = (

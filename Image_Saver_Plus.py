@@ -1,3 +1,13 @@
+"""Image Saver Plus node for ComfyUI.
+
+Saves images in PNG, JPEG, or WebP format with:
+- Quality / compression control
+- Filename template variables: %date:FORMAT%, %year%, %month%, %day%,
+  %hour%, %minute%, %second%, %counter%, %batch_num%, %width%, %height%
+- Optional .txt sidecar files saved alongside each image
+- ComfyUI workflow metadata embedded in PNG files
+"""
+
 import json
 import logging
 import os
@@ -21,6 +31,9 @@ QUALITY_MAX: int = 100
 QUALITY_DEFAULT: int = 95
 
 _DATE_PATTERN: re.Pattern[str] = re.compile(r"%date:([^%]+)%")
+# Ordered list of (token, strftime_code) pairs mapping Java/.NET-style date tokens
+# to Python strftime format codes. Order matters: longer tokens (e.g. "yyyy") must
+# be replaced before their substrings (e.g. "yy").
 _DATE_FORMAT_MAP: list[tuple[str, str]] = [
     ("yyyy", "%Y"),
     ("yy", "%y"),
@@ -31,8 +44,31 @@ _DATE_FORMAT_MAP: list[tuple[str, str]] = [
     ("ss", "%S"),
 ]
 
+# Shorthand variable names and their equivalent strftime codes.
+# These are expanded before %date:FORMAT% processing so that users can write
+# %year% instead of the more verbose %date:yyyy%.
+_SHORTHAND_VARS: list[tuple[str, str]] = [
+    ("%year%", "%Y"),
+    ("%month%", "%m"),
+    ("%day%", "%d"),
+    ("%hour%", "%H"),
+    ("%minute%", "%M"),
+    ("%second%", "%S"),
+]
+
 
 def _resolve_date_format(format_str: str) -> str:
+    """Apply a Java/.NET-style date format string to the current local datetime.
+
+    Tokens are replaced left-to-right (longer tokens first to avoid substring
+    collisions), then ``datetime.strftime`` is called on the result.
+
+    Args:
+        format_str: A format string using tokens like ``yyyy``, ``MM``, ``dd``.
+
+    Returns:
+        The formatted date string, e.g. ``"2026_05_30"`` for ``"yyyy_MM_dd"``.
+    """
     fmt: str = format_str
     for token, code in _DATE_FORMAT_MAP:
         fmt = fmt.replace(token, code)
@@ -40,6 +76,22 @@ def _resolve_date_format(format_str: str) -> str:
 
 
 def _find_next_counter(folder: str, filename_template: str) -> int:
+    """Scan *folder* for existing files that match *filename_template* and return the next counter.
+
+    The template must contain the literal string ``%counter%`` exactly once.
+    Existing files are matched via a regex that expects a zero-padded 5-digit
+    counter in that position (e.g. ``img_00003_test.png``).  The function returns
+    ``max_found + 1``, or ``1`` if no matching files exist.
+
+    Args:
+        folder: Absolute path to the output directory.  If the directory does not
+            exist, ``1`` is returned immediately.
+        filename_template: The filename stem (no extension) containing
+            ``%counter%`` as a placeholder.
+
+    Returns:
+        The next available counter value (1-indexed).
+    """
     if not os.path.isdir(folder):
         return 1
     prefix_part, suffix_part = filename_template.split("%counter%", 1)
@@ -54,9 +106,25 @@ def _find_next_counter(folder: str, filename_template: str) -> int:
 
 
 class ImageSaverPlus:
+    """ComfyUI output node that saves images with rich filename templating.
+
+    Supports PNG (with embedded workflow metadata), JPEG, and WebP formats.
+    Filename prefixes accept template variables that are expanded at save time:
+
+    * ``%date:FORMAT%`` — current date/time in Java/.NET format (e.g. ``%date:yyyy_MM_dd%``)
+    * ``%year%``, ``%month%``, ``%day%``, ``%hour%``, ``%minute%``, ``%second%`` — shorthand date parts
+    * ``%counter%`` — sequential integer (5 digits, zero-padded) that auto-increments
+      based on existing files in the output directory to prevent overwrites
+    * ``%batch_num%`` — index of the current image within a batch
+    * ``%width%``, ``%height%`` — image dimensions (handled by ComfyUI's folder_paths)
+
+    An optional ``.txt`` sidecar file can be written alongside each saved image.
+    """
+
     DESCRIPTION = "Saves images with format selection, quality control, and optional text sidecar file."
 
     def __init__(self) -> None:
+        # output_dir is the ComfyUI output directory; type labels images for the UI gallery.
         self.output_dir: str = folder_paths.get_output_directory()
         self.type: str = "output"
 
@@ -69,7 +137,13 @@ class ImageSaverPlus:
                     "STRING",
                     {
                         "default": "ThatAIGod",
-                        "tooltip": "Prefix for the filename. Supports %width%, %height%, %date:FORMAT%, %year%, %month%, %day%, %hour%, %minute%, %second%, %counter% (sequential number), and %batch_num%.",
+                        "tooltip": (
+                            "Prefix for the filename. Supports %width%, %height%, "
+                            "%date:FORMAT% (e.g. %date:yyyy_MM_dd%), %year%, %month%, "
+                            "%day%, %hour%, %minute%, %second%, "
+                            "%counter% (sequential number, place anywhere in the name), "
+                            "and %batch_num%."
+                        ),
                     },
                 ),
                 "file_format": (
@@ -129,6 +203,39 @@ class ImageSaverPlus:
         prompt: dict[str, Any] | None = None,
         extra_pnginfo: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
+        """Save a batch of images to the ComfyUI output directory.
+
+        Template variables in *filename_prefix* are expanded in the following order:
+
+        1. Shorthand date parts (``%year%``, ``%month%``, ``%day%``, ``%hour%``,
+           ``%minute%``, ``%second%``) are replaced with the current local time.
+        2. ``%date:FORMAT%`` patterns are replaced using :func:`_resolve_date_format`.
+        3. ``%width%`` / ``%height%`` and path handling are delegated to
+           ``folder_paths.get_save_image_path()``.
+        4. ``%batch_num%`` is replaced per-image with the batch index.
+        5. ``%counter%`` — if present — is replaced with a zero-padded 5-digit counter
+           that is determined by scanning existing files (via :func:`_find_next_counter`)
+           to avoid overwriting previous output.
+
+        Args:
+            images: A ``(N, H, W, 3)`` float32 tensor with values in ``[0, 1]``.
+            filename_prefix: Filename stem with optional template variables.
+            file_format: ``"png"``, ``"jpeg"``, or ``"webp"``.
+            quality: JPEG/WebP quality (1–100).  Ignored for PNG.
+            compress_level: PNG zlib compression level (0–9).  Ignored for JPEG/WebP.
+            save_text: If provided, written to a ``.txt`` file alongside each image.
+            prompt: ComfyUI workflow prompt dict embedded in PNG metadata.
+            extra_pnginfo: Additional key/value pairs embedded in PNG metadata.
+
+        Returns:
+            A dict ``{"ui": {"images": [...]}}`` consumed by ComfyUI's gallery.
+        """
+        now = datetime.now()
+        # Expand shorthand date variables first so they are not affected by %date:FORMAT%.
+        for var, fmt_code in _SHORTHAND_VARS:
+            if var in filename_prefix:
+                filename_prefix = filename_prefix.replace(var, now.strftime(fmt_code))
+
         filename_prefix = _DATE_PATTERN.sub(lambda m: _resolve_date_format(m.group(1)), filename_prefix)
         full_output_folder: str
         filename: str
