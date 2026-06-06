@@ -222,3 +222,29 @@ This document records significant architectural and tooling decisions to prevent
   the README and CHANGELOG explicitly document the `|` separator.
 - **Do NOT change the delimiter without a migration path**, as existing workflow `.json` files
   that use `{A|B}` syntax would break.
+
+---
+
+### D14: GitHub Branch Protection Ruleset Configuration and Administrator Bypass
+
+**Date:** 2026-06-06  
+**Status:** Accepted (critical)  
+**Context:**  
+The repository ruleset for `master` was previously configured with two major restrictions that caused pull request blocks:
+1. **Unresolvable status checks (`lint` and `mypy`)**: In `.github/workflows/python-package.yml`, linting and type-checking are steps inside the `build` matrix job rather than individual top-level jobs. GitHub only reports the status of entire jobs to the status check API. Because `lint` and `mypy` were not standalone jobs, these required status checks were permanently pending and unresolvable.
+2. **Solo owner self-review lock**: The ruleset requires at least `1` approving review before merging. Since GitHub prevents repository owners from approving their own PRs, this configuration locked the solo developer out of merging PRs to `master` without external reviewers.
+
+**Decision:**  
+Update the `Protect master` branch ruleset configurations:
+- Remove the non-existent `lint` and `mypy` status check requirements, relying instead on the `build (*)` matrix jobs (which execute those steps internally and enforce success).
+- Add the `RepositoryRole` with ID `5` (Repository Administrator) to the `bypass_actors` list, allowing administrators (`thataigod`) to merge their own pull requests directly while keeping rules active for external contributors.
+
+**Alternatives Considered:**  
+- Keeping the review requirement absolute: Impractical for a solo owner since self-approval is blocked by GitHub.
+- Split workflow steps into individual Actions jobs: Possible, but it increases CI runner start-up overhead and complicates the workflow file without providing additional safety.
+
+**Consequences:**  
+- Administrators can merge PRs directly (bypassing rules) when working solo.
+- External contributors are still required to get 1 approving review from an administrator.
+- All matrix builds on Python versions 3.10 to 3.14 must pass for all contributors (strict status check policy).
+
