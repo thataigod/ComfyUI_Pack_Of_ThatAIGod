@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.4.0] - Unreleased
+
+### Added
+- Dynamic Resolution Selector node with multi-select aspect ratios, constraint mode (max/min side), and custom W:H ratio
+- Frontend UI for batch-selecting aspect ratios (Select All, Portraits, Landscapes)
+
+### Changed
+- `safe_import` now catches all exceptions instead of only `ImportError` for robustness
+
 ## [1.3.0] - 2026-05-30
 
 ### Added
