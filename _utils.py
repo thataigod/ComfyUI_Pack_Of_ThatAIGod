@@ -106,7 +106,7 @@ def compute_aspect_ratio_dimensions(max_side: int, ratio: float) -> tuple[int, i
 
 
 def safe_import(module_name: str) -> Any | None:
-    """Import *module_name* by name, returning ``None`` on :exc:`ImportError`.
+    """Import *module_name* by name, returning ``None`` on any failure.
 
     On failure a WARNING is logged via :func:`get_logger` so that the caller
     can continue loading other modules without crashing.
@@ -119,7 +119,7 @@ def safe_import(module_name: str) -> Any | None:
     """
     try:
         return importlib.import_module(module_name)
-    except ImportError as e:
+    except Exception as e:
         logger = get_logger()
         logger.warning(
             "ComfyUI-Pack-Of-ThatAIGod: failed to import %s: %s",

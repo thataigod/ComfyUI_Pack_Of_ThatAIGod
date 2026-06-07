@@ -9,7 +9,8 @@ A custom node pack for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) prov
 - **LLM Chat** - Connect to OpenRouter API or local LLM servers (LM Studio) with streaming responses
 - **Image Saver Plus** - Save images with format selection, quality control, template variables, and text sidecars
 - **Dynamic Resolution Picker** - Calculate optimal width/height for any aspect ratio
-- **Wildcard Reader** - Resolve `__wildcard__` placeholders from curated text files with `{A/B/C}` choice syntax
+- **Dynamic Resolution Selector** - Multi-select aspect ratios with max/min side constraint and custom W:H ratio support
+- **Wildcard Reader** - Resolve `__wildcard__` placeholders from curated text files with `{A|B|C}` choice syntax
 - **Sequential Image Loader** - Iterate through directory images with natural sorting
 - **Upscale By Max Side** - Aspect-ratio-preserving upscaler
 - **Truncate LLM Thinking** - Strip thinking/reasoning blocks from LLM output
@@ -223,6 +224,31 @@ Iterates through images in a directory using a seed-based index.
 | Stats | STRING | Current index / total files (e.g., "3/50") |
 
 **Tip:** Set "Control After Generate" to "Increment" on the node to auto-advance through images.
+
+### Dynamic Resolution Selector
+
+Category: `ThatAIGod/Image Utils`
+
+Multi-select aspect ratios with constraint mode (max side or min side) and optional custom W:H ratio with scaling.
+
+| Input | Type | Description |
+|-------|------|-------------|
+| Limit By | Dropdown | `Max Side` or `Min Side` constraint for the Pixels value |
+| Pixels | INT | Pixel budget for the constrained side (1-16384) |
+| Scale Factor | FLOAT | Multiplier for Scaled Width/Height outputs |
+| Aspect Ratio Config | STRING | JSON config managed by the frontend UI with toggle buttons for each ratio, batch selectors (All/Portraits/Landscapes), and a custom W:H ratio input |
+| seed | INT | Seed for random ratio selection from the active set |
+
+| Output | Type | Description |
+|--------|------|-------------|
+| Width | INT | Base width (rounded to 8px) |
+| Height | INT | Base height (rounded to 8px) |
+| Scaled Width | INT | Width after scale factor |
+| Scaled Height | INT | Height after scale factor |
+| Scale Factor | FLOAT | The applied multiplier |
+| Keywords | STRING | Aspect ratio description for prompts |
+| Guide Size | INT | Min(width, height) |
+| Max Size | INT | Max(width, height) |
 
 ### Upscale By Max Side
 

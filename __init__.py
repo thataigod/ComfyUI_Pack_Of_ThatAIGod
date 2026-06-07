@@ -40,10 +40,11 @@ _import_errors: list[str] = []
 _modules: list[str] = [
     "Dynamic_Resolution_Picker",
     "Image_Saver_Plus",
-    "Wildcard_Reader",
+    "Resolution_Selector",
     "Sequential_Image_Loader",
     "Truncate_LLM_Thinking",
     "Upscale_By_Max_Side",
+    "Wildcard_Reader",
     "LLM_Node",
     "LLM_Fallback_Node",
 ]
