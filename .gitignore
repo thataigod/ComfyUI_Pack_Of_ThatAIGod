@@ -14,3 +14,13 @@ build/
 .ruff_cache/
 .pytest_cache/
 
+# Workflow standards manifest (machine-managed)
+.workflow-standard.json
+
+# Security tool artifacts
+gitleaks-report.json
+gitleaks-report.sarif
+
+# MkDocs documentation build output
+site/
+

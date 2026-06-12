@@ -4,7 +4,9 @@ This module is intentionally named ``_utils`` (underscore prefix) rather than
 ``utils`` to avoid shadowing ComfyUI's own ``utils`` package.  See DECISIONS.md D11.
 
 Exports:
+    configure_logging: Initialize structlog-based structured logging once at startup.
     get_logger: Return the shared ``ThatAIGod`` logger instance.
+    handle_exceptions: Decorator wrapping a function in a try/except with structured logging.
     clamp_dimension: Clamp an integer dimension to [min, max].
     round_to_multiple: Round an integer to the nearest multiple (banker's rounding).
     round_down_to_multiple: Round an integer down to the nearest multiple.
@@ -12,9 +14,15 @@ Exports:
     safe_import: Import a module by name, returning None on ImportError.
 """
 
+import functools
 import importlib
 import logging
-from typing import Any
+from collections.abc import Callable
+from typing import Any, TypeVar
+
+import structlog
+
+F = TypeVar("F", bound=Callable[..., Any])
 
 # Minimum pixel dimension used throughout the pack (e.g. placeholder images, clamping).
 DEFAULT_MIN_DIMENSION: int = 64
@@ -23,14 +31,142 @@ DEFAULT_MAX_DIMENSION: int = 16384
 # ComfyUI requires image dimensions to be multiples of 8 for most model architectures.
 DEFAULT_MULTIPLE: int = 8
 
+# ---------------------------------------------------------------------------
+# Structured logging configuration (structlog)
+# ---------------------------------------------------------------------------
 
-def get_logger() -> logging.Logger:
-    """Return the shared ThatAIGod logger.
+_LOG_CONFIGURED: bool = False
+
+
+def configure_logging() -> None:
+    """Initialise structlog-based structured logging for the ``ThatAIGod`` logger.
+
+    Call this once at application startup (it is idempotent).  Uses
+    ``structlog.stdlib`` processors to integrate with standard library logging
+    so that existing ``logging.getLogger("ThatAIGod")`` calls continue to work
+    while benefiting from structured context and JSON-friendly formatting.
+
+    In ComfyUI, log output is typically captured by the main ComfyUI console;
+    this configuration adds structured timestamps, logger names, and level
+    information to every log record without requiring a separate log file.
+    """
+    global _LOG_CONFIGURED
+    if _LOG_CONFIGURED:
+        return
+
+    structlog.configure(
+        processors=[
+            structlog.stdlib.add_log_level,
+            structlog.stdlib.add_logger_name,
+            structlog.dev.ConsoleRenderer(sort_keys=False),
+        ],
+        wrapper_class=structlog.stdlib.BoundLogger,
+        context_class=dict,
+        logger_factory=structlog.stdlib.LoggerFactory(),
+        cache_logger_on_first_use=True,
+    )
+
+    # Ensure the ThatAIGod logger propagates to the root ComfyUI logger
+    root = logging.getLogger()
+    that_logger = logging.getLogger("ThatAIGod")
+    that_logger.setLevel(logging.DEBUG)
+    that_logger.handlers.clear()
+    if root.handlers:
+        that_logger.propagate = True
+
+    _LOG_CONFIGURED = True
+
+
+def get_logger() -> structlog.stdlib.BoundLogger:
+    """Return the shared ThatAIGod logger backed by structlog.
 
     All nodes in the pack use a single named logger so that log output can be
     filtered or captured by name in tests.
+
+    Returns:
+        A structlog ``BoundLogger`` that can be used with structured keyword
+        arguments::
+
+            logger = get_logger()
+            logger.info("node_processed", node="LLM_Node", status="ok")
     """
-    return logging.getLogger("ThatAIGod")
+    configure_logging()
+    return structlog.get_logger("ThatAIGod")
+
+
+# ---------------------------------------------------------------------------
+# Centralised error handling
+# ---------------------------------------------------------------------------
+
+
+class NodeError(Exception):
+    """Base exception for all pack-specific runtime errors.
+
+    All custom exceptions raised by nodes in this pack should inherit from
+    this class so that :func:`handle_exceptions` can distinguish expected
+    errors from unexpected crashes.
+    """
+
+
+class ConfigurationError(NodeError):
+    """Raised when required configuration is missing or invalid (e.g. no API key)."""
+
+
+class InputValidationError(NodeError):
+    """Raised when a user-provided input fails validation."""
+
+
+class ExternalServiceError(NodeError):
+    """Raised when an external service (LLM API, file system) returns an error."""
+
+
+def handle_exceptions(
+    logger: structlog.stdlib.BoundLogger | logging.Logger | None = None,
+    fallback_return: Any = None,
+    reraise: tuple[type[Exception], ...] | None = None,
+) -> Callable[[F], F]:
+    """Decorator that wraps a callable in centralised try/except logging.
+
+    Every exception is logged at ERROR level via the structured logger.
+    ``NodeError`` subclasses are treated as expected failures and return
+    *fallback_return*.  Unexpected exceptions (``Exception``) are also caught
+    and return *fallback_return* unless their type appears in *reraise*.
+
+    Args:
+        logger: Logger instance to use.  Defaults to ``get_logger()``.
+        fallback_return: Value returned when the wrapped function raises
+            (default ``None``).
+        reraise: Tuple of exception types that should **not** be caught but
+            instead re-raised (e.g. ``(KeyboardInterrupt,)``).
+
+    Example::
+
+        @handle_exceptions(fallback_return="fallback", reraise=(KeyboardInterrupt,))
+        def risky_operation(x: int) -> str:
+            if x < 0:
+                raise ConfigurationError("x must be non-negative")
+            return str(x)
+    """
+    _logger = logger or get_logger()
+    _reraise = reraise or ()
+
+    def decorator(func: F) -> F:
+        @functools.wraps(func)
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
+            try:
+                return func(*args, **kwargs)
+            except _reraise:
+                raise
+            except NodeError:
+                _logger.exception("expected_error", func_name=func.__name__)  # type: ignore[call-arg]
+                return fallback_return
+            except Exception:
+                _logger.exception("unexpected_error", func_name=func.__name__)  # type: ignore[call-arg]
+                return fallback_return
+
+        return wrapper  # type: ignore[return-value]
+
+    return decorator
 
 
 def clamp_dimension(value: int, min_val: int = DEFAULT_MIN_DIMENSION, max_val: int = DEFAULT_MAX_DIMENSION) -> int:
@@ -130,7 +266,13 @@ def safe_import(module_name: str) -> Any | None:
 
 
 __all__: list[str] = [
+    "configure_logging",
     "get_logger",
+    "NodeError",
+    "ConfigurationError",
+    "InputValidationError",
+    "ExternalServiceError",
+    "handle_exceptions",
     "clamp_dimension",
     "round_to_multiple",
     "round_down_to_multiple",

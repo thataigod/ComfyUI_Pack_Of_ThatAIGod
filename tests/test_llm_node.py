@@ -565,9 +565,7 @@ class TestLLMNode(unittest.TestCase):
                     "stream_response",
                     return_value=iter(chunks),
                 ):
-                    result = self.node.generate(
-                        **_make_kwargs({"unique_id": "uid_99"})
-                    )
+                    result = self.node.generate(**_make_kwargs({"unique_id": "uid_99"}))
                     text, status, info, reasoning = result
                     self.assertEqual(text, "final answer")
                     self.assertTrue(status)

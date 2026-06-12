@@ -1,0 +1,38 @@
+# Auto-detect text files and force LF line endings for cross-platform consistency
+* text=auto eol=lf
+
+# Windows-specific: .bat files should use CRLF
+*.bat text eol=crlf
+
+# Binary files — never modify line endings
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.bmp binary
+*.tiff binary
+*.ico binary
+*.gif binary
+*.zip binary
+*.tar.gz binary
+*.gz binary
+
+# Merge strategies for specific file types
+*.py text diff=python
+*.md text diff=markdown
+*.toml text
+*.yml text
+*.yaml text
+*.json text
+*.js text
+*.css text
+*.html text
+*.txt text
+*.cfg text
+*.ini text
+*.bat text
+*.ps1 text
+*.sh text eol=lf
+
+# Linguist overrides — treat generated/third-party files as vendored
+wildcards/autowildcards/* linguist-generated=true
