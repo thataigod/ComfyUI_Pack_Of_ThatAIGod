@@ -1,0 +1,48 @@
+# dependabot.yml — Automated dependency vulnerability scanning
+# Documentation: https://docs.github.com/en/code-security/dependabot
+
+version: 2
+updates:
+  # Python (pip) dependencies — check pyproject.toml for updates
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "06:00"
+      timezone: "UTC"
+    # Limit open PRs to avoid notification overload
+    open-pull-requests-limit: 10
+    # Assign reviewers (if the repo has teams/collaborators)
+    # reviewers:
+    #   - "thataigod"
+    # Labels applied to Dependabot PRs
+    labels:
+      - "dependencies"
+      - "automated"
+    # Group minor/patch updates to reduce PR noise
+    groups:
+      python-minor-patch:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    # Ignore major version bumps that may require manual migration
+    # (remove when ready to migrate)
+    ignore:
+      - dependency-name: "torch"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "Pillow"
+        update-types: ["version-update:semver-major"]
+
+  # GitHub Actions — keep workflow actions up to date
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      time: "06:00"
+      timezone: "UTC"
+    labels:
+      - "ci"
+      - "automated"

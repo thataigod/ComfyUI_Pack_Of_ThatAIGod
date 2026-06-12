@@ -1,0 +1,59 @@
+# .gitleaks.toml — Gitleaks secrets scanning configuration
+# Documentation: https://github.com/gitleaks/gitleaks
+#
+# This configuration defines:
+# 1. Allowlisted files/directories to exclude from scanning
+# 2. Custom regex rules for detecting secrets
+# 3. Standard Gitleaks rules are inherited (no need to redefine them)
+
+title = "ComfyUI-Pack-Of-ThatAIGod Gitleaks Config"
+
+## =============================================================================
+## Extend the base configuration
+## =============================================================================
+[extend]
+# Use the default Gitleaks rules as a starting point
+useDefault = true
+
+## =============================================================================
+## Allowlist — paths and patterns to exclude
+## =============================================================================
+[allowlist]
+description = "Global allowlist for false positive reduction"
+
+# Files and directories to exclude entirely
+paths = [
+    # Test files may contain placeholder keys/tokens — that's expected
+    '''^tests/''',
+    # Wildcard text files are prompt data, not secrets
+    '''^wildcards/''',
+    # Build artifacts
+    '''^build/''',
+    '''\.egg-info/''',
+    # Git directory
+    '''\.git/''',
+    # Coverage data
+    '''\.coverage''',
+    '''htmlcov/''',
+]
+
+# Regex patterns to exclude matching lines everywhere
+regexes = [
+    # Allow placeholder/default key patterns in documentation
+    '''sk-or-v1-your-key-here''',
+    '''YOUR_API_KEY_HERE''',
+    # Allow version strings that look like secrets but are not (e.g. semver)
+    '''\d+\.\d+\.\d+''',
+    # Allow hash-looking strings in test assertions
+    '''hash_value''',
+]
+
+# Specific stopwords that stop Gitleaks from flagging
+stopwords = [
+    "example",
+    "placeholder",
+    "test",
+    "mock",
+    "fake",
+    "dummy",
+]
