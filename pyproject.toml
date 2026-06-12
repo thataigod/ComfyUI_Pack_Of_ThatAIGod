@@ -13,6 +13,7 @@ dependencies = [
     "numpy>=1.21,<3.0",
     "torch>=2.0.0,<3.0",
     "aiohttp>=3.9.0,<4.0",
+    "structlog>=24.0.0",
 ]
 
 [build-system]
@@ -70,4 +71,7 @@ dev = [
     "pytest-cov>=4.0",
     "ruff>=0.1.0",
     "mypy>=1.0",
+    "mkdocs>=1.6.0",
+    "mkdocstrings[python]>=0.25.0",
+    "mkdocs-material>=9.5.0",
 ]
