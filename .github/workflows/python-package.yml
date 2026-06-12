@@ -17,6 +17,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     - name: Secret scanning with Gitleaks
       uses: gitleaks/gitleaks-action@v2
       continue-on-error: false
