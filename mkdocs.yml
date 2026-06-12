@@ -1,0 +1,69 @@
+# mkdocs.yml — API documentation site configuration
+# Serve locally: mkdocs serve
+# Build static site: mkdocs build
+
+site_name: "ComfyUI Pack Of ThatAIGod"
+site_description: "API documentation for ComfyUI-Pack-Of-ThatAIGod custom nodes"
+site_author: "thataigod"
+repo_url: "https://github.com/thataigod/ComfyUI-Pack-Of-ThatAIGod"
+repo_name: "thataigod/ComfyUI-Pack-Of-ThatAIGod"
+edit_uri: "edit/master/docs/"
+
+copyright: "Copyright &copy; 2026 thataigod"
+
+theme:
+  name: "material"
+  palette:
+    scheme: slate
+    primary: "indigo"
+    accent: "indigo"
+  features:
+    - content.code.copy
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["."]
+          options:
+            show_source: true
+            show_root_heading: true
+            show_category_heading: true
+            docstring_style: "google"
+            members_order: "source"
+            separate_signature: true
+            show_signature_annotations: true
+            line_length: 80
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - API Reference:
+      - Package Entry (__init__.py): api/__init__.md
+      - Shared Utilities (_utils.py): api/_utils.md
+      - LLM Utilities (llm_utils.py): api/llm_utils.md
+      - Dynamic Resolution Picker: api/Dynamic_Resolution_Picker.md
+      - Image Saver Plus: api/Image_Saver_Plus.md
+      - Resolution Selector: api/Resolution_Selector.md
+      - Sequential Image Loader: api/Sequential_Image_Loader.md
+      - Truncate LLM Thinking: api/Truncate_LLM_Thinking.md
+      - Upscale By Max Side: api/Upscale_By_Max_Side.md
+      - Wildcard Reader: api/Wildcard_Reader.md
+      - LLM Node: api/LLM_Node.md
+      - LLM Fallback Node: api/LLM_Fallback_Node.md
