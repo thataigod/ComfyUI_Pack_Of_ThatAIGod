@@ -14,13 +14,16 @@ Exports:
     safe_import: Import a module by name, returning None on ImportError.
 """
 
+from __future__ import annotations
+
 import functools
 import importlib
 import logging
 from collections.abc import Callable
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
-import structlog
+if TYPE_CHECKING:
+    import structlog
 
 F = TypeVar("F", bound=Callable[..., Any])
 
@@ -53,6 +56,8 @@ def configure_logging() -> None:
     global _LOG_CONFIGURED
     if _LOG_CONFIGURED:
         return
+
+    import structlog
 
     structlog.configure(
         processors=[
@@ -91,6 +96,7 @@ def get_logger() -> structlog.stdlib.BoundLogger:
             logger.info("node_processed", node="LLM_Node", status="ok")
     """
     configure_logging()
+    import structlog
     return structlog.get_logger("ThatAIGod")
 
 
