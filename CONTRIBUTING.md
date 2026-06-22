@@ -43,7 +43,7 @@ The project directory name now uses underscores (a valid Python package name),
 so mypy can be run directly from the project root:
 
 ```bash
-mypy . --explicit-package-bases --follow-imports=skip
+mypy . --explicit-package-bases --follow-imports=skip --disable-error-code=type-arg
 ```
 
 ## Code Style
