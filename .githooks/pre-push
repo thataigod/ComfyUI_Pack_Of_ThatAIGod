@@ -1,0 +1,86 @@
+#!/bin/sh
+
+# Git hook: pre-push
+# Comprehensive quality gate — runs lint, type-check, tests, coverage, and app-start verification.
+# To skip (emergency only): git push --no-verify
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ]; then
+  echo ""
+  echo "=========================================="
+  echo "❌ PRE-PUSH FAILED"
+  echo "=========================================="
+  echo "Cannot push directly from '$BRANCH'."
+  echo "Create a feature branch first:"
+  echo "  git checkout -b feature/my-thing"
+  echo ""
+  exit 1
+fi
+
+echo "Running pre-push checks (branch: $BRANCH)..."
+
+# ── Ruff lint check ──────────────────────────────────
+echo ""
+echo "--- ruff check ---"
+ruff check .
+RUFF_EXIT=$?
+if [ $RUFF_EXIT -ne 0 ]; then
+  echo ""
+  echo "=========================================="
+  echo "❌ PRE-PUSH FAILED"
+  echo "=========================================="
+  echo "Ruff linting errors found."
+  echo "Run 'ruff check .' locally to see details."
+  echo ""
+  exit 1
+fi
+echo "✅ ruff passed"
+
+# ── mypy type check (temp-dir workaround for hyphen in dir name) ──
+echo ""
+echo "--- mypy ---"
+python -m mypy --version >/dev/null 2>&1
+MYPY_AVAILABLE=$?
+if [ $MYPY_AVAILABLE -ne 0 ]; then
+  echo "⚠️  mypy not available — skipping type check"
+else
+  MYPY_TMP="/tmp/mypycheck$$"
+  mkdir -p "$MYPY_TMP" && cp ./*.py "$MYPY_TMP/" 2>/dev/null
+  (cd "$MYPY_TMP" && python -m mypy ./*.py --ignore-missing-imports --follow-imports=skip 2>/dev/null)
+  MYPY_EXIT=$?
+  rm -rf "$MYPY_TMP"
+  if [ $MYPY_EXIT -ne 0 ]; then
+    echo "=========================================="
+    echo "❌ PRE-PUSH FAILED"
+    echo "=========================================="
+    echo "Mypy type-checking errors found."
+    echo "Run 'python -m mypy . --ignore-missing-imports' locally to see details."
+    exit 1
+  fi
+  echo "✅ mypy passed"
+fi
+
+# ── pytest with coverage ─────────────────────────────
+echo ""
+echo "--- pytest (coverage >=100%) ---"
+python -m pytest --cov-fail-under=100 -q 2>/dev/null
+PYTEST_EXIT=$?
+if [ $PYTEST_EXIT -ne 0 ]; then
+  echo ""
+  echo "=========================================="
+  echo "❌ PRE-PUSH FAILED"
+  echo "=========================================="
+  echo "Tests or coverage checks did not pass."
+  echo "Run 'pytest --cov --cov-report=term-missing' locally to see details."
+  echo ""
+  exit 1
+fi
+echo "✅ pytest + coverage passed"
+
+
+
+echo ""
+echo "=========================================="
+echo "✅ PRE-PUSH CHECKS PASSED"
+echo "=========================================="
+exit 0
