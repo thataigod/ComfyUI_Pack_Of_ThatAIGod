@@ -33,7 +33,7 @@ Search for "Pack Of ThatAIGod" in ComfyUI Manager and install directly.
 ### Option 3: Manual Download
 
 1. Download the ZIP from GitHub
-2. Extract to `ComfyUI/custom_nodes/ComfyUI-Pack-Of-ThatAIGod`
+2. Extract to `ComfyUI/custom_nodes/ComfyUI_Pack_Of_ThatAIGod`
 
 ## API Key Setup
 

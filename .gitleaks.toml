@@ -6,7 +6,7 @@
 # 2. Custom regex rules for detecting secrets
 # 3. Standard Gitleaks rules are inherited (no need to redefine them)
 
-title = "ComfyUI-Pack-Of-ThatAIGod Gitleaks Config"
+title = "ComfyUI_Pack_Of_ThatAIGod Gitleaks Config"
 
 ## =============================================================================
 ## Extend the base configuration
