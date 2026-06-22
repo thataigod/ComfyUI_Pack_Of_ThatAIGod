@@ -1,0 +1,60 @@
+#!/bin/sh
+
+# Git hook: pre-commit
+# Blocks commits to main/master branches and runs quality gates.
+# To skip (emergency only): git commit --no-verify
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ]; then
+  echo ""
+  echo "=========================================="
+  echo "❌ PRE-COMMIT FAILED"
+  echo "=========================================="
+  echo "Cannot commit directly to '$BRANCH'."
+  echo "Create a feature branch first:"
+  echo "  git checkout -b feature/my-thing"
+  echo ""
+  exit 1
+fi
+
+echo "Running pre-commit checks (branch: $BRANCH)..."
+
+# ── Ruff lint check ──────────────────────────────────
+echo ""
+echo "--- ruff check ---"
+ruff check .
+RUFF_EXIT=$?
+if [ $RUFF_EXIT -ne 0 ]; then
+  echo ""
+  echo "=========================================="
+  echo "❌ PRE-COMMIT FAILED"
+  echo "=========================================="
+  echo "Ruff linting errors found."
+  echo "Run 'ruff check .' locally to see details."
+  echo ""
+  exit 1
+fi
+echo "✅ ruff passed"
+
+# ── pytest with coverage ─────────────────────────────
+echo ""
+echo "--- pytest (coverage >=80%) ---"
+pytest --cov-fail-under=80 -q 2>/dev/null
+PYTEST_EXIT=$?
+if [ $PYTEST_EXIT -ne 0 ]; then
+  echo ""
+  echo "=========================================="
+  echo "❌ PRE-COMMIT FAILED"
+  echo "=========================================="
+  echo "Tests or coverage checks did not pass."
+  echo "Run 'pytest --cov --cov-report=term-missing' locally to see details."
+  echo ""
+  exit 1
+fi
+echo "✅ pytest + coverage passed"
+
+echo ""
+echo "=========================================="
+echo "✅ PRE-COMMIT CHECKS PASSED"
+echo "=========================================="
+exit 0

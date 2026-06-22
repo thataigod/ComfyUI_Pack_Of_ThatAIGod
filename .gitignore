@@ -17,6 +17,10 @@ build/
 # Workflow standards manifest (machine-managed)
 .workflow-standard.json
 
+# Environment / secrets
+.env
+.env.*
+
 # Security tool artifacts
 gitleaks-report.json
 gitleaks-report.sarif
