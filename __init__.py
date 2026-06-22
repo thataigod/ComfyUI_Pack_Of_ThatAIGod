@@ -1,4 +1,4 @@
-"""Package entry point for ComfyUI_Pack_Of_ThatAIGod.
+"""Package entry point for ComfyUI-Pack-Of-ThatAIGod.
 
 This module is loaded by ComfyUI's custom-node loader.  It:
 
@@ -60,7 +60,7 @@ for mod_name in _modules:
 
 if _import_errors:
     for err in _import_errors:
-        logger.warning("ComfyUI_Pack_Of_ThatAIGod: failed to import %s", err)
+        logger.warning("ComfyUI-Pack-Of-ThatAIGod: failed to import %s", err)
 
 # Tells ComfyUI to serve files in ./js/ as frontend JavaScript extensions.
 # The extension file js/dynamic_display.js registers streaming preview widgets,

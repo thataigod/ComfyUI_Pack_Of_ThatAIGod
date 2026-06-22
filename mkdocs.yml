@@ -3,7 +3,7 @@
 # Build static site: mkdocs build
 
 site_name: "ComfyUI Pack Of ThatAIGod"
-site_description: "API documentation for ComfyUI_Pack_Of_ThatAIGod custom nodes"
+site_description: "API documentation for ComfyUI-Pack-Of-ThatAIGod custom nodes"
 site_author: "thataigod"
 repo_url: "https://github.com/thataigod/ComfyUI-Pack-Of-ThatAIGod"
 repo_name: "thataigod/ComfyUI-Pack-Of-ThatAIGod"

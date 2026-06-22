@@ -8,27 +8,27 @@ This document records significant architectural and tooling decisions to prevent
 
 **Date:** 2026-05-30  
 **Status:** Accepted  
-**Context:** The repository directory was previously named `ComfyUI-Pack-Of-ThatAIGod`, containing hyphens. Python/mypy treats directories with `__init__.py` as packages, and hyphens are invalid in Python package names. Running `mypy *.py` from the project root failed with: `ComfyUI-Pack-Of-ThatAIGod contains __init__.py but is not a valid Python package name`. The directory has since been renamed to `ComfyUI_Pack_Of_ThatAIGod` (underscores) to resolve this.
+**Context:** The repository directory is named `ComfyUI-Pack-Of-ThatAIGod`, containing hyphens. Python/mypy treats directories with `__init__.py` as packages, and hyphens are invalid in Python package names. Running `mypy *.py` from the project root fails with: `ComfyUI-Pack-Of-ThatAIGod contains __init__.py but is not a valid Python package name`.
 
-**Decision:** Rename the directory from `ComfyUI-Pack-Of-ThatAIGod` to `ComfyUI_Pack_Of_ThatAIGod` so mypy can analyse the package in-place. The `/tmp/thatnode/` copy workaround is no longer needed.
+**Decision:** Copy `.py` files to `/tmp/thatnode/` (a valid package name) before running mypy.
 
 **Status history:**
 - **v1.1.0 (original):** Implemented the `/tmp/thatnode/` copy workaround.
 - **v1.2.0 (attempted fix):** Replaced with `mypy *.py` directly in the project root using `--ignore-missing-imports`. This caused the CHANGELOG 1.2.0 entry "Fixed CI mypy step to run directly in project root instead of temp directory copy hack".
 - **v1.2.0 (reverted):** The simplified approach failed on some CI configurations with `ComfyUI-Pack-Of-ThatAIGod contains __init__.py but is not a valid Python package name`. The `/tmp/thatnode/` workaround was restored.
-- **Current status:** The directory has been renamed to `ComfyUI_Pack_Of_ThatAIGod` (underscores). mypy now runs directly from the project root. The `/tmp/thatnode/` workaround is retired.
+- **Current status:** The `/tmp/thatnode/` copy workaround is active and stable.
 
 **Alternatives Considered:**
 - `--explicit-package-bases` flag: Breaks glob expansion on some platforms.
-- Renaming the repo directory: Not possible at the time (GitHub repo name is fixed). Later resolved by renaming the local directory to use underscores.
+- Renaming the repo directory: Not possible (GitHub repo name is fixed).
 - `--namespace-packages`: Doesn't resolve the invalid package name error.
 
 **Consequences:**
-- The rename resolves the mypy package name error permanently.
-- mypy now runs directly from the project root with full type resolution.
-- The CI workaround (copy to `/tmp/thatnode/`) has been removed.
+- CI step is 4 lines instead of 1, but it works reliably.
+- Type stubs or local imports won't resolve in CI (mitigated by `--follow-imports=skip`).
+- This approach was validated in the original codebase and has been reverted to after attempted simplification failed.
 
-**The directory name fix is complete. No further workarounds needed.**
+**Do NOT change this without testing on Ubuntu CI first.**
 
 ---
 
@@ -152,7 +152,7 @@ This document records significant architectural and tooling decisions to prevent
 
 1. ComfyUI ships with its own `utils/` package at `ComfyUI/utils/__init__.py`. When a custom node directory contains `utils.py`, Python's import system resolves `from utils import ...` to ComfyUI's `utils` package instead of the local file, causing `ImportError: cannot import name 'safe_import' from 'utils'`.
 
-2. ComfyUI loads custom nodes via `importlib.util.spec_from_file_location()` using a filesystem-path-derived module name (e.g. `C:\...\ComfyUI_Pack_Of_ThatAIGod` with dots replaced). The package directory is NOT added to `sys.path`, so sibling imports (`from _utils import ...`, `importlib.import_module("Dynamic_Resolution_Picker")`) fail with `ModuleNotFoundError`.
+2. ComfyUI loads custom nodes via `importlib.util.spec_from_file_location()` using a filesystem-path-derived module name (e.g. `C:\...\ComfyUI-Pack-Of-ThatAIGod` with dots replaced). The package directory is NOT added to `sys.path`, so sibling imports (`from _utils import ...`, `importlib.import_module("Dynamic_Resolution_Picker")`) fail with `ModuleNotFoundError`.
 
 **Decision:**
 - Rename local utility module to `_utils.py` (underscore prefix).

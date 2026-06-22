@@ -1,4 +1,4 @@
-# Contributing to ComfyUI_Pack_Of_ThatAIGod
+# Contributing to ComfyUI-Pack-Of-ThatAIGod
 
 Thanks for your interest in contributing! Here's how to get started.
 
@@ -6,7 +6,7 @@ Thanks for your interest in contributing! Here's how to get started.
 
 ```bash
 git clone https://github.com/thataigod/ComfyUI-Pack-Of-ThatAIGod.git
-cd ComfyUI_Pack_Of_ThatAIGod
+cd ComfyUI-Pack-Of-ThatAIGod
 pip install -e ".[dev]"
 ```
 
@@ -39,11 +39,20 @@ fail locally if coverage drops — no need for a separate coverage check.
 
 ## Running mypy Locally
 
-The project directory name now uses underscores (a valid Python package name),
-so mypy can be run directly from the project root:
+The project directory name contains hyphens, which prevents mypy from analysing the
+package in-place. Copy the `.py` files to a valid temporary directory first (see DECISIONS.md D1):
 
 ```bash
-mypy . --explicit-package-bases
+# Linux / macOS
+mkdir -p /tmp/thatnode && cp *.py /tmp/thatnode/ && cd /tmp/thatnode
+mypy *.py --ignore-missing-imports --follow-imports=skip
+
+# Windows (PowerShell)
+New-Item -ItemType Directory -Force -Path "$env:TEMP\thatnode" | Out-Null
+Copy-Item *.py "$env:TEMP\thatnode\"
+Push-Location "$env:TEMP\thatnode"
+mypy *.py --ignore-missing-imports --follow-imports=skip
+Pop-Location
 ```
 
 ## Code Style
@@ -79,7 +88,7 @@ mypy . --explicit-package-bases
 2. Make your changes with tests
 3. Ensure `pytest` passes with 100% source coverage
 4. Ensure `ruff check .` passes
-5. Ensure `mypy .` passes
+5. Ensure mypy passes (use the copy-to-temp workaround above)
 6. Update `CHANGELOG.md` with your changes
 7. Update `DECISIONS.md` if you made a significant architectural decision
 8. Submit a PR against `master`

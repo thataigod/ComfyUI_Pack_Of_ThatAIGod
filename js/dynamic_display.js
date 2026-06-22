@@ -1,5 +1,5 @@
 /**
- * @fileoverview ComfyUI frontend extension for ComfyUI_Pack_Of_ThatAIGod.
+ * @fileoverview ComfyUI frontend extension for ComfyUI-Pack-Of-ThatAIGod.
  *
  * Extends three node types:
  *

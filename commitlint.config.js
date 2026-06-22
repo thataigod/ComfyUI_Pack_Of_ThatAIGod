@@ -1,4 +1,4 @@
-// commitlint.config.js — Conventional Commits enforcement for ComfyUI_Pack_Of_ThatAIGod
+// commitlint.config.js — Conventional Commits enforcement for ComfyUI-Pack-Of-ThatAIGod
 //
 // This config enforces the Conventional Commits specification:
 //   <type>[optional scope]: <description>

@@ -1,4 +1,4 @@
-"""Shared utility functions and constants for ComfyUI_Pack_Of_ThatAIGod.
+"""Shared utility functions and constants for ComfyUI-Pack-Of-ThatAIGod.
 
 This module is intentionally named ``_utils`` (underscore prefix) rather than
 ``utils`` to avoid shadowing ComfyUI's own ``utils`` package.  See DECISIONS.md D11.
@@ -97,8 +97,7 @@ def get_logger() -> structlog.stdlib.BoundLogger:
     """
     configure_logging()
     import structlog
-
-    return structlog.get_logger("ThatAIGod")  # type: ignore[no-any-return]
+    return structlog.get_logger("ThatAIGod")
 
 
 # ---------------------------------------------------------------------------
@@ -265,7 +264,7 @@ def safe_import(module_name: str) -> Any | None:
     except Exception as e:
         logger = get_logger()
         logger.warning(
-            "ComfyUI_Pack_Of_ThatAIGod: failed to import %s: %s",
+            "ComfyUI-Pack-Of-ThatAIGod: failed to import %s: %s",
             module_name,
             e,
         )
