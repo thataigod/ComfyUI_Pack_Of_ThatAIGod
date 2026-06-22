@@ -5,7 +5,7 @@ Thanks for your interest in contributing! Here's how to get started.
 ## Development Setup
 
 ```bash
-git clone https://github.com/thataigod/ComfyUI-Pack-Of-ThatAIGod.git
+git clone https://github.com/thataigod/ComfyUI_Pack_Of_ThatAIGod.git
 cd ComfyUI_Pack_Of_ThatAIGod
 pip install -e ".[dev]"
 ```
