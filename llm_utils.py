@@ -408,7 +408,7 @@ def encode_image_to_base64(image_tensor: torch.Tensor) -> str:
     Raises:
         ValueError: If either dimension exceeds :data:`MAX_IMAGE_DIMENSION` (8192 px).
     """
-    arr: np.ndarray = (255.0 * image_tensor[0].cpu().numpy()).astype("uint8")
+    arr: np.ndarray = (255.0 * image_tensor[0].cpu().numpy()).astype("uint8")  # type: ignore[type-arg]
     if arr.shape[0] > MAX_IMAGE_DIMENSION or arr.shape[1] > MAX_IMAGE_DIMENSION:
         raise ValueError(
             f"Image dimensions {arr.shape[1]}x{arr.shape[0]} exceed maximum {MAX_IMAGE_DIMENSION}x{MAX_IMAGE_DIMENSION}"
