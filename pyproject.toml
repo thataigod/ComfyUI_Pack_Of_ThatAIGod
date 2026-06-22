@@ -53,7 +53,7 @@ ignore = ["E501", "N801", "N802", "N806", "N815", "N816", "N999"]
 "llm_utils.py" = ["S310"]
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.12"
 strict = true
 ignore_missing_imports = true
 # disallow_untyped_defs = false: ComfyUI's INPUT_TYPES(), IS_CHANGED(), and VALIDATE_INPUTS()
