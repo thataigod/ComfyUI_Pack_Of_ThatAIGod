@@ -44,9 +44,9 @@ MYPY_AVAILABLE=$?
 if [ $MYPY_AVAILABLE -ne 0 ]; then
   echo "⚠️  mypy not available — skipping type check"
 else
-  MYPY_TMP="/tmp/mypy-check-$$"
-  mkdir -p "$MYPY_TMP" && cp *.py "$MYPY_TMP/" 2>/dev/null
-  (cd "$MYPY_TMP" && python -m mypy *.py --ignore-missing-imports --follow-imports=skip 2>/dev/null)
+  MYPY_TMP="/tmp/mypycheck$$"
+  mkdir -p "$MYPY_TMP" && cp ./*.py "$MYPY_TMP/" 2>/dev/null
+  (cd "$MYPY_TMP" && python -m mypy ./*.py --ignore-missing-imports --follow-imports=skip 2>/dev/null)
   MYPY_EXIT=$?
   rm -rf "$MYPY_TMP"
   if [ $MYPY_EXIT -ne 0 ]; then
