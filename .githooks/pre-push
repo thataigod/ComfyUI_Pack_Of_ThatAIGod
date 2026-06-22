@@ -39,7 +39,7 @@ echo "✅ ruff passed"
 # ── pytest with coverage ─────────────────────────────
 echo ""
 echo "--- pytest (coverage >=80%) ---"
-pytest --cov-fail-under=80 -q 2>/dev/null
+python -m pytest --cov-fail-under=100 -q 2>/dev/null
 PYTEST_EXIT=$?
 if [ $PYTEST_EXIT -ne 0 ]; then
   echo ""
