@@ -65,6 +65,10 @@ disallow_any_unimported = false
 warn_unused_ignores = true
 exclude = ["tests/", ".github/"]
 
+[[tool.mypy.overrides]]
+module = "numpy.*"
+ignore_errors = true
+
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0",
