@@ -1,6 +1,6 @@
 # ComfyUI Pack Of ThatAIGod
 
-Welcome to the API documentation for **ComfyUI-Pack-Of-ThatAIGod**, a custom node pack for
+Welcome to the API documentation for **ComfyUI_Pack_Of_ThatAIGod**, a custom node pack for
 [ComfyUI](https://github.com/comfyanonymous/ComfyUI) providing LLM integration, image utilities,
 resolution management, and wildcard-based prompt generation.
 
