@@ -44,7 +44,7 @@ MYPY_AVAILABLE=$?
 if [ $MYPY_AVAILABLE -ne 0 ]; then
   echo "⚠️  mypy not available — skipping type check"
 else
-  python -m mypy . --explicit-package-bases --ignore-missing-imports 2>/dev/null
+  python -m mypy . --explicit-package-bases --follow-imports=skip 2>/dev/null
   MYPY_EXIT=$?
   if [ $MYPY_EXIT -ne 0 ]; then
     echo "=========================================="

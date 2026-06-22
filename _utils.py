@@ -98,7 +98,7 @@ def get_logger() -> structlog.stdlib.BoundLogger:
     configure_logging()
     import structlog
 
-    return structlog.get_logger("ThatAIGod")  # type: ignore[no-any-return]
+    return structlog.get_logger("ThatAIGod")
 
 
 # ---------------------------------------------------------------------------
