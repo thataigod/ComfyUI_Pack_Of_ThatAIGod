@@ -250,7 +250,7 @@ class ImageSaverPlus:
 
         results: list[dict[str, str]] = []
         for batch_number, image in enumerate(images):
-            i: np.ndarray = 255.0 * image.cpu().numpy()  # type: ignore[type-arg]
+            i: np.ndarray = 255.0 * image.cpu().numpy()
             img: Image.Image = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
 
             filename_with_batch: str = filename.replace("%batch_num%", str(batch_number))

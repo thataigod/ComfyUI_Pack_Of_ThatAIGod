@@ -164,7 +164,7 @@ class SequentialImageLoader:
         if i.mode != "RGB":
             i = i.convert("RGB")
 
-        image: np.ndarray = np.array(i).astype(np.float32) / 255.0  # type: ignore[type-arg]
+        image: np.ndarray = np.array(i).astype(np.float32) / 255.0
         image_tensor: torch.Tensor = torch.from_numpy(image)[None]
 
         return (image_tensor, filename_no_ext, stats)
