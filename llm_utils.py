@@ -1,4 +1,4 @@
-"""Core LLM utility module for ComfyUI-Pack-Of-ThatAIGod.
+"""Core LLM utility module for ComfyUI_Pack_Of_ThatAIGod.
 
 Provides helper classes and functions used by :mod:`LLM_Node`:
 
@@ -282,7 +282,7 @@ class LlmStreamer:
 _STREAM_HEADERS: dict[str, str] = {
     "Content-Type": "application/json",
     "User-Agent": "ThatAIGod-ComfyUI-Node/1.0",
-    "X-Title": "ComfyUI-Pack-Of-ThatAIGod",
+    "X-Title": "ComfyUI_Pack_Of_ThatAIGod",
 }
 
 
@@ -351,7 +351,7 @@ def _run_async_stream(url: str, payload: dict[str, Any], api_key: str, timeout: 
 
     See DECISIONS.md D12 for the full rationale behind this architecture.
     """
-    q: queue.Queue = queue.Queue(maxsize=50)
+    q: queue.Queue[Any] = queue.Queue(maxsize=50)
     _SENTINEL: object = object()
     _error: list[Exception] = []
 

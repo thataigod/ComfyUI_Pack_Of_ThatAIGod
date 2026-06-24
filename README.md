@@ -1,6 +1,6 @@
 # ComfyUI Pack Of ThatAIGod
 
-[![CI](https://github.com/thataigod/ComfyUI-Pack-Of-ThatAIGod/actions/workflows/python-package.yml/badge.svg)](https://github.com/thataigod/ComfyUI-Pack-Of-ThatAIGod/actions/workflows/python-package.yml)
+[![CI](https://github.com/thataigod/ComfyUI_Pack_Of_ThatAIGod/actions/workflows/python-package.yml/badge.svg)](https://github.com/thataigod/ComfyUI_Pack_Of_ThatAIGod/actions/workflows/python-package.yml)
 
 A custom node pack for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) providing LLM integration, image utilities, resolution management, and wildcard-based prompt generation.
 
@@ -23,7 +23,7 @@ Navigate to your ComfyUI `custom_nodes` directory and clone:
 
 ```bash
 cd ComfyUI/custom_nodes
-git clone https://github.com/thataigod/ComfyUI-Pack-Of-ThatAIGod.git
+git clone https://github.com/thataigod/ComfyUI_Pack_Of_ThatAIGod.git
 ```
 
 ### Option 2: ComfyUI Manager
@@ -33,7 +33,7 @@ Search for "Pack Of ThatAIGod" in ComfyUI Manager and install directly.
 ### Option 3: Manual Download
 
 1. Download the ZIP from GitHub
-2. Extract to `ComfyUI/custom_nodes/ComfyUI-Pack-Of-ThatAIGod`
+2. Extract to `ComfyUI/custom_nodes/ComfyUI_Pack_Of_ThatAIGod`
 
 ## API Key Setup
 
