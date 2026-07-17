@@ -201,13 +201,9 @@ app.registerExtension({
                     }
                     if (models.length > 0) {
                         modelWidget.options.values = models;
-                        if (models.includes(originalValue)) {
-                            modelWidget.value = originalValue;
-                        } else {
-                            modelWidget.value = models[0];
-                        }
-                    } else {
-                        modelWidget.value = "No models available";
+                    }
+                    if (models.includes(originalValue)) {
+                        modelWidget.value = originalValue;
                     }
                 } catch (error) {
                     console.error(error);
