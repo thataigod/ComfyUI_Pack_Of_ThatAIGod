@@ -19,6 +19,25 @@ fi
 
 echo "Running pre-commit checks (branch: $BRANCH)..."
 
+# ── Staged file scan for TODO/FIXME/debug code ───────
+echo ""
+echo "--- scanning staged files for leftover debug code ---"
+STAGED=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null | grep -v '^\.githooks/')
+if [ -n "$STAGED" ]; then
+  ISSUES=$(echo "$STAGED" | xargs grep -ln 'TODO\|FIXME\|print(' 2>/dev/null)
+  if [ -n "$ISSUES" ]; then
+    echo ""
+    echo "=========================================="
+    echo "❌ PRE-COMMIT FAILED"
+    echo "=========================================="
+    echo "Found TODO/FIXME/debug code in staged files:"
+    echo "$ISSUES"
+    echo ""
+    exit 1
+  fi
+fi
+echo "✅ no debug code found in staged files"
+
 # ── Ruff lint check ──────────────────────────────────
 echo ""
 echo "--- ruff check ---"
