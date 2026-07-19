@@ -26,6 +26,7 @@ def _make_kwargs(overrides: dict[str, Any] | None = None) -> dict[str, Any]:
         "Max Tokens": 1024,
         "seed": 0,
         "Timeout (Seconds)": 30,
+        "Thinking": "enable",
         "API Key Env Var": "OPENROUTER_API_KEY",
         "Local URL": "http://localhost:1234/v1",
         "Image(s)": None,
@@ -179,7 +180,7 @@ class TestLLMNode(unittest.TestCase):
             self.assertEqual(result, "$7.50")
 
     def test_response_cache_hit_returns_cached_value(self):
-        cache_key = ("OpenRouter", "test-model", "", "hello", 0.7, 1024, 0, None)
+        cache_key = ("OpenRouter", "test-model", "", "hello", 0.7, 1024, 0, "enable", None)
         LLM_Node._response_cache[cache_key] = ("cached reply", True, "cached info", "")
 
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
@@ -423,7 +424,7 @@ class TestLLMNode(unittest.TestCase):
             )
 
     def test_generate_with_unique_id_and_cached_streams_to_ui(self):
-        cache_key = ("OpenRouter", "test-model", "", "hello", 0.7, 1024, 0, None)
+        cache_key = ("OpenRouter", "test-model", "", "hello", 0.7, 1024, 0, "enable", None)
         LLM_Node._response_cache[cache_key] = ("cached reply", True, "cached info", "")
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
             with patch("LLM_Node.PromptServer.instance.send_sync") as mock_send:
