@@ -132,6 +132,13 @@ class LLM_Node:
                         "tooltip": "Model ID. Use 'Refresh Models' to fetch the latest list from OpenRouter or your local server.",
                     },
                 ),
+                "Thinking": (
+                    ["enable", "disable"],
+                    {
+                        "default": "enable",
+                        "tooltip": "Enable or disable model thinking/reasoning (chat_template_kwargs.enable_thinking).",
+                    },
+                ),
                 "System Prompt": (
                     "STRING",
                     {
@@ -378,6 +385,7 @@ class LLM_Node:
             cfg["temperature"],
             cfg["max_tokens"],
             cfg["seed"],
+            cfg["thinking"],
             image_hash,
         )
 
