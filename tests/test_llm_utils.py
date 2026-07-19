@@ -250,6 +250,16 @@ class TestLlmConfigBuilder(unittest.TestCase):
         payload = LlmConfigBuilder.build_payload(cfg, [])
         self.assertNotIn("seed", payload)
 
+    def test_build_payload_sets_chat_template_kwargs_when_thinking_disabled(self):
+        cfg = {"model_name": "m", "temperature": 0.7, "max_tokens": 100, "seed": 0, "thinking": "disable"}
+        payload = LlmConfigBuilder.build_payload(cfg, [])
+        self.assertEqual(payload["chat_template_kwargs"], {"enable_thinking": False})
+
+    def test_build_payload_omits_chat_template_kwargs_when_thinking_enabled(self):
+        cfg = {"model_name": "m", "temperature": 0.7, "max_tokens": 100, "seed": 0, "thinking": "enable"}
+        payload = LlmConfigBuilder.build_payload(cfg, [])
+        self.assertNotIn("chat_template_kwargs", payload)
+
 
 class TestEncodeImage(unittest.TestCase):
     def test_encode_image_to_base64(self):
