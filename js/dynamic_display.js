@@ -130,8 +130,10 @@ app.registerExtension({
                 api.addEventListener("that_ai_god.stream", streamHandler);
                 this._thatAiGodStreamHandler = streamHandler;
 
-                // 6. Mode Listener
+                // 6. Mode Listener — save last model per mode on switch
                 const modeWidget = this.widgets.find(w => w.name === "Mode");
+                this._lastModelPerMode = {};
+                this._lastMode = modeWidget ? modeWidget.value : "OpenRouter";
                 if (modeWidget) {
                     const originalCallback = modeWidget.callback;
                     modeWidget.callback = (value) => {
@@ -162,7 +164,14 @@ app.registerExtension({
 
                 if (!modeWidget || !modelWidget) return;
 
+                // Save current model for the previous mode before switching
                 const mode = modeWidget.value;
+                const previousMode = this._lastMode || mode;
+                if (modelWidget.value && modelWidget.value !== "Fetching...") {
+                    this._lastModelPerMode[previousMode] = modelWidget.value;
+                }
+                this._lastMode = mode;
+
                 let fetchUrl = "";
 
                 if (mode === "OpenRouter") {
@@ -202,8 +211,11 @@ app.registerExtension({
                     if (models.length > 0) {
                         modelWidget.options.values = models;
                     }
-                    if (models.includes(originalValue)) {
-                        modelWidget.value = originalValue;
+                    const savedForMode = this._lastModelPerMode[mode];
+                    if (savedForMode && models.includes(savedForMode)) {
+                        modelWidget.value = savedForMode;
+                    } else if (models.length > 0) {
+                        modelWidget.value = models[0];
                     }
                 } catch (error) {
                     console.error(error);
