@@ -214,6 +214,12 @@ app.registerExtension({
                     const savedForMode = this._lastModelPerMode[mode];
                     if (savedForMode && models.includes(savedForMode)) {
                         modelWidget.value = savedForMode;
+                    } else if (savedForMode && !models.includes(savedForMode) && mode === "OpenRouter") {
+                        const errMsg = `[WARNING] "${savedForMode}" is no longer in the model list. Falling back to "openrouter/free" to avoid accidental spend.`;
+                        const errorWidget = this.widgets.find(w => w.name === "Full LLM Response or Any Errors");
+                        if (errorWidget) errorWidget.value = errMsg;
+                        modelWidget.options.values = [...models, "openrouter/free"];
+                        modelWidget.value = "openrouter/free";
                     } else if (models.length > 0) {
                         modelWidget.value = models[0];
                     }
