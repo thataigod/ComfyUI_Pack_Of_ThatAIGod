@@ -209,8 +209,11 @@ class LlmConfigBuilder:
         }
         if cfg["seed"] != 0:
             payload["seed"] = cfg["seed"]
-        if cfg["thinking"] == "disable":
-            payload["chat_template_kwargs"] = {"enable_thinking": False}
+        if cfg.get("thinking") == "disable":
+            if cfg.get("mode") == "Local":
+                payload["reasoning_effort"] = "none"
+            else:
+                payload["chat_template_kwargs"] = {"enable_thinking": False}
         return payload
 
 
