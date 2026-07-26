@@ -95,6 +95,7 @@ class LlmConfigBuilder:
             "unique_id": kwargs.get("unique_id", None),
             "api_key_env_var": kwargs.get("API Key Env Var", "OPENROUTER_API_KEY"),
             "local_url": kwargs.get("Local URL", "http://localhost:1234/v1"),
+            "thinking": kwargs.get("Thinking", "enable"),
             "vision_image": kwargs.get("Image(s)", None),
         }
 
@@ -208,6 +209,11 @@ class LlmConfigBuilder:
         }
         if cfg["seed"] != 0:
             payload["seed"] = cfg["seed"]
+        if cfg.get("thinking") == "disable":
+            if cfg.get("mode") == "Local":
+                payload["reasoning_effort"] = "none"
+            else:
+                payload["chat_template_kwargs"] = {"enable_thinking": False}
         return payload
 
 

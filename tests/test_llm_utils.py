@@ -250,6 +250,22 @@ class TestLlmConfigBuilder(unittest.TestCase):
         payload = LlmConfigBuilder.build_payload(cfg, [])
         self.assertNotIn("seed", payload)
 
+    def test_build_payload_uses_chat_template_kwargs_when_openrouter_and_thinking_disabled(self):
+        cfg = {"mode": "OpenRouter", "model_name": "m", "temperature": 0.7, "max_tokens": 100, "seed": 0, "thinking": "disable"}
+        payload = LlmConfigBuilder.build_payload(cfg, [])
+        self.assertEqual(payload["chat_template_kwargs"], {"enable_thinking": False})
+
+    def test_build_payload_uses_reasoning_effort_when_local_and_thinking_disabled(self):
+        cfg = {"mode": "Local", "model_name": "m", "temperature": 0.7, "max_tokens": 100, "seed": 0, "thinking": "disable"}
+        payload = LlmConfigBuilder.build_payload(cfg, [])
+        self.assertEqual(payload["reasoning_effort"], "none")
+
+    def test_build_payload_omits_thinking_params_when_thinking_enabled(self):
+        cfg = {"model_name": "m", "temperature": 0.7, "max_tokens": 100, "seed": 0, "thinking": "enable"}
+        payload = LlmConfigBuilder.build_payload(cfg, [])
+        self.assertNotIn("chat_template_kwargs", payload)
+        self.assertNotIn("reasoning_effort", payload)
+
 
 class TestEncodeImage(unittest.TestCase):
     def test_encode_image_to_base64(self):

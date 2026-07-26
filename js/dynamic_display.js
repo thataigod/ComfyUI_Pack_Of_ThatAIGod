@@ -130,8 +130,10 @@ app.registerExtension({
                 api.addEventListener("that_ai_god.stream", streamHandler);
                 this._thatAiGodStreamHandler = streamHandler;
 
-                // 6. Mode Listener
+                // 6. Mode Listener — save last model per mode on switch
                 const modeWidget = this.widgets.find(w => w.name === "Mode");
+                this._lastModelPerMode = {};
+                this._lastMode = modeWidget ? modeWidget.value : "OpenRouter";
                 if (modeWidget) {
                     const originalCallback = modeWidget.callback;
                     modeWidget.callback = (value) => {
@@ -139,6 +141,10 @@ app.registerExtension({
                         this.refreshModels();
                     };
                 }
+
+                // Refresh models on initial load so saved workflows with Local mode
+                // don't keep showing OpenRouter models in the dropdown.
+                setTimeout(() => this.refreshModels(), 100);
 
                 return r;
             };
@@ -158,33 +164,41 @@ app.registerExtension({
 
                 if (!modeWidget || !modelWidget) return;
 
+                // Save current model for the previous mode before switching
                 const mode = modeWidget.value;
+                const previousMode = this._lastMode || mode;
+                if (modelWidget.value && modelWidget.value !== "Fetching...") {
+                    this._lastModelPerMode[previousMode] = modelWidget.value;
+                }
+                this._lastMode = mode;
+
                 let fetchUrl = "";
-                
+
                 if (mode === "OpenRouter") {
                     fetchUrl = "https://openrouter.ai/api/v1/models";
                 } else {
                     let rawUrl = localUrlWidget ? localUrlWidget.value : "http://localhost:1234/v1";
                     if(rawUrl) {
-                        // Ensure URL has protocol for parsing
                         const normalizedUrl = rawUrl.includes("://") ? rawUrl : "http://" + rawUrl;
                         const allowedHosts = ["localhost", "127.0.0.1", "::1"];
                         const parsed = new URL(normalizedUrl);
                         if (!allowedHosts.includes(parsed.hostname)) {
                             throw new Error(`Local URL must be localhost (got ${parsed.hostname})`);
                         }
-                        rawUrl = rawUrl.replace(/\/chat\/completions\/?$/, ""); 
-                        rawUrl = rawUrl.replace(/\/v1\/?$/, ""); 
-                        rawUrl = rawUrl.replace(/\/$/, ""); 
+                        rawUrl = rawUrl.replace(/\/chat\/completions\/?$/, "");
+                        rawUrl = rawUrl.replace(/\/v1\/?$/, "");
+                        rawUrl = rawUrl.replace(/\/$/, "");
                         fetchUrl = rawUrl + "/v1/models";
                     } else {
                         fetchUrl = "http://localhost:1234/v1/models";
                     }
                 }
 
+                const originalValue = modelWidget.value;
+                modelWidget.value = "Fetching...";
+                app.graph.setDirtyCanvas(true);
+
                 try {
-                    const originalValue = modelWidget.value;
-                    modelWidget.value = "Fetching...";
                     const response = await fetch(fetchUrl);
                     if (!response.ok) throw new Error(`HTTP ${response.status}`);
                     const data = await response.json();
@@ -196,19 +210,33 @@ app.registerExtension({
                     }
                     if (models.length > 0) {
                         modelWidget.options.values = models;
-                        modelWidget.value = models[0]; 
-                    } else {
-                        modelWidget.value = originalValue;
+                    }
+                    const savedForMode = this._lastModelPerMode[mode];
+                    if (savedForMode && models.includes(savedForMode)) {
+                        modelWidget.value = savedForMode;
+                    } else if (savedForMode && !models.includes(savedForMode) && mode === "OpenRouter") {
+                        const errMsg = `[WARNING] "${savedForMode}" is no longer in the model list. Falling back to "openrouter/free" to avoid accidental spend.`;
+                        const errorWidget = this.widgets.find(w => w.name === "Full LLM Response or Any Errors");
+                        if (errorWidget) errorWidget.value = errMsg;
+                        modelWidget.options.values = [...models, "openrouter/free"];
+                        modelWidget.value = "openrouter/free";
+                    } else if (models.length > 0) {
+                        modelWidget.value = models[0];
                     }
                 } catch (error) {
                     console.error(error);
                     const errorWidget = this.widgets.find(w => w.name === "Full LLM Response or Any Errors");
+                    const errMsg = `[ERROR] Failed to fetch ${mode} models: ${error.message || error}`;
                     if (errorWidget) {
-                        errorWidget.value = `[ERROR] Failed to fetch models: ${error.message || error}`;
+                        errorWidget.value = errMsg;
+                    } else {
+                        alert(errMsg);
                     }
                     if (modelWidget.value === "Fetching...") {
-                        modelWidget.value = "anthropic/claude-3.5-sonnet"; 
+                        modelWidget.value = originalValue;
                     }
+                } finally {
+                    app.graph.setDirtyCanvas(true);
                 }
             };
         }
