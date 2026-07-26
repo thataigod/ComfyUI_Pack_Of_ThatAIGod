@@ -60,18 +60,18 @@ _SQUARE: dict[str, float] = {"Square 1:1": 1.0}
 _ALL_RATIOS: dict[str, float] = {**_PORTRAITS, **_LANDSCAPES, **_SQUARE}
 
 _KEYWORD_MAP: dict[str, str] = {
-    "Square 1:1": "Square, 1:1 Aspect Ratio, Boxed Composition",
-    "Portrait 2:3 (Classic)": "Portrait, 2:3 Aspect Ratio, Vertical Orientation",
-    "Portrait 3:4 (Standard)": "Portrait, 3:4 Aspect Ratio, Vertical Format",
-    "Portrait 4:5 (Social)": "Portrait, 4:5 Aspect Ratio, Vertical Composition",
-    "Portrait 9:16 (Mobile)": "Portrait, 9:16 Aspect Ratio, Full Screen Vertical",
-    "Landscape 3:2 (Classic)": "Landscape, 3:2 Aspect Ratio, Horizontal Orientation",
-    "Landscape 4:3 (Standard)": "Landscape, 4:3 Aspect Ratio, Standard View",
-    "Landscape 5:4 (Display)": "Landscape, 5:4 Aspect Ratio, Wide Format",
-    "Landscape 16:9 (HD)": "Landscape, 16:9 Aspect Ratio, Widescreen Format",
-    "Landscape 16:10 (Monitor)": "Landscape, 16:10 Aspect Ratio, Wide Display",
-    "Landscape 21:9 (Ultrawide)": "Landscape, 21:9 Aspect Ratio, Ultra-Wide Panoramic",
-    "Landscape 1.85:1 (Cinema)": "Landscape, 1.85:1 Aspect Ratio, Theatrical Format",
+    "Square 1:1": "Square, 1:1, Centered Composition, Symmetrical Balance, Equal Emphasis",
+    "Portrait 2:3 (Classic)": "Vertical, 2:3, Classic Portrait, Half-Body Framing, Tall Orientation",
+    "Portrait 3:4 (Standard)": "Vertical, 3:4, Standard Portrait, Head-and-Shoulders, Traditional Print",
+    "Portrait 4:5 (Social)": "Vertical, 4:5, Social Portrait, Close Crop, Tighter Frame",
+    "Portrait 9:16 (Mobile)": "Vertical, 9:16, Full-Length Portrait, Tall Vertical, Smartphone View",
+    "Landscape 3:2 (Classic)": "Horizontal, 3:2, Classic Landscape, Scenic Wide, Traditional Photography",
+    "Landscape 4:3 (Standard)": "Horizontal, 4:3, Standard View, Balanced Wide, General Purpose",
+    "Landscape 5:4 (Display)": "Horizontal, 5:4, Display Format, Medium Composition, Monitor View",
+    "Landscape 16:9 (HD)": "Horizontal, 16:9, Cinematic Widescreen, Panoramic Vista, Epic Horizon",
+    "Landscape 16:10 (Monitor)": "Horizontal, 16:10, Wide Monitor, Panoramic View, Modern Display",
+    "Landscape 21:9 (Ultrawide)": "Horizontal, 21:9, Ultrawide Cinematic, Anamorphic Scope, Immersive Panoramic",
+    "Landscape 1.85:1 (Cinema)": "Horizontal, 1.85:1, Theatrical Widescreen, Cinematic Framing, Motion Picture",
 }
 
 _ALL_LABELS: list[str] = list(_ALL_RATIOS.keys())
@@ -264,7 +264,11 @@ class ResolutionSelector:
         else:
             width_int, height_int = _compute_dimensions_from_min_side(pixels, ratio_float)
 
-        keywords: str = _KEYWORD_MAP.get(target_label, f"Custom {ratio_float:.2f} Aspect Ratio, Custom Composition")
+        if target_label in _KEYWORD_MAP:
+            keywords = _KEYWORD_MAP[target_label]
+        else:
+            closest_name = min(_ALL_RATIOS, key=lambda n: abs(_ALL_RATIOS[n] - ratio_float))
+            keywords = f"Custom, Approximate {closest_name}, {_KEYWORD_MAP[closest_name]}"
 
         guide_size: int = min(width_int, height_int)
         max_size_val: int = max(width_int, height_int)
