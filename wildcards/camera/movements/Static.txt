@@ -1,0 +1,11 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@keyword: 
+#@shortcuts: Static
+
+#@close
+the camera holding perfectly still
+the camera locked off in a static frame
+#@wide
+the camera holding perfectly still
+the camera locked off in a static frame

@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: film
+#@keyword: 35mm Rangefinder Film, Delicate Film Grain, Honest Natural Color, Classic 35mm Look
+#@shortcuts: Film
+
+Shot on a Leica M6 rangefinder, 35mm film with delicate grain and honest, natural color.
+Captured on a Leica M6, its classic 35mm look staying unobtrusive and truthful.

@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@roll: 20
+#@keyword: Strong Dutch Angle
+#@shortcuts: Dutch
+
+framed with a pronounced dutch angle
+a bold dutch angle driving the composition

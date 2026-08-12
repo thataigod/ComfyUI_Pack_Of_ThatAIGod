@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: digital
+#@keyword: Full-Frame Digital, Vibrant Accurate Color, Crisp Digital Detail, Professional Color Science
+#@shortcuts: Digital
+
+Shot on a Canon EOS R5, modern digital with vibrant yet accurate color.
+Captured on a Canon EOS R5, crisp digital detail with professional color science.

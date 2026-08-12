@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: digital
+#@keyword: Digital Cinema, Cinematic Color Science, Smooth Highlight Roll-Off, Rich Skintones
+#@shortcuts: Digital
+
+Shot on an ARRI Alexa Mini, cinematic digital with beautiful highlight roll-off and rich skintones.
+Captured on an ARRI Alexa Mini, the industry-standard cinema look with natural color.

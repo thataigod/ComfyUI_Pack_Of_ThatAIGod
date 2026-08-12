@@ -1,0 +1,10 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@lens: 100mm macro lens
+#@depth: shallow depth of field
+#@close: true
+#@keyword: Extreme Close-Up
+#@shortcuts: Close-ups
+
+An extreme close-up
+A tight extreme close-up

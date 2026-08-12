@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: digital
+#@keyword: Full-Frame Digital, High Resolution, Clinically Sharp Detail, Neutral Modern Color
+#@shortcuts: Digital
+
+Shot on a Sony A7R V, high-resolution digital with clinically sharp, neutral detail.
+Captured on a Sony A7R V, modern full-frame digital with clean, exact color.

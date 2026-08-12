@@ -1,0 +1,11 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@keyword: Handheld Shot, Slight Camera Shake
+#@shortcuts: Motion
+
+#@close
+a subtle handheld sway keeping the frame alive
+a handheld shot with faint natural camera shake
+#@wide
+a subtle handheld sway keeping the frame alive
+a handheld shot with faint natural camera shake

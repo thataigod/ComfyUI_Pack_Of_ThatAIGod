@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: film
+#@keyword: 35mm Film, Classic SLR, Warm Color Cast, Subtle Film Grain
+#@shortcuts: Film
+
+Shot on a Canon AE-1 Program, classic 35mm film with warm color and subtle grain.
+Captured on a Canon AE-1 Program, the warm analog look of the classic-era SLR.

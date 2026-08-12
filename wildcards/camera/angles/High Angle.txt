@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@elevation: 45
+#@keyword: High Angle
+#@shortcuts: Above
+
+shot from a high angle with the camera looking down
+captured from an elevated position looking down on the subject

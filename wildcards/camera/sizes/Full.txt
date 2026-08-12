@@ -1,0 +1,9 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@lens: 35mm lens
+#@depth: deep depth of field
+#@keyword: Full Body Shot
+#@shortcuts: Fulls
+
+A full-body shot
+A full-length shot

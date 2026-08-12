@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@elevation: -20
+#@keyword: Low Angle
+#@shortcuts: Below
+
+shot from a low angle with the camera at chest height
+captured from a low angle, the camera tilted up from below the subject

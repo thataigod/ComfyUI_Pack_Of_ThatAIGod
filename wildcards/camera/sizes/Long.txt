@@ -1,0 +1,9 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@lens: 24mm wide-angle lens
+#@depth: deep focus
+#@keyword: Long Shot
+#@shortcuts: Fulls
+
+A long shot
+A wide long shot

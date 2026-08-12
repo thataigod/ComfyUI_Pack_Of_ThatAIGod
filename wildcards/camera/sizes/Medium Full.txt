@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@lens: 35mm lens
+#@depth: moderate depth of field
+#@keyword: Medium Full Shot
+
+A medium full shot
+A three-quarter-length shot

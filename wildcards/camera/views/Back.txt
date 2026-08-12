@@ -1,0 +1,10 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+# {side} is filled only on three-quarter and profile views.
+#@azimuth: 180
+#@hides: breasts, chest, face, navel, skin
+#@keyword: Back View
+#@shortcuts: Away
+
+the subject seen from behind
+the subject with their back to the camera

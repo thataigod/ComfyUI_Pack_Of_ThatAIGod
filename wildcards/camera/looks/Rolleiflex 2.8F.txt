@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: film
+#@keyword: Medium Format Film, Twin-Lens Reflex, Fine Film Grain, Smooth Tonal Rendering
+#@shortcuts: Film
+
+Shot on a Rolleiflex 2.8F twin-lens reflex, smooth medium-format tones with fine, even grain.
+Captured on a Rolleiflex 2.8F, its waist-level finder framing a look of quiet, measured calm.

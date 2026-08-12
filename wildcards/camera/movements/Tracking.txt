@@ -1,0 +1,10 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@keyword: Motion Blur, Panning Shot, Action Shot
+#@shortcuts: Motion
+
+#@close
+an action pan holding the subject sharp against a motion-blurred background
+#@wide
+an action pan holding the subject sharp while the background streaks with motion blur
+a panning shot with the subject frozen against a motion-blurred background

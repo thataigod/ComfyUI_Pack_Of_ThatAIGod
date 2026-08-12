@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: film
+#@keyword: 35mm Film, Professional SLR, Fine Film Grain, Neutral Color Balance
+#@shortcuts: Film
+
+Shot on a Nikon F3, professional 35mm film with crisp yet gentle rendering.
+Captured on a Nikon F3, a workhorse SLR look with balanced, neutral color.

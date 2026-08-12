@@ -1,0 +1,9 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@elevation: -60
+#@hides: hair
+#@keyword: Worm's Eye View
+#@shortcuts: Below
+
+shot from a worm's-eye perspective, the camera low to the ground and angled steeply upward
+captured from ground level, the camera aimed steeply upward at the subject

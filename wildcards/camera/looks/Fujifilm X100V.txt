@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: digital
+#@keyword: Mirrorless Digital, Film Simulation Colors, Balanced Rendering, Modern Clean Look
+#@shortcuts: Digital
+
+Shot on a Fujifilm X100V, its film-simulation colors lending a balanced, modern rendering.
+Captured on a Fujifilm X100V, clean digital detail with tasteful color grading.

@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: film
+#@keyword: 35mm Compact Film, Sharp Compact Lens, Clean Film Tones, Premium Point-and-Shoot
+#@shortcuts: Film
+
+Shot on a Contax T2, a luxury compact capturing clean, refined film tones.
+Captured on a Contax T2, sharp compact rendering with a premium point-and-shoot feel.

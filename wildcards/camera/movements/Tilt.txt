@@ -1,0 +1,10 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@keyword: Slow Shutter, Motion Blur, Vertical Pan
+#@shortcuts: Motion
+
+#@close
+a slow vertical pan with soft motion blur across the frame
+#@wide
+a slow vertical pan streaking the background into motion blur
+a long-exposure vertical pan carrying the frame into soft blur

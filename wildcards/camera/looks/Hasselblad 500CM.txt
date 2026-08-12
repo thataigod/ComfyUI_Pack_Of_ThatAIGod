@@ -1,0 +1,9 @@
+#@name: Hasselblad 500C/M
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: film
+#@keyword: Medium Format Film, Soft Film Grain, Natural Color Science, 6x6 Medium Format
+#@shortcuts: Film
+
+Shot on a Hasselblad 500C/M, its medium-format film rendering softly rounded tones with gentle grain.
+Captured on a Hasselblad 500C/M, medium-format film lending the frame creamy texture and natural color.

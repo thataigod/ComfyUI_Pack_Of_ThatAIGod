@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: digital
+#@keyword: Digital Rangefinder, Smooth Highlight Roll-Off, Clean Digital Color, Modern Classic
+#@shortcuts: Digital
+
+Shot on a Leica M11 digital rangefinder with smooth highlight roll-off.
+Captured on a Leica M11, refined digital rendering with beautiful tonal smoothness.

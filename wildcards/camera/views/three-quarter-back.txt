@@ -1,0 +1,11 @@
+#@name: 3/4 Back
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+# {side} is filled only on three-quarter and profile views.
+#@azimuth: 135
+#@hides: breasts, chest, face, navel, skin
+#@keyword: Three-Quarter Back View
+#@shortcuts: Away
+
+the subject turned mostly away, three-quarter back toward the {side}
+the subject in three-quarter back view, angled away to the {side}

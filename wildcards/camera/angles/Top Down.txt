@@ -1,0 +1,9 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@elevation: 90
+#@hides: breasts, chest, face, navel, neck, skin
+#@keyword: Overhead Shot, Bird's Eye View
+#@shortcuts: Above
+
+shot directly from above
+captured from a top-down bird's-eye perspective
