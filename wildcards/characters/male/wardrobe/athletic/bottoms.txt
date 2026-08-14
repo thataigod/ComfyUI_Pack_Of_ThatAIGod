@@ -1,0 +1,7 @@
+#@fit: waist, hips
+#@condition: sweaty
+training shorts
+#@fit: waist, hips
+#@condition: sweaty
+#@mishap: his sweatpants sagging at the waist
+sweatpants

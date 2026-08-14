@@ -1,0 +1,20 @@
+# Occasion options for the Character node.  One value per line; lines
+# starting with # are ignored.  Values must match the #@occasion directives
+# used across the wardrobe and scene wildcard files.
+casual
+office
+formal
+wedding
+party
+festival
+costume
+athletic
+gym
+beach
+pool
+resort
+travel
+home
+intimate
+boudoir
+traditional

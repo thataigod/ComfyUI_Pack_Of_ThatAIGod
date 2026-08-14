@@ -1,0 +1,4 @@
+#@fit: bust, waist, hips
+a lace teddy, __neutral_colors_female__
+#@fit: bust, waist, hips
+a silk babydoll, __pastel_colors_female__

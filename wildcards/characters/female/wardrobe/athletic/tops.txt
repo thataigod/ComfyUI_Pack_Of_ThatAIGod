@@ -1,0 +1,8 @@
+#@fit: bust
+#@condition: sweaty
+#@mishap: her sports bra strap slipping off her shoulder
+a breathable sports bra
+#@fit: bust, waist
+#@condition: sweaty
+#@mishap: the tank top bunching up at her waist
+a fitted tank top

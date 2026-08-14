@@ -1,0 +1,2 @@
+#@occasion: office, formal, wedding, party
+formal wear, __characters/female/wardrobe/formal/tops__, __characters/female/wardrobe/formal/bottoms__, __characters/female/wardrobe/formal/shoes__, __characters/female/wardrobe/formal/accessories__

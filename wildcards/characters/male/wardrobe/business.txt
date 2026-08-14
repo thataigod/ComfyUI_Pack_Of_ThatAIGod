@@ -1,0 +1,2 @@
+#@occasion: office, formal, wedding
+business wear, __characters/male/wardrobe/business/tops__, __characters/male/wardrobe/business/bottoms__, __characters/male/wardrobe/business/shoes__, __characters/male/wardrobe/business/accessories__

@@ -1,0 +1,12 @@
+# Condition clauses for garments that declare #@condition: wet/sweaty/clinging.
+# Only garments tagged with a condition may ever receive one.
+#@condition: wet
+clinging wet to her skin, droplets beading on the fabric
+#@condition: wet
+damp and plastered to her body after a swim
+#@condition: sweaty
+damp with sweat, the fabric sticking to her skin
+#@condition: sweaty
+sweat-sheened where the fabric clings
+#@condition: clinging
+clinging to every curve as if painted on

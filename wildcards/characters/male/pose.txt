@@ -1,0 +1,19 @@
+#@facing: front
+#@awareness: aware
+standing relaxed with his weight on one leg, arms loosely crossed, a calm confident posture
+#@facing: three-quarter
+#@awareness: aware
+turned slightly to the side, one hand in his pocket, glancing off with an easy, assured air
+#@facing: profile
+#@awareness: unaware
+pausing mid-stride in profile, looking away, lost in thought and unaware of the camera
+#@facing: back
+#@awareness: unaware
+standing with his back to the camera, broad shoulders squared, unaware he is being watched
+#@facing: back three-quarter
+#@awareness: aware
+caught three-quarter from behind, head turned to look over his shoulder toward the camera
+#@facing: front
+#@awareness: aware
+#@gaze: into the lens
+seated upright with his hands clasped, meeting the camera with a steady, direct gaze

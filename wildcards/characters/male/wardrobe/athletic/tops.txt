@@ -1,0 +1,7 @@
+#@fit: bust, waist
+#@condition: sweaty
+#@mishap: his tank top clinging with sweat
+a breathable athletic tank top
+#@fit: bust, waist
+#@condition: sweaty
+a compression training shirt

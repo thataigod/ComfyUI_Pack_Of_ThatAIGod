@@ -1,0 +1,5 @@
+#@fit: bust, waist, hips
+#@mishap: the back zipper of her gown inching down
+an evening gown, __jeweltone_colors_female__
+#@fit: bust, waist, hips
+a velvet gown, __muted_colors_female__

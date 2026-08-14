@@ -1,0 +1,7 @@
+#@fit: bust, waist
+#@mishap: his shirt pulling taut across the shoulders
+a casual button-down shirt, __earthtone_colors_male__
+#@fit: bust, waist
+a plain crew-neck t-shirt, __neutral_colors_male__
+#@fit: bust, waist
+a henley shirt, __muted_colors_male__

@@ -1,0 +1,7 @@
+#@fit: bust, waist
+a crisp white dress shirt
+#@fit: bust, waist
+#@mishap: his dress shirt straining at the chest
+a light-blue dress shirt
+#@fit: bust, waist
+a tailored navy blazer over a shirt

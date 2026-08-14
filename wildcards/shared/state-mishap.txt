@@ -1,0 +1,5 @@
+# Generic wardrobe-mishap clauses (fallback when a garment declares none).
+her top slipping off one shoulder
+the hem riding up her thighs
+a strap slipping down her arm
+the zipper inching down her back

@@ -1,0 +1,5 @@
+#@fit: bust, waist, hips
+#@mishap: her saree pallu slipping off her shoulder
+an elegant saree, __jeweltone_colors_female__
+#@fit: bust, waist, hips
+a graceful kimono, __earthtone_colors_female__

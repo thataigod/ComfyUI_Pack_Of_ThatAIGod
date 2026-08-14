@@ -1,0 +1,6 @@
+#@fit: bust, waist, hips
+#@condition: wet
+a classic one-piece swimsuit, __neutral_colors_female__
+#@fit: bust, waist, hips
+#@condition: wet
+a high-cut one-piece swimsuit, __bright_colors_female__

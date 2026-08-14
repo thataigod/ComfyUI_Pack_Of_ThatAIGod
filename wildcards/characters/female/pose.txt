@@ -1,0 +1,22 @@
+#@facing: front
+#@awareness: aware
+standing tall with one hand resting on her hip, weight shifted lazily to one leg
+#@facing: three-quarter
+#@awareness: aware
+turned at an angle, one shoulder dropped low as she tucks a strand of hair behind her ear
+#@facing: profile
+#@awareness: unaware
+caught mid-stride in profile, chin lifted, her gaze drifting toward something out of frame
+#@facing: back three-quarter
+#@awareness: unaware
+seen from behind at an angle, glancing back over her shoulder while brushing her hair aside
+#@facing: back
+#@awareness: unaware
+standing with her back to the camera, head tilted down as she smooths her hair at the nape
+#@facing: back
+#@awareness: unaware
+from behind, her arms raised to tie her hair up, the line of her back long and relaxed
+#@facing: front
+#@awareness: aware
+#@gaze: into the lens
+seated upright, meeting the camera with a composed, steady gaze

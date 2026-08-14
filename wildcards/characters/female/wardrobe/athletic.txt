@@ -1,0 +1,2 @@
+#@occasion: athletic, gym, beach, travel
+athletic wear, __characters/female/wardrobe/athletic/tops__, __characters/female/wardrobe/athletic/bottoms__, __characters/female/wardrobe/athletic/shoes__, __characters/female/wardrobe/athletic/accessories__

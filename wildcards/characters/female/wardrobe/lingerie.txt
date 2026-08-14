@@ -1,0 +1,2 @@
+#@occasion: intimate, boudoir
+lingerie, __characters/female/wardrobe/lingerie/tops__, __characters/female/wardrobe/lingerie/bottoms__, __characters/female/wardrobe/lingerie/accessories__

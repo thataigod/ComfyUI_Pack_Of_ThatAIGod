@@ -1,0 +1,2 @@
+#@occasion: costume, party, festival
+costume wear, __characters/male/wardrobe/costume/tops__, __characters/male/wardrobe/costume/bottoms__, __characters/male/wardrobe/costume/shoes__, __characters/male/wardrobe/costume/accessories__

@@ -1,0 +1,8 @@
+#@fit: bust, waist
+#@mishap: a button of her blouse coming undone
+a crisp white blouse
+#@fit: bust, waist
+a tailored silk blouse, __neutral_colors_female__
+#@fit: bust, waist
+#@mishap: the blazer slipping off her shoulders
+a fitted blazer over a camisole

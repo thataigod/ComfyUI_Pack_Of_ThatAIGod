@@ -1,0 +1,2 @@
+#@occasion: beach, pool, resort
+swimwear, __characters/female/wardrobe/swimwear/tops__, __characters/female/wardrobe/swimwear/bottoms__, __characters/female/wardrobe/swimwear/accessories__

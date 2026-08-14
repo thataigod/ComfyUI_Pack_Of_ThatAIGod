@@ -1,0 +1,3 @@
+#@fit: waist, hips
+#@mishap: his trousers bunching at the knees
+tuxedo trousers

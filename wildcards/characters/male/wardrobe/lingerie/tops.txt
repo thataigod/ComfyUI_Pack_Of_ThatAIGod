@@ -1,0 +1,6 @@
+#@fit: bust, waist
+a fitted white undershirt
+#@fit: bust, waist
+a soft grey undershirt
+#@fit: bust, waist
+a silk robe worn open over bare skin

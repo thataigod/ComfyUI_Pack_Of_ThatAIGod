@@ -1,0 +1,17 @@
+short dark brown hair, artfully tousled as if he just ran his fingers through it
+dark brown hair with a natural, effortless sweep
+
+#@outfit: casual
+dark hair falling loosely across his forehead, casual and a little windblown
+
+#@outfit: business, formal
+dark hair neatly combed back with a clean side part
+
+#@outfit: evening, party
+dark hair swept back from his face, softly textured for the evening
+
+#@outfit: athletic
+short dark hair pushed back from his face, a few damp strands from training
+
+#@outfit: swimwear, beach
+dark hair slicked back wet, beaded with salt water

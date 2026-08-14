@@ -1,0 +1,4 @@
+#@fit: bust, waist, hips
+a floral sundress, __pastel_colors_female__
+#@fit: bust, waist, hips
+a simple slip dress, __neutral_colors_female__

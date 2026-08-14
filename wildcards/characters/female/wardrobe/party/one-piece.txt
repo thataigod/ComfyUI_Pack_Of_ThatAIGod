@@ -1,0 +1,5 @@
+#@fit: bust, waist, hips
+a sequined mini dress
+#@fit: bust, waist, hips
+#@mishap: the wrap dress coming undone at her waist
+a satin wrap dress

@@ -1,0 +1,5 @@
+#@fit: waist, hips
+#@mishap: the tutu slipping down her hips
+a tutu skirt
+#@fit: waist, hips
+ragged pirate trousers

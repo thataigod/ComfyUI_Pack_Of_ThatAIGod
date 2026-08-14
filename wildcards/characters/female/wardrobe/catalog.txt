@@ -1,0 +1,9 @@
+__characters/female/wardrobe/casual__
+__characters/female/wardrobe/business__
+__characters/female/wardrobe/formal__
+__characters/female/wardrobe/party__
+__characters/female/wardrobe/athletic__
+__characters/female/wardrobe/swimwear__
+__characters/female/wardrobe/lingerie__
+__characters/female/wardrobe/traditional__
+__characters/female/wardrobe/costume__

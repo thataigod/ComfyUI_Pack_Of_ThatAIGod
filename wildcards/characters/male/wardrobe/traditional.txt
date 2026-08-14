@@ -1,0 +1,2 @@
+#@occasion: festival, wedding, traditional, party
+traditional wear, __characters/male/wardrobe/traditional/tops__, __characters/male/wardrobe/traditional/bottoms__, __characters/male/wardrobe/traditional/shoes__, __characters/male/wardrobe/traditional/accessories__

@@ -47,6 +47,9 @@ _modules: list[str] = [
     "Wildcard_Reader",
     "LLM_Node",
     "LLM_Fallback_Node",
+    "Character",
+    "Camera",
+    "Scene",
 ]
 
 for mod_name in _modules:

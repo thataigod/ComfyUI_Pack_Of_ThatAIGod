@@ -1,0 +1,10 @@
+#@fit: bust, waist
+#@mishap: the crop top riding up her midriff
+a fitted crop top, __neutral_colors_female__
+#@fit: bust, waist
+an oversized sweater, __muted_colors_female__
+#@fit: bust, waist
+a loose t-shirt, __bright_colors_female__
+#@fit: bust, waist
+#@mishap: the denim jacket slipping off her shoulders
+a denim jacket over a camisole, __neutral_colors_female__

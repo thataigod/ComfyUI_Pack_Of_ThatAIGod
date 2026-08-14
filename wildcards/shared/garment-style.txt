@@ -1,0 +1,18 @@
+# Garment style modifiers appended to persona wardrobe pieces that do not
+# carry their own inline wildcard tags.  Each line is a trailing phrase.
+# Phrases use "with ..." so they never collide with a garment's own inline
+# "in <color>" phrasing.
+with a soft cotton drape
+with flowing silk
+with airy chiffon
+with fine linen
+with brushed velvet
+with smooth satin
+with a cozy knit
+with crisp denim
+with delicate lace
+with rich brocade
+with soft wool
+with sheer organza
+with supple leather
+with quilted satin

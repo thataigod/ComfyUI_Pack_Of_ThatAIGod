@@ -1,0 +1,6 @@
+#@fit: bust
+#@condition: wet
+a triangle bikini top, __bright_colors_female__
+#@fit: bust
+#@condition: wet
+a bandeau bikini top, __pastel_colors_female__

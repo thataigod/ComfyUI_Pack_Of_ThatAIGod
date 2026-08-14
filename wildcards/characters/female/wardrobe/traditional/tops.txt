@@ -1,0 +1,3 @@
+#@fit: bust, waist
+#@mishap: the blouse strap slipping down her arm
+an embroidered blouse, __jeweltone_colors_female__

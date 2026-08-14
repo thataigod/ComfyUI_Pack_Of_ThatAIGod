@@ -1,0 +1,6 @@
+#@fit: bust, waist
+#@mishap: her silk camisole strap slipping down her arm
+a silk camisole, __jeweltone_colors_female__
+#@fit: bust, shoulders
+#@mishap: her off-shoulder top slipping off one shoulder
+an off-shoulder top, __metallic_colors_female__

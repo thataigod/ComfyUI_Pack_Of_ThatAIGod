@@ -1,0 +1,2 @@
+#@occasion: party, wedding, festival, costume
+party wear, __characters/female/wardrobe/party/tops__, __characters/female/wardrobe/party/bottoms__, __characters/female/wardrobe/party/shoes__, __characters/female/wardrobe/party/accessories__

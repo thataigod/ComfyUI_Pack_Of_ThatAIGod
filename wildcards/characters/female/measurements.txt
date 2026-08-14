@@ -1,0 +1,3 @@
+#@bust: full
+#@waist: slim
+#@hips: curved

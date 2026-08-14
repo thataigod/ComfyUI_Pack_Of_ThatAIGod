@@ -1,0 +1,5 @@
+#@fit: bust, waist, hips
+#@mishap: the cat costume tail coming loose
+a cat costume
+#@fit: bust, waist, hips
+a superhero costume

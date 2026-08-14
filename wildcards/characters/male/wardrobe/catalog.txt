@@ -1,0 +1,9 @@
+__characters/male/wardrobe/casual__
+__characters/male/wardrobe/business__
+__characters/male/wardrobe/formal__
+__characters/male/wardrobe/athletic__
+__characters/male/wardrobe/swimwear__
+__characters/male/wardrobe/traditional__
+__characters/male/wardrobe/party__
+__characters/male/wardrobe/costume__
+__characters/male/wardrobe/lingerie__
