@@ -25,6 +25,13 @@ class PromptServerMock:
 server_mock.PromptServer = PromptServerMock
 sys.modules["server"] = server_mock
 
+# ComfyUI-only module; the pack ships outside ComfyUI, so provide a stub so
+# Image_Saver_Plus can be imported by the __init__ module scan.
+folder_paths_mock = types.ModuleType("folder_paths")
+folder_paths_mock.get_output_directory = lambda: "."
+folder_paths_mock.get_save_image_path = lambda *a: (".", "x", 0, "", "x")
+sys.modules["folder_paths"] = folder_paths_mock
+
 
 class TestInit(unittest.TestCase):
     def test_import_error_path_logs_warning(self):
