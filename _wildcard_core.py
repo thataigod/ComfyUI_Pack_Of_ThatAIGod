@@ -81,6 +81,7 @@ KNOWN_DIRECTIVE_KEYS: frozenset[str] = frozenset(
         "condition",
         "mishap",
         "slip",
+        "state",
         "modifiers",
         "no_modifiers",
         "fixed",
@@ -361,7 +362,10 @@ class WildcardResolver:
         if file_path in visited:
             return True
         visited = visited | {file_path}
-        for line, directives in self._parse_file(file_path) or []:
+        # Block-scoped eligibility: a file is eligible when any directive block
+        # in it is (mirrors pick_line's block-based selection, so time-neutral
+        # fallback blocks stay eligible under explicit times).
+        for line, directives in self._block_directives(file_path):
             if not self._line_eligible(directives, context):
                 continue
             if self._tag_deep_eligible(line, context, visited):
@@ -446,8 +450,49 @@ class WildcardResolver:
         line, _directives = self.pick_line_with_directives(file_rel, context)
         return line
 
+    def _block_directives(self, file_path: str) -> list[tuple[str, dict[str, set[str]]]]:
+        """Return ``(content_line, block_directives)`` pairs for a file.
+
+        Each content line's directives are only those declared since the
+        previous content line — per-garment authoring semantics for the
+        modifier pipeline (``fixed``/``modifiers``/``fit``/``condition``/
+        ``mishap``/``slip`` apply to the line they sit above and never leak
+        to the next garment).
+
+        Args:
+            file_path: Absolute path to the wildcard file.
+
+        Returns:
+            Pairs in file order; directive-less lines carry ``{}``.
+        """
+        pairs: list[tuple[str, dict[str, set[str]]]] = []
+        block: dict[str, set[str]] = {}
+        try:
+            with open(file_path, encoding="utf-8") as f:
+                for raw in f:
+                    line = raw.strip()
+                    if not line:
+                        continue
+                    match = _DIRECTIVE_PATTERN.match(line)
+                    if match is not None:
+                        key, values_raw = match.group(1), match.group(2)
+                        values = {v.strip().lower() for v in values_raw.split(",") if v.strip()}
+                        if values:
+                            block[key] = values
+                        continue
+                    if line.startswith("#"):
+                        continue
+                    pairs.append((line, dict(block)))
+                    block = {}
+        except OSError:
+            return []
+        return pairs
+
     def pick_line_with_directives(self, file_rel: str, context: FilterContext) -> tuple[str, dict[str, set[str]]]:
-        """Pick a random eligible line, returning it with its accumulated directives.
+        """Pick a random eligible line, returning it with its block directives.
+
+        The directives are block-scoped (see :meth:`_block_directives`): only
+        the directives declared above the chosen line are returned.
 
         Args:
             file_rel: Path to the wildcard file relative to the wildcards
@@ -461,12 +506,12 @@ class WildcardResolver:
         path = os.path.join(self.wildcards_dir, file_rel + ".txt")
         if not os.path.isfile(path):
             return "", {}
-        entries = self._parse_file(path) or []
-        if not entries:
+        pairs = self._block_directives(path)
+        if not pairs:
             return "", {}
         candidates = [
             (line, directives)
-            for line, directives in entries
+            for line, directives in pairs
             if self._line_eligible(directives, context) and self._tag_deep_eligible(line, context, frozenset())
         ]
         if not candidates:

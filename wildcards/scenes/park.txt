@@ -1,0 +1,16 @@
+#@setting: outdoor
+#@outfit: casual, athletic, traditional
+#@occasion: casual, travel, home
+#@time: morning, afternoon, golden hour
+a lush green park with winding paths, park benches and a pond with ducks
+
+#@setting: outdoor
+#@outfit: casual, athletic, traditional
+#@occasion: casual, travel, home
+#@time: night, dusk
+a quiet park with winding paths, park benches and tall trees
+
+#@setting: outdoor
+#@outfit: casual, athletic, traditional
+#@occasion: casual, travel, home
+a lively park with playground equipment, park benches and flower beds

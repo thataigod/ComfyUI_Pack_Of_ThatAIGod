@@ -1,0 +1,16 @@
+#@setting: outdoor
+#@outfit: party, formal, casual
+#@occasion: party, formal, festival
+#@time: night, dusk
+a rooftop terrace with string lights, potted plants and cafe tables
+
+#@setting: outdoor
+#@outfit: party, formal, casual
+#@occasion: party, formal, festival
+#@time: dawn, blue hour
+a rooftop terrace with potted plants, string lights and cafe tables
+
+#@setting: outdoor
+#@outfit: party, formal, casual
+#@occasion: party, formal, festival
+a rooftop terrace with string lights, cafe tables and potted plants

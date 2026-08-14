@@ -1,0 +1,10 @@
+#@setting: outdoor
+#@outfit: casual, costume, traditional
+#@occasion: festival, party, costume
+#@time: morning, noon, afternoon
+a lively street fair with striped stalls, food carts and carnival games
+
+#@setting: outdoor
+#@outfit: casual, costume, traditional
+#@occasion: festival, party, costume
+a bustling street fair with craft stalls, a merry-go-round and street performers

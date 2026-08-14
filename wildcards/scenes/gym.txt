@@ -1,0 +1,10 @@
+#@setting: indoor
+#@outfit: athletic
+#@occasion: athletic, gym
+#@time: morning, noon
+a modern gym with mirrors, rows of equipment and rubber flooring
+
+#@setting: indoor
+#@outfit: athletic
+#@occasion: athletic, gym
+a spacious gym with weight racks, treadmills and mirrored walls

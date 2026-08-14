@@ -398,6 +398,25 @@ class TestWildcardResolverCore(unittest.TestCase):
         result = resolver.resolve("a sundress, __colors_a__ and __colors_b__")
         self.assertEqual(result, "a sundress, Khaki and Soft lilac")
 
+    def test_block_directives_are_per_garment(self):
+        self._create("garments.txt", ["#@fixed: true", "a fixed top", "", "# comment", "an open top", "#@modifiers: color", "a colored top"])
+        resolver = self._resolver()
+        pairs = resolver._block_directives(os.path.join(self.wildcards_dir, "garments.txt"))
+        self.assertEqual(pairs[0], ("a fixed top", {"fixed": {"true"}}))
+        self.assertEqual(pairs[1], ("an open top", {}))
+        self.assertEqual(pairs[2], ("a colored top", {"modifiers": {"color"}}))
+        self.assertEqual(resolver._block_directives(os.path.join(self.wildcards_dir, "missing.txt")), [])
+
+    def test_pick_line_with_directives_is_block_scoped(self):
+        self._create("garments.txt", ["#@fixed: true", "a fixed top", "an open top"])
+        resolver = WildcardResolver(self.wildcards_dir, mode="Deterministic (Seed)", seed=0)
+        line, directives = resolver.pick_line_with_directives("garments", None)
+        if line == "a fixed top":
+            self.assertIn("fixed", directives)
+        else:
+            self.assertEqual(line, "an open top")
+            self.assertNotIn("fixed", directives)
+
     def test_max_iterations_constant(self):
         self.assertEqual(_MAX_WILDCARD_ITERATIONS, 50)
 

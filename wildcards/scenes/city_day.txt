@@ -1,0 +1,16 @@
+#@setting: outdoor
+#@outfit: business, casual, party, formal
+#@occasion: office, party, formal, festival, travel
+#@time: morning, noon, afternoon
+a bustling city street with office towers, crosswalks and storefronts
+
+#@setting: outdoor
+#@outfit: business, casual, party, formal
+#@occasion: office, party, formal, festival, travel
+#@time: midnight
+a quiet city street with office towers, wide sidewalks and closed storefronts
+
+#@setting: outdoor
+#@outfit: business, casual, party, formal
+#@occasion: office, party, formal, festival, travel
+a wide city boulevard with office towers, glass storefronts and busy intersections

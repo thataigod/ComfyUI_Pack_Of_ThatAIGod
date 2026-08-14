@@ -28,3 +28,9 @@ gitleaks-report.sarif
 # MkDocs documentation build output
 site/
 
+# Local-only personas: custom named characters are never committed.
+# The default personas (and their wardrobes) stay tracked.
+wildcards/characters/*
+!wildcards/characters/female/
+!wildcards/characters/male/
+

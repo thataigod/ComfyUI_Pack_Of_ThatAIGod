@@ -1,0 +1,10 @@
+#@setting: indoor
+#@outfit: formal, party
+#@occasion: formal, wedding, party
+#@time: night, dusk
+a grand ballroom with crystal chandeliers, marble floors and polished parquet
+
+#@setting: indoor
+#@outfit: formal, party
+#@occasion: formal, wedding, party
+a grand ballroom with crystal chandeliers, marble floors and long banquet tables

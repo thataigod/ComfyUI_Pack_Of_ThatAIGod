@@ -1,0 +1,16 @@
+#@setting: outdoor
+#@outfit: casual, traditional
+#@occasion: casual, travel
+#@time: morning, afternoon
+a forest trail winding through tall trees with a light mist drifting between the trunks, mossy ground and fallen leaves
+
+#@setting: outdoor
+#@outfit: casual, traditional
+#@occasion: casual, travel
+#@time: night, dusk
+a quiet forest trail with tall trees, mossy ground and thick undergrowth
+
+#@setting: outdoor
+#@outfit: casual, traditional
+#@occasion: casual, travel
+a forest clearing with tall trees, a mossy log and ferns

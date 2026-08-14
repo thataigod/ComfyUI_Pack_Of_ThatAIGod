@@ -1,0 +1,16 @@
+#@setting: indoor
+#@outfit: costume
+#@occasion: costume, party, festival
+#@time: morning, noon, afternoon
+a vast convention hall with exhibition booths, banners and a busy crowd
+
+#@setting: indoor
+#@outfit: costume
+#@occasion: costume, party, festival
+#@time: night, dusk
+a vast convention hall with exhibition booths, banners and a packed after-party crowd
+
+#@setting: indoor
+#@outfit: costume
+#@occasion: costume, party, festival
+a vast convention hall with exhibition booths, banners and polished concrete floors

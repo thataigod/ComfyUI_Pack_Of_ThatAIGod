@@ -1,0 +1,8 @@
+__styles/film-look/commercial-stocks__
+__styles/film-look/soviet-stocks__
+__styles/film-look/ddr-stocks__
+__styles/film-look/tonality-grades__
+__styles/film-look/era-looks__
+__styles/film-look/digital-looks__
+__styles/film-look/analog-processes__
+__styles/film-look/quality__

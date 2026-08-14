@@ -1,0 +1,23 @@
+Style and tones: 35mm color film, with a slight warm cast, faint highlight halation, slightly lifted blacks, and fine grain.
+Style and tones: casual point-and-shoot color film, with muted colors, mild vignetting, and fine grain.
+Style and tones: pushed high-ISO film, with muted colors, slightly deepened shadows, and notable grain.
+Style and tones: expired color film, with mild magenta and green shifts, slightly faded contrast, faint shadow fogging, and uneven grain.
+Style and tones: Kodachrome, with slightly warm saturated reds, dense blacks, crisp micro-contrast, and fine grain.
+Style and tones: Kodachrome, with slightly cool colors, a slight violet haze, and fine grain.
+Style and tones: Kodak Portra 400, with warm natural skin tones, gentle contrast, retained shadow and highlight detail, and fine grain.
+Style and tones: Kodak Ektar 100, with slightly elevated saturation in reds and blues, crisp contrast, and fine grain.
+Style and tones: Kodak Ektachrome E100, with a slightly cool neutral palette, clean blues, moderate contrast, and fine grain.
+Style and tones: Kodak Gold 200, with a slight warm golden-yellow cast, gently raised saturation, soft contrast, and fine visible grain.
+Style and tones: Kodak Ultramax 400, with slightly elevated warm saturation, and visible grain.
+Style and tones: Kodak Tri-X black-and-white, with firm contrast, deep blacks, bright highlights, and classic grain.
+Style and tones: Fujifilm Velvia 50, with gently elevated saturation in greens, reds and blues, slightly raised contrast, and fine grain.
+Style and tones: Fujifilm Provia 100F, with faithful neutral color, balanced contrast, and fine grain.
+Style and tones: Fujifilm Superia 400, with a slightly cool palette, clean greens and blues, gentle contrast, and visible grain.
+Style and tones: Fujifilm Pro 400H, with soft natural color, gentle contrast, retained highlight and shadow detail, a faint mint-green tint in the deepest shadows, and fine grain.
+Style and tones: Fujifilm Acros black-and-white, with smooth fine grain, silvery midtones, and deep but detailed shadows.
+Style and tones: Ilford HP5 black-and-white, with smooth midtone gradation, moderate classic grain, and deep blacks that keep shadow detail.
+Style and tones: Ilford Delta 3200 black-and-white, with notable low-light grain, deep shadows, and raised contrast.
+Style and tones: CineStill 800T, with cool-leaning shadows, warm artificial lights, a faint red halation around bright light sources, and visible grain.
+Style and tones: full-frame borderless Polaroid 600, with gently lifted blacks, muted warm colors leaning to cream, and mild vignetting; the image fills the frame edge to edge.
+Style and tones: full-frame borderless Polaroid SX-70, with muted creamy tones, a slight pastel drift, and low contrast; the image fills the frame edge to edge.
+Style and tones: full-frame borderless Fujifilm Instax, with bright slightly cool colors, soft contrast, and a slight highlight glow; the image fills the frame edge to edge.

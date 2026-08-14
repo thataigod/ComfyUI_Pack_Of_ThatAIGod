@@ -1,0 +1,10 @@
+#@setting: indoor
+#@outfit: traditional, business, casual
+#@occasion: casual, office, formal
+#@time: morning, afternoon
+a quiet library with tall oak shelves, reading lamps and worn leather chairs
+
+#@setting: indoor
+#@outfit: traditional, business, casual
+#@occasion: casual, office, formal
+a grand library with tall oak shelves, a long reading table and a mezzanine of rare books

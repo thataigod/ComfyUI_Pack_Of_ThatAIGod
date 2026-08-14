@@ -1,0 +1,10 @@
+#@setting: outdoor
+#@outfit: formal, traditional, business
+#@occasion: wedding
+#@time: afternoon, golden hour, dusk
+a garden wedding venue decorated with flowers, fairy lights and draped arches
+
+#@setting: outdoor
+#@outfit: formal, traditional, business
+#@occasion: wedding
+a garden wedding venue with an arched pergola, flower arrangements and rows of white chairs

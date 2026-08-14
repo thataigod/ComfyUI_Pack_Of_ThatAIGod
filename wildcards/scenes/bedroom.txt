@@ -1,0 +1,19 @@
+#@setting: indoor
+#@outfit: lingerie
+#@occasion: intimate, boudoir
+#@time: night, dusk
+#@state: nude, slipping, revealing, mishap
+a luxurious bedroom with silk sheets and a plush duvet
+
+#@setting: indoor
+#@outfit: lingerie
+#@occasion: intimate, boudoir
+#@time: midnight
+#@state: nude, slipping, revealing, mishap
+a quiet bedroom with silk sheets and deep velvet curtains
+
+#@setting: indoor
+#@outfit: lingerie
+#@occasion: intimate, boudoir
+#@state: nude, slipping, revealing, mishap
+an elegant bedroom with a carved bed frame, silk sheets and a plush armchair

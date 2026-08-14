@@ -24,7 +24,7 @@ echo ""
 echo "--- scanning staged files for leftover debug code ---"
 STAGED=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null | grep -v '^\.githooks/')
 if [ -n "$STAGED" ]; then
-  ISSUES=$(echo "$STAGED" | xargs grep -ln 'TODO\|FIXME\|print(' 2>/dev/null)
+  ISSUES=$(echo "$STAGED" | xargs grep -lnE '\b(TODO|FIXME)\b|\bprint\s*\(' 2>/dev/null)
   if [ -n "$ISSUES" ]; then
     echo ""
     echo "=========================================="

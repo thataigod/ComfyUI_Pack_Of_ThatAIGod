@@ -1,0 +1,22 @@
+#@setting: outdoor
+#@outfit: swimwear, athletic, casual
+#@occasion: beach, pool, resort, travel
+#@time: morning, noon, afternoon, golden hour
+a secluded tropical beach with gentle waves lapping the shore and warm sand
+
+#@setting: outdoor
+#@outfit: swimwear, athletic, casual
+#@occasion: beach, pool, resort, travel
+#@time: night, dusk
+a quiet tropical beach with gentle waves lapping the shore and cool sand
+
+#@setting: outdoor
+#@outfit: swimwear, athletic, casual
+#@occasion: beach, pool, resort, travel
+#@time: dawn, blue hour
+a still tropical beach with gentle waves lapping the shore and soft sand
+
+#@setting: outdoor
+#@outfit: swimwear, athletic, casual
+#@occasion: beach, pool, resort, travel
+a lively beach with colorful umbrellas and warm sand

@@ -1,0 +1,16 @@
+#@setting: indoor
+#@outfit: casual
+#@occasion: casual, home, travel
+#@time: morning, afternoon
+a cozy living room with a plush sofa, a coffee table and full bookshelves
+
+#@setting: indoor
+#@outfit: lingerie
+#@occasion: home, intimate
+#@time: night, dusk
+a quiet living room with a plush sofa, a coffee table and soft throw blankets
+
+#@setting: indoor
+#@outfit: casual, lingerie
+#@occasion: casual, home, travel, intimate
+a lived-in living room with a sectional sofa, a TV stand and potted plants

@@ -1,0 +1,10 @@
+#@setting: indoor
+#@outfit: business, formal
+#@occasion: office
+#@time: morning, afternoon
+a modern open-plan office with glass partitions, sleek desks and a breakout lounge
+
+#@setting: indoor
+#@outfit: business, formal
+#@occasion: office
+a modern office with glass partitions, meeting pods and a long conference table

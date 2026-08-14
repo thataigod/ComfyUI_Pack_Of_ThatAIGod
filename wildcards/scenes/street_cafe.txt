@@ -1,0 +1,10 @@
+#@setting: outdoor
+#@outfit: casual, business
+#@occasion: casual, office
+#@time: morning, afternoon, golden hour
+a charming street cafe with bistro tables, a striped awning and a lively street backdrop
+
+#@setting: outdoor
+#@outfit: casual, business
+#@occasion: casual, office
+a cozy street cafe with bistro tables, hanging plants and a chalkboard menu

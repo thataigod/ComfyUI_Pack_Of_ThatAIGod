@@ -1,0 +1,10 @@
+#@setting: outdoor
+#@outfit: party, formal, costume
+#@occasion: party, formal, wedding, festival
+#@time: night, dusk
+a vibrant city street with neon signs, a festive crowd and sparkling shopfronts
+
+#@setting: outdoor
+#@outfit: party, formal, costume
+#@occasion: party, formal, wedding, festival
+a lively city street with neon signs, food stalls and a festive crowd

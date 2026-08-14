@@ -1,0 +1,12 @@
+#@setting: indoor
+#@outfit: lingerie
+#@occasion: intimate, boudoir
+#@time: night, dusk
+#@state: nude, slipping, revealing, mishap
+an elegant boudoir with velvet drapes, a tufted chaise lounge and a vanity draped in silk
+
+#@setting: indoor
+#@outfit: lingerie
+#@occasion: intimate, boudoir
+#@state: nude, slipping, revealing, mishap
+a romantic boudoir with a lace canopy bed, velvet drapes and a plush chaise lounge

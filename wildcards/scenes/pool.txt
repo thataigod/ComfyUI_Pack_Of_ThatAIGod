@@ -1,0 +1,16 @@
+#@setting: outdoor
+#@outfit: swimwear
+#@occasion: beach, pool, resort
+#@time: morning, noon, afternoon, golden hour
+a pristine resort pool with turquoise water, loungers and palm trees
+
+#@setting: outdoor
+#@outfit: swimwear
+#@occasion: beach, pool, resort
+#@time: night, dusk
+a quiet resort pool with loungers, palm trees and a swim-up bar
+
+#@setting: outdoor
+#@outfit: swimwear
+#@occasion: beach, pool, resort
+a resort pool with turquoise water, loungers and a poolside bar

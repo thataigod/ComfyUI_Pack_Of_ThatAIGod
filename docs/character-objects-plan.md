@@ -2,18 +2,18 @@
 
 Status:
 * **Camera** — DONE, committed (`35b6a3c`, `e79b812`, `269cd0f`).
-* **Character** — DONE, committed (`8e152ee` + follow-up fixes `0112e9b`/`15936ca`/`eaeb0bf`/`ba40c3d`, the modifier pipeline `13d0680`, the wardrobe curation `1163bfb`). This document rides with the Character commits.
-* **Scene** — a rudimentary, flawed version exists (`Scene.py`, `_scene_core.py`, `wildcards/scenes/`, `wildcards/shared/time-of-day.txt`). It is **not** part of the current plan; it must be rebuilt/planned against the Camera + Character contracts below before it can be trusted.
+* **Character** — DONE, committed (`8e152ee` + follow-up fixes `0112e9b`/`15936ca`/`eaeb0bf`/`ba40c3d`, the modifier pipeline `13d0680`, the wardrobe curation `1163bfb`, the auto-skip `c60cc1b`). This document rides with the Character commits.
+* **Scene** — v2 rebuild implemented in the working tree (engine, node, data, UI, tests); pending its single Scene v2 commit.
 
 ## Architecture
 
 ```
-Resolution node ──> Camera ──> CAMERA object ──> Character (stripping) ──> CHARACTER object ──> Scene ──> Full Prompt
+Resolution node ──> Camera ──> CAMERA object ──> Character (stripping) ──> CHARACTER object ──> Scene ──> scene Description
                         │                                                        │
                         └────────────── CAMERA object (regions/view) ─────────────┘
 ```
 
-The Camera→Character link is the CAMERA **object** (`regions`, `face_visible`, `view` — Character never reads the camera's prose); Camera's `description`/`keywords` are consumed by the Scene node only.
+The Camera→Character link is the CAMERA **object** (`regions`, `face_visible`, `view` — Character never reads the camera's prose). Each node emits its own Description; the user reorders and combines the three components downstream (Scene v2 never composes a combined Full Prompt).
 
 Three nodes, each emitting an object twin + prose. The camera owns shot geometry; the character owns identity, pose, state and outfit; the scene (future) owns location, time and style layers.
 
@@ -81,17 +81,58 @@ Three nodes, each emitting an object twin + prose. The camera owns shot geometry
 
 ---
 
-## Scene node (rudimentary, flawed — to be rebuilt)
+## Scene node (v2 plan)
 
-`Scene.py` + `_scene_core.py` exist and consume the CHARACTER object's `occasion`, `outfit_category` and `description`, plus the CAMERA's `description`/`keywords`; locations come from `wildcards/scenes/` filtered by `#@occasion`/`#@time`/`#@outfit` (the `#@setting` directive is read from the picked scene and filters the time-of-day phrase, not the location), and there is a `shared/time-of-day.txt` layer. It has not been reviewed against the rebuilt Camera/Character contracts, has no plan of its own, and is **excluded from the current commit**. Its rebuild is the next phase: location/time/style layers must stay coherent with occasion, state and outfit, and the Full Prompt composition must be planned and tested like the other two nodes.
+Scene v2 is the final composer, but **it no longer combines**: the user reorders the three components (Character description, Camera description, Scene description) downstream per model/lora. The node emits only its own prose.
+
+### Contract
+
+**Inputs:** `Occasion` (dropdown: auto / All (unrestricted) / explicit value) · `Location` (Auto or an explicit `wildcards/scenes/` file) · `Time of Day` (All or a `#@time` value) · `Use Film Look` (BOOLEAN, default True) · `Seed` · `Wildcard Mode` (Deterministic (Seed) / Random (No Repeat)) · optional `Character` (CHARACTER object — supplies occasion/state/outfit context only). **Removed:** Subject, Camera, Use Atmosphere, Use Lighting.
+
+**Outputs:** `Scene` (SCENE object) · `Scene JSON` (STRING) · `Description` (STRING — location + time + film prose only, no subject/camera) · `Keywords` (STRING — location key + time value). **Full Prompt is removed.**
+
+### Engine rules
+
+1. **State-aware gating (strict):** when the wired CHARACTER's state is non-dressed (`nude`, `slipping`, `mishap`, `revealing`), eligible locations are limited to scenes that declare the state via `#@state:` plus universal (directive-less) scenes such as the studio. Public scenes can never host non-dressed states.
+2. **Time/setting blocks:** scene files are stacked directive blocks (`#@time:` + `#@setting:` per block, like `shared/time-of-day.txt`); the existing resolver filters lines by the active context. **Anti-contradiction contract:** scene blocks own fixtures, furniture, mood and place nouns — never sun, sky, stars or time names; the time phrase owns all light/sky/shadow quality. Doubled "golden hour" and "bright blue sky at golden hour" become structurally impossible. Every `#@time` value in a scene's header has a matching block; each scene keeps one time-neutral fallback block (no `#@time`) for `All` and unexpected times.
+3. **Layers:** atmosphere and lighting layers are removed from the engine and their content folds into scene blocks where applicable. The film look remains a single layer over the `film-look` decks.
+4. `#@setting` is read from the picked scene and filters the time phrase indoor/outdoor (unchanged from v1).
+
+### Film-look data (`wildcards/styles/film-look/`)
+
+One file per family, deduplicated, all long-form "Style and tones: …" entries (104 total): `commercial-stocks.txt` (23) · `soviet-stocks.txt` (19) · `ddr-stocks.txt` (8) · `tonality-grades.txt` (8) · `era-looks.txt` (20) · `digital-looks.txt` (15) · `analog-processes.txt` (8) · `quality.txt` (3). A single deck `wildcards/styles/film-look.txt` references the families. The v1 style residue (`all-device`, `all-composition`, `all-lighting`, `composition`, `camera-position-optics`, `moment-motion`, `focus-depth`, `flash-photography`, `lighting`, `atmosphere`, `film-stocks`, `soviet-film`, `ddr-film`, `digital-snapshots`, `the-misc-bin`, `color-tonality`, `decades`, `quality`, `all-film`) is deleted (the whole `styles/` tree is untracked, so this is clean). The `autowildcards/` folder is the old wardrobe system and holds no film data — untouched.
+
+### Scene data
+
+- All 15 scene files rewritten as time/setting blocks with fixtures-only prose; `#@state: nude, slipping, revealing, mishap` on the private scenes (bedroom, boudoir).
+- Gap fill: `home` (living room), `costume` (convention hall), `traditional` (heritage courtyard), `resort` (villa/poolside), daytime `festival` (street fair), `city_day`, night variants for beach/pool/park, and `dawn`/`blue hour`/`midnight` scene coverage.
+- `shared/time-of-day.txt` keeps its structure and all `#@time` values; minor prose polish only where tests do not pin the phrase.
+
+### UI
+
+`js/scene.js` — live description widget only (no chips; Location and Time stay single-value dropdowns).
+
+### Tests
+
+The scene suites are updated to the new contract and extended with: state gating, block-time filtering, contradiction scans (no sun/sky/time words in scene prose; no duplicated time values), film-deck structure (families non-empty, deduplicated), and the removed inputs/outputs. Full suite stays at 100% coverage with ruff + mypy clean.
+
+### Commit
+
+One **Scene v2 commit**: `_scene_core.py`, `Scene.py`, `js/scene.js`, `wildcards/scenes/`, `wildcards/styles/`, `tests/test_scene*`, `__init__.py` (Scene registration). Plan doc updated; `wildcards/README.md` stays deferred; Rohini stays local.
+
+---
+
+## Scene node (v1 notes — superseded)
+
+The v1 implementation consumed the CHARACTER object's `occasion`, `outfit_category` and `description`, plus the CAMERA's `description`/`keywords`; locations came from `wildcards/scenes/` filtered by `#@occasion`/`#@time`/`#@outfit`; `#@setting` was read from the picked scene and filtered the time-of-day phrase. It was flawed: state-blind location selection (nude fell to the studio even for intimate occasions), a film layer that doubled up with the Camera's look, embedded-time contradictions in scene prose, no home/costume/traditional scenes, and no frontend. All of this is replaced by the v2 plan above.
 
 ---
 
 ## Directive vocabulary
 
-Known keys (`_wildcard_core.KNOWN_DIRECTIVE_KEYS`): occasion, scale, regions, outfit, setting, time, location, facing, gaze, elevation, roll, awareness, context, preset, fit, condition, mishap, slip, modifiers, no_modifiers, fixed.
+Known keys (`_wildcard_core.KNOWN_DIRECTIVE_KEYS`): occasion, scale, regions, outfit, setting, time, location, facing, gaze, elevation, roll, awareness, context, preset, fit, condition, mishap, slip, modifiers, no_modifiers, fixed, state.
 
-Asserted by the Character engine: `regions` (always), `occasion` (when set), `outfit` (resolved category), `facing` (camera view), `gaze` (blocked via the `"unavailable"` sentinel when the face is hidden), `condition` (the rolled per-garment condition before picking from the state-condition deck). Everything else is author metadata until a consumer asserts it.
+Asserted by the Character engine: `regions` (always), `occasion` (when set), `outfit` (resolved category), `facing` (camera view), `gaze` (blocked via the `"unavailable"` sentinel when the face is hidden), `condition` (the rolled per-garment condition before picking from the state-condition deck). Asserted by the Scene engine: `occasion`, `time`, `outfit` and `state` (location selection). Everything else is author metadata until a consumer asserts it.
 
 ---
 
@@ -106,10 +147,15 @@ Asserted by the Character engine: `regions` (always), `occasion` (when set), `ou
 | `_character_core.py` | character engine: persona resolution, pose/fit/state/nude, wardrobe + modifier pipeline, occasion roll |
 | `Character.py` | Character node + `/that_aigod/character_options` route |
 | `js/character.js` | character chips UI (occasions + states) + info widget |
+| `_scene_core.py` | scene engine: state-aware location gating, time/setting block selection, film layer |
+| `Scene.py` | Scene node (no combined output — description only) |
+| `js/scene.js` | scene info widget |
 | `wildcards/camera/` | camera option files |
 | `wildcards/characters/female/`, `male/` | default personas + their wardrobes |
-| `wildcards/shared/` | occasions, colors/pattern/fabric/design decks, garment-style-<category> decks, state decks |
-| `tests/` | engine + node suites (currently 724 passing, 100% coverage) |
+| `wildcards/scenes/` | scene files as time/setting blocks (`#@state` on private scenes) |
+| `wildcards/styles/` | film-look families (one deck over 8 family files) |
+| `wildcards/shared/` | occasions, colors/pattern/fabric/design decks, garment-style-<category> decks, state decks, time-of-day |
+| `tests/` | engine + node suites (currently 751 passing, 100% coverage) |
 
 ## Decisions
 
@@ -119,6 +165,8 @@ Asserted by the Character engine: `regions` (always), `occasion` (when set), `ou
 - Everything is deterministic (seeded) or deck-cycled; no AI, no LLM calls.
 - Garment variety beats fixation: the pipeline varies colour/pattern/fabric/design on every safe garment; garments that name a dimension auto-skip it, and only true identity pieces (tuxedo, armour, matching sets) are explicitly fixed.
 - Garment control directives are block-scoped — they never leak to the next garment.
+- Scene v2 never combines components: each node emits its own Description and the user reorders them downstream.
+- Scene locations are state-honest (non-dressed states stay private) and time-honest (scene blocks never carry sun/sky/time words).
 - Adult content is first-class (explicit personas, nude state, revealing/mishap/slipping) but always region-honest.
 - Rohini Smirnova is a local-only persona (gitignored, never committed).
-- `wildcards/README.md` has been rewritten in the working tree but its commit stays deferred until all nodes are done; the Scene rebuild is also deferred.
+- `wildcards/README.md` has been rewritten in the working tree but its commit stays deferred until all nodes are done.

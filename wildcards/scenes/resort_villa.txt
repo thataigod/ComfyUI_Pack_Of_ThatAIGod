@@ -1,0 +1,16 @@
+#@setting: outdoor
+#@outfit: swimwear
+#@occasion: resort, beach, pool
+#@time: morning, noon, afternoon, golden hour
+a resort villa terrace with a private pool, loungers and tropical plants
+
+#@setting: outdoor
+#@outfit: swimwear, casual
+#@occasion: resort, beach, pool, travel
+#@time: night, dusk
+a resort villa terrace with a private pool, soft outdoor lanterns, loungers and tropical plants
+
+#@setting: outdoor
+#@outfit: swimwear, casual
+#@occasion: resort, beach, pool, travel
+a resort villa courtyard with a plunge pool, loungers and tropical plants

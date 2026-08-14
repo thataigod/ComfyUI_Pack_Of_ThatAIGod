@@ -1,0 +1,15 @@
+Style and tones: casual smartphone snapshot, everything in focus with deep phone-sensor depth of field, flat auto-HDR exposure, a slightly tilted horizon, and loose framing that clips the edges.
+Style and tones: night phone snapshot with the built-in flash, the subject slightly overexposed against a quick dark falloff, flat frontal light, everything in focus, and crooked framing.
+Style and tones: arm's-length front-camera selfie, the face large and slightly wide-angle, a raised shoulder in frame, a high downward angle, everything in focus, and a tilted horizon.
+Style and tones: 0.5x ultra-wide selfie, fisheye barrel distortion curving the edges, the face slightly bulged, surroundings warping outward, and everything in focus.
+Style and tones: casual mirror selfie, the phone visible in hand near the face, flat indoor light, everything in focus, a cluttered reflected room, and slightly tilted framing.
+Style and tones: rushed tourist phone snapshot, a tilted horizon, passersby with limbs clipped at the edges, everything in deep focus, and flat midday exposure.
+Style and tones: casual phone food snapshot, a slightly-off overhead angle, mixed indoor light with a mild cast, the plate and cutlery partly cropped, and everything in focus.
+Style and tones: security-camera frame, a high fixed corner viewpoint looking down, wide-angle mild distortion, flat washed-out contrast, muted desaturated color, and a small corner timestamp.
+Style and tones: dashcam still, a wide view through a windshield with the hood edge at the bottom, slightly curved wide-lens geometry, and flat automatic exposure.
+Style and tones: nighttime trail-camera capture, monochrome infrared brightest at center and falling off at the edges, glowing eye reflections, and a fixed low angle.
+Style and tones: action-camera shot, an ultra-wide first-person view with fisheye edge curvature, foreground gear or an arm, everything in focus, and bright outdoor exposure.
+Style and tones: paused VHS frame, a soft low-resolution video texture with horizontal scanlines, bleeding saturated reds, slight color fringing, and washed-out highlights.
+Style and tones: early webcam capture, a soft low-resolution image lit by monitor glow, muddy color with a slight magenta or green cast, and a fixed desk-level upward angle.
+Style and tones: flatbed scanography, the subject pressed to the glass, sharp where it touches and falling into a black shallow-depth void, and even shadowless scanner light.
+Style and tones: passport photo, a head-and-shoulders subject facing dead-on, a plain uniform background, flat shadowless light, centered framing, and everything in focus.

@@ -1,0 +1,16 @@
+#@setting: outdoor
+#@outfit: traditional
+#@occasion: traditional, festival, wedding
+#@time: morning, afternoon
+a stone heritage courtyard with an old fountain, archways and hanging lanterns
+
+#@setting: outdoor
+#@outfit: traditional
+#@occasion: traditional, festival, wedding
+#@time: dusk, night
+a stone heritage courtyard with archways, a tiled fountain and carved pillars
+
+#@setting: outdoor
+#@outfit: traditional
+#@occasion: traditional, festival, wedding
+a heritage courtyard with carved stone pillars, a central fountain and worn flagstones
