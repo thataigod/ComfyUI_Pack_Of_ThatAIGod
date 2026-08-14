@@ -1,4 +1,5 @@
 #@fit: waist, hips
+#@fixed: true
 low-rise boxer briefs in dark grey
 #@fit: waist, hips
 loose cotton boxers in navy

@@ -1,2 +1,3 @@
 #@occasion: casual, travel, home, beach, party, athletic
+#@modifiers: color, pattern, fabric
 casual wear, __characters/male/wardrobe/casual/tops__, __characters/male/wardrobe/casual/bottoms__, __characters/male/wardrobe/casual/shoes__, __characters/male/wardrobe/casual/accessories__

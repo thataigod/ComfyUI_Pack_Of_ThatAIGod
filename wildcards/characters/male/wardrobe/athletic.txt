@@ -1,2 +1,3 @@
 #@occasion: athletic, gym, beach, travel
+#@modifiers: color, fabric
 athletic wear, __characters/male/wardrobe/athletic/tops__, __characters/male/wardrobe/athletic/bottoms__, __characters/male/wardrobe/athletic/shoes__, __characters/male/wardrobe/athletic/accessories__

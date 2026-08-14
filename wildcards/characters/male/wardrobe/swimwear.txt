@@ -1,2 +1,3 @@
 #@occasion: beach, pool, resort
+#@modifiers: color, fabric
 swimwear, __characters/male/wardrobe/swimwear/bottoms__, __characters/male/wardrobe/swimwear/shoes__

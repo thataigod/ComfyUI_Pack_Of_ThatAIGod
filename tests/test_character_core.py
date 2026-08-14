@@ -1354,6 +1354,109 @@ class TestStateMachine(unittest.TestCase):
             self.assertEqual(a["outfit"], b["outfit"])
 
 
+class TestModifierPipeline(unittest.TestCase):
+    """The append-phrase modifier pipeline: every tagless garment can draw
+    color, pattern, fabric and design clauses, with per-garment exclusions
+    and fixed opt-outs."""
+
+    _DECKS = {
+        "shared/colors.txt": "Sky blue\n",
+        "shared/pattern.txt": "with a floral print\n",
+        "shared/fabric.txt": "with soft cotton\n",
+        "shared/design.txt": "with an elegant cut\n",
+    }
+
+    def _outfit(
+        self,
+        tmp: TmpWildcards,
+        tops: str = "a fitted top\n",
+        category_modifiers: str | None = None,
+        decks: dict[str, str] | None = None,
+    ) -> str:
+        _make_persona(tmp)
+        _make_persona_wardrobe(tmp)
+        tmp.write("characters/tester/wardrobe/signature/tops.txt", tops)
+        # Keep the other slots out of the pipeline so assertions see only the tops.
+        for slot in ("bottoms", "shoes", "accessories"):
+            tmp.write(f"characters/tester/wardrobe/signature/{slot}.txt", "#@fixed: true\nplain piece\n")
+        if category_modifiers is not None:
+            tmp.write("characters/tester/wardrobe/signature.txt", f"#@modifiers: {category_modifiers}\nsignature wear")
+        for path, content in (decks or self._DECKS).items():
+            tmp.write(path, content)
+        return build_character(tmp.dir, "tester", None, "casual", True, True, "Deterministic (Seed)", 1)["outfit"]
+
+    def test_default_pipeline_applies_all_four_in_order(self):
+        with TmpWildcards() as tmp:
+            outfit = self._outfit(tmp)
+            self.assertIn("in Sky blue", outfit)
+            self.assertIn("with a floral print", outfit)
+            self.assertIn("with soft cotton", outfit)
+            self.assertIn("with an elegant cut", outfit)
+            self.assertLess(outfit.index("in Sky blue"), outfit.index("with a floral print"))
+            self.assertLess(outfit.index("with a floral print"), outfit.index("with soft cotton"))
+            self.assertLess(outfit.index("with soft cotton"), outfit.index("with an elegant cut"))
+
+    def test_missing_decks_are_skipped(self):
+        with TmpWildcards() as tmp:
+            outfit = self._outfit(tmp, decks={"shared/colors.txt": "Sky blue\n"})
+            self.assertIn("in Sky blue", outfit)
+            self.assertNotIn("floral", outfit)
+            self.assertNotIn("cotton", outfit)
+            self.assertNotIn("elegant", outfit)
+
+    def test_inline_tags_skip_the_pipeline(self):
+        with TmpWildcards() as tmp:
+            outfit = self._outfit(tmp, tops="a fitted top, __shared/colors__\n")
+            self.assertIn("Sky blue", outfit)
+            self.assertNotIn("floral", outfit)
+            self.assertNotIn("cotton", outfit)
+
+    def test_fixed_garment_gets_no_modifiers(self):
+        with TmpWildcards() as tmp:
+            outfit = self._outfit(tmp, tops="#@fixed: true\na fitted top\n")
+            self.assertNotIn("in Sky blue", outfit)
+            self.assertNotIn("floral", outfit)
+            self.assertNotIn("cotton", outfit)
+            self.assertNotIn("elegant", outfit)
+
+    def test_no_modifiers_excludes_dimensions(self):
+        with TmpWildcards() as tmp:
+            outfit = self._outfit(tmp, tops="#@no_modifiers: fabric\na fitted top\n")
+            self.assertIn("in Sky blue", outfit)
+            self.assertNotIn("cotton", outfit)
+            self.assertIn("with an elegant cut", outfit)
+
+    def test_garment_modifiers_override_the_list(self):
+        with TmpWildcards() as tmp:
+            outfit = self._outfit(tmp, tops="#@modifiers: design\na fitted top\n")
+            self.assertIn("with an elegant cut", outfit)
+            self.assertNotIn("in Sky blue", outfit)
+            self.assertNotIn("floral", outfit)
+            self.assertNotIn("cotton", outfit)
+
+    def test_category_modifiers_narrow_the_list(self):
+        with TmpWildcards() as tmp:
+            outfit = self._outfit(tmp, category_modifiers="color, fabric")
+            self.assertIn("in Sky blue", outfit)
+            self.assertIn("with soft cotton", outfit)
+            self.assertNotIn("floral", outfit)
+            self.assertNotIn("elegant", outfit)
+
+    def test_unknown_modifier_names_are_skipped(self):
+        with TmpWildcards() as tmp:
+            outfit = self._outfit(tmp, tops="#@modifiers: bogus\na fitted top\n")
+            self.assertEqual(outfit.split(", ")[0], "a fitted top")
+            self.assertNotIn("Sky blue", outfit)
+
+    def test_category_fabric_deck_wins_over_shared(self):
+        with TmpWildcards() as tmp:
+            decks = dict(self._DECKS)
+            decks["shared/garment-style-signature.txt"] = "with signature fabric\n"
+            outfit = self._outfit(tmp, decks=decks)
+            self.assertIn("with signature fabric", outfit)
+            self.assertNotIn("with soft cotton", outfit)
+
+
 class TestTrigger(unittest.TestCase):
     def test_trigger_resolved_and_kept_out_of_prose(self):
         with TmpWildcards() as tmp:

@@ -1,2 +1,3 @@
 #@fit: bust, waist, hips
+#@fixed: true
 a classic black tuxedo

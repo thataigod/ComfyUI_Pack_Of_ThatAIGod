@@ -81,6 +81,9 @@ KNOWN_DIRECTIVE_KEYS: frozenset[str] = frozenset(
         "condition",
         "mishap",
         "slip",
+        "modifiers",
+        "no_modifiers",
+        "fixed",
     }
 )
 

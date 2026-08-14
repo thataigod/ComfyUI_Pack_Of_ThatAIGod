@@ -1,3 +1,4 @@
 #@fit: bust, waist, hips
 #@mishap: his suit jacket pulling tight across the shoulders
+#@fixed: true
 a full tailored suit, dark navy

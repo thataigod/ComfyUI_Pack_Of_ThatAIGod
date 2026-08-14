@@ -1,4 +1,5 @@
 #@fit: bust, waist
+#@fixed: true
 a crisp white dress shirt
 #@fit: bust, waist
 #@mishap: his dress shirt straining at the chest

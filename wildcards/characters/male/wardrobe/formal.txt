@@ -1,2 +1,3 @@
 #@occasion: office, formal, wedding, party
+#@modifiers: color, fabric, design
 formal wear, __characters/male/wardrobe/formal/tops__, __characters/male/wardrobe/formal/bottoms__, __characters/male/wardrobe/formal/shoes__, __characters/male/wardrobe/formal/accessories__

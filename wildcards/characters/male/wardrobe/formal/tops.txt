@@ -1,4 +1,5 @@
 #@fit: bust, waist
+#@fixed: true
 a crisp white tuxedo shirt
 #@fit: bust, waist
 #@mishap: his waistcoat straining at the buttons

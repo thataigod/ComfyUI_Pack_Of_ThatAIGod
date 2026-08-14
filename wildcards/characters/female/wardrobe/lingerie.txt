@@ -1,2 +1,3 @@
 #@occasion: intimate, boudoir
+#@modifiers: color, pattern, fabric, design
 lingerie, __characters/female/wardrobe/lingerie/tops__, __characters/female/wardrobe/lingerie/bottoms__, __characters/female/wardrobe/lingerie/accessories__

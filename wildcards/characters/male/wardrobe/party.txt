@@ -1,2 +1,3 @@
 #@occasion: party, wedding, festival
+#@modifiers: color, pattern, fabric, design
 party wear, __characters/male/wardrobe/party/tops__, __characters/male/wardrobe/party/bottoms__, __characters/male/wardrobe/party/shoes__, __characters/male/wardrobe/party/accessories__

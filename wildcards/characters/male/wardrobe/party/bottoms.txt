@@ -1,4 +1,5 @@
 #@fit: waist, hips
+#@fixed: true
 slim black party trousers
 #@fit: waist, hips
 tailored charcoal party trousers

@@ -1,2 +1,3 @@
 #@occasion: festival, wedding, traditional, party
+#@modifiers: color, pattern, design
 traditional wear, __characters/female/wardrobe/traditional/tops__, __characters/female/wardrobe/traditional/bottoms__, __characters/female/wardrobe/traditional/shoes__, __characters/female/wardrobe/traditional/accessories__

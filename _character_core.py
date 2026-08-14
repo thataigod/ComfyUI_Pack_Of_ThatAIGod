@@ -740,11 +740,12 @@ def _fill_slots(
     slot_base = f"{wardrobe_base}/{category}"
     if piece_directives is not None:
         piece_directives.clear()
+    category_modifiers = _category_modifiers(resolver, wardrobe_base, category)
 
     use_one_piece = resolver.file_exists(f"{slot_base}/{_ONE_PIECE_SLOT}") and resolver.rng.random() < _ONE_PIECE_PROBABILITY
     active_slots = list(_GARMENT_SLOTS)
     if use_one_piece:
-        piece, directives = _resolve_slot(resolver, context, slot_base, _ONE_PIECE_SLOT, use_shared_modifiers)
+        piece, directives = _resolve_slot(resolver, context, slot_base, _ONE_PIECE_SLOT, use_shared_modifiers, category_modifiers)
         if piece:
             pieces.append(piece)
             if piece_directives is not None:
@@ -753,7 +754,7 @@ def _fill_slots(
     for slot, required in active_slots:
         if not (required & region_set):
             continue
-        piece, directives = _resolve_slot(resolver, context, slot_base, slot, use_shared_modifiers)
+        piece, directives = _resolve_slot(resolver, context, slot_base, slot, use_shared_modifiers, category_modifiers)
         if piece:
             pieces.append(piece)
             if piece_directives is not None:
@@ -763,6 +764,108 @@ def _fill_slots(
 
 _MODIFIER_SLOTS: frozenset[str] = frozenset({"tops", "bottoms", _ONE_PIECE_SLOT})
 
+# The append-phrase modifier dimensions applied to tagless garments, in
+# default prose order.  Categories may narrow the list via a #@modifiers
+# directive on their category file; garments may override (#@modifiers:),
+# subtract (#@no_modifiers:) or opt out entirely (#@fixed: true).
+_MODIFIER_DIMENSIONS: tuple[str, ...] = ("color", "pattern", "fabric", "design")
+
+# Source decks per dimension and the prose template used to append a line.
+# All decks are phrase-ready; color lines are bare nouns wrapped by the
+# template.
+_MODIFIER_DECKS: dict[str, str] = {
+    "color": "shared/colors",
+    "pattern": "shared/pattern",
+    "design": "shared/design",
+}
+_MODIFIER_TEMPLATES: dict[str, str] = {
+    "color": "in {value}",
+    "pattern": "{value}",
+    "fabric": "{value}",
+    "design": "{value}",
+}
+
+# Category-specific fabric decks keep fabric sensible per category (athletic
+# wear never gets silk chiffon); they win over the shared decks.  The plain
+# fabric deck is the user-facing source; the legacy garment-style deck is the
+# last-resort fallback.
+def _fabric_deck(resolver: WildcardResolver, category: str) -> str:
+    category_deck = f"shared/garment-style-{category}"
+    if resolver.file_exists(category_deck):
+        return category_deck
+    if resolver.file_exists("shared/fabric"):
+        return "shared/fabric"
+    return "shared/garment-style"
+
+
+def _category_modifiers(
+    resolver: WildcardResolver,
+    wardrobe_base: str,
+    category: str,
+    default: tuple[str, ...] = _MODIFIER_DIMENSIONS,
+) -> tuple[str, ...]:
+    """Read the category file's ``#@modifiers`` list (falls back to *default*)."""
+    path = os.path.join(resolver.wildcards_dir, f"{wardrobe_base}/{category}.txt")
+    try:
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                match = _DIRECTIVE_PATTERN.match(line.strip())
+                if match is not None and match.group(1) == "modifiers":
+                    values = tuple(part.strip() for part in match.group(2).split(",") if part.strip())
+                    if values:
+                        return values
+    except OSError:
+        pass
+    return default
+
+
+def _append_modifiers(
+    resolver: WildcardResolver,
+    context: dict[str, set[str]],
+    piece: str,
+    directives: dict[str, set[str]],
+    category_modifiers: tuple[str, ...],
+    category: str,
+) -> str:
+    """Append the garment's modifier clauses (color, pattern, fabric, design).
+
+    The effective list is the garment's ``#@modifiers`` override, else the
+    category list minus the garment's ``#@no_modifiers``; ``#@fixed: true``
+    opts the garment out entirely.  Dimensions whose deck is unavailable are
+    skipped.
+
+    Args:
+        resolver: The section resolver.
+        context: The active filter context.
+        piece: The resolved garment text so far.
+        directives: The garment line's accumulated directives.
+        category_modifiers: The category's declared modifier list.
+        category: The category folder name (fabric deck selection).
+
+    Returns:
+        The piece with the modifier clauses appended.
+    """
+    if "true" in directives.get("fixed", ()):
+        return piece
+    if directives.get("modifiers"):
+        effective = tuple(sorted(directives["modifiers"]))
+    else:
+        excluded = directives.get("no_modifiers", ())
+        effective = tuple(dimension for dimension in category_modifiers if dimension not in excluded)
+    for dimension in effective:
+        if dimension == "fabric":
+            deck: str | None = _fabric_deck(resolver, category)
+            template: str = _MODIFIER_TEMPLATES["fabric"]
+        else:
+            deck = _MODIFIER_DECKS.get(dimension)
+            template = _MODIFIER_TEMPLATES.get(dimension, "{value}")
+        if deck is None:
+            continue
+        value = resolver.pick_line(deck, context)
+        if value:
+            piece = f"{piece}, {template.format(value=value)}"
+    return piece
+
 
 def _resolve_slot(
     resolver: WildcardResolver,
@@ -770,6 +873,7 @@ def _resolve_slot(
     slot_base: str,
     slot: str,
     use_shared_modifiers: bool,
+    category_modifiers: tuple[str, ...] = _MODIFIER_DIMENSIONS,
 ) -> tuple[str, dict[str, set[str]]]:
     """Resolve one garment slot to a piece string and its directives.
 
@@ -778,7 +882,8 @@ def _resolve_slot(
         context: The active filter context.
         slot_base: The wardrobe category relative path.
         slot: The slot file name without extension.
-        use_shared_modifiers: Whether to append shared garment-style phrases.
+        use_shared_modifiers: Whether to append the modifier pipeline.
+        category_modifiers: The category's declared modifier list.
 
     Returns:
         A ``(piece, directives)`` tuple; ``("", {})`` when the file is
@@ -789,18 +894,11 @@ def _resolve_slot(
     raw, directives = resolver.pick_line_with_directives(f"{slot_base}/{slot}", context)
     if not raw:
         return "", {}
+    piece = raw
     if use_shared_modifiers and slot in _MODIFIER_SLOTS and "__" not in raw:
-        # Prefer a category-specific fabric deck (e.g. athletic wear never
-        # gets silk chiffon), falling back to the generic one.
         category = os.path.basename(slot_base)
-        style_deck = f"shared/garment-style-{category}"
-        if not resolver.file_exists(style_deck):
-            style_deck = "shared/garment-style"
-        modifier = resolver.pick_line(style_deck, context)
-        if modifier:
-            raw = f"{raw}, {modifier}"
-    piece = resolver.resolve(raw, context)
-    return piece, directives
+        piece = _append_modifiers(resolver, context, raw, directives, category_modifiers, category)
+    return resolver.resolve(piece, context), directives
 
 
 def _dedupe(items: list[str]) -> list[str]:

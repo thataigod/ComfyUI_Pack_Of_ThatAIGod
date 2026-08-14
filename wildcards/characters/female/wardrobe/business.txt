@@ -1,2 +1,3 @@
 #@occasion: office, formal, wedding
+#@modifiers: color, fabric
 business wear, __characters/female/wardrobe/business/tops__, __characters/female/wardrobe/business/bottoms__, __characters/female/wardrobe/business/shoes__, __characters/female/wardrobe/business/accessories__

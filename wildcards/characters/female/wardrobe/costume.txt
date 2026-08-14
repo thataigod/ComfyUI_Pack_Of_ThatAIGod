@@ -1,2 +1,3 @@
 #@occasion: costume, party, festival
+#@modifiers: color, pattern, design
 costume wear, __characters/female/wardrobe/costume/tops__, __characters/female/wardrobe/costume/bottoms__, __characters/female/wardrobe/costume/shoes__, __characters/female/wardrobe/costume/accessories__
