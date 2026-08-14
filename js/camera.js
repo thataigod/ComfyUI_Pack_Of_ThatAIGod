@@ -430,12 +430,6 @@ app.registerExtension({
                     infoWidget.inputEl.style.maxHeight = "100px";
                 }
             }
-
-            requestAnimationFrame(() => {
-                updateMinHeight();
-                setInterval(updateMinHeight, 500);
-                this.onResize?.(this.size);
-            });
         };
 
         const origExecuted = nodeType.prototype.onExecuted;
