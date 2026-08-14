@@ -442,6 +442,7 @@ _VIEW_HIDES: dict[str, frozenset[str]] = {
 _BASE_SHORTCUTS: dict[str, dict[str, tuple[str, ...]]] = {
     "sizes": {
         "Close-ups": ("Extreme Close-Up", "Close-Up", "Medium Close-Up"),
+        "Mid-Sizes": ("Medium", "Cowboy", "Medium Full"),
         "Fulls": ("Full", "Long", "Extreme Long"),
     },
     "angles": {
@@ -1017,75 +1018,95 @@ def _pick_view_phrase(rng: random.Random, phrases: tuple[str, ...], side: str) -
 
 def _compose_description(
     rng: random.Random,
-    size_rec: dict[str, Any],
-    angle_rec: dict[str, Any],
-    view_rec: dict[str, Any],
-    movement_rec: dict[str, Any],
-    tilt_rec: dict[str, Any],
+    size_rec: dict[str, Any] | None,
+    angle_rec: dict[str, Any] | None,
+    view_rec: dict[str, Any] | None,
+    movement_rec: dict[str, Any] | None,
+    tilt_rec: dict[str, Any] | None,
     side: str,
     orientation: str,
-    look_rec: dict[str, Any],
+    look_rec: dict[str, Any] | None,
 ) -> str:
-    """Assemble the natural-language shot description from the resolved axes."""
-    if angle_rec["elevation"] == 90:
-        view_text = rng.choice(
-            [
-                "the subject seen from directly overhead",
-                "the crown of the subject's head toward the lens",
-            ]
-        )
-    else:
-        view_text = _pick_view_phrase(rng, view_rec["phrases"], side)
+    """Assemble the natural-language shot description from the resolved axes.
 
-    parts = [
-        rng.choice(size_rec["phrases"]),
-        rng.choice(angle_rec["phrases"]),
-        view_text,
-        rng.choice(movement_rec["close" if size_rec["close"] else "wide"]),
-    ]
-    tilt_text = rng.choice(tilt_rec["phrases"])
-    if tilt_text:
-        parts.append(tilt_text)
+    Records may be ``None`` for axes the user left unrestricted; their clauses
+    are omitted from the description.
+    """
+    parts: list[str] = []
+    if size_rec is not None:
+        parts.append(rng.choice(size_rec["phrases"]))
+    if angle_rec is not None:
+        parts.append(rng.choice(angle_rec["phrases"]))
+    if view_rec is not None:
+        if angle_rec is not None and angle_rec["elevation"] == 90:
+            view_text = rng.choice(
+                [
+                    "the subject seen from directly overhead",
+                    "the crown of the subject's head toward the lens",
+                ]
+            )
+        else:
+            view_text = _pick_view_phrase(rng, view_rec["phrases"], side)
+        parts.append(view_text)
+    if movement_rec is not None:
+        bucket = "close" if size_rec is not None and size_rec["close"] else "wide"
+        parts.append(rng.choice(movement_rec[bucket]))
+    if tilt_rec is not None:
+        tilt_text = rng.choice(tilt_rec["phrases"])
+        if tilt_text:
+            parts.append(tilt_text)
 
-    sentence_one = ", ".join(parts) + "."
+    sentences: list[str] = []
+    if parts:
+        sentences.append(", ".join(parts) + ".")
+    if size_rec is not None:
+        composition = _composition_for(size_rec, orientation, angle_rec)
+        sentences.append(f"{size_rec['lens']} with {size_rec['depth']}, {composition}.")
+    if look_rec is not None:
+        sentences.append(rng.choice(look_rec["phrases"]))
+    return " ".join(sentences)
 
-    lens = size_rec["lens"]
-    depth = size_rec["depth"]
-    composition = _composition_for(size_rec, orientation, angle_rec)
 
-    return f"{sentence_one} {lens} with {depth}, {composition}. {rng.choice(look_rec['phrases'])}"
-
-
-def _composition_for(size_rec: dict[str, Any], orientation: str, angle_rec: dict[str, Any]) -> str:
+def _composition_for(
+    size_rec: dict[str, Any] | None,
+    orientation: str,
+    angle_rec: dict[str, Any] | None,
+) -> str:
     """Return the composition phrase matching a shot's framing and angle."""
-    if angle_rec["elevation"] == 90:
+    if angle_rec is not None and angle_rec["elevation"] == 90:
         return _COMPOSITION_TOP_DOWN[orientation]
-    if size_rec["close"]:
+    if size_rec is not None and size_rec["close"]:
         return _COMPOSITION_CLOSE[orientation]
-    if size_rec["long"]:
+    if size_rec is not None and size_rec["long"]:
         return _COMPOSITION_LONG[orientation]
     return _COMPOSITION_PHRASES[orientation]
 
 
 def _compose_keywords(
-    size_rec: dict[str, Any],
-    angle_rec: dict[str, Any],
-    view_rec: dict[str, Any],
-    movement_rec: dict[str, Any],
-    tilt_rec: dict[str, Any],
-    look_rec: dict[str, Any],
+    size_rec: dict[str, Any] | None,
+    angle_rec: dict[str, Any] | None,
+    view_rec: dict[str, Any] | None,
+    movement_rec: dict[str, Any] | None,
+    tilt_rec: dict[str, Any] | None,
+    look_rec: dict[str, Any] | None,
 ) -> str:
     """Assemble the comma-separated keyword list for prompt injection."""
-    parts: list[str] = [size_rec["keyword"], angle_rec["keyword"], view_rec["keyword"]]
-    movement_keyword = movement_rec["keyword"]
-    if movement_keyword:
-        parts.append(movement_keyword)
-    tilt_keyword = tilt_rec["keyword"]
-    if tilt_keyword:
-        parts.append(tilt_keyword)
-    parts.append(size_rec["lens"])
-    parts.append(size_rec["depth"])
-    parts.append(look_rec["keywords"])
+    parts: list[str] = []
+    if size_rec is not None:
+        parts.append(size_rec["keyword"])
+    if angle_rec is not None:
+        parts.append(angle_rec["keyword"])
+    if view_rec is not None:
+        parts.append(view_rec["keyword"])
+    if movement_rec is not None and movement_rec["keyword"]:
+        parts.append(movement_rec["keyword"])
+    if tilt_rec is not None and tilt_rec["keyword"]:
+        parts.append(tilt_rec["keyword"])
+    if size_rec is not None:
+        parts.append(size_rec["lens"])
+        parts.append(size_rec["depth"])
+    if look_rec is not None:
+        parts.append(look_rec["keywords"])
     return ", ".join(parts)
 
 
@@ -1108,8 +1129,10 @@ DEFAULT_CONFIG_JSON: str = json.dumps({key: list(values) for key, values in _AXI
 def parse_config(config_json: str, option_space: dict[str, dict[str, dict[str, Any]]] | None = None) -> dict[str, list[str]]:
     """Parse a Camera Config JSON string into active option lists per axis.
 
-    Unknown keys and unknown option values are dropped; malformed JSON and
-    empty per-axis lists fall back to the full option list for that axis.
+    A key present with an **empty list** leaves that axis unrestricted (its
+    clause is omitted from the shot); an absent key, a malformed value or
+    malformed JSON falls back to the full option list for that axis, keeping
+    stale or partial configs usable.
 
     Args:
         config_json: JSON string with keys ``sizes``, ``angles``, ``views``,
@@ -1118,26 +1141,30 @@ def parse_config(config_json: str, option_space: dict[str, dict[str, dict[str, A
             built-in space).
 
     Returns:
-        A dict mapping each axis key to its active option list.
+        A dict mapping each axis key to its active option list (possibly
+        empty when the user explicitly cleared the axis).
     """
     space = option_space if option_space is not None else _builtin_space()
     try:
-        raw: dict[str, Any] = json.loads(config_json)
+        loaded: Any = json.loads(config_json)
     except (json.JSONDecodeError, TypeError):
-        raw = {}
+        loaded = {}
+    raw = loaded if isinstance(loaded, dict) else {}
 
     active: dict[str, list[str]] = {}
     for key, _options in _AXIS_OPTIONS.items():
-        chosen = raw.get(key)
-        if isinstance(chosen, list):
-            valid: list[str] = []
-            for option in chosen:
-                if isinstance(option, str) and option in space[key] and option not in valid:
-                    valid.append(option)
-            if valid:
-                active[key] = valid
-                continue
-        active[key] = list(space[key])
+        if key not in raw:
+            active[key] = list(space[key])
+            continue
+        chosen = raw[key]
+        if not isinstance(chosen, list):
+            active[key] = list(space[key])
+            continue
+        valid: list[str] = []
+        for option in chosen:
+            if isinstance(option, str) and option in space[key] and option not in valid:
+                valid.append(option)
+        active[key] = valid
     return active
 
 
@@ -1248,7 +1275,8 @@ def build_shot(
     config = parse_config(config_json, space)
 
     if mode == NO_REPEAT_MODE:
-        bag = _get_bag(seed, config)
+        bag_config = {key: (values if values else [""]) for key, values in config.items()}
+        bag = _get_bag(seed, bag_config)
         combo = bag.draw()
         combo_tuple = tuple(combo[k] for k in _AXIS_DIRS)
         rng = _variant_rng(seed, combo_tuple)
@@ -1262,32 +1290,39 @@ def build_shot(
         if mode == FULL_AUTO_MODE:
             config = {key: list(values) for key, values in space.items()}
         rng = random.Random(seed)
-        size = rng.choice(config["sizes"])
-        angle = rng.choice(config["angles"])
-        view = rng.choice(config["views"])
-        movement = rng.choice(config["movements"])
-        tilt = rng.choice(config["tilts"])
-        look = rng.choice(config["looks"])
+        size = rng.choice(config["sizes"]) if config["sizes"] else ""
+        angle = rng.choice(config["angles"]) if config["angles"] else ""
+        view = rng.choice(config["views"]) if config["views"] else ""
+        movement = rng.choice(config["movements"]) if config["movements"] else ""
+        tilt = rng.choice(config["tilts"]) if config["tilts"] else ""
+        look = rng.choice(config["looks"]) if config["looks"] else ""
 
-    size_rec = space["sizes"][size]
-    angle_rec = space["angles"][angle]
-    view_rec = space["views"][view]
-    movement_rec = space["movements"][movement]
-    tilt_rec = space["tilts"][tilt]
-    look_rec = space["looks"][look]
+    size_rec = space["sizes"][size] if size else None
+    angle_rec = space["angles"][angle] if angle else None
+    view_rec = space["views"][view] if view else None
+    movement_rec = space["movements"][movement] if movement else None
+    tilt_rec = space["tilts"][tilt] if tilt else None
+    look_rec = space["looks"][look] if look else None
 
-    side = rng.choice(["left", "right"]) if view_rec["azimuth"] not in (0, 180) else ""
+    side = ""
+    if view_rec is not None and view_rec["azimuth"] not in (0, 180):
+        side = rng.choice(["left", "right"])
 
-    hidden = angle_rec["hides"] | view_rec["hides"]
-    if angle_rec["elevation"] == 90:
+    hidden: set[str] = set()
+    if angle_rec is not None:
+        hidden |= angle_rec["hides"]
+    if view_rec is not None:
+        hidden |= view_rec["hides"]
+    if angle_rec is not None and angle_rec["elevation"] == 90:
         hidden |= _TOP_DOWN_HIDES
     fv = "face" not in hidden
-    regions = [region for region in size_rec["regions"] if region not in hidden]
+    base_regions = list(size_rec["regions"]) if size_rec is not None else list(_ALL_REGIONS)
+    regions = [region for region in base_regions if region not in hidden]
     orientation = _orientation(width, height)
 
-    azimuth = view_rec["azimuth"] * (-1 if side == "left" else 1)
-    elevation = angle_rec["elevation"]
-    roll = tilt_rec["roll"]
+    azimuth = view_rec["azimuth"] * (-1 if side == "left" else 1) if view_rec is not None else 0
+    elevation = angle_rec["elevation"] if angle_rec is not None else 0
+    roll = tilt_rec["roll"] if tilt_rec is not None else 0
 
     description = _compose_description(rng, size_rec, angle_rec, view_rec, movement_rec, tilt_rec, side, orientation, look_rec)
     keywords = _compose_keywords(size_rec, angle_rec, view_rec, movement_rec, tilt_rec, look_rec)
@@ -1302,8 +1337,8 @@ def build_shot(
         "tilt": tilt,
         "look": look,
         "side": side,
-        "lens": size_rec["lens"],
-        "depth_of_field": size_rec["depth"],
+        "lens": size_rec["lens"] if size_rec is not None else "",
+        "depth_of_field": size_rec["depth"] if size_rec is not None else "",
         "orientation": orientation,
         "azimuth": azimuth,
         "elevation": elevation,

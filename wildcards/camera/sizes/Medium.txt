@@ -3,6 +3,7 @@
 #@lens: 50mm lens
 #@depth: moderate depth of field
 #@keyword: Medium Shot
+#@shortcuts: Mid-Sizes
 
 A medium shot
 A waist-up shot

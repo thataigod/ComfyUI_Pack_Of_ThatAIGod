@@ -3,6 +3,7 @@
 #@lens: 50mm lens
 #@depth: moderate depth of field
 #@keyword: Cowboy Shot
+#@shortcuts: Mid-Sizes
 
 A cowboy shot
 A mid-thigh framing

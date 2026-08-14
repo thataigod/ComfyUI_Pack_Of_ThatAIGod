@@ -189,10 +189,10 @@ function readConfig(widget, axes) {
         const cfg = JSON.parse(widget.value);
         const out = {};
         for (const axis of axes) {
-            const picked = cfg[axis.key];
+            const picked = (cfg && typeof cfg === "object" && !Array.isArray(cfg)) ? cfg[axis.key] : undefined;
             out[axis.key] = Array.isArray(picked)
                 ? picked.filter((v) => axis.options.includes(v))
-                : [];
+                : [...axis.options];
         }
         return out;
     } catch (_) {
@@ -285,7 +285,7 @@ app.registerExtension({
 
             const cfg = readConfig(configWidget, axes);
             const selected = {};
-            for (const axis of axes) selected[axis.key] = new Set(cfg[axis.key] && cfg[axis.key].length ? cfg[axis.key] : axis.options);
+            for (const axis of axes) selected[axis.key] = new Set(cfg[axis.key]);
 
             const container = document.createElement("div");
             container.className = "cam-ui";
@@ -337,7 +337,7 @@ app.registerExtension({
                     const btnAll = document.createElement("button");
                     btnAll.textContent = allSelected ? "All" : (noneSelected ? "None" : "Partial");
                     btnAll.style.cssText = "padding:1px 8px;border:1px solid " +
-                        (allSelected ? "#77ee77" : (noneSelected ? "#555" : "#cc8844")) +
+                        (allSelected ? "#77ee77" : (noneSelected ? "#ff5555" : "#cc8844")) +
                         ";border-radius:4px;cursor:pointer;font-size:10px;background:#2a2a2a;color:#ccc;";
                     btnAll.title = "Toggle all options on/off";
                     btnAll.onclick = () => {
@@ -356,7 +356,13 @@ app.registerExtension({
                     for (const sc of axis.shortcuts) {
                         const btn = document.createElement("button");
                         btn.textContent = sc.text;
-                        btn.style.cssText = "padding:1px 8px;border:1px solid #444;border-radius:4px;cursor:pointer;font-size:10px;background:#2a2a2a;color:#ccc;";
+                        const scAll = sc.members.every((m) => selected[axis.key].has(m));
+                        const scAny = sc.members.some((m) => selected[axis.key].has(m));
+                        const scState = scAll ? "#77ee77" : (scAny ? "#cc8844" : "#444");
+                        btn.style.cssText = "padding:1px 8px;border:1px solid " + scState +
+                            ";border-radius:4px;cursor:pointer;font-size:10px;background:#2a2a2a;color:" +
+                            (scAll ? "#aaffaa" : "#ccc") + ";";
+                        btn.title = scAll ? "All members active — click to clear" : "Click to toggle members";
                         btn.onclick = () => {
                             const members = new Set(sc.members);
                             const allActive = sc.members.every((m) => selected[axis.key].has(m));

@@ -3,6 +3,7 @@
 import json
 import random
 import unittest
+from typing import Any
 
 import _camera_core as core
 from _camera_core import (
@@ -116,9 +117,20 @@ class TestParseConfig(unittest.TestCase):
         )
         self.assertEqual(parsed["sizes"], ["Close-Up", "Full"])
         self.assertEqual(parsed["angles"], ["Eye Level"])
-        self.assertEqual(parsed["views"], core.VIEWS)
+        self.assertEqual(parsed["views"], [])
         self.assertEqual(parsed["movements"], core.MOVEMENTS)
         self.assertEqual(parsed["tilts"], ["None"])
+
+    def test_absent_axis_key_falls_back_to_full(self):
+        parsed = parse_config("{}")
+        self.assertEqual(parsed["sizes"], core.SHOT_SIZES)
+        self.assertEqual(parsed["views"], core.VIEWS)
+
+    def test_non_dict_json_falls_back_to_full(self):
+        for config_json in ("[]", '"hello"', "42", ""):
+            parsed = parse_config(config_json)
+            self.assertEqual(parsed["sizes"], core.SHOT_SIZES)
+            self.assertEqual(parsed["looks"], core.LOOKS)
 
     def test_malformed_json_falls_back_to_full(self):
         parsed = parse_config("{not valid json")
@@ -289,6 +301,80 @@ class TestBuildShotDeterministic(unittest.TestCase):
             768,
         )
         self.assertIn("small within the frame", shot["description"])
+
+
+class TestUnrestrictedAxes(unittest.TestCase):
+    """Empty per-axis selections leave that axis out of the shot entirely."""
+
+    def _build(self, config: dict[str, Any], mode: str = "Deterministic (Seed)", seed: int = 1) -> dict[str, Any]:
+        return build_shot(json.dumps(config), mode, seed, 1024, 1024)
+
+    def test_empty_sizes_omit_framing_clauses(self):
+        shot = self._build(
+            {"sizes": [], "angles": ["Eye Level"], "views": ["Front"], "looks": ["Leica M6"], "movements": ["Static"], "tilts": ["None"]}
+        )
+        self.assertEqual(shot["shot_size"], "")
+        self.assertEqual(shot["lens"], "")
+        self.assertEqual(shot["depth_of_field"], "")
+        self.assertNotIn("lens", shot["keywords"])
+        self.assertNotIn("depth of field", shot["keywords"])
+        self.assertIn("the subject", shot["description"])
+        self.assertIn("Shot on a Leica M6", shot["description"])
+        self.assertEqual(set(shot["regions"]), set(core._ALL_REGIONS) - {"back", "buttocks"})
+
+    def test_empty_sizes_still_compose_orientation(self):
+        shot = self._build({"sizes": [], "angles": []})
+        self.assertEqual(shot["composition"], core._COMPOSITION_PHRASES["square"])
+
+    def test_empty_views_keep_all_regions_and_face(self):
+        shot = self._build({"views": [], "sizes": ["Full"], "angles": ["Eye Level"]})
+        self.assertEqual(shot["view"], "")
+        self.assertEqual(shot["side"], "")
+        self.assertEqual(shot["azimuth"], 0)
+        self.assertTrue(shot["face_visible"])
+        self.assertEqual(shot["regions"], core._REGIONS_BY_SIZE["Full"])
+        self.assertNotIn("Front View", shot["keywords"])
+
+    def test_empty_angle_keeps_geometry_and_omits_clause(self):
+        shot = self._build({"angles": [], "views": ["Back"], "sizes": ["Full"]})
+        self.assertEqual(shot["angle"], "")
+        self.assertEqual(shot["elevation"], 0)
+        self.assertFalse(shot["face_visible"])
+        self.assertNotIn("Eye Level Shot", shot["keywords"])
+        self.assertIn("back", shot["description"].lower())
+
+    def test_empty_looks_omit_look_sentence_and_keywords(self):
+        shot = self._build({"looks": [], "sizes": ["Full"]})
+        self.assertEqual(shot["look"], "")
+        self.assertNotIn("Shot on", shot["description"])
+        self.assertNotIn("Captured on", shot["description"])
+        self.assertNotIn("Film Grain", shot["keywords"])
+        self.assertIn("Full Body Shot", shot["keywords"])
+
+    def test_empty_movement_and_tilt_omit_their_clauses(self):
+        shot = self._build({"movements": [], "tilts": [], "sizes": ["Full"]})
+        self.assertEqual(shot["movement"], "")
+        self.assertEqual(shot["tilt"], "")
+        self.assertEqual(shot["roll"], 0)
+        self.assertNotIn("Motion Blur", shot["keywords"])
+        self.assertNotIn("Dutch", shot["keywords"])
+
+    def test_all_axes_empty_yields_empty_prose(self):
+        config = {"sizes": [], "angles": [], "views": [], "movements": [], "tilts": [], "looks": []}
+        shot = self._build(config)
+        self.assertEqual(shot["description"], "")
+        self.assertEqual(shot["keywords"], "")
+        self.assertTrue(shot["face_visible"])
+        self.assertEqual(set(shot["regions"]), set(core._ALL_REGIONS))
+
+    def test_no_repeat_with_empty_axis_cycles(self):
+        config = json.dumps({"movements": [], "views": ["Front", "Back"], "sizes": ["Full"], "tilts": ["None"], "looks": ["Leica M6"], "angles": ["Eye Level"]})
+        seen: set[str] = set()
+        for _ in range(8):
+            shot = build_shot(config, NO_REPEAT_MODE, 3, 1024, 1024)
+            self.assertEqual(shot["movement"], "")
+            seen.add(shot["view"])
+        self.assertEqual(seen, {"Front", "Back"})
 
 
 class TestBuildShotModes(unittest.TestCase):

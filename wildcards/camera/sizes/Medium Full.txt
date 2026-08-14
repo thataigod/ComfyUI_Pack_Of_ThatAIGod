@@ -3,6 +3,7 @@
 #@lens: 35mm lens
 #@depth: moderate depth of field
 #@keyword: Medium Full Shot
+#@shortcuts: Mid-Sizes
 
 A medium full shot
 A three-quarter-length shot
