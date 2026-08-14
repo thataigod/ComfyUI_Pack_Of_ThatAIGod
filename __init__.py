@@ -49,7 +49,6 @@ _modules: list[str] = [
     "LLM_Fallback_Node",
     "Character",
     "Camera",
-    "Scene",
 ]
 
 for mod_name in _modules:
