@@ -52,6 +52,7 @@ ignore = ["E501", "N801", "N802", "N806", "N815", "N816", "N999"]
 "_camera_core.py" = ["S311"]
 "Camera.py" = ["S311"]
 "_wildcard_core.py" = ["S311"]
+"_scene_core.py" = ["S311"]
 "LLM_Node.py" = ["S310"]
 "llm_utils.py" = ["S310"]
 

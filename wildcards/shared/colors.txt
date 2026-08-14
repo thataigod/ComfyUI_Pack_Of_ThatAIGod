@@ -1,0 +1,36 @@
+crimson
+scarlet
+burgundy
+rose pink
+blush pink
+peach
+coral
+tangerine
+golden yellow
+mustard
+olive
+forest green
+emerald
+teal
+turquoise
+sky blue
+azure
+navy
+indigo
+lavender
+violet
+plum
+champagne
+ivory
+cream
+beige
+tan
+caramel
+chocolate brown
+espresso
+charcoal
+slate grey
+silver
+steel grey
+jet black
+pure white

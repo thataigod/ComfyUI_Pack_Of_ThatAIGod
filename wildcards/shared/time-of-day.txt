@@ -1,0 +1,60 @@
+# Time-of-day phrases for the Scene node.  Each #@time value is both a
+# dropdown option and a filter key: scenes carrying a matching #@time
+# directive stay eligible.  Phrases come in indoor and outdoor variants
+# (#@setting) so the picked scene's setting selects the matching phrase —
+# a studio never gets an outdoor-sky line.  Phrases are trailing clauses
+# so they read naturally after the location prose.
+#@time: dawn
+#@setting: outdoor
+first pale light breaking over the horizon, cool air and long soft shadows
+#@time: dawn
+#@setting: indoor
+first pale light through the window, cool air and long soft shadows
+#@time: morning
+#@setting: outdoor
+bright morning light, fresh and clear
+#@time: morning
+#@setting: indoor
+bright morning light through the windows, fresh and clear
+#@time: noon
+#@setting: outdoor
+harsh midday sun, high contrast and short shadows
+#@time: noon
+#@setting: indoor
+harsh midday glare, high contrast and short shadows
+#@time: afternoon
+#@setting: outdoor
+warm afternoon sunlight, gentle contrast
+#@time: afternoon
+#@setting: indoor
+warm afternoon light slanting through the blinds, gentle contrast
+#@time: golden hour
+#@setting: outdoor
+golden hour, low warm sun with long amber shadows
+#@time: golden hour
+#@setting: indoor
+golden hour, warm low sun streaming through the window with long amber shadows
+#@time: dusk
+#@setting: outdoor
+dusk, the sky deepening into violet as lights begin to glow
+#@time: dusk
+#@setting: indoor
+dusk, the room settling into soft amber lamplight
+#@time: blue hour
+#@setting: outdoor
+blue hour, cool twilight with luminous sky and glowing city lights
+#@time: blue hour
+#@setting: indoor
+blue hour, cool twilight seeping in through the windows
+#@time: night
+#@setting: outdoor
+night, selective pools of light against the darkness
+#@time: night
+#@setting: indoor
+night, dim lamplight pooling against the darkness
+#@time: midnight
+#@setting: outdoor
+midnight, deep darkness under a clear starlit sky
+#@time: midnight
+#@setting: indoor
+midnight, deep quiet darkness with faint moonlight through the window
