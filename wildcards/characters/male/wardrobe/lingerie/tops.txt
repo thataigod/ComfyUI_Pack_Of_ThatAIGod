@@ -1,8 +1,6 @@
 #@fit: bust, waist
-#@fixed: true
 a fitted white undershirt
 #@fit: bust, waist
-#@fixed: true
 a soft grey undershirt
 #@fit: bust, waist
 #@fixed: false

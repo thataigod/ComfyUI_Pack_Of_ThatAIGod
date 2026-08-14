@@ -1,5 +1,4 @@
 #@fit: waist, hips
-#@fixed: true
 slim black party trousers
 #@fit: waist, hips
 #@no_modifiers: color

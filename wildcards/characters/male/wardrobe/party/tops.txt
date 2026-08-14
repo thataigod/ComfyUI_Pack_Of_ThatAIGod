@@ -3,7 +3,6 @@
 a shimmering sequin-embellished party shirt
 #@fit: bust, waist
 #@mishap: his party shirt straining at the seams
-#@fixed: true
 a black silk party shirt with a bold floral print
 #@fit: bust, waist
 #@no_modifiers: pattern, fabric

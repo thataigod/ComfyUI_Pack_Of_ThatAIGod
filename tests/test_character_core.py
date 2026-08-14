@@ -1448,6 +1448,36 @@ class TestModifierPipeline(unittest.TestCase):
             self.assertEqual(outfit.split(", ")[0], "a fitted top")
             self.assertNotIn("Sky blue", outfit)
 
+    def test_color_named_garment_skips_color_only(self):
+        with TmpWildcards() as tmp:
+            outfit = self._outfit(tmp, tops="a white blouse\n")
+            self.assertNotIn("in Sky blue", outfit)
+            self.assertIn("with a floral print", outfit)
+            self.assertIn("with soft cotton", outfit)
+            self.assertIn("with an elegant cut", outfit)
+
+    def test_fabric_named_garment_skips_fabric_only(self):
+        with TmpWildcards() as tmp:
+            outfit = self._outfit(tmp, tops="silk trousers\n")
+            self.assertNotIn("with soft cotton", outfit)
+            self.assertIn("in Sky blue", outfit)
+            self.assertIn("with a floral print", outfit)
+
+    def test_pattern_named_garment_skips_pattern_only(self):
+        with TmpWildcards() as tmp:
+            outfit = self._outfit(tmp, tops="a floral dress\n")
+            self.assertNotIn("with a floral print", outfit)
+            self.assertIn("in Sky blue", outfit)
+            self.assertIn("with soft cotton", outfit)
+
+    def test_explicit_fixed_wins_over_auto_skip(self):
+        with TmpWildcards() as tmp:
+            outfit = self._outfit(tmp, tops="#@fixed: true\na classic black tuxedo\n")
+            self.assertNotIn("Sky blue", outfit)
+            self.assertNotIn("floral", outfit)
+            self.assertNotIn("cotton", outfit)
+            self.assertNotIn("elegant", outfit)
+
     def test_category_fabric_deck_wins_over_shared(self):
         with TmpWildcards() as tmp:
             decks = dict(self._DECKS)

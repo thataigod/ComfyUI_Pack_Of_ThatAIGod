@@ -1,6 +1,5 @@
 #@fit: bust, waist
 #@mishap: a button of her blouse coming undone
-#@fixed: true
 a crisp white blouse
 #@fit: bust, waist
 a tailored silk blouse, __neutral_colors_female__

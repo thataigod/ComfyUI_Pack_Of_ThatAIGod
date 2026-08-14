@@ -797,6 +797,33 @@ def _fabric_deck(resolver: WildcardResolver, category: str) -> str:
         return "shared/fabric"
     return "shared/garment-style"
 
+# Words that make a garment self-describing on a dimension: a garment that
+# names its colour or fabric must not receive a random one (denim stays
+# denim), but the remaining dimensions still vary.  Explicit #@fixed: true
+# remains for pieces whose whole identity is fixed (a classic black tuxedo).
+_COLOR_WORDS: frozenset[str] = frozenset({
+    "black", "white", "navy", "charcoal", "ivory", "cream", "beige", "burgundy", "maroon", "teal", "blush",
+    "champagne", "gold", "silver", "slate", "grey", "gray", "plum", "mauve", "sage", "emerald", "olive",
+    "brown", "tan", "oat", "amber", "rose", "pink", "indigo", "violet", "lavender", "crimson", "scarlet",
+    "mustard", "copper", "midnight", "iridescent", "metallic",
+})
+_FABRIC_WORDS: frozenset[str] = frozenset({
+    "silk", "denim", "velvet", "linen", "cotton", "leather", "wool", "chiffon", "satin", "cashmere",
+    "jersey", "lace", "organza", "tulle", "tweed", "corduroy", "suede", "mesh", "poplin", "gabardine",
+    "microfibre", "spandex", "charmeuse",
+})
+_PATTERN_WORDS: frozenset[str] = frozenset({
+    "floral", "print", "pinstripe", "houndstooth", "plaid", "gingham", "polka", "stripe", "striped",
+    "chevron", "herringbone", "paisley", "tie-dye", "batik", "ikat", "camouflage", "camo", "marble",
+    "ombre", "color-blocked", "geometric", "abstract", "embroidered", "embroidery",
+})
+
+
+def _names_dimension(low: str, words: frozenset[str]) -> bool:
+    """Return whether the text names a word from the dimension vocabulary."""
+    tokens = set(low.split())
+    return bool(tokens & words)
+
 
 def _category_modifiers(
     resolver: WildcardResolver,
@@ -852,7 +879,14 @@ def _append_modifiers(
     else:
         excluded = directives.get("no_modifiers", ())
         effective = tuple(dimension for dimension in category_modifiers if dimension not in excluded)
+    low = piece.lower()
     for dimension in effective:
+        if dimension == "color" and _names_dimension(low, _COLOR_WORDS):
+            continue
+        if dimension == "fabric" and _names_dimension(low, _FABRIC_WORDS):
+            continue
+        if dimension == "pattern" and _names_dimension(low, _PATTERN_WORDS):
+            continue
         if dimension == "fabric":
             deck: str | None = _fabric_deck(resolver, category)
             template: str = _MODIFIER_TEMPLATES["fabric"]
