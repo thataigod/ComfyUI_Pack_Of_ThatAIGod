@@ -766,6 +766,13 @@ class TestBuildCharacter(unittest.TestCase):
         with TmpWildcards() as tmp:
             _make_persona(tmp)
             _make_persona_wardrobe(tmp)
+            # Multiple multi-line sources: even if the shared no-repeat decks
+            # are re-created between builds (fresh unseeded shuffles), every
+            # build drawing the same line from ALL sources at once is
+            # effectively impossible.
+            tmp.write("characters/tester/face.txt", "one face\nanother face\na third face")
+            tmp.write("characters/tester/pose.txt", "one pose\ntwo pose")
+            tmp.write("characters/tester/wardrobe/signature/tops.txt", "a fitted top\nan oversized top")
             tmp.write("shared/garment-style.txt", "with flowing silk\nwith crisp linen")
             outs = [
                 build_character(tmp.dir, "tester", _full_camera(), "casual", True, True, "Random (No Repeat)", 0)
