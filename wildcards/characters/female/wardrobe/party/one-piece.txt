@@ -1,5 +1,7 @@
 #@fit: bust, waist, hips
+#@no_modifiers: pattern
 a sequined mini dress
 #@fit: bust, waist, hips
 #@mishap: the wrap dress coming undone at her waist
+#@no_modifiers: fabric
 a satin wrap dress

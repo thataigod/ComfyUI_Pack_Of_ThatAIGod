@@ -1,4 +1,5 @@
 #@fit: waist, hips
 an elegant floor-length skirt
 #@fit: waist, hips
+#@no_modifiers: fabric
 silk trousers

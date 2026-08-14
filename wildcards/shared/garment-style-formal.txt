@@ -1,0 +1,10 @@
+# Formal garment-style fabric phrases.  Preferred over the generic
+# fabric deck so formal wear stays in elegant drape fabrics.
+with flowing silk
+with rich velvet
+with smooth satin
+with silk charmeuse
+with sheer organza
+with delicate tulle
+with fine lace
+with a soft crepe

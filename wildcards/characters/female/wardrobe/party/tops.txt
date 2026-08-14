@@ -1,5 +1,7 @@
 #@fit: bust, waist
 #@mishap: the bustier straining over her bust
+#@no_modifiers: fabric
 a velvet bustier top
 #@fit: bust, waist
+#@no_modifiers: pattern
 a sequined camisole

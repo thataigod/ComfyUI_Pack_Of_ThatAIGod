@@ -1,0 +1,10 @@
+# Casual garment-style fabric phrases.  Preferred over the generic
+# fabric deck so casual wear stays soft, comfortable, and lived-in.
+with soft cotton
+with brushed denim
+with cozy knit
+with airy linen
+with soft jersey
+with a ribbed knit
+with washed chambray
+with stretch twill

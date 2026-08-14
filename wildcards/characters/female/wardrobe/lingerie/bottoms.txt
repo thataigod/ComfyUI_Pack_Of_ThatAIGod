@@ -1,6 +1,8 @@
 #@fit: waist, hips
+#@no_modifiers: fabric
 matching lace panties
 #@fit: waist, hips
+#@no_modifiers: fabric
 silk shorts
 #@fit: waist, hips
 a matching lace thong, __pastel_colors_female__

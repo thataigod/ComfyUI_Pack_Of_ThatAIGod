@@ -1,7 +1,10 @@
 #@fit: waist, hips
+#@no_modifiers: fabric
 high-waisted jeans
 #@fit: waist, hips
 #@mishap: the mini skirt hem riding up her thighs
+#@no_modifiers: fabric
 a denim mini-skirt
 #@fit: waist, hips
+#@no_modifiers: fabric
 linen trousers

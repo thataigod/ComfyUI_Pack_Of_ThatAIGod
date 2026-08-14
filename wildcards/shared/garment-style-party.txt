@@ -1,0 +1,10 @@
+# Party garment-style fabric phrases.  Preferred over the generic
+# fabric deck so party wear picks up glamorous, shiny fabrics.
+with sequined mesh
+with soft velvet
+with silky charmeuse
+with glossy satin
+with shimmering organza
+with crushed velvet
+with stretch jersey
+with shimmering lurex

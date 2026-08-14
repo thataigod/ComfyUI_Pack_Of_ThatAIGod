@@ -3,6 +3,8 @@
 a crisp white dress shirt
 #@fit: bust, waist
 #@mishap: his dress shirt straining at the chest
+#@no_modifiers: color
 a light-blue dress shirt
 #@fit: bust, waist
+#@no_modifiers: color
 a tailored navy blazer over a shirt

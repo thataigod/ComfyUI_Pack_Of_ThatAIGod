@@ -1,8 +1,12 @@
 #@fit: bust, waist
+#@modifiers: color, pattern
 a lace bralette, __neutral_colors_female__
 #@fit: bust, waist
+#@modifiers: color, pattern
 a sheer bralette, __pastel_colors_female__
 #@fit: bust, waist
+#@modifiers: color, pattern
 a see-through mesh bralette, __neutral_colors_female__
 #@fit: bust, waist
+#@modifiers: color, pattern
 a sheer plunge bra, __pastel_colors_female__

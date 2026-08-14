@@ -1,5 +1,6 @@
 #@fit: waist, hips
 #@mishap: the leather mini skirt riding up her thighs
+#@no_modifiers: fabric
 a leather mini skirt
 #@fit: waist, hips
 high-waisted party trousers

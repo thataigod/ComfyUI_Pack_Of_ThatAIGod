@@ -1,0 +1,10 @@
+# Fabric-style phrases for traditional pieces that opt into the modifier
+# pipeline.  Phrases use "with ..." so they read as trailing clauses.
+with rich silk
+with handwoven cotton
+with shimmering zari brocade
+with soft georgette
+with crisp organza
+with fine muslin
+with lustrous raw silk
+with embroidered velvet

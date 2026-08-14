@@ -3,4 +3,5 @@
 a crisp white tuxedo shirt
 #@fit: bust, waist
 #@mishap: his waistcoat straining at the buttons
+#@no_modifiers: color
 a black waistcoat over a dress shirt

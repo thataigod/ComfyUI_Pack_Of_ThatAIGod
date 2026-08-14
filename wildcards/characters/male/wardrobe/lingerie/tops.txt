@@ -2,6 +2,9 @@
 #@fixed: true
 a fitted white undershirt
 #@fit: bust, waist
+#@fixed: true
 a soft grey undershirt
 #@fit: bust, waist
+#@fixed: false
+#@no_modifiers: fabric
 a silk robe worn open over bare skin

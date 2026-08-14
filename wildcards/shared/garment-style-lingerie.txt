@@ -1,0 +1,10 @@
+# Fabric-style phrases for lingerie pieces that opt into the modifier
+# pipeline.  Phrases use "with ..." so they read as trailing clauses.
+with delicate lace
+with smooth silk
+with sheer mesh
+with soft satin
+with fine microfibre
+with stretchy spandex
+with embroidered tulle
+with brushed cotton

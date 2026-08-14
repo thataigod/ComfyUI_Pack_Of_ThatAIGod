@@ -1,12 +1,16 @@
 #@fit: bust, waist
+#@no_modifiers: pattern
 a shimmering sequin-embellished party shirt
 #@fit: bust, waist
 #@mishap: his party shirt straining at the seams
 #@fixed: true
 a black silk party shirt with a bold floral print
 #@fit: bust, waist
+#@no_modifiers: pattern, fabric
 a velvet blazer over a patterned dress shirt
 #@fit: bust, waist
+#@no_modifiers: color
 a metallic gold party shirt, half-unbuttoned
 #@fit: bust, waist
+#@modifiers: design
 a satin bomber jacket over a plain black t-shirt

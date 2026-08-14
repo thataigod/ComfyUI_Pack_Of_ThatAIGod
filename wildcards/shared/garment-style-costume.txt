@@ -1,0 +1,10 @@
+# Fabric-style phrases for costume pieces that opt into the modifier
+# pipeline.  Phrases use "with ..." so they read as trailing clauses.
+with theatrical velvet
+with shiny satin
+with stretchy spandex
+with feather-trimmed mesh
+with sparkly sequin fabric
+with faux leather
+with metallic foil fabric
+with ruffled tulle

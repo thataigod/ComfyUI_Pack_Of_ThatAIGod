@@ -1,11 +1,18 @@
 #@fit: waist, hips
+#@fixed: true
 matching pirate breeches
 #@fit: waist, hips
+#@fixed: false
+#@modifiers: color, fabric
 superhero leggings with armor accents
 #@fit: waist, hips
+#@fixed: true
 knight's armored leggings
 #@fit: waist, hips
 #@mishap: his costume leggings bunching at the knees
+#@fixed: true
 wizard trousers beneath the robe
 #@fit: waist, hips
+#@fixed: false
+#@modifiers: color, pattern, design
 detective trousers with a sharp crease

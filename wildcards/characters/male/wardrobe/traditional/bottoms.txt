@@ -1,3 +1,4 @@
 #@fit: waist, hips
 #@mishap: his churidar trousers bunching at the ankles
+#@fixed: true
 matching churidar trousers

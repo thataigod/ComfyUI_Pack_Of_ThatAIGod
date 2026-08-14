@@ -1,5 +1,7 @@
 #@fit: waist, hips
 #@mishap: his jeans hugging snugly around the hips
+#@no_modifiers: fabric
 slim-fit jeans
 #@fit: waist, hips
+#@no_modifiers: fabric
 chino trousers

@@ -2,11 +2,15 @@
 #@fixed: true
 slim black party trousers
 #@fit: waist, hips
+#@no_modifiers: color
 tailored charcoal party trousers
 #@fit: waist, hips
 #@mishap: his trousers riding up as he dances
+#@no_modifiers: color, fabric
 dark selvedge jeans, party ready
 #@fit: waist, hips
+#@no_modifiers: color, fabric
 fitted beige chinos
 #@fit: waist, hips
+#@modifiers: fabric
 black joggers with a sharp tapered leg

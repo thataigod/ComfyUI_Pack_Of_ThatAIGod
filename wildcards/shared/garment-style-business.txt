@@ -1,0 +1,10 @@
+# Business garment-style fabric phrases.  Preferred over the generic
+# fabric deck so business wear never picks up denim, leather, or mesh.
+with crisp cotton poplin
+with fine wool
+with smooth silk
+with soft linen
+with a lightweight crepe
+with tailored gabardine
+with soft cashmere
+with airy chiffon

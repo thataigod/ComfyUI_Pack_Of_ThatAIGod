@@ -1,11 +1,16 @@
 #@fit: bust, waist
+#@no_modifiers: fabric
 a pirate shirt with billowing lace sleeves
 #@fit: bust, waist
+#@modifiers: color, fabric
 a superhero muscle costume with a painted emblem
 #@fit: bust, waist
 #@mishap: his tunic pulling taut at the shoulder
+#@fixed: true
 a knight's tunic under a chest plate of armor
 #@fit: bust, waist
+#@fixed: false
+#@modifiers: color, pattern, design
 a vintage detective trench coat
 #@fit: bust, waist
-a wizard robe with deep hooded sleeves
+a wizard robe with deep hooded sleeves, __jeweltone_colors_male__
