@@ -49,7 +49,7 @@ _WILDCARDS_DIR: str = os.path.join(_NODE_DIR, "wildcards")
 def _safe_int(value: Any, default: int) -> int:
     """Coerce *value* to int, falling back to *default* on Type/ValueError."""
     try:
-        return int(value)  # type: ignore[arg-type]
+        return int(value)
     except (TypeError, ValueError):
         return default
 
