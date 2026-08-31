@@ -31,8 +31,12 @@ logger: logging.Logger = logging.getLogger("ThatAIGod")
 _WILDCARD_PATTERN: re.Pattern[str] = re.compile(r"__([a-zA-Z0-9_\-\/\\\\.]+)__")
 # Matches {choice1|choice2|...} inline choice blocks (pipe-separated).
 _CHOICE_PATTERN: re.Pattern[str] = re.compile(r"\{([^}]+)\}")
+# Matches the innermost { ... } blocks (no nested braces) for nested choice expansion.
+_INNER_CHOICE_PATTERN: re.Pattern[str] = re.compile(r"\{([^{}]*)\}")
 # Maximum number of nested wildcard resolution passes to prevent infinite loops.
 _MAX_WILDCARD_ITERATIONS: int = 50
+# Maximum iterations for nested choice expansion (depth + breadth).
+_MAX_CHOICE_ITERATIONS: int = 100
 # Maximum number of file-content cache entries before FIFO eviction (see DECISIONS.md D4).
 _MAX_CONTENT_CACHE_SIZE: int = 100
 
@@ -357,6 +361,105 @@ class WildcardReader:
             else:
                 return rng.choice(lines)
 
+    def _expand_wildcards(
+        self, text: str, file_index: dict[str, list[str]], wildcards_dir: str, mode: str, rng: random.Random
+    ) -> str:
+        """Expand ``__wildcard__`` tags in *text* iteratively.
+
+        Mirrors the previous inline loop from :meth:`process` but extracted so
+        that Prependable/Appendable Text can be expanded with the same logic.
+
+        Args:
+            text: Input segment to expand.
+            file_index: Index dict from :meth:`_build_file_index`.
+            wildcards_dir: Absolute path to the wildcards root directory.
+            mode: Selection mode.
+            rng: RNG instance to consume picks from.
+
+        Returns:
+            Text with wildcard tags replaced (or original tag left intact when
+            the file cannot be found).
+        """
+        processed: str = text or ""
+        iteration: int = 0
+        max_iterations: int = _MAX_WILDCARD_ITERATIONS
+        while iteration < max_iterations:
+            matches: list[str] = list(set(_WILDCARD_PATTERN.findall(processed)))
+            if not matches:
+                break
+            matches.sort()
+            found_replacement: bool = False
+            for match in matches:
+                replacement: str = self._get_line_from_file(match, file_index, wildcards_dir, mode, rng)
+                tag_str: str = f"__{match}__"
+                if replacement == tag_str:
+                    continue
+                if tag_str in processed:
+                    processed = processed.replace(tag_str, replacement, 1)
+                    found_replacement = True
+                    break
+            if not found_replacement:
+                break
+            iteration += 1
+        return processed
+
+    def _resolve_nested_choices(self, text: str, rng: random.Random) -> str:
+        """Resolve ``{A|B|...}`` inline choices with nested brace support.
+
+        Supports nested blocks like ``{ A is a {B|C}|A is a {X|Y}}`` by
+        iteratively resolving the innermost ``{ ... }`` blocks first
+        (those containing no further braces).  Each pass replaces all
+        innermost blocks in left-to-right order via :data:`_INNER_CHOICE_PATTERN`.
+        The loop terminates when no braces remain or a pass makes no progress
+        (e.g. ``{}`` or ``{|}`` with no valid options).
+
+        Args:
+            text: Input text possibly containing nested choice blocks.
+            rng: RNG instance to consume picks from.
+
+        Returns:
+            Text with choice blocks replaced by a single randomly selected
+            option per block (or the original block left intact when it has
+            no valid options).
+        """
+        for _ in range(_MAX_CHOICE_ITERATIONS):
+            if "{" not in text or "}" not in text:
+                break
+
+            def _replacer(m: re.Match[str]) -> str:
+                inner: str = m.group(1)
+                options: list[str] = [s.strip() for s in inner.split("|") if s.strip()]
+                return rng.choice(options) if options else m.group(0)
+
+            new_text: str = _INNER_CHOICE_PATTERN.sub(_replacer, text)
+            if new_text == text:  # pragma: no cover - only for malformed {} with no valid options
+                break
+            text = new_text
+        return text
+
+    def _expand_segment(
+        self, text: str, file_index: dict[str, list[str]], wildcards_dir: str, mode: str, rng: random.Random
+    ) -> str:
+        """Expand wildcards and nested choices in a single text segment.
+
+        Wildcards are resolved first (so wildcard files may themselves contain
+        choice syntax), then nested choices are expanded.  The result is
+        stripped of leading/trailing whitespace.
+
+        Args:
+            text: Input segment.
+            file_index: Index dict from :meth:`_build_file_index`.
+            wildcards_dir: Absolute path to the wildcards root directory.
+            mode: Selection mode.
+            rng: RNG instance to consume picks from.
+
+        Returns:
+            Fully expanded, stripped segment (possibly empty).
+        """
+        expanded: str = self._expand_wildcards(text or "", file_index, wildcards_dir, mode, rng)
+        expanded = self._resolve_nested_choices(expanded, rng)
+        return expanded.strip()
+
     def process(self, text: str, mode: str, seed: int, delimiter: str, **kwargs: Any) -> tuple[str]:
         """Resolve all wildcard tokens in *text* and return the final string.
 
@@ -368,11 +471,15 @@ class WildcardReader:
         3. Iteratively resolve ``__wildcard__`` tokens up to
            :data:`_MAX_WILDCARD_ITERATIONS` times.  Each pass resolves one unique
            tag at a time (sorted for determinism) until no resolvable tags remain
-           or the iteration cap is hit.
-        4. Resolve ``{choice1|choice2|...}`` inline choices with :data:`_CHOICE_PATTERN`
-           (processed after all wildcard expansion, so wildcard values can themselves
-           contain inline choices).
-        5. Strip leading/trailing whitespace.
+           or the iteration cap is hit.  Wildcards are resolved separately in
+           Prependable Text, the main text, and Appendable Text before
+           concatenation so that all three fields can contain wildcards.
+        4. Resolve ``{choice1|choice2|...}`` inline choices with nested brace
+           support (e.g. ``{ A is a {B|C}|A is a {X|Y}}``).  Inner blocks are
+           expanded first via :data:`_INNER_CHOICE_PATTERN`, so wildcard values
+           can themselves contain nested inline choices.  Choices in
+           Prependable/Appendable Text are also expanded before joining.
+        5. Strip leading/trailing whitespace per segment.
         6. Join Prependable Text, the resolved text, and Appendable Text with
            *delimiter*.
 
@@ -387,8 +494,9 @@ class WildcardReader:
         Returns:
             A 1-tuple ``(resolved_text,)`` containing the fully resolved string.
         """
-        prepend_text: str = kwargs.get("Prependable Text", "")
-        append_text: str = kwargs.get("Appendable Text", "")
+        # Normalise optional inputs (ComfyUI may pass None when unconnected).
+        prepend_text: str = str(kwargs.get("Prependable Text", "") or "")
+        append_text: str = str(kwargs.get("Appendable Text", "") or "")
 
         if mode == "Deterministic (Seed)":
             rng: random.Random = random.Random(seed)
@@ -403,49 +511,19 @@ class WildcardReader:
 
         file_index = self._build_file_index(wildcards_dir)
 
-        processed_text: str = text if text else ""
-
-        iteration: int = 0
-        max_iterations: int = _MAX_WILDCARD_ITERATIONS
-
-        while iteration < max_iterations:
-            matches: list[str] = list(set(_WILDCARD_PATTERN.findall(processed_text)))
-            if not matches:
-                break
-
-            matches.sort()
-
-            found_replacement: bool = False
-            for match in matches:
-                replacement: str = self._get_line_from_file(match, file_index, wildcards_dir, mode, rng)
-                tag_str: str = f"__{match}__"
-                if replacement == tag_str:
-                    continue
-                if tag_str in processed_text:
-                    processed_text = processed_text.replace(tag_str, replacement, 1)
-                    found_replacement = True
-                    break
-
-            if not found_replacement:
-                break
-            iteration += 1
-
-        def _choice_replacer(m: re.Match[str]) -> str:
-            inner = m.group(1)
-            options = [s.strip() for s in inner.split("|") if s.strip()]
-            return rng.choice(options) if options else m.group(0)
-
-        processed_text = _CHOICE_PATTERN.sub(_choice_replacer, processed_text)
-
-        processed_text = processed_text.strip()
+        # Expand main text first to preserve backward-compatible deterministic
+        # order when prepend/append contain no wildcards/choices.
+        expanded_text: str = self._expand_segment(text if text else "", file_index, wildcards_dir, mode, rng)
+        expanded_prepend: str = self._expand_segment(prepend_text, file_index, wildcards_dir, mode, rng)
+        expanded_append: str = self._expand_segment(append_text, file_index, wildcards_dir, mode, rng)
 
         parts: list[str] = []
-        if prepend_text and prepend_text.strip():
-            parts.append(prepend_text.strip())
-        if processed_text:
-            parts.append(processed_text)
-        if append_text and append_text.strip():
-            parts.append(append_text.strip())
+        if expanded_prepend:
+            parts.append(expanded_prepend)
+        if expanded_text:
+            parts.append(expanded_text)
+        if expanded_append:
+            parts.append(expanded_append)
 
         final_output: str = delimiter.join(parts)
 

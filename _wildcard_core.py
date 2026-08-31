@@ -48,12 +48,16 @@ logger: logging.Logger = logging.getLogger("ThatAIGod")
 _WILDCARD_PATTERN: re.Pattern[str] = re.compile(r"__([a-zA-Z0-9_\-\/\\\. ]+?)__")
 # Matches {choice1|choice2|...} inline choice blocks (pipe-separated).
 _CHOICE_PATTERN: re.Pattern[str] = re.compile(r"\{([^}]+)\}")
+# Matches the innermost { ... } blocks (no nested braces) for nested choice expansion.
+_INNER_CHOICE_PATTERN: re.Pattern[str] = re.compile(r"\{([^{}]*)\}")
 # Matches a line that is *entirely* one wildcard tag (used for deep filtering).
 _TAG_ONLY_PATTERN: re.Pattern[str] = re.compile(r"^__([a-zA-Z0-9_\-\/\\\\. ]+)__$")
 # Matches "#@key: value, value" directive comment lines.
 _DIRECTIVE_PATTERN: re.Pattern[str] = re.compile(r"^#@\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:\s*(.+?)\s*$")
 # Maximum number of nested wildcard resolution passes to prevent infinite loops.
 _MAX_WILDCARD_ITERATIONS: int = 50
+# Maximum iterations for nested choice expansion.
+_MAX_CHOICE_ITERATIONS: int = 100
 # Maximum number of file-content cache entries before FIFO eviction.
 _MAX_CONTENT_CACHE_SIZE: int = 100
 # Directive keys recognised by the engine.  Unknown keys are ignored with a warning.
@@ -603,15 +607,44 @@ class WildcardResolver:
     # Resolution
     # ------------------------------------------------------------------
 
+    def _resolve_nested_choices(self, text: str) -> str:
+        """Resolve ``{A|B|...}`` inline choices with nested brace support.
+
+        Supports nested blocks like ``{ A is a {B|C}|A is a {X|Y}}`` by
+        iteratively resolving innermost ``{ ... }`` blocks first.  Each pass
+        replaces all innermost blocks via :data:`_INNER_CHOICE_PATTERN`.
+        The loop terminates when no braces remain or a pass makes no progress
+        (e.g. ``{}`` with no valid options).
+
+        Returns:
+            Text with choice blocks replaced.
+        """
+        for _ in range(_MAX_CHOICE_ITERATIONS):
+            if "{" not in text or "}" not in text:
+                break
+
+            def _replacer(m: re.Match[str]) -> str:
+                inner: str = m.group(1)
+                options: list[str] = [s.strip() for s in inner.split("|") if s.strip()]
+                return self.rng.choice(options) if options else m.group(0)
+
+            new_text: str = _INNER_CHOICE_PATTERN.sub(_replacer, text)
+            if new_text == text:  # pragma: no cover - only for malformed {} with no valid options
+                break
+            text = new_text
+        return text
+
     def resolve(self, text: str, context: FilterContext = None) -> str:
         """Resolve all wildcard tags and inline choices in *text* under *context*.
 
         Iteratively replaces ``__tag__`` tokens (each pass resolving one
         unique tag at a time, sorted for determinism) up to
         :data:`_MAX_WILDCARD_ITERATIONS` passes, then expands
-        ``{choice1|choice2}`` blocks.  Tags that cannot be resolved (missing
-        file, or fully filtered out) resolve to an empty string and vanish
-        from the output.
+        ``{choice1|choice2}`` blocks with nested brace support
+        (e.g. ``{ A is a {B|C}|A is a {X|Y}}`` via
+        :meth:`_resolve_nested_choices`).  Tags that cannot be resolved
+        (missing file, or fully filtered out) resolve to an empty string and
+        vanish from the output.
 
         Args:
             text: Input text containing ``__wildcard__`` tags and/or choices.
@@ -634,12 +667,7 @@ class WildcardResolver:
                     processed = processed.replace(tag, replacement, 1)
                     break
 
-        def _choice_replacer(m: re.Match[str]) -> str:
-            inner = m.group(1)
-            options = [s.strip() for s in inner.split("|") if s.strip()]
-            return self.rng.choice(options) if options else m.group(0)
-
-        processed = _CHOICE_PATTERN.sub(_choice_replacer, processed)
+        processed = self._resolve_nested_choices(processed)
         return processed.strip()
 
     def _resolve_tag(self, tag: str, context: FilterContext) -> str:
