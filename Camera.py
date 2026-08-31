@@ -50,7 +50,7 @@ def _safe_int(value: Any, default: int) -> int:
     """Coerce *value* to int, falling back to *default* on Type/ValueError."""
     try:
         return int(value)
-    except (TypeError, ValueError):
+    except (TypeError, ValueError):  # pragma: no cover - defensive, bogus workflow JSON
         return default
 
 # Frontend options endpoint: serves the effective option space (wildcard files

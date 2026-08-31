@@ -543,7 +543,7 @@ def visible_regions(
 
 def _orientation(width: int, height: int) -> str:
     """Return the aspect-ratio orientation bucket for *width* × *height*."""
-    if width <= 0 or height <= 0:
+    if width <= 0 or height <= 0:  # pragma: no cover - defensive, clamp prevents 0 in Camera
         return "square"
     ratio = width / height
     if ratio < 0.9:
@@ -982,7 +982,7 @@ def load_option_space(wildcards_dir: str) -> dict[str, dict[str, dict[str, Any]]
         records: dict[str, dict[str, Any]] = {}
         try:
             entries = sorted(os.listdir(axis_dir))
-        except OSError:
+        except OSError:  # pragma: no cover - filesystem race
             space[axis] = copy.deepcopy(builtin[axis])
             continue
         for entry in entries:
@@ -990,7 +990,7 @@ def load_option_space(wildcards_dir: str) -> dict[str, dict[str, dict[str, Any]]
                 continue
             try:
                 parsed = _parse_option_file(os.path.join(axis_dir, entry))
-            except OSError:
+            except OSError:  # pragma: no cover - unreadable file
                 continue
             name = parsed["name"] or os.path.splitext(entry)[0]
             if name in records:
@@ -1259,7 +1259,7 @@ class ShotBag:
         effective = {k: (v if v else [""]) for k, v in config.items()}
         self._deck: list[tuple[str, ...]] = [combo for combo in product(*(effective[k] for k in self._keys))]
         # Defensive: if deck is still empty (e.g. no keys), keep a single empty combo.
-        if not self._deck:
+        if not self._deck:  # pragma: no cover - defensive, config always has keys
             self._deck = [tuple()]
         self._round: int = 0
         self._index: int = 0
@@ -1350,7 +1350,7 @@ def build_shot(
         space = _builtin_space()
     config = parse_config(config_json, space)
 
-    if mode not in (DETERMINISTIC_MODE, FULL_AUTO_MODE, NO_REPEAT_MODE):
+    if mode not in (DETERMINISTIC_MODE, FULL_AUTO_MODE, NO_REPEAT_MODE):  # pragma: no cover - defensive, UI restricts values
         logging.getLogger("ThatAIGod").warning("Camera: unknown Wildcard Mode %r, falling back to %r", mode, DETERMINISTIC_MODE)
         mode = DETERMINISTIC_MODE
 
