@@ -62,7 +62,21 @@ class TestIsChanged(unittest.TestCase):
 
     def test_deterministic_is_stable_tuple(self):
         changed = Camera.IS_CHANGED(**{"Seed": 5, "Wildcard Mode": "Deterministic (Seed)", "Camera Config": "{}"})
-        self.assertEqual(changed, (5, "Deterministic (Seed)", "{}"))
+        self.assertEqual(changed, (5, "Deterministic (Seed)", "{}", 1024, 1024))
+
+    def test_deterministic_includes_dimensions(self):
+        base = Camera.IS_CHANGED(**{"Seed": 5, "Wildcard Mode": "Deterministic (Seed)", "Camera Config": "{}"})
+        changed = Camera.IS_CHANGED(
+            **{"Seed": 5, "Wildcard Mode": "Deterministic (Seed)", "Camera Config": "{}", "Width": 768, "Height": 1152}
+        )
+        self.assertNotEqual(base, changed)
+        self.assertEqual(changed, (5, "Deterministic (Seed)", "{}", 768, 1152))
+
+    def test_dimensions_clamped_in_is_changed(self):
+        # Outside-range values are clamped to [64, 16384] just like shoot() does
+        changed = Camera.IS_CHANGED(**{"Width": -5, "Height": 10_000_000})
+        self.assertEqual(changed[3], 64)
+        self.assertEqual(changed[4], 16384)
 
     def test_missing_mode_uses_default(self):
         changed = Camera.IS_CHANGED()

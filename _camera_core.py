@@ -20,11 +20,14 @@ The module has no node code and depends only on the standard library.
 
 from __future__ import annotations
 
+import copy
 import json
+import logging
 import os
 import random
 import re
 import zlib
+from collections import OrderedDict
 from itertools import product
 from typing import Any
 
@@ -485,7 +488,11 @@ _BASE_SHORTCUTS: dict[str, dict[str, tuple[str, ...]]] = {
 }
 
 
-def face_visible(angle: str, view: str) -> bool:
+def face_visible(
+    angle: str,
+    view: str,
+    option_space: dict[str, dict[str, dict[str, Any]]] | None = None,
+) -> bool:
     """Return whether the subject's face is in frame for the geometry pair.
 
     A top-down camera hides the face; views from behind (``Back``,
@@ -494,16 +501,24 @@ def face_visible(angle: str, view: str) -> bool:
     Args:
         angle: The camera angle axis value.
         view: The view axis value.
+        option_space: Optional space to resolve against. Defaults to the
+            built-in space; pass a wildcard-derived space for geometry-
+            honest checks on custom angles/views.
 
     Returns:
         ``True`` when the face (and therefore eyes, facial skin) is visible.
     """
-    space = _builtin_space()
-    hidden = space["angles"][angle]["hides"] | space["views"][view]["hides"]
+    space = option_space if option_space is not None else _builtin_space()
+    hidden = _augmented_hides(space["angles"][angle], space["views"][view])
     return "face" not in hidden
 
 
-def visible_regions(size: str, angle: str, view: str) -> list[str]:
+def visible_regions(
+    size: str,
+    angle: str,
+    view: str,
+    option_space: dict[str, dict[str, dict[str, Any]]] | None = None,
+) -> list[str]:
     """Return the visible body regions for a shot combination.
 
     Starts from the shot size's potential set and strips every region the
@@ -513,24 +528,48 @@ def visible_regions(size: str, angle: str, view: str) -> list[str]:
         size: The shot size axis value.
         angle: The camera angle axis value.
         view: The view axis value.
+        option_space: Optional space to resolve against. Defaults to the
+            built-in space; pass a wildcard-derived space for geometry-
+            honest checks on custom sizes/angles/views.
 
     Returns:
         The visible region names, ordered as in the size's base list.
     """
-    space = _builtin_space()
+    space = option_space if option_space is not None else _builtin_space()
     base = list(space["sizes"][size]["regions"])
-    hidden = space["angles"][angle]["hides"] | space["views"][view]["hides"]
+    hidden = _augmented_hides(space["angles"][angle], space["views"][view])
     return [region for region in base if region not in hidden]
 
 
 def _orientation(width: int, height: int) -> str:
     """Return the aspect-ratio orientation bucket for *width* × *height*."""
-    ratio = width / height if height > 0 else 1.0
+    if width <= 0 or height <= 0:
+        return "square"
+    ratio = width / height
     if ratio < 0.9:
         return "portrait"
     if ratio > 1.1:
         return "landscape"
     return "square"
+
+
+def _augmented_hides(
+    angle_rec: dict[str, Any] | None,
+    view_rec: dict[str, Any] | None,
+) -> set[str]:
+    """Return the combined hidden regions for an angle/view pair.
+
+    Centralises the elevation-90 override so top-down geometry stays DRY
+    across :func:`face_visible`, :func:`visible_regions` and :func:`build_shot`.
+    """
+    hidden: set[str] = set()
+    if angle_rec is not None:
+        hidden |= angle_rec["hides"]
+        if angle_rec.get("elevation") == 90:
+            hidden |= _TOP_DOWN_HIDES
+    if view_rec is not None:
+        hidden |= view_rec["hides"]
+    return hidden
 
 
 # ---------------------------------------------------------------------------
@@ -704,10 +743,14 @@ _BUILTIN_SPACE: dict[str, dict[str, dict[str, Any]]] | None = None
 
 
 def _builtin_space() -> dict[str, dict[str, dict[str, Any]]]:
-    """Return the built-in option space derived from the module tables."""
+    """Return the built-in option space derived from the module tables.
+
+    The returned dict and its nested records are a deep copy so callers
+    cannot mutate the cached singleton via shallow-copy fallbacks.
+    """
     global _BUILTIN_SPACE
     if _BUILTIN_SPACE is not None:
-        return _BUILTIN_SPACE
+        return copy.deepcopy(_BUILTIN_SPACE)
 
     def groups(axis: str, name: str) -> frozenset[str]:
         return frozenset(group for group, members in _BASE_SHORTCUTS[axis].items() if name in members)
@@ -781,7 +824,7 @@ def _builtin_space() -> dict[str, dict[str, dict[str, Any]]]:
         "tilts": tilts,
         "looks": looks,
     }
-    return _BUILTIN_SPACE
+    return copy.deepcopy(_BUILTIN_SPACE)
 
 
 def _parse_int(value: str, fallback: int | None) -> int | None:
@@ -876,17 +919,21 @@ def _resolve_option(axis: str, name: str, parsed: dict[str, Any]) -> dict[str, A
     Returns ``None`` when no base exists (an option the engine cannot reason
     about geometrically).
     """
-    base_name = name if name in _builtin_space()[axis] else parsed["based_on"]
-    base = _builtin_space()[axis].get(base_name or "")
+    # Cache builtin once to avoid double deepcopy per file (see _builtin_space deep-copy).
+    builtin = _builtin_space()
+    base_name = name if name in builtin[axis] else parsed["based_on"]
+    base = builtin[axis].get(base_name or "")
     if base is None:
         return None
     record = dict(base)
     if parsed["phrases"]:
         record["phrases"] = tuple(parsed["phrases"])
-    if parsed["close_phrases"]:
-        record["close"] = tuple(parsed["close_phrases"])
-    if parsed["wide_phrases"]:
-        record["wide"] = tuple(parsed["wide_phrases"])
+    # close/wide phrase buckets are movement-only; sizes use bool `close` flag.
+    if axis == "movements":
+        if parsed["close_phrases"]:
+            record["close"] = tuple(parsed["close_phrases"])
+        if parsed["wide_phrases"]:
+            record["wide"] = tuple(parsed["wide_phrases"])
     for field in ("keyword", "lens", "depth", "family"):
         if parsed[field] and not (axis == "looks" and field == "keyword"):
             record[field] = parsed[field]
@@ -895,7 +942,8 @@ def _resolve_option(axis: str, name: str, parsed: dict[str, Any]) -> dict[str, A
     for field in ("elevation", "azimuth", "roll"):
         if parsed[field] is not None:
             record[field] = parsed[field]
-    if parsed["close"] is not None:
+    # `close` bool is sizes-only (whether framing is a close-up).
+    if parsed["close"] is not None and axis == "sizes":
         record["close"] = parsed["close"]
     if parsed["regions"] is not None:
         record["regions"] = parsed["regions"]
@@ -929,13 +977,21 @@ def load_option_space(wildcards_dir: str) -> dict[str, dict[str, dict[str, Any]]
     for axis in _AXIS_DIRS:
         axis_dir = os.path.join(root, axis)
         if not os.path.isdir(axis_dir):
-            space[axis] = dict(builtin[axis])
+            space[axis] = copy.deepcopy(builtin[axis])
             continue
         records: dict[str, dict[str, Any]] = {}
-        for entry in sorted(os.listdir(axis_dir)):
+        try:
+            entries = sorted(os.listdir(axis_dir))
+        except OSError:
+            space[axis] = copy.deepcopy(builtin[axis])
+            continue
+        for entry in entries:
             if not entry.endswith(".txt") or entry.startswith((".", "_")):
                 continue
-            parsed = _parse_option_file(os.path.join(axis_dir, entry))
+            try:
+                parsed = _parse_option_file(os.path.join(axis_dir, entry))
+            except OSError:
+                continue
             name = parsed["name"] or os.path.splitext(entry)[0]
             if name in records:
                 continue
@@ -943,7 +999,7 @@ def load_option_space(wildcards_dir: str) -> dict[str, dict[str, dict[str, Any]]
             if record is None:
                 continue
             records[name] = record
-        space[axis] = records if records else dict(builtin[axis])
+        space[axis] = records if records else copy.deepcopy(builtin[axis])
     return space
 
 
@@ -1169,10 +1225,15 @@ def parse_config(config_json: str, option_space: dict[str, dict[str, dict[str, A
 
 
 def axis_product(config: dict[str, list[str]]) -> int:
-    """Return the number of combinations in the active option space."""
+    """Return the number of combinations in the active option space.
+
+    An empty axis list contributes one variant (the placeholder), mirroring
+    :class:`ShotBag`'s treatment so the reported product matches the bag
+    size for no-repeat mode.
+    """
     total = 1
     for values in config.values():
-        total *= len(values)
+        total *= len(values) if values else 1
     return total
 
 
@@ -1192,7 +1253,14 @@ class ShotBag:
     def __init__(self, seed: int, config: dict[str, list[str]]) -> None:
         self._seed = seed
         self._keys: tuple[str, ...] = tuple(config)
-        self._deck: list[tuple[str, ...]] = [combo for combo in product(*(config[k] for k in self._keys))]
+        # Treat empty axis lists as one placeholder variant (consistent with
+        # build_shot's bag_config placeholder), so an all-empty config still
+        # yields one deterministic draw instead of an empty deck.
+        effective = {k: (v if v else [""]) for k, v in config.items()}
+        self._deck: list[tuple[str, ...]] = [combo for combo in product(*(effective[k] for k in self._keys))]
+        # Defensive: if deck is still empty (e.g. no keys), keep a single empty combo.
+        if not self._deck:
+            self._deck = [tuple()]
         self._round: int = 0
         self._index: int = 0
         self._shuffle()
@@ -1214,16 +1282,24 @@ class ShotBag:
 
 # Registry keyed by (seed, config fingerprint) so the same bag is shared
 # across executions for the lifetime of the process (session-scoped).
-_BAGS: dict[tuple[int, str], ShotBag] = {}
+# Bounded LRU to prevent unbounded growth when farming many seeds/configs:
+# the oldest entry is evicted, which resets its shuffle cycle — the trade-off
+# is acceptable versus holding 50k+ tuples per bag forever (see D3/D4).
+_MAX_BAGS: int = 64
+_BAGS: OrderedDict[tuple[int, str], ShotBag] = OrderedDict()
 
 
 def _get_bag(seed: int, config: dict[str, list[str]]) -> ShotBag:
     fingerprint = json.dumps(config, sort_keys=True)
     key = (seed, fingerprint)
     bag = _BAGS.get(key)
-    if bag is None:
-        bag = ShotBag(seed, config)
-        _BAGS[key] = bag
+    if bag is not None:
+        _BAGS.move_to_end(key)
+        return bag
+    bag = ShotBag(seed, config)
+    _BAGS[key] = bag
+    if len(_BAGS) > _MAX_BAGS:
+        _BAGS.popitem(last=False)
     return bag
 
 
@@ -1274,6 +1350,10 @@ def build_shot(
         space = _builtin_space()
     config = parse_config(config_json, space)
 
+    if mode not in (DETERMINISTIC_MODE, FULL_AUTO_MODE, NO_REPEAT_MODE):
+        logging.getLogger("ThatAIGod").warning("Camera: unknown Wildcard Mode %r, falling back to %r", mode, DETERMINISTIC_MODE)
+        mode = DETERMINISTIC_MODE
+
     if mode == NO_REPEAT_MODE:
         bag_config = {key: (values if values else [""]) for key, values in config.items()}
         bag = _get_bag(seed, bag_config)
@@ -1308,13 +1388,7 @@ def build_shot(
     if view_rec is not None and view_rec["azimuth"] not in (0, 180):
         side = rng.choice(["left", "right"])
 
-    hidden: set[str] = set()
-    if angle_rec is not None:
-        hidden |= angle_rec["hides"]
-    if view_rec is not None:
-        hidden |= view_rec["hides"]
-    if angle_rec is not None and angle_rec["elevation"] == 90:
-        hidden |= _TOP_DOWN_HIDES
+    hidden = _augmented_hides(angle_rec, view_rec)
     fv = "face" not in hidden
     base_regions = list(size_rec["regions"]) if size_rec is not None else list(_ALL_REGIONS)
     regions = [region for region in base_regions if region not in hidden]

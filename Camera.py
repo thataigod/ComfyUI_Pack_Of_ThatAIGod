@@ -10,8 +10,9 @@ Supports:
   ``js/camera.js`` frontend extension (per-axis checkboxes and shortcuts).
 * Three selection modes: deterministic (seeded), full auto (seeded over the
   whole space) and random without repeats (a session-scoped shuffle bag).
-* A read-only description widget updated live via the ``that_ai_god.stream``
-  WebSocket extension and a standard ``control_after_generate`` seed widget.
+* A read-only description widget updated live via the ``js/camera.js``
+  ``onExecuted`` handler (``message.description``) and a standard
+  ``control_after_generate`` seed widget.
 
 The node emits the shot as a prose description (for prompt use), a keyword
 list, a ``CAMERA`` object (for downstream Character/Scene nodes), a JSON twin
@@ -34,10 +35,23 @@ from _camera_core import (
     load_option_space,
     option_shortcuts,
 )
-from _utils import DEFAULT_MAX_DIMENSION, DEFAULT_MIN_DIMENSION, clamp_dimension
+from _utils import (
+    DEFAULT_MAX_DIMENSION,
+    DEFAULT_MIN_DIMENSION,
+    clamp_dimension,
+    round_to_multiple,
+)
 
 _NODE_DIR: str = os.path.dirname(os.path.realpath(__file__))
 _WILDCARDS_DIR: str = os.path.join(_NODE_DIR, "wildcards")
+
+
+def _safe_int(value: Any, default: int) -> int:
+    """Coerce *value* to int, falling back to *default* on Type/ValueError."""
+    try:
+        return int(value)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return default
 
 # Frontend options endpoint: serves the effective option space (wildcard files
 # when present, built-ins otherwise) so the UI chips always match the backend.
@@ -61,7 +75,7 @@ try:  # pragma: no cover - ComfyUI-only integration
             }
         return web.json_response(payload)
 
-except Exception:  # noqa: BLE001, S110 - absent in pure-test environments
+except Exception:  # noqa: BLE001, S110 - absent in pure-test or when PromptServer not ready
     pass
 
 
@@ -153,7 +167,13 @@ class Camera:
         """Force re-execution for no-repeat farming; stay cached otherwise."""
         if kwargs.get("Wildcard Mode") == NO_REPEAT_MODE:
             return math.nan
-        return (kwargs.get("Seed", 0), kwargs.get("Wildcard Mode", ""), kwargs.get("Camera Config", ""))
+        return (
+            _safe_int(kwargs.get("Seed", 0), 0),
+            kwargs.get("Wildcard Mode", ""),
+            kwargs.get("Camera Config", ""),
+            clamp_dimension(round_to_multiple(_safe_int(kwargs.get("Width", 1024), 1024))),
+            clamp_dimension(round_to_multiple(_safe_int(kwargs.get("Height", 1024), 1024))),
+        )
 
     def shoot(self, **kwargs: Any) -> dict[str, Any]:
         """Build the shot and return results for UI and downstream nodes.
@@ -167,9 +187,9 @@ class Camera:
             5-tuple ``"result"`` matching the node's ``RETURN_TYPES``.
         """
         config_json: str = kwargs.get("Camera Config", DEFAULT_CONFIG_JSON)
-        width: int = clamp_dimension(int(kwargs.get("Width", 1024)))
-        height: int = clamp_dimension(int(kwargs.get("Height", 1024)))
-        seed: int = int(kwargs.get("Seed", 0))
+        width: int = clamp_dimension(round_to_multiple(_safe_int(kwargs.get("Width", 1024), 1024)))
+        height: int = clamp_dimension(round_to_multiple(_safe_int(kwargs.get("Height", 1024), 1024)))
+        seed: int = _safe_int(kwargs.get("Seed", 0), 0)
         mode: str = kwargs.get("Wildcard Mode", "Deterministic (Seed)")
 
         shot = build_shot(config_json, mode, seed, width, height, wildcards_dir=_WILDCARDS_DIR)

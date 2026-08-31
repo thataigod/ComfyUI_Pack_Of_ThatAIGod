@@ -28,6 +28,10 @@ const AXES = [
                 members: ["Extreme Close-Up", "Close-Up", "Medium Close-Up"],
             },
             {
+                text: "Mid-Sizes",
+                members: ["Medium", "Cowboy", "Medium Full"],
+            },
+            {
                 text: "Fulls",
                 members: ["Full", "Long", "Extreme Long"],
             },
@@ -158,8 +162,8 @@ function buildAxes(data) {
     return Object.keys(AXIS_LABELS).map((key) => ({
         key,
         label: AXIS_LABELS[key],
-        options: Array.isArray(data[key] && data[key].options) ? data[key].options : [],
-        shortcuts: Array.isArray(data[key] && data[key].shortcuts)
+        options: Array.isArray(data[key]?.options) ? data[key].options : [],
+        shortcuts: Array.isArray(data[key]?.shortcuts)
             ? data[key].shortcuts.map((s) => ({
                 text: s.text,
                 members: Array.isArray(s.members) ? s.members : [],
@@ -168,9 +172,10 @@ function buildAxes(data) {
     }));
 }
 
-function fetchCameraAxes() {
+function fetchCameraAxes(force = false) {
+    if (force) _cameraAxesPromise = null;
     if (!_cameraAxesPromise) {
-        _cameraAxesPromise = fetch("/that_aigod/camera_options")
+        _cameraAxesPromise = fetch("/that_aigod/camera_options", { cache: "no-store" })
             .then((r) => {
                 if (!r.ok) throw new Error("status " + r.status);
                 return r.json();
@@ -183,19 +188,35 @@ function fetchCameraAxes() {
     }
     return _cameraAxesPromise;
 }
+fetchCameraAxes.invalidate = () => { _cameraAxesPromise = null; };
 
 function readConfig(widget, axes) {
     try {
         const cfg = JSON.parse(widget.value);
+        if (!cfg || typeof cfg !== "object" || Array.isArray(cfg)) throw new Error("not an object");
         const out = {};
         for (const axis of axes) {
-            const picked = (cfg && typeof cfg === "object" && !Array.isArray(cfg)) ? cfg[axis.key] : undefined;
-            out[axis.key] = Array.isArray(picked)
-                ? picked.filter((v) => axis.options.includes(v))
-                : [...axis.options];
+            const picked = cfg[axis.key];
+            if (Array.isArray(picked)) {
+                const filtered = picked.filter((v) => axis.options.includes(v));
+                if (filtered.length !== picked.length) {
+                    const dropped = picked.filter((v) => !axis.options.includes(v));
+                    console.warn(`ThatAIGod: Camera Config dropped unknown options for ${axis.key}:`, dropped);
+                }
+                if (picked.length > 0 && filtered.length === 0) {
+                    console.warn(`ThatAIGod: Camera Config for ${axis.key} became empty after filtering — check for typos.`);
+                }
+                out[axis.key] = filtered;
+            } else if (picked === undefined) {
+                out[axis.key] = [...axis.options];
+            } else {
+                console.warn(`ThatAIGod: Camera Config ${axis.key} expected array, got`, typeof picked);
+                out[axis.key] = [...axis.options];
+            }
         }
         return out;
-    } catch (_) {
+    } catch (e) {
+        console.warn("ThatAIGod: Camera Config JSON parse failed, using all options.", e);
         const out = {};
         for (const axis of axes) out[axis.key] = [...axis.options];
         return out;
@@ -204,13 +225,17 @@ function readConfig(widget, axes) {
 
 function writeConfig(widget, cfg) {
     widget.value = JSON.stringify(cfg);
+    // Notify ComfyUI that the widget value changed (marks graph dirty).
+    try { widget.callback?.(widget.value); } catch (_) {}
+    try { app.graph?.setDirtyCanvas?.(true, false); } catch (_) {}
 }
 
 app.registerExtension({
     name: "ThatAIGod.Camera",
 
-    async beforeRegisterNodeDef(nodeType, nodeData, app) {
+    async beforeRegisterNodeDef(nodeType, nodeData, appInstance) {
         if (nodeData.name !== "Camera") return;
+        const _app = appInstance || app;
 
         const origOnNodeCreated = nodeType.prototype.onNodeCreated;
         nodeType.prototype.onNodeCreated = function () {

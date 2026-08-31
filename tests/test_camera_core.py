@@ -34,6 +34,22 @@ class TestFaceVisible(unittest.TestCase):
             for view in ("Front", "3/4 Front", "Profile"):
                 self.assertTrue(face_visible(angle, view))
 
+    def test_custom_elevation_90_hides_face_via_option_space(self):
+        # A custom angle based on Eye Level but with elevation 90 must hide face
+        # even when its hides set is empty — mirrors build_shot logic.
+        space = core._builtin_space()
+        # shallow copy is safe because _builtin_space now returns a deep copy
+        space["angles"]["custom-overhead"] = {
+            "name": "custom-overhead",
+            "elevation": 90,
+            "hides": frozenset(),
+            "keyword": "Custom Overhead",
+            "phrases": ("shot from directly overhead",),
+            "shortcuts": frozenset(),
+        }
+        self.assertFalse(face_visible("custom-overhead", "Front", option_space=space))
+        self.assertNotIn("face", visible_regions("Full", "custom-overhead", "Front", option_space=space))
+
 
 class TestVisibleRegions(unittest.TestCase):
     def test_regions_are_subset_of_size_base(self):
@@ -435,6 +451,26 @@ class TestBuildShotModes(unittest.TestCase):
         bag_c = core._get_bag(456, parsed)
         self.assertIs(bag_a, bag_b)
         self.assertIsNot(bag_a, bag_c)
+
+    def test_bag_lru_evicts_oldest_after_max(self):
+        # _MAX_BAGS is 64 — creating 65 distinct bags must evict the oldest
+        core._BAGS.clear()
+        base_cfg = {
+            "sizes": ["Close-Up"],
+            "angles": ["Eye Level"],
+            "views": ["Front"],
+            "movements": ["Static"],
+            "tilts": ["None"],
+            "looks": ["Leica M6"],
+        }
+        for seed in range(core._MAX_BAGS + 5):
+            core._get_bag(seed, base_cfg)
+        self.assertEqual(len(core._BAGS), core._MAX_BAGS)
+        oldest_key = (0, json.dumps(base_cfg, sort_keys=True))
+        newest_key = (core._MAX_BAGS + 4, json.dumps(base_cfg, sort_keys=True))
+        self.assertNotIn(oldest_key, core._BAGS)
+        self.assertIn(newest_key, core._BAGS)
+        core._BAGS.clear()
 
     def test_shot_shape(self):
         shot = build_shot(DEFAULT_CONFIG_JSON, "Deterministic (Seed)", 8, 1024, 1024)
