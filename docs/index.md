@@ -27,6 +27,7 @@ resolution management, and wildcard-based prompt generation.
 | `Wildcard_Reader` | Resolves `__wildcard__` placeholders from text files |
 | `LLM_Node` | LLM Chat node with OpenRouter/Local server support |
 | `LLM_Fallback_Node` | Falls back to original text on LLM failure |
+| `Camera` | Director-style shot composer — 6 axes (size/angle/view/movement/tilt/look), seeded picks, wildcard `wildcards/camera/<axis>/*.txt` overrides |
 
 ## Building Docs
 

@@ -13,6 +13,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 ### Changed
 - `safe_import` now catches all exceptions instead of only `ImportError` for robustness
 
+### Fixed
+- Camera: cache now includes dimensions (rounded to 8), geometry-honest custom angles/views (elevation 90), LRU bag cap, empty-deck guard, safe option loading, frontend Mid-Sizes parity
+
 ## [1.3.0] - 2026-05-30
 
 ### Added
