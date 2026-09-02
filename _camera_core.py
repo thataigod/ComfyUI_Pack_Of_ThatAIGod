@@ -104,7 +104,7 @@ LOOKS: list[str] = [
     "RED Komodo 6K",
     "Sony Venice 2",
     "Bolex H16 Rex-5",
-    "iPhone 15 Pro",
+    "Smartphone",
 ]
 
 # Family buckets for future Scene-side filtering (a Scene node can assert a
@@ -132,7 +132,7 @@ _LOOK_FAMILIES: dict[str, tuple[str, ...]] = {
         "ARRI Alexa 35",
         "RED Komodo 6K",
         "Sony Venice 2",
-        "iPhone 15 Pro",
+        "Smartphone",
     ),
     "medium format": (
         "Hasselblad 500C/M",
@@ -234,9 +234,11 @@ _LOOK_PHRASES: dict[str, list[str]] = {
         "Shot on a Bolex H16 Rex-5, 16mm spring-wound film with heavy gate-weave grain and Kern-Paillard swirl.",
         "Captured on a Bolex H16 Rex-5, vintage 16mm handheld texture with tactile film grain and subtle flicker.",
     ],
-    "iPhone 15 Pro": [
-        "Shot on an iPhone 15 Pro, computational smartphone photography with crisp detail.",
-        "Captured on an iPhone 15 Pro, HDR-processing modern phone rendering.",
+    "Smartphone": [
+        "Shot on a smartphone, iPhone 15 Pro computational photography with crisp HDR detail.",
+        "Captured on a smartphone, Google Pixel 8 Pro computational photography with Super Res Zoom detail.",
+        "Shot on a smartphone, Samsung Galaxy S24 Ultra computational photography with vivid nightography.",
+        "Captured on a smartphone, iPhone 15 Pro multi-frame smart HDR with natural skin tones.",
     ],
 }
 
@@ -260,7 +262,7 @@ _LOOK_KEYWORDS: dict[str, str] = {
     "RED Komodo 6K": "Digital Cinema Look, Rich Dynamic Range, Cinematic Color Science, Deep Shadows",
     "Sony Venice 2": "Digital Cinema, Full-Frame 8.6K, Dual Base ISO, Clean S-Cinetone, Neutral Commercial Color",
     "Bolex H16 Rex-5": "16mm Film, Spring-Wound, Heavy Film Grain, Gate Weave, Kern-Paillard Swirl, Handheld Texture",
-    "iPhone 15 Pro": "Smartphone Computational Photography, Crisp Digital Detail, HDR Processing, Modern Phone Look",
+    "Smartphone": "Smartphone Computational Photography, Crisp Digital Detail, HDR Processing, Modern Phone Look",
 }
 
 # ---------------------------------------------------------------------------

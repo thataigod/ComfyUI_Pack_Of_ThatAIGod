@@ -1,8 +1,0 @@
-# Camera option. Edit freely: directives (#@key: value) carry metadata,
-# plain lines are prose variants. See the pack README for the schema.
-#@family: film
-#@keyword: Medium Format Film, Rich Tonality, Pronounced Lens Character, Film Color
-#@shortcuts: Film
-
-Shot on a Mamiya RZ67 Pro II, medium-format film with rich tonality and pronounced lens character.
-Captured on a Mamiya RZ67 Pro II, large negatives delivering deep, saturated film color.

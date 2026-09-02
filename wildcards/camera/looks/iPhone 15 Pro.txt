@@ -1,8 +1,0 @@
-# Camera option. Edit freely: directives (#@key: value) carry metadata,
-# plain lines are prose variants. See the pack README for the schema.
-#@family: digital
-#@keyword: Smartphone Computational Photography, Crisp Digital Detail, HDR Processing, Modern Phone Look
-#@shortcuts: Digital
-
-Shot on an iPhone 15 Pro, computational smartphone photography with crisp detail.
-Captured on an iPhone 15 Pro, HDR-processing modern phone rendering.

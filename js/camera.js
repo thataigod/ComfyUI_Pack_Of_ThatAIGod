@@ -120,7 +120,7 @@ const AXES = [
             "RED Komodo 6K",
             "Sony Venice 2",
             "Bolex H16 Rex-5",
-            "iPhone 15 Pro",
+            "Smartphone",
         ],
         shortcuts: [
             {
@@ -150,7 +150,7 @@ const AXES = [
                     "ARRI Alexa 35",
                     "RED Komodo 6K",
                     "Sony Venice 2",
-                    "iPhone 15 Pro",
+                    "Smartphone",
                 ],
             },
         ],

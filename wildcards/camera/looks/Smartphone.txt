@@ -1,0 +1,10 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: digital
+#@keyword: Smartphone Computational Photography, Crisp Digital Detail, HDR Processing, Modern Phone Look
+#@shortcuts: Digital
+
+Shot on a smartphone, iPhone 15 Pro computational photography with crisp HDR detail.
+Captured on a smartphone, Google Pixel 8 Pro computational photography with Super Res Zoom detail.
+Shot on a smartphone, Samsung Galaxy S24 Ultra computational photography with vivid nightography.
+Captured on a smartphone, iPhone 15 Pro multi-frame smart HDR with natural skin tones.
