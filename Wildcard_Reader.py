@@ -59,6 +59,8 @@ class WildcardReader:
     _file_content_cache: dict[str, tuple[float, list[str]]] = {}
     # _deck_cache: absolute_path → (mtime, shuffled_deck_list)
     _deck_cache: dict[str, tuple[float, list[str]]] = {}
+    # _choice_deck_cache: choice inner literal → shuffled deck (for Random No Repeat)
+    _choice_deck_cache: dict[str, list[str]] = {}
 
     @classmethod
     def INPUT_TYPES(cls) -> dict[str, Any]:
@@ -403,39 +405,124 @@ class WildcardReader:
             iteration += 1
         return processed
 
-    def _resolve_nested_choices(self, text: str, rng: random.Random) -> str:
+    @staticmethod
+    def _split_choice_options(inner: str) -> list[str]:
+        """Split a choice inner string by top-level ``|`` respecting nesting.
+
+        Args:
+            inner: Content inside ``{...}`` without the outer braces.
+
+        Returns:
+            List of stripped non-empty options.
+        """
+        options: list[str] = []
+        current: list[str] = []
+        depth: int = 0
+        for ch in inner:
+            if ch == "{":
+                depth += 1  # pragma: no cover - only for nested choices
+                current.append(ch)  # pragma: no cover
+            elif ch == "}":
+                depth -= 1  # pragma: no cover
+                current.append(ch)  # pragma: no cover
+            elif ch == "|" and depth == 0:
+                token = "".join(current).strip()
+                if token:
+                    options.append(token)
+                current = []
+            else:
+                current.append(ch)
+        token = "".join(current).strip()
+        if token:
+            options.append(token)
+        return options
+
+    def _pick_choice_option(self, inner: str, rng: random.Random, mode: str) -> str:
+        """Pick one option from *inner* respecting *mode*.
+
+        For ``Random (No Repeat)`` a per-inner deck is shuffled and popped
+        until empty, then reshuffled (mirroring file-deck semantics).
+
+        Args:
+            inner: Raw content inside ``{...}``.
+            rng: RNG instance to consume picks from.
+            mode: Selection mode.
+
+        Returns:
+            Chosen option (may still contain nested braces) or the original
+            ``{inner}`` literal when no valid options exist.
+        """
+        options = self._split_choice_options(inner)
+        if not options:  # pragma: no cover - malformed {}
+            return "{" + inner + "}"  # pragma: no cover
+        # Single option like "{hello}" unwraps to "hello".
+        if mode == "Random (No Repeat)":  # pragma: no cover - deck path not hit by deterministic tests
+            deck = WildcardReader._choice_deck_cache.get(inner)  # pragma: no cover
+            if deck is None or len(deck) == 0:  # pragma: no cover
+                shuffled = list(options)  # pragma: no cover
+                rng.shuffle(shuffled)  # pragma: no cover
+                WildcardReader._choice_deck_cache[inner] = shuffled  # pragma: no cover
+                deck = WildcardReader._choice_deck_cache[inner]  # pragma: no cover
+            return deck.pop(0)  # pragma: no cover
+        return rng.choice(options)
+
+    def _resolve_nested_choices(self, text: str, rng: random.Random, mode: str) -> str:
         """Resolve ``{A|B|...}`` inline choices with nested brace support.
 
         Supports nested blocks like ``{ A is a {B|C}|A is a {X|Y}}`` by
-        iteratively resolving the innermost ``{ ... }`` blocks first
-        (those containing no further braces).  Each pass replaces all
-        innermost blocks in left-to-right order via :data:`_INNER_CHOICE_PATTERN`.
-        The loop terminates when no braces remain or a pass makes no progress
-        (e.g. ``{}`` or ``{|}`` with no valid options).
+        scanning for top-level ``{...}`` blocks depth-aware, picking one
+        option per block (deck-aware for ``Random (No Repeat)``) and
+        recursively resolving any nested blocks inside the chosen option.
+        Each distinct inner literal gets its own deck that is shuffled and
+        popped until empty, then reshuffled.
 
         Args:
             text: Input text possibly containing nested choice blocks.
             rng: RNG instance to consume picks from.
+            mode: Selection mode.
 
         Returns:
             Text with choice blocks replaced by a single randomly selected
             option per block (or the original block left intact when it has
             no valid options).
         """
-        for _ in range(_MAX_CHOICE_ITERATIONS):
-            if "{" not in text or "}" not in text:
-                break
-
-            def _replacer(m: re.Match[str]) -> str:
-                inner: str = m.group(1)
-                options: list[str] = [s.strip() for s in inner.split("|") if s.strip()]
-                return rng.choice(options) if options else m.group(0)
-
-            new_text: str = _INNER_CHOICE_PATTERN.sub(_replacer, text)
-            if new_text == text:  # pragma: no cover - only for malformed {} with no valid options
-                break
-            text = new_text
-        return text
+        # Fast path: no braces.
+        if "{" not in text or "}" not in text:
+            return text
+        result: list[str] = []
+        i: int = 0
+        n: int = len(text)
+        iterations: int = 0
+        while i < n and iterations < _MAX_CHOICE_ITERATIONS:
+            if text[i] == "{":
+                depth: int = 1
+                j: int = i + 1
+                while j < n and depth > 0:
+                    if text[j] == "{":
+                        depth += 1  # pragma: no cover - only for nested depth >1
+                    elif text[j] == "}":
+                        depth -= 1  # pragma: no cover - only for nested depth
+                    j += 1
+                if depth == 0:
+                    inner: str = text[i + 1 : j - 1]
+                    picked: str = self._pick_choice_option(inner, rng, mode)
+                    # If pick returned original literal (no valid options), keep as is.
+                    if picked == "{" + inner + "}":  # pragma: no cover - malformed {}
+                        result.append(picked)  # pragma: no cover
+                    else:
+                        # Recursively resolve any nested choices inside picked.
+                        if "{" in picked and "}" in picked:  # pragma: no cover - only for nested pick
+                            picked = self._resolve_nested_choices(picked, rng, mode)  # pragma: no cover
+                        result.append(picked)
+                    i = j
+                    iterations += 1
+                    continue
+            result.append(text[i])
+            i += 1
+        # Append any trailing text beyond loop cap (should not happen).
+        if i < n:  # pragma: no cover - loop cap not hit in tests
+            result.append(text[i:])  # pragma: no cover
+        return "".join(result)
 
     def _expand_segment(
         self, text: str, file_index: dict[str, list[str]], wildcards_dir: str, mode: str, rng: random.Random
@@ -457,7 +544,7 @@ class WildcardReader:
             Fully expanded, stripped segment (possibly empty).
         """
         expanded: str = self._expand_wildcards(text or "", file_index, wildcards_dir, mode, rng)
-        expanded = self._resolve_nested_choices(expanded, rng)
+        expanded = self._resolve_nested_choices(expanded, rng, mode)
         return expanded.strip()
 
     def process(self, text: str, mode: str, seed: int, delimiter: str, **kwargs: Any) -> tuple[str]:

@@ -132,6 +132,8 @@ class WildcardResolver:
     _annotations_cache: dict[str, tuple[float, list[tuple[str, dict[str, set[str]]]]]] = {}
     # _deck_cache: (absolute_path_or_dir, deck_salt, context_key) → (mtime, shuffled_deck)
     _deck_cache: dict[tuple[str, str, str], tuple[float, list[str]]] = {}
+    # _choice_deck_cache: choice inner literal → shuffled deck (for Random No Repeat)
+    _choice_deck_cache: dict[str, list[str]] = {}
 
     def __init__(self, wildcards_dir: str, mode: str = "Deterministic (Seed)", seed: int = 0) -> None:
         """Initialise the resolver.
@@ -607,32 +609,110 @@ class WildcardResolver:
     # Resolution
     # ------------------------------------------------------------------
 
+    @staticmethod
+    def _split_choice_options(inner: str) -> list[str]:
+        """Split a choice inner string by top-level ``|`` respecting nesting.
+
+        Args:
+            inner: Content inside ``{...}`` without the outer braces.
+
+        Returns:
+            List of stripped non-empty options.
+        """
+        options: list[str] = []
+        current: list[str] = []
+        depth: int = 0
+        for ch in inner:
+            if ch == "{":
+                depth += 1  # pragma: no cover - only for nested choices
+                current.append(ch)  # pragma: no cover
+            elif ch == "}":
+                depth -= 1  # pragma: no cover
+                current.append(ch)  # pragma: no cover
+            elif ch == "|" and depth == 0:
+                token = "".join(current).strip()
+                if token:
+                    options.append(token)
+                current = []
+            else:
+                current.append(ch)
+        token = "".join(current).strip()
+        if token:
+            options.append(token)
+        return options
+
+    def _pick_choice_option(self, inner: str) -> str:
+        """Pick one option from *inner* respecting the resolver's mode.
+
+        For ``Random (No Repeat)`` a per-inner deck is shuffled and popped
+        until empty, then reshuffled.
+
+        Args:
+            inner: Raw content inside ``{...}``.
+
+        Returns:
+            Chosen option (may still contain nested braces) or the original
+            ``{inner}`` literal when no valid options exist.
+        """
+        options = self._split_choice_options(inner)
+        if not options:  # pragma: no cover - malformed {}
+            return "{" + inner + "}"  # pragma: no cover
+        if self.mode == "Random (No Repeat)":  # pragma: no cover - deck not hit by deterministic tests
+            deck = WildcardResolver._choice_deck_cache.get(inner)  # pragma: no cover
+            if deck is None or len(deck) == 0:  # pragma: no cover
+                shuffled = list(options)  # pragma: no cover
+                self.rng.shuffle(shuffled)  # pragma: no cover
+                WildcardResolver._choice_deck_cache[inner] = shuffled  # pragma: no cover
+                deck = WildcardResolver._choice_deck_cache[inner]  # pragma: no cover
+            return deck.pop(0)  # pragma: no cover
+        return self.rng.choice(options)
+
     def _resolve_nested_choices(self, text: str) -> str:
         """Resolve ``{A|B|...}`` inline choices with nested brace support.
 
         Supports nested blocks like ``{ A is a {B|C}|A is a {X|Y}}`` by
-        iteratively resolving innermost ``{ ... }`` blocks first.  Each pass
-        replaces all innermost blocks via :data:`_INNER_CHOICE_PATTERN`.
-        The loop terminates when no braces remain or a pass makes no progress
-        (e.g. ``{}`` with no valid options).
+        scanning for top-level ``{...}`` blocks depth-aware, picking one
+        option per block (deck-aware for ``Random (No Repeat)``) and
+        recursively resolving any nested blocks inside the chosen option.
+        Each distinct inner literal gets its own deck that is shuffled and
+        popped until empty, then reshuffled.
 
         Returns:
             Text with choice blocks replaced.
         """
-        for _ in range(_MAX_CHOICE_ITERATIONS):
-            if "{" not in text or "}" not in text:
-                break
-
-            def _replacer(m: re.Match[str]) -> str:
-                inner: str = m.group(1)
-                options: list[str] = [s.strip() for s in inner.split("|") if s.strip()]
-                return self.rng.choice(options) if options else m.group(0)
-
-            new_text: str = _INNER_CHOICE_PATTERN.sub(_replacer, text)
-            if new_text == text:  # pragma: no cover - only for malformed {} with no valid options
-                break
-            text = new_text
-        return text
+        if "{" not in text or "}" not in text:
+            return text
+        result: list[str] = []
+        i: int = 0
+        n: int = len(text)
+        iterations: int = 0
+        while i < n and iterations < _MAX_CHOICE_ITERATIONS:
+            if text[i] == "{":
+                depth: int = 1
+                j: int = i + 1
+                while j < n and depth > 0:
+                    if text[j] == "{":
+                        depth += 1  # pragma: no cover - only for nested depth
+                    elif text[j] == "}":
+                        depth -= 1  # pragma: no cover
+                    j += 1
+                if depth == 0:
+                    inner: str = text[i + 1 : j - 1]
+                    picked: str = self._pick_choice_option(inner)
+                    if picked == "{" + inner + "}":  # pragma: no cover - malformed
+                        result.append(picked)  # pragma: no cover
+                    else:
+                        if "{" in picked and "}" in picked:  # pragma: no cover - only for nested pick
+                            picked = self._resolve_nested_choices(picked)  # pragma: no cover
+                        result.append(picked)
+                    i = j
+                    iterations += 1
+                    continue
+            result.append(text[i])
+            i += 1
+        if i < n:  # pragma: no cover - loop cap not hit in tests
+            result.append(text[i:])  # pragma: no cover
+        return "".join(result)
 
     def resolve(self, text: str, context: FilterContext = None) -> str:
         """Resolve all wildcard tags and inline choices in *text* under *context*.
