@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: digital
+#@keyword: Digital Cinema, REVEAL Color Science, Organic Warm Skin Tones, Creamy Highlight Roll-Off, Filmic Warmth
+#@shortcuts: Digital
+
+Shot on an ARRI Alexa 35, REVEAL color science with organic warm skin tones and creamy highlight roll-off.
+Captured on an ARRI Alexa 35, the modern cinema flagship with natural, filmic warmth and rich dynamic range.

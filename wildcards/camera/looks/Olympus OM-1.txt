@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: film
+#@keyword: 35mm Film, Compact SLR, Zuiko Lens, Pastel Rendering, Muted Contrast, Vintage 70s
+#@shortcuts: Film
+
+Shot on an Olympus OM-1, compact 35mm SLR with soft Zuiko pastel rendering and muted contrast.
+Captured on an Olympus OM-1, its tiny Zuiko glass lending gentle, low-saturation vintage tones.

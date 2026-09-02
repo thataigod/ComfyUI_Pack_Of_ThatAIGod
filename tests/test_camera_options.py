@@ -335,8 +335,8 @@ class TestOptionShortcuts(unittest.TestCase):
         self.assertEqual(set(groups["Facing"]), {"Front", "3/4 Front"})
         self.assertEqual(set(groups["Away"]), {"Back", "3/4 Back"})
         look_groups = dict(core.option_shortcuts(space, "looks"))
-        self.assertEqual(len(look_groups["Film"]), 8)
-        self.assertEqual(len(look_groups["Digital"]), 7)
+        self.assertEqual(len(look_groups["Film"]), 11)
+        self.assertEqual(len(look_groups["Digital"]), 9)
 
     def test_custom_group_created_by_membership(self):
         with TmpWildcards() as tmp:

@@ -87,18 +87,23 @@ TILTS: list[str] = [
 LOOKS: list[str] = [
     "Hasselblad 500C/M",
     "Rolleiflex 2.8F",
-    "Mamiya RZ67 Pro II",
+    "Pentax 67",
+    "Deardorff 8x10",
     "Leica M6",
     "Nikon F3",
+    "Olympus OM-1",
     "Canon AE-1 Program",
-    "Pentax K1000",
     "Contax T2",
+    "Polaroid SX-70",
     "Fujifilm X100V",
-    "Sony A7R V",
     "Leica M11",
+    "Sony A7R V",
     "Canon EOS R5",
+    "Hasselblad X2D 100C",
+    "ARRI Alexa 35",
     "RED Komodo 6K",
-    "ARRI Alexa Mini",
+    "Sony Venice 2",
+    "Bolex H16 Rex-5",
     "iPhone 15 Pro",
 ]
 
@@ -108,35 +113,48 @@ _LOOK_FAMILIES: dict[str, tuple[str, ...]] = {
     "film": (
         "Hasselblad 500C/M",
         "Rolleiflex 2.8F",
-        "Mamiya RZ67 Pro II",
+        "Pentax 67",
+        "Deardorff 8x10",
         "Leica M6",
         "Nikon F3",
+        "Olympus OM-1",
         "Canon AE-1 Program",
-        "Pentax K1000",
         "Contax T2",
+        "Polaroid SX-70",
+        "Bolex H16 Rex-5",
     ),
     "digital": (
         "Fujifilm X100V",
         "Sony A7R V",
         "Leica M11",
         "Canon EOS R5",
+        "Hasselblad X2D 100C",
+        "ARRI Alexa 35",
         "RED Komodo 6K",
-        "ARRI Alexa Mini",
+        "Sony Venice 2",
         "iPhone 15 Pro",
     ),
     "medium format": (
         "Hasselblad 500C/M",
         "Rolleiflex 2.8F",
-        "Mamiya RZ67 Pro II",
+        "Pentax 67",
+        "Hasselblad X2D 100C",
     ),
     "35mm": (
         "Leica M6",
         "Nikon F3",
+        "Olympus OM-1",
         "Canon AE-1 Program",
-        "Pentax K1000",
         "Contax T2",
     ),
-    "cinema": ("RED Komodo 6K", "ARRI Alexa Mini"),
+    "cinema": (
+        "RED Komodo 6K",
+        "ARRI Alexa 35",
+        "Sony Venice 2",
+        "Bolex H16 Rex-5",
+    ),
+    "instant": ("Polaroid SX-70",),
+    "large format": ("Deardorff 8x10",),
 }
 
 _LOOK_PHRASES: dict[str, list[str]] = {
@@ -148,9 +166,13 @@ _LOOK_PHRASES: dict[str, list[str]] = {
         "Shot on a Rolleiflex 2.8F twin-lens reflex, smooth medium-format tones with fine, even grain.",
         "Captured on a Rolleiflex 2.8F, its waist-level finder framing a look of quiet, measured calm.",
     ],
-    "Mamiya RZ67 Pro II": [
-        "Shot on a Mamiya RZ67 Pro II, medium-format film with rich tonality and pronounced lens character.",
-        "Captured on a Mamiya RZ67 Pro II, large negatives delivering deep, saturated film color.",
+    "Pentax 67": [
+        "Shot on a Pentax 67, its 6x7 medium-format negative delivering extreme shallow depth with dreamy bokeh.",
+        "Captured on a Pentax 67, the 105mm f/2.4 rendering soft, glowing medium-format falloff.",
+    ],
+    "Deardorff 8x10": [
+        "Shot on a Deardorff 8x10 view camera, large-format film with bellows movements and contact-print sharpness.",
+        "Captured on a Deardorff 8x10, sweeping large-format detail with vintage Dagor swirl and infinite tonality.",
     ],
     "Leica M6": [
         "Shot on a Leica M6 rangefinder, 35mm film with delicate grain and honest, natural color.",
@@ -160,17 +182,21 @@ _LOOK_PHRASES: dict[str, list[str]] = {
         "Shot on a Nikon F3, professional 35mm film with crisp yet gentle rendering.",
         "Captured on a Nikon F3, a workhorse SLR look with balanced, neutral color.",
     ],
+    "Olympus OM-1": [
+        "Shot on an Olympus OM-1, compact 35mm SLR with soft Zuiko pastel rendering and muted contrast.",
+        "Captured on an Olympus OM-1, its tiny Zuiko glass lending gentle, low-saturation vintage tones.",
+    ],
     "Canon AE-1 Program": [
         "Shot on a Canon AE-1 Program, classic 35mm film with warm color and subtle grain.",
         "Captured on a Canon AE-1 Program, the warm analog look of the classic-era SLR.",
     ],
-    "Pentax K1000": [
-        "Shot on a Pentax K1000, no-frills 35mm film with honest texture and gentle grain.",
-        "Captured on a Pentax K1000, a simple film look with natural contrast.",
-    ],
     "Contax T2": [
         "Shot on a Contax T2, a luxury compact capturing clean, refined film tones.",
         "Captured on a Contax T2, sharp compact rendering with a premium point-and-shoot feel.",
+    ],
+    "Polaroid SX-70": [
+        "Shot on a Polaroid SX-70, instant integral film blooming highlights with desaturated chemical pastel shift.",
+        "Captured on a Polaroid SX-70, soft instant focus with visible chemical grain and dreamy border fade.",
     ],
     "Fujifilm X100V": [
         "Shot on a Fujifilm X100V, its film-simulation colors lending a balanced, modern rendering.",
@@ -188,13 +214,25 @@ _LOOK_PHRASES: dict[str, list[str]] = {
         "Shot on a Canon EOS R5, modern digital with vibrant yet accurate color.",
         "Captured on a Canon EOS R5, crisp digital detail with professional color science.",
     ],
+    "Hasselblad X2D 100C": [
+        "Shot on a Hasselblad X2D 100C, 100MP digital medium format with 16-bit HNCS natural color and smooth gradation.",
+        "Captured on a Hasselblad X2D 100C, modern medium-format digital delivering wide-gamut pastel depth.",
+    ],
+    "ARRI Alexa 35": [
+        "Shot on an ARRI Alexa 35, REVEAL color science with organic warm skin tones and creamy highlight roll-off.",
+        "Captured on an ARRI Alexa 35, the modern cinema flagship with natural, filmic warmth and rich dynamic range.",
+    ],
     "RED Komodo 6K": [
         "Shot on a RED Komodo 6K, digital cinema capture with deep dynamic range.",
         "Captured on a RED Komodo 6K, cinematic stills with rich shadow detail.",
     ],
-    "ARRI Alexa Mini": [
-        "Shot on an ARRI Alexa Mini, cinematic digital with beautiful highlight roll-off and rich skintones.",
-        "Captured on an ARRI Alexa Mini, the industry-standard cinema look with natural color.",
+    "Sony Venice 2": [
+        "Shot on a Sony Venice 2, full-frame 8.6K cinema with dual-base ISO and clean S-Cinetone neutrality.",
+        "Captured on a Sony Venice 2, pristine low-light digital cinema with neutral, commercial color.",
+    ],
+    "Bolex H16 Rex-5": [
+        "Shot on a Bolex H16 Rex-5, 16mm spring-wound film with heavy gate-weave grain and Kern-Paillard swirl.",
+        "Captured on a Bolex H16 Rex-5, vintage 16mm handheld texture with tactile film grain and subtle flicker.",
     ],
     "iPhone 15 Pro": [
         "Shot on an iPhone 15 Pro, computational smartphone photography with crisp detail.",
@@ -205,18 +243,23 @@ _LOOK_PHRASES: dict[str, list[str]] = {
 _LOOK_KEYWORDS: dict[str, str] = {
     "Hasselblad 500C/M": "Medium Format Film, Soft Film Grain, Natural Color Science, 6x6 Medium Format",
     "Rolleiflex 2.8F": "Medium Format Film, Twin-Lens Reflex, Fine Film Grain, Smooth Tonal Rendering",
-    "Mamiya RZ67 Pro II": "Medium Format Film, Rich Tonality, Pronounced Lens Character, Film Color",
+    "Pentax 67": "Medium Format Film, 6x7 SLR, Extreme Shallow Depth of Field, Dreamy Bokeh, 105mm f/2.4",
+    "Deardorff 8x10": "Large Format Film, View Camera, Bellows Movements, Contact-Print Sharpness, Vintage Lens Swirl",
     "Leica M6": "35mm Rangefinder Film, Delicate Film Grain, Honest Natural Color, Classic 35mm Look",
     "Nikon F3": "35mm Film, Professional SLR, Fine Film Grain, Neutral Color Balance",
+    "Olympus OM-1": "35mm Film, Compact SLR, Zuiko Lens, Pastel Rendering, Muted Contrast, Vintage 70s",
     "Canon AE-1 Program": "35mm Film, Classic SLR, Warm Color Cast, Subtle Film Grain",
-    "Pentax K1000": "35mm Film, Analog SLR, Honest Texture, Film Grain",
     "Contax T2": "35mm Compact Film, Sharp Compact Lens, Clean Film Tones, Premium Point-and-Shoot",
+    "Polaroid SX-70": "Instant Film, Chemical Bloom, Desaturated Pastel, Soft Focus, Visible Grain, Integral Film",
     "Fujifilm X100V": "Mirrorless Digital, Film Simulation Colors, Balanced Rendering, Modern Clean Look",
     "Sony A7R V": "Full-Frame Digital, High Resolution, Clinically Sharp Detail, Neutral Modern Color",
     "Leica M11": "Digital Rangefinder, Smooth Highlight Roll-Off, Clean Digital Color, Modern Classic",
     "Canon EOS R5": "Full-Frame Digital, Vibrant Accurate Color, Crisp Digital Detail, Professional Color Science",
+    "Hasselblad X2D 100C": "Digital Medium Format, 100MP, 16-bit Color, HNCS Natural Color, Wide Gamut, Pastel Gradation",
+    "ARRI Alexa 35": "Digital Cinema, REVEAL Color Science, Organic Warm Skin Tones, Creamy Highlight Roll-Off, Filmic Warmth",
     "RED Komodo 6K": "Digital Cinema Look, Rich Dynamic Range, Cinematic Color Science, Deep Shadows",
-    "ARRI Alexa Mini": "Digital Cinema, Cinematic Color Science, Smooth Highlight Roll-Off, Rich Skintones",
+    "Sony Venice 2": "Digital Cinema, Full-Frame 8.6K, Dual Base ISO, Clean S-Cinetone, Neutral Commercial Color",
+    "Bolex H16 Rex-5": "16mm Film, Spring-Wound, Heavy Film Grain, Gate Weave, Kern-Paillard Swirl, Handheld Texture",
     "iPhone 15 Pro": "Smartphone Computational Photography, Crisp Digital Detail, HDR Processing, Modern Phone Look",
 }
 

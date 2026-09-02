@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: film
+#@keyword: Large Format Film, View Camera, Bellows Movements, Contact-Print Sharpness, Vintage Lens Swirl
+#@shortcuts: Film
+
+Shot on a Deardorff 8x10 view camera, large-format film with bellows movements and contact-print sharpness.
+Captured on a Deardorff 8x10, sweeping large-format detail with vintage Dagor swirl and infinite tonality.

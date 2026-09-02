@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: film
+#@keyword: Instant Film, Chemical Bloom, Desaturated Pastel, Soft Focus, Visible Grain, Integral Film
+#@shortcuts: Film
+
+Shot on a Polaroid SX-70, instant integral film blooming highlights with desaturated chemical pastel shift.
+Captured on a Polaroid SX-70, soft instant focus with visible chemical grain and dreamy border fade.

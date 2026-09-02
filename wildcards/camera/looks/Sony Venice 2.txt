@@ -1,0 +1,8 @@
+# Camera option. Edit freely: directives (#@key: value) carry metadata,
+# plain lines are prose variants. See the pack README for the schema.
+#@family: digital
+#@keyword: Digital Cinema, Full-Frame 8.6K, Dual Base ISO, Clean S-Cinetone, Neutral Commercial Color
+#@shortcuts: Digital
+
+Shot on a Sony Venice 2, full-frame 8.6K cinema with dual-base ISO and clean S-Cinetone neutrality.
+Captured on a Sony Venice 2, pristine low-light digital cinema with neutral, commercial color.

@@ -178,7 +178,7 @@ class TestParseConfig(unittest.TestCase):
                     "views": ["Front", "Back"],
                     "movements": ["Static", "Tracking"],
                     "tilts": ["None", "Slight"],
-                    "looks": ["Leica M6", "ARRI Alexa Mini"],
+                    "looks": ["Leica M6", "ARRI Alexa 35"],
                 }
             )
         )
