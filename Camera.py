@@ -75,7 +75,7 @@ try:  # pragma: no cover - ComfyUI-only integration
             }
         return web.json_response(payload)
 
-except Exception:  # noqa: BLE001, S110 - absent in pure-test or when PromptServer not ready
+except (ImportError, ModuleNotFoundError, AttributeError, RuntimeError):  # noqa: S110 - absent in pure-test or when PromptServer not ready
     pass
 
 
@@ -187,6 +187,8 @@ class Camera:
             5-tuple ``"result"`` matching the node's ``RETURN_TYPES``.
         """
         config_json: str = kwargs.get("Camera Config", DEFAULT_CONFIG_JSON)
+        # NOTE: round_to_multiple uses banker's rounding (half-even), so e.g.
+        # 68 -> 64 while 76 -> 80; matches Dynamic Resolution Picker behaviour.
         width: int = clamp_dimension(round_to_multiple(_safe_int(kwargs.get("Width", 1024), 1024)))
         height: int = clamp_dimension(round_to_multiple(_safe_int(kwargs.get("Height", 1024), 1024)))
         seed: int = _safe_int(kwargs.get("Seed", 0), 0)
@@ -197,13 +199,16 @@ class Camera:
         regions_text = ", ".join(shot["regions"])
         shot_json = json.dumps(shot)
 
+        shot_line = " | ".join(part for part in (shot["shot_size"], shot["angle"], shot["view"]) if part) or "(empty)"
+        move_line = " | ".join(part for part in (shot["movement"], shot["tilt"]) if part) or "(empty)"
+        lens_line = " | ".join(part for part in (shot["lens"], shot["depth_of_field"]) if part) or "(empty)"
         info_string = (
-            f"Shot: {shot['shot_size']} | {shot['angle']} | {shot['view']}\n"
-            f"Movement: {shot['movement']} | Tilt: {shot['tilt']}\n"
-            f"Look: {shot['look']}\n"
-            f"Lens: {shot['lens']} | {shot['depth_of_field']}\n"
+            f"Shot: {shot_line}\n"
+            f"Movement: {move_line}\n"
+            f"Look: {shot['look'] or '(empty)'}\n"
+            f"Lens: {lens_line}\n"
             f"Orientation: {shot['orientation']} ({width}x{height})\n"
-            f"Regions: {regions_text}"
+            f"Regions: {regions_text or '(empty)'}"
         )
 
         return {

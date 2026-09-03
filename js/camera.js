@@ -182,6 +182,9 @@ function buildAxes(data) {
     }));
 }
 
+// NOTE: promise is cached for the session; editing wildcards/camera/*.txt
+// requires a page reload to refresh chips. Call fetchCameraAxes.invalidate()
+// (exposed for console/manual refresh) followed by fetchCameraAxes(true).
 function fetchCameraAxes(force = false) {
     if (force) _cameraAxesPromise = null;
     if (!_cameraAxesPromise) {

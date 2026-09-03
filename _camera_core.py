@@ -107,8 +107,10 @@ LOOKS: list[str] = [
     "Smartphone",
 ]
 
-# Family buckets for future Scene-side filtering (a Scene node can assert a
-# ``look`` context dimension against these).
+# Family buckets for filtering (``film``/``digital`` drive the record
+# ``family`` field and frontend chips; ``medium format``/``35mm``/``cinema``/
+# ``instant``/``large format`` are reserved for future fine-grained filtering
+# and currently informational only).
 _LOOK_FAMILIES: dict[str, tuple[str, ...]] = {
     "film": (
         "Hasselblad 500C/M",
@@ -513,21 +515,26 @@ _BASE_SHORTCUTS: dict[str, dict[str, tuple[str, ...]]] = {
         "Film": (
             "Hasselblad 500C/M",
             "Rolleiflex 2.8F",
-            "Mamiya RZ67 Pro II",
+            "Pentax 67",
+            "Deardorff 8x10",
             "Leica M6",
             "Nikon F3",
+            "Olympus OM-1",
             "Canon AE-1 Program",
-            "Pentax K1000",
             "Contax T2",
+            "Polaroid SX-70",
+            "Bolex H16 Rex-5",
         ),
         "Digital": (
             "Fujifilm X100V",
             "Sony A7R V",
             "Leica M11",
             "Canon EOS R5",
+            "Hasselblad X2D 100C",
+            "ARRI Alexa 35",
             "RED Komodo 6K",
-            "ARRI Alexa Mini",
-            "iPhone 15 Pro",
+            "Sony Venice 2",
+            "Smartphone",
         ),
     },
 }
@@ -586,14 +593,20 @@ def visible_regions(
     return [region for region in base if region not in hidden]
 
 
+# Orientation buckets: ratios inside [PORTRAIT_MAX_RATIO, LANDSCAPE_MIN_RATIO]
+# are considered square (so 900x1000 and 1100x1000 are square, not portrait).
+PORTRAIT_MAX_RATIO: float = 0.9
+LANDSCAPE_MIN_RATIO: float = 1.1
+
+
 def _orientation(width: int, height: int) -> str:
     """Return the aspect-ratio orientation bucket for *width* × *height*."""
     if width <= 0 or height <= 0:  # pragma: no cover - defensive, clamp prevents 0 in Camera
         return "square"
     ratio = width / height
-    if ratio < 0.9:
+    if ratio < PORTRAIT_MAX_RATIO:
         return "portrait"
-    if ratio > 1.1:
+    if ratio > LANDSCAPE_MIN_RATIO:
         return "landscape"
     return "square"
 
@@ -854,9 +867,12 @@ def _builtin_space() -> dict[str, dict[str, dict[str, Any]]]:
     looks: dict[str, dict[str, Any]] = {}
     for name in LOOKS:
         family = "film" if name in _LOOK_FAMILIES["film"] else "digital"
+        # NOTE: looks carry both ``keywords`` (used by _compose_keywords) and
+        # ``keyword`` alias so the record shape matches other axes.
         looks[name] = {
             "name": name,
             "family": family,
+            "keyword": _LOOK_KEYWORDS[name],
             "keywords": _LOOK_KEYWORDS[name],
             "phrases": tuple(_LOOK_PHRASES[name]),
             "shortcuts": frozenset({"Film" if family == "film" else "Digital"}),
@@ -984,6 +1000,7 @@ def _resolve_option(axis: str, name: str, parsed: dict[str, Any]) -> dict[str, A
             record[field] = parsed[field]
     if axis == "looks" and parsed["keyword"]:
         record["keywords"] = parsed["keyword"]
+        record["keyword"] = parsed["keyword"]
     for field in ("elevation", "azimuth", "roll"):
         if parsed[field] is not None:
             record[field] = parsed[field]
@@ -1028,6 +1045,7 @@ def load_option_space(wildcards_dir: str) -> dict[str, dict[str, dict[str, Any]]
         try:
             entries = sorted(os.listdir(axis_dir))
         except OSError:  # pragma: no cover - filesystem race
+            logging.getLogger("ThatAIGod").warning("Camera: cannot list %s, using built-ins", axis_dir)
             space[axis] = copy.deepcopy(builtin[axis])
             continue
         for entry in entries:
@@ -1036,9 +1054,11 @@ def load_option_space(wildcards_dir: str) -> dict[str, dict[str, dict[str, Any]]
             try:
                 parsed = _parse_option_file(os.path.join(axis_dir, entry))
             except OSError:  # pragma: no cover - unreadable file
+                logging.getLogger("ThatAIGod").warning("Camera: cannot read %s, skipping", entry)
                 continue
             name = parsed["name"] or os.path.splitext(entry)[0]
             if name in records:
+                logging.getLogger("ThatAIGod").warning("Camera: duplicate option %r in %s, keeping first file", name, axis)
                 continue
             record = _resolve_option(axis, name, parsed)
             if record is None:
@@ -1413,7 +1433,7 @@ def build_shot(
         look = combo["looks"]
     else:
         if mode == FULL_AUTO_MODE:
-            config = {key: list(values) for key, values in space.items()}
+            config = {key: list(values.keys()) for key, values in space.items()}
         rng = random.Random(seed)
         size = rng.choice(config["sizes"]) if config["sizes"] else ""
         angle = rng.choice(config["angles"]) if config["angles"] else ""
