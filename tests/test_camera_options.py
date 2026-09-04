@@ -510,6 +510,63 @@ class TestParsingDetails(unittest.TestCase):
             space = core.load_option_space(tmp.wildcards)
             self.assertEqual(space["looks"]["flat"]["family"], "film")
 
+    def test_unreadable_file_skipped(self):
+        with TmpWildcards() as tmp:
+            bad_path = os.path.join(tmp.wildcards, "camera", "views", "bad.txt")
+            os.makedirs(os.path.dirname(bad_path), exist_ok=True)
+            with open(bad_path, "wb") as f:
+                f.write(b"\xff\xfe invalid utf-8 \xfe\xff\n")
+            space = core.load_option_space(tmp.wildcards)
+            self.assertNotIn("bad", space["views"])
+
+    def test_bom_file_parses_directives(self):
+        with TmpWildcards() as tmp:
+            bom_path = os.path.join(tmp.wildcards, "camera", "views", "bomview.txt")
+            os.makedirs(os.path.dirname(bom_path), exist_ok=True)
+            with open(bom_path, "w", encoding="utf-8-sig") as f:
+                f.write("#@based_on: Front\nthe bom view phrase\n")
+            space = core.load_option_space(tmp.wildcards)
+            self.assertIn("bomview", space["views"])
+            self.assertEqual(space["views"]["bomview"]["azimuth"], 0)
+
+    def test_bool_typo_inherits_base(self):
+        with TmpWildcards() as tmp:
+            tmp.write("camera/sizes/typo.txt", "#@based_on: Close-Up\n#@close: ture\nA typo close-up\n")
+            tmp.write("camera/sizes/explicit-false.txt", "#@based_on: Close-Up\n#@close: false\nA false close-up\n")
+            space = core.load_option_space(tmp.wildcards)
+            # Close-Up base close=True; typo must inherit instead of flipping.
+            self.assertTrue(space["sizes"]["typo"]["close"])
+            self.assertFalse(space["sizes"]["explicit-false"]["close"])
+
+    def test_out_of_range_gimbal_inherits_base(self):
+        with TmpWildcards() as tmp:
+            tmp.write("camera/angles/crazy.txt", "#@based_on: High Angle\n#@elevation: 9999\n")
+            space = core.load_option_space(tmp.wildcards)
+            self.assertEqual(space["angles"]["crazy"]["elevation"], 45)
+
+    def test_custom_tilt_leading_comma_normalized(self):
+        with TmpWildcards() as tmp:
+            tmp.write("camera/tilts/custom.txt", "#@based_on: Slight\n, framed custom with comma\n")
+            space = core.load_option_space(tmp.wildcards)
+            self.assertEqual(space["tilts"]["custom"]["phrases"], ("framed custom with comma",))
+            shot = core.build_shot(
+                json.dumps({"tilts": ["custom"], "sizes": ["Full"]}),
+                "Deterministic (Seed)",
+                1,
+                1024,
+                1024,
+                wildcards_dir=tmp.wildcards,
+            )
+            self.assertNotIn(", ,", shot["description"])
+
+    def test_file_space_uses_builtin_order(self):
+        with TmpWildcards() as tmp:
+            tmp.write("camera/views/Back.txt", "back phrase\n")
+            tmp.write("camera/views/Front.txt", "front phrase\n")
+            space = core.load_option_space(tmp.wildcards)
+            # Alphabetical would be Back first; curated builtin order is Front.
+            self.assertEqual(list(space["views"]), ["Front", "Back"])
+
 
 if __name__ == "__main__":
     unittest.main()

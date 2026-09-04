@@ -217,9 +217,14 @@ function readConfig(widget, axes) {
                     console.warn(`ThatAIGod: Camera Config dropped unknown options for ${axis.key}:`, dropped);
                 }
                 if (picked.length > 0 && filtered.length === 0) {
-                    console.warn(`ThatAIGod: Camera Config for ${axis.key} became empty after filtering — check for typos.`);
+                    // Mirror backend parse_config: non-empty input with zero
+                    // valid options falls back to full (typo), while explicit
+                    // [] stays empty (omit axis).
+                    console.warn(`ThatAIGod: Camera Config for ${axis.key} has no valid options — falling back to full.`);
+                    out[axis.key] = [...axis.options];
+                } else {
+                    out[axis.key] = filtered;
                 }
-                out[axis.key] = filtered;
             } else if (picked === undefined) {
                 out[axis.key] = [...axis.options];
             } else {
@@ -304,7 +309,14 @@ app.registerExtension({
         };
 
         nodeType.prototype._buildCameraUI = async function () {
-            const axes = await fetchCameraAxes();
+            // Deep-clone the fetched axes: the promise cache is shared across
+            // nodes, so mutating options in place would leak one node's saved
+            // customs as chips into every other Camera node.
+            const axes = (await fetchCameraAxes()).map((a) => ({
+                ...a,
+                options: [...a.options],
+                shortcuts: (a.shortcuts || []).map((s) => ({ ...s, members: [...(s.members || [])] })),
+            }));
             const configWidget = this.widgets.find((w) => w.name === "Camera Config");
             if (!configWidget) return;
 

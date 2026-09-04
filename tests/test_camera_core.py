@@ -580,6 +580,27 @@ class TestLookAxis(unittest.TestCase):
         empty = build_shot(json.dumps({"looks": []}), DETERMINISTIC_MODE, 3, 1024, 1024)
         self.assertEqual(empty["look_family"], "")
 
+    def test_overhead_suppresses_view_keyword(self):
+        shot = build_shot(
+            json.dumps({"angles": ["Top Down"], "views": ["Back"], "sizes": ["Full"]}),
+            DETERMINISTIC_MODE,
+            4,
+            1024,
+            1024,
+        )
+        self.assertIn("Overhead Shot", shot["keywords"])
+        self.assertNotIn("Back View", shot["keywords"])
+
+    def test_description_starts_capitalized_without_size(self):
+        shot = build_shot(
+            json.dumps({"sizes": [], "angles": ["Eye Level"], "views": ["Front"]}),
+            DETERMINISTIC_MODE,
+            1,
+            1024,
+            1024,
+        )
+        self.assertTrue(shot["description"][:1].isupper(), shot["description"])
+
     def test_look_records_have_keyword_alias(self):
         space = core._builtin_space()
         for look in core.LOOKS:

@@ -930,7 +930,7 @@ def _parse_option_file(path: str) -> dict[str, Any]:
         "wide_phrases": [],
     }
     section: str = "phrases"
-    with open(path, encoding="utf-8") as f:
+    with open(path, encoding="utf-8-sig") as f:
         for raw in f:
             line = raw.strip()
             if not line:
@@ -950,10 +950,16 @@ def _parse_option_file(path: str) -> dict[str, Any]:
                     result["lens"] = value
                 elif key == "depth":
                     result["depth"] = value
-                elif key == "close":
-                    result["close"] = value.lower() in ("true", "1", "yes")
-                elif key == "long":
-                    result["long"] = value.lower() in ("true", "1", "yes")
+                elif key in ("close", "long"):
+                    lowered = value.lower()
+                    if lowered in ("true", "1", "yes"):
+                        result[key] = True
+                    elif lowered in ("false", "0", "no"):
+                        result[key] = False
+                    else:
+                        logging.getLogger("ThatAIGod").warning(
+                            "Camera: ignoring invalid #%s value %r, inheriting base", key, value
+                        )
                 elif key == "regions":
                     result["regions"] = tuple(part.strip().lower() for part in value.split(",") if part.strip())
                 elif key == "hides":
@@ -1005,7 +1011,12 @@ def _resolve_option(
         return None
     record = dict(base)
     if parsed["phrases"]:
-        record["phrases"] = tuple(parsed["phrases"])
+        if axis == "tilts":
+            # Mirror builtin normalization so custom ", framed ..." does not
+            # produce a double comma when joined with ", ".
+            record["phrases"] = tuple(phrase.strip().lstrip(", ") for phrase in parsed["phrases"])
+        else:
+            record["phrases"] = tuple(parsed["phrases"])
     # close/wide phrase buckets are movement-only; sizes use bool `close` flag.
     if axis == "movements":
         if parsed["close_phrases"]:
@@ -1018,8 +1029,24 @@ def _resolve_option(
     if axis == "looks" and parsed["keyword"]:
         record["keywords"] = parsed["keyword"]
         record["keyword"] = parsed["keyword"]
+    _GIMBAL_RANGES: dict[str, tuple[int, int]] = {
+        "elevation": (-90, 90),
+        "azimuth": (0, 360),
+        "roll": (0, 90),
+    }
     for field in ("elevation", "azimuth", "roll"):
         if parsed[field] is not None:
+            low, high = _GIMBAL_RANGES[field]
+            if not low <= parsed[field] <= high:
+                logging.getLogger("ThatAIGod").warning(
+                    "Camera: %s %r out of range [%d, %d], inheriting base %r",
+                    field,
+                    parsed[field],
+                    low,
+                    high,
+                    base.get(field),
+                )
+                continue
             record[field] = parsed[field]
     # `close`/`long` bools are sizes-only (framing buckets).
     if parsed["close"] is not None and axis == "sizes":
@@ -1072,7 +1099,7 @@ def load_option_space(wildcards_dir: str) -> dict[str, dict[str, dict[str, Any]]
                 continue
             try:
                 parsed = _parse_option_file(os.path.join(axis_dir, entry))
-            except OSError:  # pragma: no cover - unreadable file
+            except (OSError, UnicodeDecodeError):
                 logging.getLogger("ThatAIGod").warning("Camera: cannot read %s, skipping", entry)
                 continue
             name = parsed["name"] or os.path.splitext(entry)[0]
@@ -1086,7 +1113,20 @@ def load_option_space(wildcards_dir: str) -> dict[str, dict[str, dict[str, Any]]
                 )
                 continue
             records[name] = record
-        space[axis] = records if records else copy.deepcopy(builtin[axis])
+        if not records:
+            space[axis] = copy.deepcopy(builtin[axis])
+            continue
+        # Emit known options in builtin (curated) order so file-backed spaces
+        # match builtin order for Full Auto determinism and chip layout;
+        # genuinely custom options append alphabetically.
+        ordered: dict[str, dict[str, Any]] = {}
+        for builtin_name in builtin[axis]:
+            if builtin_name in records:
+                ordered[builtin_name] = records[builtin_name]
+        for custom_name in sorted(records):
+            if custom_name not in ordered:
+                ordered[custom_name] = records[custom_name]
+        space[axis] = ordered
     return space
 
 
@@ -1201,7 +1241,8 @@ def _compose_description(
 
     sentences: list[str] = []
     if parts:
-        sentences.append(", ".join(parts) + ".")
+        first = ", ".join(parts) + "."
+        sentences.append(first[:1].upper() + first[1:])
     if size_rec is not None:
         composition = _composition_for(size_rec, orientation, angle_rec)
         sentences.append(f"{size_rec['lens']} with {size_rec['depth']}, {composition}.")
@@ -1239,7 +1280,10 @@ def _compose_keywords(
         parts.append(size_rec["keyword"])
     if angle_rec is not None:
         parts.append(angle_rec["keyword"])
-    if view_rec is not None:
+    # Overhead prose replaces the view clause, so drop the view keyword too;
+    # otherwise prompts claim overhead and back/profile simultaneously.
+    overhead = angle_rec is not None and angle_rec.get("elevation") == 90
+    if view_rec is not None and not overhead:
         parts.append(view_rec["keyword"])
     if movement_rec is not None and movement_rec["keyword"]:
         parts.append(movement_rec["keyword"])
