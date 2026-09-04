@@ -239,6 +239,51 @@ class TestCustomOptions(unittest.TestCase):
             self.assertIn("portrait-head", groups["Close-ups"])
             self.assertIn("portrait-head", groups["Headshots"])
 
+    def test_custom_long_directive_sets_long_bucket(self):
+        with TmpWildcards() as tmp:
+            tmp.write(
+                "camera/sizes/vista.txt",
+                "#@based_on: Full\n"
+                "#@long: true\n"
+                "A vast vista framing\n",
+            )
+            space = core.load_option_space(tmp.wildcards)
+            self.assertTrue(space["sizes"]["vista"]["long"])
+            shot = core.build_shot(
+                json.dumps({"sizes": ["vista"]}),
+                "Deterministic (Seed)",
+                5,
+                1024,
+                768,
+                wildcards_dir=tmp.wildcards,
+            )
+            self.assertIn("small within the frame", shot["description"])
+
+    def test_resolve_option_without_builtin_arg(self):
+        # Backward-compat path: _resolve_option falls back to _builtin_space().
+        parsed = {
+            "name": None,
+            "based_on": "Front",
+            "keyword": None,
+            "shortcuts": None,
+            "lens": None,
+            "depth": None,
+            "close": None,
+            "long": None,
+            "regions": None,
+            "hides": None,
+            "elevation": None,
+            "azimuth": None,
+            "roll": None,
+            "family": None,
+            "phrases": [],
+            "close_phrases": [],
+            "wide_phrases": [],
+        }
+        record = core._resolve_option("views", "custom-view", parsed)
+        self.assertIsNotNone(record)
+        self.assertEqual(record["azimuth"], 0)
+
     def test_custom_look_family_and_keywords(self):
         with TmpWildcards() as tmp:
             tmp.write(
@@ -252,6 +297,7 @@ class TestCustomOptions(unittest.TestCase):
             record = space["looks"]["golden-rolliflex"]
             self.assertEqual(record["family"], "digital")
             self.assertEqual(record["keywords"], "Warm Digital, Golden Tones")
+            self.assertEqual(record["keyword"], "Warm Digital, Golden Tones")
             self.assertIn("Shot on a custom golden Rolliflex", record["phrases"])
             shot = core.build_shot(
                 json.dumps({"looks": ["golden-rolliflex"]}),

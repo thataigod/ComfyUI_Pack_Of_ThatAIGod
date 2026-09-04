@@ -308,6 +308,25 @@ app.registerExtension({
             const configWidget = this.widgets.find((w) => w.name === "Camera Config");
             if (!configWidget) return;
 
+            // Preserve custom options when the endpoint is unreachable: merge
+            // any saved values missing from the fetched axes so a fetch fail
+            // cannot destroy custom selections on next persist.
+            try {
+                const raw = JSON.parse(configWidget.value);
+                if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+                    for (const axis of axes) {
+                        const picked = raw[axis.key];
+                        if (Array.isArray(picked)) {
+                            for (const v of picked) {
+                                if (typeof v === "string" && !axis.options.includes(v)) {
+                                    axis.options.push(v);
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (_) {}
+
             configWidget.computeSize = function (width) {
                 return [width, 0];
             };
@@ -461,7 +480,7 @@ app.registerExtension({
             }
 
             if (infoWidget) {
-                infoWidget.computeSize = function () { return [0, 110]; };
+                infoWidget.computeSize = function (width) { return [width, 110]; };
                 if (infoWidget.inputEl) {
                     infoWidget.inputEl.style.height = "100px";
                     infoWidget.inputEl.style.minHeight = "100px";
@@ -470,12 +489,27 @@ app.registerExtension({
             }
         };
 
+        // Rebuild chips after workflow load (widgets populate via configure
+        // after onNodeCreated, so the initial build may have seen defaults).
+        const origOnConfigure = nodeType.prototype.onConfigure;
+        nodeType.prototype.onConfigure = function (info) {
+            const r = origOnConfigure ? origOnConfigure.apply(this, arguments) : undefined;
+            setTimeout(() => {
+                try { this._buildCameraUI(); }
+                catch (e) { console.warn("ThatAIGod: Camera UI rebuild error", e); }
+            }, 0);
+            return r;
+        };
+
         const origExecuted = nodeType.prototype.onExecuted;
         nodeType.prototype.onExecuted = function (message) {
             origExecuted?.apply(this, arguments);
             if (!message) return;
             const w = this.widgets && this.widgets.find((w) => w.name === "Camera Info");
-            if (w && message.description && message.description[0]) w.value = message.description[0];
+            if (w && message.description && message.description[0]) {
+                w.value = message.description[0];
+                try { if (w.inputEl) w.inputEl.value = message.description[0]; } catch (_) {}
+            }
         };
     },
 });

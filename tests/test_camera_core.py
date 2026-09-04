@@ -169,6 +169,14 @@ class TestParseConfig(unittest.TestCase):
         parsed = parse_config(json.dumps({"sizes": ["Full", "Close-Up", "Full"]}))
         self.assertEqual(parsed["sizes"], ["Full", "Close-Up"])
 
+    def test_all_invalid_options_fall_back_to_full(self):
+        # Non-empty input with zero valid options is a typo/stale config:
+        # fall back to full instead of silently disabling the axis.
+        parsed = parse_config(json.dumps({"sizes": ["Bogus", "Nope"], "views": []}))
+        self.assertEqual(parsed["sizes"], core.SHOT_SIZES)
+        # Explicit [] stays empty (omit axis).
+        self.assertEqual(parsed["views"], [])
+
     def test_axis_product(self):
         config = parse_config(
             json.dumps(
@@ -482,6 +490,7 @@ class TestBuildShotModes(unittest.TestCase):
             "movement",
             "tilt",
             "look",
+            "look_family",
             "side",
             "lens",
             "depth_of_field",
@@ -552,6 +561,29 @@ class TestLookAxis(unittest.TestCase):
         config = json.dumps({"looks": ["Leica M6"]})
         shot = build_shot(config, DETERMINISTIC_MODE, 3, 1024, 1024)
         self.assertEqual(shot["look"], "Leica M6")
+
+    def test_looks_carry_no_focal_length(self):
+        # Looks describe render character only; focal length stays owned by
+        # the shot-size lens map. Film format mentions ("35mm film", "6x7")
+        # are fine; lens specs ("105mm f/2.4", "50mm lens") are not.
+        import re
+
+        focal = re.compile(r"\d+\s*mm\s*(f/|lens)", re.IGNORECASE)
+        for look in core.LOOKS:
+            for phrase in core._LOOK_PHRASES[look]:
+                self.assertIsNone(focal.search(phrase), (look, phrase))
+            self.assertIsNone(focal.search(core._LOOK_KEYWORDS[look]), (look, core._LOOK_KEYWORDS[look]))
+
+    def test_shot_emits_look_family(self):
+        shot = build_shot(json.dumps({"looks": ["Leica M6"]}), DETERMINISTIC_MODE, 3, 1024, 1024)
+        self.assertEqual(shot["look_family"], "film")
+        empty = build_shot(json.dumps({"looks": []}), DETERMINISTIC_MODE, 3, 1024, 1024)
+        self.assertEqual(empty["look_family"], "")
+
+    def test_look_records_have_keyword_alias(self):
+        space = core._builtin_space()
+        for look in core.LOOKS:
+            self.assertEqual(space["looks"][look]["keyword"], space["looks"][look]["keywords"])
 
 
 if __name__ == "__main__":

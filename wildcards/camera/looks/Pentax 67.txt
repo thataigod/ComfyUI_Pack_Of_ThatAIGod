@@ -1,8 +1,8 @@
 # Camera option. Edit freely: directives (#@key: value) carry metadata,
 # plain lines are prose variants. See the pack README for the schema.
 #@family: film
-#@keyword: Medium Format Film, 6x7 SLR, Extreme Shallow Depth of Field, Dreamy Bokeh, 105mm f/2.4
+#@keyword: Medium Format Film, 6x7 SLR, Extreme Shallow Depth of Field, Dreamy Bokeh, Fast Standard Lens
 #@shortcuts: Film
 
 Shot on a Pentax 67, its 6x7 medium-format negative delivering extreme shallow depth with dreamy bokeh.
-Captured on a Pentax 67, the 105mm f/2.4 rendering soft, glowing medium-format falloff.
+Captured on a Pentax 67, the fast standard lens rendering soft, glowing medium-format falloff.

@@ -78,6 +78,15 @@ class TestIsChanged(unittest.TestCase):
         self.assertEqual(changed[3], 64)
         self.assertEqual(changed[4], 16384)
 
+    def test_full_auto_ignores_config_in_cache_key(self):
+        # Full Auto picks over the whole space, so config must not bust cache.
+        a = Camera.IS_CHANGED(**{"Seed": 5, "Wildcard Mode": "Full Auto", "Camera Config": "{}"})
+        b = Camera.IS_CHANGED(
+            **{"Seed": 5, "Wildcard Mode": "Full Auto", "Camera Config": '{"sizes": ["Full"]}'}
+        )
+        self.assertEqual(a, b)
+        self.assertEqual(a[2], "")
+
     def test_missing_mode_uses_default(self):
         changed = Camera.IS_CHANGED()
         self.assertIsInstance(changed, tuple)

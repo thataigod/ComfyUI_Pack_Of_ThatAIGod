@@ -29,6 +29,7 @@ from typing import Any
 from _camera_core import (
     _AXIS_DIRS,
     DEFAULT_CONFIG_JSON,
+    FULL_AUTO_MODE,
     NO_REPEAT_MODE,
     _builtin_space,
     build_shot,
@@ -59,21 +60,25 @@ try:  # pragma: no cover - ComfyUI-only integration
     from aiohttp import web
     from server import PromptServer
 
-    @PromptServer.instance.routes.get("/that_aigod/camera_options")  # type: ignore[untyped-decorator]
-    async def _camera_options_endpoint(_request: Any) -> Any:
-        space = load_option_space(_WILDCARDS_DIR)
-        if space is None:
-            space = _builtin_space()
-        payload: dict[str, Any] = {}
-        for axis in _AXIS_DIRS:
-            payload[axis] = {
-                "options": list(space[axis]),
-                "shortcuts": [
-                    {"text": text, "members": members}
-                    for text, members in option_shortcuts(space, axis)
-                ],
-            }
-        return web.json_response(payload)
+    if not getattr(PromptServer.instance, "_that_aigod_camera_route", False):
+
+        @PromptServer.instance.routes.get("/that_aigod/camera_options")  # type: ignore[untyped-decorator]
+        async def _camera_options_endpoint(_request: Any) -> Any:
+            space = load_option_space(_WILDCARDS_DIR)
+            if space is None:
+                space = _builtin_space()
+            payload: dict[str, Any] = {}
+            for axis in _AXIS_DIRS:
+                payload[axis] = {
+                    "options": list(space[axis]),
+                    "shortcuts": [
+                        {"text": text, "members": members}
+                        for text, members in option_shortcuts(space, axis)
+                    ],
+                }
+            return web.json_response(payload)
+
+        PromptServer.instance._that_aigod_camera_route = True
 
 except (ImportError, ModuleNotFoundError, AttributeError, RuntimeError):  # noqa: S110 - absent in pure-test or when PromptServer not ready
     pass
@@ -167,10 +172,14 @@ class Camera:
         """Force re-execution for no-repeat farming; stay cached otherwise."""
         if kwargs.get("Wildcard Mode") == NO_REPEAT_MODE:
             return math.nan
+        mode = kwargs.get("Wildcard Mode", "")
+        # Full Auto ignores Camera Config by design, so exclude it from the
+        # cache key to avoid busting cache with zero output change.
+        config_key = "" if mode == FULL_AUTO_MODE else kwargs.get("Camera Config", "")
         return (
             _safe_int(kwargs.get("Seed", 0), 0),
-            kwargs.get("Wildcard Mode", ""),
-            kwargs.get("Camera Config", ""),
+            mode,
+            config_key,
             clamp_dimension(round_to_multiple(_safe_int(kwargs.get("Width", 1024), 1024))),
             clamp_dimension(round_to_multiple(_safe_int(kwargs.get("Height", 1024), 1024))),
         )
@@ -211,12 +220,15 @@ class Camera:
             f"Regions: {regions_text or '(empty)'}"
         )
 
+        shot_summary = ", ".join(
+            part for part in (shot["shot_size"], shot["angle"], shot["view"], shot["movement"]) if part
+        ) or "(empty)"
         return {
             "ui": {
                 "text": [info_string],
                 "description": [shot["description"]],
                 "keywords": [shot["keywords"]],
-                "shot_summary": [f"{shot['shot_size']}, {shot['angle']}, {shot['view']}, {shot['movement']}"],
+                "shot_summary": [shot_summary],
                 "regions": [regions_text],
                 "width": [width],
                 "height": [height],

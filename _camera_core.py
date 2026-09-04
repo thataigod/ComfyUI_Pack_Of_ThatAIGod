@@ -63,6 +63,10 @@ VIEWS: list[str] = [
     "Back",
 ]
 
+# NOTE: movement "Tilt" is a vertical pan (camera pitching up/down with motion
+# blur); it is distinct from the "tilts" axis (dutch roll: None/Slight/Strong).
+# The names overlap historically but resolve per-axis, so #@based_on: Tilt
+# refers to the movement within movements/ and never to the dutch axis.
 MOVEMENTS: list[str] = [
     "Static",
     "Pan",
@@ -170,7 +174,7 @@ _LOOK_PHRASES: dict[str, list[str]] = {
     ],
     "Pentax 67": [
         "Shot on a Pentax 67, its 6x7 medium-format negative delivering extreme shallow depth with dreamy bokeh.",
-        "Captured on a Pentax 67, the 105mm f/2.4 rendering soft, glowing medium-format falloff.",
+        "Captured on a Pentax 67, the fast standard lens rendering soft, glowing medium-format falloff.",
     ],
     "Deardorff 8x10": [
         "Shot on a Deardorff 8x10 view camera, large-format film with bellows movements and contact-print sharpness.",
@@ -247,7 +251,7 @@ _LOOK_PHRASES: dict[str, list[str]] = {
 _LOOK_KEYWORDS: dict[str, str] = {
     "Hasselblad 500C/M": "Medium Format Film, Soft Film Grain, Natural Color Science, 6x6 Medium Format",
     "Rolleiflex 2.8F": "Medium Format Film, Twin-Lens Reflex, Fine Film Grain, Smooth Tonal Rendering",
-    "Pentax 67": "Medium Format Film, 6x7 SLR, Extreme Shallow Depth of Field, Dreamy Bokeh, 105mm f/2.4",
+    "Pentax 67": "Medium Format Film, 6x7 SLR, Extreme Shallow Depth of Field, Dreamy Bokeh, Fast Standard Lens",
     "Deardorff 8x10": "Large Format Film, View Camera, Bellows Movements, Contact-Print Sharpness, Vintage Lens Swirl",
     "Leica M6": "35mm Rangefinder Film, Delicate Film Grain, Honest Natural Color, Classic 35mm Look",
     "Nikon F3": "35mm Film, Professional SLR, Fine Film Grain, Neutral Color Balance",
@@ -901,6 +905,10 @@ def _parse_option_file(path: str) -> dict[str, Any]:
     Directives are ``#@key: value`` lines; section markers are ``#@close`` and
     ``#@wide`` (movements only).  Everything else is a phrase line collected
     into the active section (``phrases`` by default).
+
+    Note: ``#@close: true`` (directive, sizes-only) and the ``#@close`` block
+    marker (movements-only) share a token by design; the axis guard in
+    :func:`_resolve_option` keeps their semantics separate.
     """
     result: dict[str, Any] = {
         "name": None,
@@ -910,6 +918,7 @@ def _parse_option_file(path: str) -> dict[str, Any]:
         "lens": None,
         "depth": None,
         "close": None,
+        "long": None,
         "regions": None,
         "hides": None,
         "elevation": None,
@@ -943,6 +952,8 @@ def _parse_option_file(path: str) -> dict[str, Any]:
                     result["depth"] = value
                 elif key == "close":
                     result["close"] = value.lower() in ("true", "1", "yes")
+                elif key == "long":
+                    result["long"] = value.lower() in ("true", "1", "yes")
                 elif key == "regions":
                     result["regions"] = tuple(part.strip().lower() for part in value.split(",") if part.strip())
                 elif key == "hides":
@@ -972,7 +983,12 @@ def _parse_option_file(path: str) -> dict[str, Any]:
     return result
 
 
-def _resolve_option(axis: str, name: str, parsed: dict[str, Any]) -> dict[str, Any] | None:
+def _resolve_option(
+    axis: str,
+    name: str,
+    parsed: dict[str, Any],
+    builtin: dict[str, dict[str, dict[str, Any]]] | None = None,
+) -> dict[str, Any] | None:
     """Resolve a parsed option file against the built-in space.
 
     The base record is the built-in option with the same name, or the built-in
@@ -980,8 +996,9 @@ def _resolve_option(axis: str, name: str, parsed: dict[str, Any]) -> dict[str, A
     Returns ``None`` when no base exists (an option the engine cannot reason
     about geometrically).
     """
-    # Cache builtin once to avoid double deepcopy per file (see _builtin_space deep-copy).
-    builtin = _builtin_space()
+    # Callers should pass the hoisted builtin to avoid a deepcopy per file.
+    if builtin is None:
+        builtin = _builtin_space()
     base_name = name if name in builtin[axis] else parsed["based_on"]
     base = builtin[axis].get(base_name or "")
     if base is None:
@@ -1004,9 +1021,11 @@ def _resolve_option(axis: str, name: str, parsed: dict[str, Any]) -> dict[str, A
     for field in ("elevation", "azimuth", "roll"):
         if parsed[field] is not None:
             record[field] = parsed[field]
-    # `close` bool is sizes-only (whether framing is a close-up).
+    # `close`/`long` bools are sizes-only (framing buckets).
     if parsed["close"] is not None and axis == "sizes":
         record["close"] = parsed["close"]
+    if parsed.get("long") is not None and axis == "sizes":
+        record["long"] = parsed["long"]
     if parsed["regions"] is not None:
         record["regions"] = parsed["regions"]
     if parsed["hides"] is not None:
@@ -1060,8 +1079,11 @@ def load_option_space(wildcards_dir: str) -> dict[str, dict[str, dict[str, Any]]
             if name in records:
                 logging.getLogger("ThatAIGod").warning("Camera: duplicate option %r in %s, keeping first file", name, axis)
                 continue
-            record = _resolve_option(axis, name, parsed)
+            record = _resolve_option(axis, name, parsed, builtin)
             if record is None:
+                logging.getLogger("ThatAIGod").warning(
+                    "Camera: skipping %r in %s (no built-in %r and no #@based_on)", entry, axis, name
+                )
                 continue
             records[name] = record
         space[axis] = records if records else copy.deepcopy(builtin[axis])
@@ -1251,9 +1273,10 @@ def parse_config(config_json: str, option_space: dict[str, dict[str, dict[str, A
     """Parse a Camera Config JSON string into active option lists per axis.
 
     A key present with an **empty list** leaves that axis unrestricted (its
-    clause is omitted from the shot); an absent key, a malformed value or
-    malformed JSON falls back to the full option list for that axis, keeping
-    stale or partial configs usable.
+    clause is omitted from the shot); an absent key, a malformed value,
+    malformed JSON, or a non-empty list with zero valid options falls back
+    to the full option list for that axis, keeping stale or partial configs
+    usable (so typos cannot silently disable an axis).
 
     Args:
         config_json: JSON string with keys ``sizes``, ``angles``, ``views``,
@@ -1285,7 +1308,12 @@ def parse_config(config_json: str, option_space: dict[str, dict[str, dict[str, A
         for option in chosen:
             if isinstance(option, str) and option in space[key] and option not in valid:
                 valid.append(option)
-        active[key] = valid
+        # Explicit [] stays empty (omit axis); non-empty input with no valid
+        # options is treated as stale/typo and falls back to full.
+        if not valid and chosen:
+            active[key] = list(space[key])
+        else:
+            active[key] = valid
     return active
 
 
@@ -1475,6 +1503,7 @@ def build_shot(
         "movement": movement,
         "tilt": tilt,
         "look": look,
+        "look_family": look_rec["family"] if look_rec is not None else "",
         "side": side,
         "lens": size_rec["lens"] if size_rec is not None else "",
         "depth_of_field": size_rec["depth"] if size_rec is not None else "",
