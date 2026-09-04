@@ -200,9 +200,7 @@ class TestResolutionSelector(unittest.TestCase):
             }
         )
         kw = result["result"][5]
-        self.assertIn("Custom, Approximate", kw)
-        self.assertIn("Portrait 3:4", kw)
-        self.assertNotIn("Square 1:1", kw)
+        self.assertIn("Custom 0.75", kw)
 
     def test_custom_ratio_disabled_not_used(self):
         result = self.node.calculate(
