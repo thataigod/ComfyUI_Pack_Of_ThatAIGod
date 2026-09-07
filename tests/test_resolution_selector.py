@@ -8,9 +8,14 @@ import unittest
 from _utils import DEFAULT_MIN_DIMENSION
 from Resolution_Selector import (
     _ALL_LABELS,
+    _DEFAULT_CONFIG_JSON,
     _LANDSCAPE_LABELS,
     _PORTRAIT_LABELS,
+    DEFAULT_TOTAL_PIXELS,
+    MAX_TOTAL_PIXELS,
+    MIN_TOTAL_PIXELS,
     ResolutionSelector,
+    _compute_dimensions_from_total_pixels,
 )
 
 
@@ -120,6 +125,122 @@ class TestResolutionSelector(unittest.TestCase):
         w, h = result["result"][0], result["result"][1]
         self.assertEqual(w, 1024)
         self.assertGreater(h, w)
+
+    # --- Total Pixels mode ---
+
+    def test_total_pixels_square_1mp(self):
+        result = self.node.calculate(
+            **{
+                "Limit By": "Total Pixels",
+                "Pixels": 1_000_000,
+                "Scale Factor": 1.0,
+                "Aspect Ratio Config": _cfg(["Square 1:1"]),
+                "Custom W:H Ratio": 1.0,
+                "seed": 0,
+            }
+        )
+        w, h = result["result"][0], result["result"][1]
+        self.assertEqual(w, 1000)
+        self.assertEqual(h, 1000)
+
+    def test_total_pixels_landscape_area_and_ratio(self):
+        result = self.node.calculate(
+            **{
+                "Limit By": "Total Pixels",
+                "Pixels": 1_000_000,
+                "Scale Factor": 1.0,
+                "Aspect Ratio Config": _cfg(["Landscape 16:9 (HD)"]),
+                "Custom W:H Ratio": 1.0,
+                "seed": 0,
+            }
+        )
+        w, h = result["result"][0], result["result"][1]
+        self.assertAlmostEqual(w / h, 16 / 9, delta=0.02)
+        self.assertGreater(w, h)
+        self.assertAlmostEqual(w * h, 1_000_000, delta=20_000)
+
+    def test_total_pixels_portrait_area(self):
+        result = self.node.calculate(
+            **{
+                "Limit By": "Total Pixels",
+                "Pixels": 1_000_000,
+                "Scale Factor": 1.0,
+                "Aspect Ratio Config": _cfg(["Portrait 2:3 (Classic)"]),
+                "Custom W:H Ratio": 1.0,
+                "seed": 0,
+            }
+        )
+        w, h = result["result"][0], result["result"][1]
+        self.assertAlmostEqual(w / h, 2 / 3, delta=0.02)
+        self.assertGreater(h, w)
+        self.assertAlmostEqual(w * h, 1_000_000, delta=20_000)
+
+    def test_total_pixels_clamps_tiny_budget(self):
+        result = self.node.calculate(
+            **{
+                "Limit By": "Total Pixels",
+                "Pixels": 100,
+                "Scale Factor": 1.0,
+                "Aspect Ratio Config": _cfg(["Square 1:1"]),
+                "Custom W:H Ratio": 1.0,
+                "seed": 0,
+            }
+        )
+        w, h = result["result"][0], result["result"][1]
+        self.assertEqual(w, DEFAULT_MIN_DIMENSION)
+        self.assertEqual(h, DEFAULT_MIN_DIMENSION)
+
+    def test_total_pixels_clamps_huge_budget(self):
+        result = self.node.calculate(
+            **{
+                "Limit By": "Total Pixels",
+                "Pixels": 10**12,
+                "Scale Factor": 1.0,
+                "Aspect Ratio Config": _cfg(["Square 1:1"]),
+                "Custom W:H Ratio": 1.0,
+                "seed": 0,
+            }
+        )
+        w, h = result["result"][0], result["result"][1]
+        self.assertEqual(w, 16384)
+        self.assertEqual(h, 16384)
+
+    def test_total_pixels_invalid_ratio_falls_back_to_square(self):
+        for bad_ratio in (0, -1.5):
+            w, h = _compute_dimensions_from_total_pixels(1_000_000, bad_ratio)
+            self.assertEqual(w, 1000)
+            self.assertEqual(h, 1000)
+
+    def test_total_pixels_constants(self):
+        self.assertEqual(DEFAULT_TOTAL_PIXELS, 1_000_000)
+        self.assertEqual(MIN_TOTAL_PIXELS, DEFAULT_MIN_DIMENSION * DEFAULT_MIN_DIMENSION)
+        self.assertEqual(MAX_TOTAL_PIXELS, 16384 * 16384)
+
+    def test_unknown_limit_by_falls_back_to_max_side(self):
+        result = self.node.calculate(
+            **{
+                "Limit By": "Bogus",
+                "Pixels": 1024,
+                "Scale Factor": 1.0,
+                "Aspect Ratio Config": _cfg(["Landscape 16:9 (HD)"]),
+                "Custom W:H Ratio": 1.0,
+                "seed": 0,
+            }
+        )
+        w, h = result["result"][0], result["result"][1]
+        self.assertEqual(w, 1024)
+        self.assertLess(h, w)
+
+    def test_input_types_offers_total_pixels_mode(self):
+        schema = ResolutionSelector.INPUT_TYPES()
+        limit_by = schema["required"]["Limit By"][0]
+        self.assertIn("Total Pixels", limit_by)
+
+    def test_default_config_has_pixels_memory(self):
+        cfg = json.loads(_DEFAULT_CONFIG_JSON)
+        self.assertEqual(cfg["pixels_max"], 1024)
+        self.assertEqual(cfg["pixels_min"], 1024)
+        self.assertEqual(cfg["pixels_total"], DEFAULT_TOTAL_PIXELS)
 
     # --- Multi-select ---
 

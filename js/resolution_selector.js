@@ -37,8 +37,33 @@ const DISPLAY = {
 const LANDSCAPE_LABELS = ALL_LABELS.slice(5);
 const PORTRAIT_LABELS = ALL_LABELS.slice(1, 5);
 
+// Per-mode Pixels memory: config keys holding the last Pixels value used for
+// each Limit By mode. Must stay in sync with _PIXELS_MEMORY_KEYS in
+// Resolution_Selector.py.
+const MODE_PIXEL_KEYS = {
+    "Max Side": "pixels_max",
+    "Min Side": "pixels_min",
+    "Total Pixels": "pixels_total",
+};
+
+const MODE_PIXEL_DEFAULTS = {
+    "Max Side": 1024,
+    "Min Side": 1024,
+    "Total Pixels": 1000000,
+};
+
 function readConfig(widget) {
-    try { return JSON.parse(widget.value); }
+    try {
+        const cfg = JSON.parse(widget.value);
+        return {
+            ratios: Array.isArray(cfg.ratios) ? cfg.ratios : [...PORTRAIT_LABELS],
+            custom_ratio: cfg.custom_ratio || 1.0,
+            custom_enabled: !!cfg.custom_enabled,
+            pixels_max: cfg.pixels_max,
+            pixels_min: cfg.pixels_min,
+            pixels_total: cfg.pixels_total,
+        };
+    }
     catch (_) { return { ratios: [...PORTRAIT_LABELS], custom_ratio: 1.0, custom_enabled: false }; }
 }
 
@@ -112,6 +137,89 @@ app.registerExtension({
             // Keep as no-op to prevent any feedback loops
         };
 
+        // Per-mode Pixels memory: remembers the last Pixels value used for each
+        // Limit By mode inside the Aspect Ratio Config JSON, and recalls it when
+        // the mode is switched — so each mode keeps its own budget permanently.
+        nodeType.prototype._hookPixelsMemory = function (configWidget) {
+            if (this._rsPixelsMemoryHooked) return;
+            this._rsPixelsMemoryHooked = true;
+            try {
+                const limitWidget = this.widgets.find(w => w.name === "Limit By");
+                const pixelsWidget = this.widgets.find(w => w.name === "Pixels");
+                if (!limitWidget || !pixelsWidget) return;
+
+                const memKeyFor = (mode) => MODE_PIXEL_KEYS[mode] || MODE_PIXEL_KEYS["Max Side"];
+                const defaultFor = (mode) => MODE_PIXEL_DEFAULTS[mode] || MODE_PIXEL_DEFAULTS["Max Side"];
+                const toPositiveNumber = (v) => {
+                    const n = typeof v === "number" ? v : parseFloat(v);
+                    return Number.isFinite(n) && n > 0 ? n : null;
+                };
+
+                // Seed memory: keep stored values, fill gaps (current mode inherits the live Pixels box).
+                const seed = () => {
+                    const cfg = readConfig(configWidget);
+                    let touched = false;
+                    for (const mode of Object.keys(MODE_PIXEL_KEYS)) {
+                        if (toPositiveNumber(cfg[MODE_PIXEL_KEYS[mode]]) === null) {
+                            const live = (mode === limitWidget.value) ? toPositiveNumber(pixelsWidget.value) : null;
+                            cfg[MODE_PIXEL_KEYS[mode]] = live ?? defaultFor(mode);
+                            touched = true;
+                        }
+                    }
+                    if (touched) writeConfig(configWidget, cfg);
+                };
+                seed();
+
+                // Push a recalled value into the Pixels box (value + visible input).
+                const recall = (mode) => {
+                    const cfg = readConfig(configWidget);
+                    const stored = toPositiveNumber(cfg[memKeyFor(mode)]) ?? defaultFor(mode);
+                    try {
+                        pixelsWidget.value = Math.round(stored);
+                        const el = pixelsWidget.inputEl || pixelsWidget.element;
+                        if (el && "value" in el && document.activeElement !== el) el.value = pixelsWidget.value;
+                    } catch (_) { /* display sync is best-effort */ }
+                };
+
+                let lastMode = limitWidget.value;
+                const origLimitCb = limitWidget.callback;
+                limitWidget.callback = (...args) => {
+                    try {
+                        const nextMode = (typeof args[0] === "string" && MODE_PIXEL_KEYS[args[0]])
+                            ? args[0]
+                            : limitWidget.value;
+                        if (nextMode !== lastMode) {
+                            // Remember the outgoing mode's budget, then recall the incoming one.
+                            const outgoing = toPositiveNumber(pixelsWidget.value);
+                            if (outgoing !== null) {
+                                const cfg = readConfig(configWidget);
+                                cfg[memKeyFor(lastMode)] = outgoing;
+                                writeConfig(configWidget, cfg);
+                            }
+                            recall(nextMode);
+                            lastMode = nextMode;
+                        }
+                    } catch (e) { console.warn("ThatAIGod: pixels memory switch error", e); }
+                    if (origLimitCb) return origLimitCb.apply(limitWidget, args);
+                };
+
+                const origPixelsCb = pixelsWidget.callback;
+                pixelsWidget.callback = (...args) => {
+                    try {
+                        const n = toPositiveNumber(pixelsWidget.value);
+                        if (n !== null) {
+                            const cfg = readConfig(configWidget);
+                            cfg[memKeyFor(limitWidget.value)] = n;
+                            writeConfig(configWidget, cfg);
+                        }
+                    } catch (e) { console.warn("ThatAIGod: pixels memory save error", e); }
+                    if (origPixelsCb) return origPixelsCb.apply(pixelsWidget, args);
+                };
+            } catch (e) {
+                console.warn("ThatAIGod: pixels memory hook error", e);
+            }
+        };
+
         nodeType.prototype._buildRatioUI = function () {
             const configWidget = this.widgets.find(w => w.name === "Aspect Ratio Config");
             if (!configWidget) return;
@@ -119,6 +227,9 @@ app.registerExtension({
             configWidget.computeSize = function (width) {
                 return [width, 0];
             };
+
+            try { this._hookPixelsMemory(configWidget); }
+            catch (e) { console.warn("ThatAIGod: pixels memory init error", e); }
 
             const infoWidget = this.widgets.find(w => w.name === "Resolution Info");
             const parentEl = infoWidget && infoWidget.element ? infoWidget.element.parentNode : configWidget.element && configWidget.element.parentNode ? configWidget.element.parentNode : null;
@@ -140,10 +251,17 @@ app.registerExtension({
             this._rsInfoWidget = infoWidget;
 
             const persist = () => {
+                // Carry over per-mode Pixels memory so ratio toggles never wipe it.
+                const prev = readConfig(configWidget);
+                const mem = {};
+                for (const key of Object.values(MODE_PIXEL_KEYS)) {
+                    if (typeof prev[key] === "number" && prev[key] > 0) mem[key] = prev[key];
+                }
                 writeConfig(configWidget, {
                     ratios: ALL_LABELS.filter(l => selected.has(l)),
                     custom_ratio: customRatio,
                     custom_enabled: customEnabled,
+                    ...mem,
                 });
             };
 

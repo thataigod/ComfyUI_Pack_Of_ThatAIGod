@@ -1,12 +1,12 @@
 """Resolution Selector node for ComfyUI.
 
 Provides :class:`ResolutionSelector`, which calculates optimal image dimensions
-from a pixel budget (constrained to either the max side or the min side) and a
-user-defined set of one or more aspect ratios.
+from a pixel budget (constrained to the max side, the min side, or the total
+pixel area) and a user-defined set of one or more aspect ratios.
 
 Supports:
-* Constraint mode: ``Max Side`` (longest dimension = pixels) or ``Min Side``
-  (shortest dimension = pixels).
+* Constraint mode: ``Max Side`` (longest dimension = pixels), ``Min Side``
+  (shortest dimension = pixels), or ``Total Pixels`` (width × height ≈ pixels).
 * Multi-select aspect ratios — any subset of 12 named presets plus an optional
   custom W:H ratio — with random selection from the active set.
 * Three batch-selection shortcuts (Select All, Portraits, Landscapes) via the
@@ -18,6 +18,7 @@ Supports:
 """
 
 import json
+import math
 import random
 from typing import Any
 
@@ -36,6 +37,9 @@ DEFAULT_SCALE_FACTOR: float = 1.5
 DEFAULT_PIXELS: int = 1024
 MIN_PIXELS: int = 1
 MAX_PIXELS: int = 16384
+DEFAULT_TOTAL_PIXELS: int = 1_000_000
+MIN_TOTAL_PIXELS: int = DEFAULT_MIN_DIMENSION * DEFAULT_MIN_DIMENSION
+MAX_TOTAL_PIXELS: int = MAX_PIXELS * MAX_PIXELS
 
 # Aspect ratio presets (identical to Dynamic_Resolution_Picker).
 _PORTRAITS: dict[str, float] = {
@@ -78,8 +82,27 @@ _ALL_LABELS: list[str] = list(_ALL_RATIOS.keys())
 _PORTRAIT_LABELS: list[str] = list(_PORTRAITS.keys())
 _LANDSCAPE_LABELS: list[str] = list(_LANDSCAPES.keys())
 
+# Per-mode Pixels memory keys stored in the Aspect Ratio Config JSON.
+# The frontend (js/resolution_selector.js) remembers the last Pixels value used
+# for each Limit By mode here and recalls it when the mode is switched, so each
+# mode keeps its own budget. Must stay in sync with MODE_PIXEL_KEYS in the JS.
+_PIXELS_MEMORY_KEYS: dict[str, str] = {
+    "Max Side": "pixels_max",
+    "Min Side": "pixels_min",
+    "Total Pixels": "pixels_total",
+}
+
 # Default config — portraits selected by default, custom disabled.
-_DEFAULT_CONFIG_JSON: str = json.dumps({"ratios": _PORTRAIT_LABELS, "custom_ratio": 1.0, "custom_enabled": False})
+_DEFAULT_CONFIG_JSON: str = json.dumps(
+    {
+        "ratios": _PORTRAIT_LABELS,
+        "custom_ratio": 1.0,
+        "custom_enabled": False,
+        "pixels_max": DEFAULT_PIXELS,
+        "pixels_min": DEFAULT_PIXELS,
+        "pixels_total": DEFAULT_TOTAL_PIXELS,
+    }
+)
 
 
 def _compute_dimensions_from_min_side(min_side: int, ratio: float) -> tuple[int, int]:
@@ -104,6 +127,31 @@ def _compute_dimensions_from_min_side(min_side: int, ratio: float) -> tuple[int,
     return width_int, height_int
 
 
+def _compute_dimensions_from_total_pixels(total_pixels: int, ratio: float) -> tuple[int, int]:
+    """Compute width and height from a total pixel-area budget and aspect *ratio*.
+
+    Solves ``w × h ≈ total_pixels`` with ``w / h = ratio``, i.e.
+    ``w = sqrt(total × ratio)`` and ``h = sqrt(total / ratio)``.
+
+    Args:
+        total_pixels: Target pixel count for the whole image area.
+        ratio: Width-to-height ratio (e.g. ``16/9 ≈ 1.778``). Non-positive
+            ratios fall back to square.
+
+    Returns:
+        A ``(width, height)`` tuple, both rounded to 8 px and clamped to 64 px.
+    """
+    if ratio <= 0:
+        ratio = 1.0
+
+    w = math.sqrt(total_pixels * ratio)
+    h = math.sqrt(total_pixels / ratio)
+
+    width_int = max(round_to_multiple(int(round(w))), DEFAULT_MIN_DIMENSION)
+    height_int = max(round_to_multiple(int(round(h))), DEFAULT_MIN_DIMENSION)
+    return width_int, height_int
+
+
 # ---------------------------------------------------------------------------
 # Node
 # ---------------------------------------------------------------------------
@@ -112,15 +160,18 @@ def _compute_dimensions_from_min_side(min_side: int, ratio: float) -> tuple[int,
 class ResolutionSelector:
     """Calculates image dimensions with flexible constraint and multi-select aspect ratios.
 
-    Choose whether the *Pixels* input constrains the **max** side (longest edge)
-    or the **min** side (shortest edge).  Select any number of aspect ratio presets
-    (portrait, landscape, square) plus an optional custom W:H ratio.  One ratio is
-    chosen at random from the active set on each execution.
+    Choose whether the *Pixels* input constrains the **max** side (longest edge),
+    the **min** side (shortest edge), or the **total** pixel area
+    (width × height).  The frontend remembers the last *Pixels* value per mode
+    and recalls it when switching modes.  Select any number of aspect ratio
+    presets (portrait, landscape, square) plus an optional custom W:H ratio.
+    One ratio is chosen at random from the active set on each execution.
     """
 
     DESCRIPTION = (
-        "Calculates width and height from a pixel budget constrained to either the "
-        "max side or the min side, with multi-select aspect ratios and optional scaling."
+        "Calculates width and height from a pixel budget constrained to the max side, "
+        "the min side, or the total pixel area, with multi-select aspect ratios and "
+        "optional scaling."
     )
 
     RETURN_TYPES: tuple[str, ...] = (
@@ -151,17 +202,26 @@ class ResolutionSelector:
         return {
             "required": {
                 "Limit By": (
-                    ["Max Side", "Min Side"],
-                    {"tooltip": "Whether the Pixels value constrains the longest side (Max) or shortest side (Min)."},
+                    ["Max Side", "Min Side", "Total Pixels"],
+                    {
+                        "tooltip": (
+                            "What the Pixels value constrains: the longest side (Max), "
+                            "the shortest side (Min), or the total image area (Total)."
+                        )
+                    },
                 ),
                 "Pixels": (
                     "INT",
                     {
                         "default": DEFAULT_PIXELS,
                         "min": MIN_PIXELS,
-                        "max": MAX_PIXELS,
+                        "max": MAX_TOTAL_PIXELS,
                         "step": 1,
-                        "tooltip": "Pixel budget for the constrained side (max or min, depending on Limit By).",
+                        "tooltip": (
+                            "Pixel budget: side length for Max/Min Side modes, total "
+                            "image area (e.g. 1000000 ≈ 1MP) for Total Pixels mode. "
+                            "The last value per mode is remembered and recalled on switch."
+                        ),
                     },
                 ),
                 "Scale Factor": (
@@ -251,7 +311,10 @@ class ResolutionSelector:
         config_json: str = kwargs.get("Aspect Ratio Config", _DEFAULT_CONFIG_JSON)
         seed: int = kwargs.get("seed", 0)
 
-        pixels = clamp_dimension(pixels, MIN_PIXELS, MAX_PIXELS)
+        if limit_by == "Total Pixels":
+            pixels = clamp_dimension(pixels, MIN_TOTAL_PIXELS, MAX_TOTAL_PIXELS)
+        else:
+            pixels = clamp_dimension(pixels, MIN_PIXELS, MAX_PIXELS)
         scale_factor = max(MIN_SCALE_FACTOR, min(scale_factor, MAX_SCALE_FACTOR))
 
         rng: random.Random = random.Random(seed)
@@ -259,10 +322,12 @@ class ResolutionSelector:
 
         target_label, ratio_float = rng.choice(sorted(active_ratios))
 
-        if limit_by == "Max Side":
-            width_int, height_int = compute_aspect_ratio_dimensions(pixels, ratio_float)
-        else:
+        if limit_by == "Min Side":
             width_int, height_int = _compute_dimensions_from_min_side(pixels, ratio_float)
+        elif limit_by == "Total Pixels":
+            width_int, height_int = _compute_dimensions_from_total_pixels(pixels, ratio_float)
+        else:
+            width_int, height_int = compute_aspect_ratio_dimensions(pixels, ratio_float)
 
         keywords: str = _KEYWORD_MAP.get(target_label, f"Custom {ratio_float:.2f} Aspect Ratio, Custom Composition")
 
