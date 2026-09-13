@@ -43,18 +43,18 @@ _SQUARE: dict[str, float] = {"Square 1:1": 1.0}
 _ALL_RATIOS: dict[str, float] = {**_PORTRAITS, **_LANDSCAPES, **_SQUARE}
 
 _KEYWORD_MAP: dict[str, str] = {
-    "Square 1:1": "Square, 1:1 Aspect Ratio, Boxed Composition",
-    "Portrait 2:3 (Classic)": "Portrait, 2:3 Aspect Ratio, Vertical Orientation",
-    "Portrait 3:4 (Standard)": "Portrait, 3:4 Aspect Ratio, Vertical Format",
-    "Portrait 4:5 (Social)": "Portrait, 4:5 Aspect Ratio, Vertical Composition",
-    "Portrait 9:16 (Mobile)": "Portrait, 9:16 Aspect Ratio, Full Screen Vertical",
-    "Landscape 3:2 (Classic)": "Landscape, 3:2 Aspect Ratio, Horizontal Orientation",
-    "Landscape 4:3 (Standard)": "Landscape, 4:3 Aspect Ratio, Standard View",
-    "Landscape 5:4 (Display)": "Landscape, 5:4 Aspect Ratio, Wide Format",
-    "Landscape 16:9 (HD)": "Landscape, 16:9 Aspect Ratio, Widescreen Format",
-    "Landscape 16:10 (Monitor)": "Landscape, 16:10 Aspect Ratio, Wide Display",
-    "Landscape 21:9 (Ultrawide)": "Landscape, 21:9 Aspect Ratio, Ultra-Wide Panoramic",
-    "Landscape 1.85:1 (Cinema)": "Landscape, 1.85:1 Aspect Ratio, Theatrical Format",
+    "Square 1:1": "square orientation, 1:1 aspect ratio, centered symmetrical composition",
+    "Portrait 2:3 (Classic)": "portrait orientation, 2:3 aspect ratio, classic vertical composition",
+    "Portrait 3:4 (Standard)": "portrait orientation, 3:4 aspect ratio, standard vertical composition",
+    "Portrait 4:5 (Social)": "portrait orientation, 4:5 aspect ratio, tight vertical composition",
+    "Portrait 9:16 (Mobile)": "portrait orientation, 9:16 aspect ratio, tall vertical composition",
+    "Landscape 3:2 (Classic)": "landscape orientation, 3:2 aspect ratio, classic horizontal composition",
+    "Landscape 4:3 (Standard)": "landscape orientation, 4:3 aspect ratio, standard horizontal composition",
+    "Landscape 5:4 (Display)": "landscape orientation, 5:4 aspect ratio, balanced horizontal composition",
+    "Landscape 16:9 (HD)": "landscape orientation, 16:9 aspect ratio, widescreen composition",
+    "Landscape 16:10 (Monitor)": "landscape orientation, 16:10 aspect ratio, wide panoramic composition",
+    "Landscape 21:9 (Ultrawide)": "landscape orientation, 21:9 aspect ratio, ultrawide panoramic composition",
+    "Landscape 1.85:1 (Cinema)": "landscape orientation, 1.85:1 aspect ratio, theatrical widescreen composition",
 }
 
 # Pre-sorted lists used by rng.choice() so that random selection is deterministic

@@ -20,6 +20,7 @@ Supports:
 import json
 import math
 import random
+from fractions import Fraction
 from typing import Any
 
 from _utils import (
@@ -64,18 +65,18 @@ _SQUARE: dict[str, float] = {"Square 1:1": 1.0}
 _ALL_RATIOS: dict[str, float] = {**_PORTRAITS, **_LANDSCAPES, **_SQUARE}
 
 _KEYWORD_MAP: dict[str, str] = {
-    "Square 1:1": "Square, 1:1 Aspect Ratio, Boxed Composition",
-    "Portrait 2:3 (Classic)": "Portrait, 2:3 Aspect Ratio, Vertical Orientation",
-    "Portrait 3:4 (Standard)": "Portrait, 3:4 Aspect Ratio, Vertical Format",
-    "Portrait 4:5 (Social)": "Portrait, 4:5 Aspect Ratio, Vertical Composition",
-    "Portrait 9:16 (Mobile)": "Portrait, 9:16 Aspect Ratio, Full Screen Vertical",
-    "Landscape 3:2 (Classic)": "Landscape, 3:2 Aspect Ratio, Horizontal Orientation",
-    "Landscape 4:3 (Standard)": "Landscape, 4:3 Aspect Ratio, Standard View",
-    "Landscape 5:4 (Display)": "Landscape, 5:4 Aspect Ratio, Wide Format",
-    "Landscape 16:9 (HD)": "Landscape, 16:9 Aspect Ratio, Widescreen Format",
-    "Landscape 16:10 (Monitor)": "Landscape, 16:10 Aspect Ratio, Wide Display",
-    "Landscape 21:9 (Ultrawide)": "Landscape, 21:9 Aspect Ratio, Ultra-Wide Panoramic",
-    "Landscape 1.85:1 (Cinema)": "Landscape, 1.85:1 Aspect Ratio, Theatrical Format",
+    "Square 1:1": "square orientation, 1:1 aspect ratio, centered symmetrical composition",
+    "Portrait 2:3 (Classic)": "portrait orientation, 2:3 aspect ratio, classic vertical composition",
+    "Portrait 3:4 (Standard)": "portrait orientation, 3:4 aspect ratio, standard vertical composition",
+    "Portrait 4:5 (Social)": "portrait orientation, 4:5 aspect ratio, tight vertical composition",
+    "Portrait 9:16 (Mobile)": "portrait orientation, 9:16 aspect ratio, tall vertical composition",
+    "Landscape 3:2 (Classic)": "landscape orientation, 3:2 aspect ratio, classic horizontal composition",
+    "Landscape 4:3 (Standard)": "landscape orientation, 4:3 aspect ratio, standard horizontal composition",
+    "Landscape 5:4 (Display)": "landscape orientation, 5:4 aspect ratio, balanced horizontal composition",
+    "Landscape 16:9 (HD)": "landscape orientation, 16:9 aspect ratio, widescreen composition",
+    "Landscape 16:10 (Monitor)": "landscape orientation, 16:10 aspect ratio, wide panoramic composition",
+    "Landscape 21:9 (Ultrawide)": "landscape orientation, 21:9 aspect ratio, ultrawide panoramic composition",
+    "Landscape 1.85:1 (Cinema)": "landscape orientation, 1.85:1 aspect ratio, theatrical widescreen composition",
 }
 
 _ALL_LABELS: list[str] = list(_ALL_RATIOS.keys())
@@ -150,6 +151,105 @@ def _compute_dimensions_from_total_pixels(total_pixels: int, ratio: float) -> tu
     width_int = max(round_to_multiple(int(round(w))), DEFAULT_MIN_DIMENSION)
     height_int = max(round_to_multiple(int(round(h))), DEFAULT_MIN_DIMENSION)
     return width_int, height_int
+
+
+def _preset_gap() -> float:
+    """Return the largest multiplicative gap between adjacent preset ratios.
+
+    Presets are sorted by ratio and the ratio of each adjacent pair is taken; the
+    largest is returned.  This is the scale used to step past the described range
+    so the cutoff grows with the preset set instead of using a magic number.
+    """
+    ratios: list[float] = sorted(_ALL_RATIOS.values())
+    gap_factors: list[float] = [b / a for a, b in zip(ratios, ratios[1:])]
+    return max(gap_factors) if gap_factors else 1.0
+
+
+def _custom_ratio_bounds() -> tuple[float, float]:
+    """Return the ``(tall, wide)`` ratio range the named presets describe.
+
+    The bounds sit one gap (see :func:`_preset_gap`) past the tallest and widest
+    presets, so the "beyond the described keywords" cutoff feels clearly past the
+    set's extremes in both directions.
+
+    Returns:
+        ``(tall, wide)`` where ``tall`` is the smallest ratio still considered
+        described and ``wide`` is the largest.
+    """
+    ratios: list[float] = sorted(_ALL_RATIOS.values())
+    margin: float = _preset_gap()
+    return ratios[0] / margin, ratios[-1] * margin
+
+
+def _format_ratio(ratio: float) -> str:
+    """Format a width-to-height *ratio* as a compact ``W:H`` string.
+
+    Uses a bounded-denominator fraction so entries such as ``2.0`` render as
+    ``2:1`` and ``3.5`` as ``7:2`` while staying readable for awkward values.
+
+    Args:
+        ratio: Width-to-height ratio (must be positive).
+
+    Returns:
+        The ratio as ``"{numerator}:{denominator}"``.
+    """
+    frac: Fraction = Fraction(ratio).limit_denominator(100)
+    return f"{frac.numerator}:{frac.denominator}"
+
+
+def _custom_intensity(ratio: float, tall: float, wide: float, margin: float) -> str:
+    """Return the composition phrase for a custom ratio beyond the described range.
+
+    Escalates one gap (see :func:`_preset_gap`) per tier.  Portrait ratios (below
+    *tall*) get three tiers — ``tall`` / ``very tall`` / ``super tall`` — while
+    landscape ratios (above *wide*) get two: ``ultrawide`` / ``super ultrawide``.
+
+    Args:
+        ratio: Width-to-height ratio, already known to be outside ``[tall, wide]``.
+        tall: Lower bound of the described range.
+        wide: Upper bound of the described range.
+        margin: Gap factor used to size each tier.
+
+    Returns:
+        A composition phrase such as ``"tall"`` or ``"super ultrawide"``.
+    """
+    if ratio < tall:
+        if ratio >= tall / margin:
+            return "tall"
+        if ratio >= tall / (margin * margin):
+            return "very tall"
+        return "super tall"
+    if ratio <= wide * margin:
+        return "ultrawide"
+    return "super ultrawide"
+
+
+def _keywords_for_custom_ratio(ratio: float) -> str:
+    """Return keywords for a custom *ratio*, or a generated custom phrase off-map.
+
+    Inside the described range (see :func:`_custom_ratio_bounds`) the ratio reuses
+    the nearest named preset's keywords by log-ratio distance.  Beyond the range it
+    builds a subject-agnostic string::
+
+        "{orientation} orientation, {W:H} aspect ratio, custom {intensity} composition"
+
+    Args:
+        ratio: Width-to-height ratio of the custom entry.
+
+    Returns:
+        The matched preset keyword string, or a generated ``custom ...`` phrase.
+    """
+    if ratio <= 0:
+        return "custom composition"
+
+    tall, wide = _custom_ratio_bounds()
+    if tall <= ratio <= wide:
+        nearest_name: str = min(_ALL_RATIOS, key=lambda n: abs(math.log(_ALL_RATIOS[n] / ratio)))
+        return _KEYWORD_MAP[nearest_name]
+
+    orientation: str = "portrait" if ratio < 1.0 else "landscape"
+    intensity: str = _custom_intensity(ratio, tall, wide, _preset_gap())
+    return f"{orientation} orientation, {_format_ratio(ratio)} aspect ratio, custom {intensity} composition"
 
 
 # ---------------------------------------------------------------------------
@@ -329,7 +429,10 @@ class ResolutionSelector:
         else:
             width_int, height_int = compute_aspect_ratio_dimensions(pixels, ratio_float)
 
-        keywords: str = _KEYWORD_MAP.get(target_label, f"Custom {ratio_float:.2f} Aspect Ratio, Custom Composition")
+        if target_label in _KEYWORD_MAP:
+            keywords: str = _KEYWORD_MAP[target_label]
+        else:
+            keywords = _keywords_for_custom_ratio(ratio_float)
 
         guide_size: int = min(width_int, height_int)
         max_size_val: int = max(width_int, height_int)

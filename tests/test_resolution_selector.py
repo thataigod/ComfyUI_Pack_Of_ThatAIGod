@@ -9,6 +9,7 @@ from _utils import DEFAULT_MIN_DIMENSION
 from Resolution_Selector import (
     _ALL_LABELS,
     _DEFAULT_CONFIG_JSON,
+    _KEYWORD_MAP,
     _LANDSCAPE_LABELS,
     _PORTRAIT_LABELS,
     DEFAULT_TOTAL_PIXELS,
@@ -16,6 +17,11 @@ from Resolution_Selector import (
     MIN_TOTAL_PIXELS,
     ResolutionSelector,
     _compute_dimensions_from_total_pixels,
+    _custom_intensity,
+    _custom_ratio_bounds,
+    _format_ratio,
+    _keywords_for_custom_ratio,
+    _preset_gap,
 )
 
 
@@ -321,7 +327,78 @@ class TestResolutionSelector(unittest.TestCase):
             }
         )
         kw = result["result"][5]
-        self.assertIn("Custom 0.75", kw)
+        self.assertIn("3:4 aspect ratio", kw)
+        self.assertIn("standard vertical composition", kw)
+
+    def test_custom_ratio_near_preset_reuses_that_preset(self):
+        result = self.node.calculate(
+            **{
+                "Limit By": "Max Side",
+                "Pixels": 1024,
+                "Scale Factor": 1.0,
+                "Aspect Ratio Config": _cfg([], custom_ratio=1.52, custom_enabled=True),
+                "Custom W:H Ratio": 1.52,
+                "seed": 0,
+            }
+        )
+        kw = result["result"][5]
+        self.assertIn("3:2 aspect ratio", kw)
+        self.assertIn("classic horizontal composition", kw)
+
+    def test_custom_ratio_beyond_portrait_tier_tall(self):
+        kw = _keywords_for_custom_ratio(0.4)
+        self.assertEqual(kw, "portrait orientation, 2:5 aspect ratio, custom tall composition")
+
+    def test_custom_ratio_beyond_portrait_tier_very_tall(self):
+        kw = _keywords_for_custom_ratio(0.3)
+        self.assertEqual(kw, "portrait orientation, 3:10 aspect ratio, custom very tall composition")
+
+    def test_custom_ratio_beyond_portrait_tier_super_tall(self):
+        kw = _keywords_for_custom_ratio(0.2)
+        self.assertEqual(kw, "portrait orientation, 1:5 aspect ratio, custom super tall composition")
+
+    def test_custom_ratio_beyond_landscape_tier_ultrawide(self):
+        kw = _keywords_for_custom_ratio(3.2)
+        self.assertEqual(kw, "landscape orientation, 16:5 aspect ratio, custom ultrawide composition")
+
+    def test_custom_ratio_beyond_landscape_tier_super_ultrawide(self):
+        kw = _keywords_for_custom_ratio(4.0)
+        self.assertEqual(kw, "landscape orientation, 4:1 aspect ratio, custom super ultrawide composition")
+
+    def test_keywords_for_custom_ratio_non_positive_returns_generic(self):
+        for bad_ratio in (0, -2.0):
+            self.assertEqual(_keywords_for_custom_ratio(bad_ratio), "custom composition")
+
+    def test_format_ratio_uses_bounded_fraction(self):
+        self.assertEqual(_format_ratio(2.0), "2:1")
+        self.assertEqual(_format_ratio(3.5), "7:2")
+        self.assertEqual(_format_ratio(0.4), "2:5")
+
+    def test_custom_intensity_tiers(self):
+        tall, wide = _custom_ratio_bounds()
+        margin = _preset_gap()
+        self.assertEqual(_custom_intensity(tall / (margin**0.5), tall, wide, margin), "tall")
+        self.assertEqual(_custom_intensity(tall / (margin**1.5), tall, wide, margin), "very tall")
+        self.assertEqual(_custom_intensity(tall / (margin**2.5), tall, wide, margin), "super tall")
+        self.assertEqual(_custom_intensity(wide * (margin**0.5), tall, wide, margin), "ultrawide")
+        self.assertEqual(_custom_intensity(wide * (margin**1.5), tall, wide, margin), "super ultrawide")
+
+    def test_preset_gap_is_positive(self):
+        self.assertGreater(_preset_gap(), 1.0)
+
+    def test_all_keywords_are_lowercase(self):
+        for label, kw in _KEYWORD_MAP.items():
+            self.assertEqual(kw, kw.lower(), label)
+
+    def test_custom_ratio_bounds_extend_past_preset_extremes(self):
+        tall, wide = _custom_ratio_bounds()
+        self.assertLess(tall, 9 / 16)
+        self.assertGreater(wide, 21 / 9)
+        self.assertLess(tall, wide)
+
+    def test_custom_ratio_inside_bounds_matches_nearest(self):
+        # 0.5 sits inside the described range, nearest preset is 9:16.
+        self.assertIn("9:16 aspect ratio", _keywords_for_custom_ratio(0.5))
 
     def test_custom_ratio_disabled_not_used(self):
         result = self.node.calculate(
