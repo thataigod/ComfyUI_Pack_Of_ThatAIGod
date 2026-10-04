@@ -1,5 +1,7 @@
 import json
+import math
 import os
+import random
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -12,13 +14,17 @@ from Resolution_Selector import (
     _KEYWORD_MAP,
     _LANDSCAPE_LABELS,
     _PORTRAIT_LABELS,
+    _RATIO_DECKS,
     DEFAULT_TOTAL_PIXELS,
     MAX_TOTAL_PIXELS,
     MIN_TOTAL_PIXELS,
+    MODE_DETERMINISTIC,
+    MODE_NO_REPEAT,
     ResolutionSelector,
     _compute_dimensions_from_total_pixels,
     _custom_intensity,
     _custom_ratio_bounds,
+    _deck_choice,
     _format_ratio,
     _keywords_for_custom_ratio,
     _preset_gap,
@@ -628,6 +634,7 @@ class TestResolutionSelector(unittest.TestCase):
         self.assertIn("Pixels", result["required"])
         self.assertIn("Scale Factor", result["required"])
         self.assertIn("Aspect Ratio Config", result["required"])
+        self.assertIn("mode", result["required"])
         self.assertIn("seed", result["required"])
 
     # --- Min Side with custom ratio ---
@@ -662,6 +669,42 @@ class TestResolutionSelector(unittest.TestCase):
             self.assertEqual(w, h)
             scaled_w = result["result"][2]
             self.assertEqual(scaled_w % 8, 0)
+
+    # --- Selection modes ---
+
+    def test_input_types_offer_the_modes(self):
+        modes = ResolutionSelector.INPUT_TYPES()["required"]["mode"][0]
+        self.assertEqual(modes, [MODE_DETERMINISTIC, MODE_NO_REPEAT])
+
+    def test_is_changed_deterministic_returns_seed(self):
+        self.assertEqual(ResolutionSelector.IS_CHANGED(mode=MODE_DETERMINISTIC, seed=123), 123)
+
+    def test_is_changed_no_repeat_returns_nan(self):
+        self.assertTrue(math.isnan(ResolutionSelector.IS_CHANGED(mode=MODE_NO_REPEAT, seed=0)))
+
+    def test_no_repeat_cycles_every_ratio_before_repeating(self):
+        _RATIO_DECKS.clear()
+        labels = ["Square 1:1", "Landscape 16:9 (HD)", "Portrait 2:3 (Classic)"]
+        params = {
+            "Limit By": "Max Side",
+            "Pixels": 1024,
+            "Scale Factor": 1.0,
+            "Aspect Ratio Config": _cfg(labels),
+            "mode": MODE_NO_REPEAT,
+            "seed": 0,
+        }
+        seen = [self.node.calculate(**params)["result"][5] for _ in range(3)]
+        self.assertEqual(len(set(seen)), 3)
+        # The next draw refills the deck and is still one of the selected ratios.
+        self.assertIn(self.node.calculate(**params)["result"][5], set(seen))
+
+    def test_deck_choice_refills_when_exhausted(self):
+        _RATIO_DECKS.clear()
+        key = (("A", 1.0), ("B", 2.0))
+        items = [("A", 1.0), ("B", 2.0)]
+        drawn = [_deck_choice(key, items, random.Random(0)) for _ in range(2)]
+        self.assertEqual(set(drawn), set(items))
+        self.assertIn(_deck_choice(key, items, random.Random(1)), items)
 
 
 if __name__ == "__main__":

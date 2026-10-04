@@ -9,6 +9,8 @@ Supports:
   (shortest dimension = pixels), or ``Total Pixels`` (width × height ≈ pixels).
 * Multi-select aspect ratios — any subset of 12 named presets plus an optional
   custom W:H ratio — with random selection from the active set.
+* Two selection modes (mirroring the Wildcard Reader): ``Deterministic (Seed)``
+  and ``Random (No Repeat)``.
 * Three batch-selection shortcuts (Select All, Portraits, Landscapes) via the
   ``js/resolution_selector.js`` frontend extension.
 * Custom W:H ratio via a ``Custom W:H Ratio`` widget.
@@ -41,6 +43,11 @@ MAX_PIXELS: int = 16384
 DEFAULT_TOTAL_PIXELS: int = 1_000_000
 MIN_TOTAL_PIXELS: int = DEFAULT_MIN_DIMENSION * DEFAULT_MIN_DIMENSION
 MAX_TOTAL_PIXELS: int = MAX_PIXELS * MAX_PIXELS
+
+# Ratio-selection modes (mirrors the Wildcard Reader node's mode widget).
+MODE_DETERMINISTIC: str = "Deterministic (Seed)"
+MODE_NO_REPEAT: str = "Random (No Repeat)"
+RATIO_MODES: list[str] = [MODE_DETERMINISTIC, MODE_NO_REPEAT]
 
 # Aspect ratio presets (identical to Dynamic_Resolution_Picker).
 _PORTRAITS: dict[str, float] = {
@@ -252,6 +259,44 @@ def _keywords_for_custom_ratio(ratio: float) -> str:
     return f"{orientation} orientation, {_format_ratio(ratio)} aspect ratio, custom {intensity} composition"
 
 
+# No-repeat decks keyed by the active ratio set.  Module-level so the deck
+# survives across executions; it resets when ComfyUI restarts.
+_RATIO_DECKS: dict[tuple[tuple[str, float], ...], list[tuple[str, float]]] = {}
+
+
+def _deck_choice(
+    key: tuple[tuple[str, float], ...],
+    items: list[tuple[str, float]],
+    rng: random.Random,
+) -> tuple[str, float]:
+    """Draw the next ratio from a no-repeat deck, refilling when exhausted.
+
+    Mirrors the Wildcard Reader's ``Random (No Repeat)`` mode: the active set is
+    shuffled into a deck and drawn without replacement; once empty it is
+    reshuffled on the next call.
+
+    Args:
+        key: Signature of the active ratio set (its sorted items) used to keep a
+            separate deck per selection.
+        items: The active ``(label, ratio)`` pairs to draw from.
+        rng: Unseeded RNG used to shuffle a fresh deck.
+
+    Returns:
+        The next ``(label, ratio)`` pair.
+    """
+    deck: list[tuple[str, float]] | None = _RATIO_DECKS.get(key)
+    if not deck:
+        deck = list(items)
+        rng.shuffle(deck)
+
+    choice: tuple[str, float] = deck.pop(0)
+    if deck:
+        _RATIO_DECKS[key] = deck
+    else:
+        _RATIO_DECKS.pop(key, None)
+    return choice
+
+
 # ---------------------------------------------------------------------------
 # Node
 # ---------------------------------------------------------------------------
@@ -345,13 +390,23 @@ class ResolutionSelector:
                         ),
                     },
                 ),
+                "mode": (
+                    RATIO_MODES,
+                    {
+                        "default": MODE_DETERMINISTIC,
+                        "tooltip": (
+                            "Deterministic: same seed always picks the same ratio. "
+                            "Random (No Repeat): cycles through every selected ratio before repeating."
+                        ),
+                    },
+                ),
                 "seed": (
                     "INT",
                     {
                         "default": 0,
                         "min": 0,
                         "max": 0xFFFFFFFFFFFFFFFF,
-                        "tooltip": "Seed for random ratio selection from the active set.",
+                        "tooltip": "Seed for Deterministic mode. Ignored in Random (No Repeat).",
                     },
                 ),
             },
@@ -392,13 +447,25 @@ class ResolutionSelector:
 
         return active
 
+    @classmethod
+    def IS_CHANGED(cls, mode: str = MODE_DETERMINISTIC, seed: int = 0, **kwargs: Any) -> float | int:
+        """Tell ComfyUI when to re-execute this node.
+
+        Returns the *seed* for Deterministic mode (re-runs only when it changes)
+        and ``float("nan")`` for Random (No Repeat) so ComfyUI always re-executes
+        and can draw the next ratio from the deck each run.
+        """
+        if mode != MODE_DETERMINISTIC:
+            return float("nan")
+        return seed
+
     def calculate(self, **kwargs: Any) -> dict[str, Any]:
         """Calculate dimensions and return results for UI and downstream nodes.
 
         Args:
             **kwargs: ComfyUI widget values. Expected keys: ``"Limit By"``,
                 ``"Pixels"``, ``"Scale Factor"``, ``"Aspect Ratio Config"``,
-                ``"Custom W:H Ratio"``, ``"seed"``.
+                ``"mode"``, ``"seed"``.
 
         Returns:
             A dict with ``"ui"`` values (consumed by ``js/resolution_selector.js``)
@@ -409,6 +476,7 @@ class ResolutionSelector:
         pixels: int = kwargs.get("Pixels", DEFAULT_PIXELS)
         scale_factor: float = kwargs.get("Scale Factor", DEFAULT_SCALE_FACTOR)
         config_json: str = kwargs.get("Aspect Ratio Config", _DEFAULT_CONFIG_JSON)
+        mode: str = kwargs.get("mode", MODE_DETERMINISTIC)
         seed: int = kwargs.get("seed", 0)
 
         if limit_by == "Total Pixels":
@@ -417,10 +485,13 @@ class ResolutionSelector:
             pixels = clamp_dimension(pixels, MIN_PIXELS, MAX_PIXELS)
         scale_factor = max(MIN_SCALE_FACTOR, min(scale_factor, MAX_SCALE_FACTOR))
 
-        rng: random.Random = random.Random(seed)
         active_ratios: list[tuple[str, float]] = self._resolve_active_ratios(config_json)
 
-        target_label, ratio_float = rng.choice(sorted(active_ratios))
+        if mode == MODE_NO_REPEAT:
+            sorted_ratios: list[tuple[str, float]] = sorted(active_ratios)
+            target_label, ratio_float = _deck_choice(tuple(sorted_ratios), sorted_ratios, random.Random())
+        else:
+            target_label, ratio_float = random.Random(seed).choice(sorted(active_ratios))
 
         if limit_by == "Min Side":
             width_int, height_int = _compute_dimensions_from_min_side(pixels, ratio_float)
