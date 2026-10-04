@@ -355,6 +355,16 @@ class ResolutionSelector:
                         )
                     },
                 ),
+                "mode": (
+                    RATIO_MODES,
+                    {
+                        "default": MODE_DETERMINISTIC,
+                        "tooltip": (
+                            "Deterministic: same seed always picks the same ratio. "
+                            "Random (No Repeat): cycles through every selected ratio before repeating."
+                        ),
+                    },
+                ),
                 "Pixels": (
                     "INT",
                     {
@@ -387,16 +397,6 @@ class ResolutionSelector:
                         "tooltip": (
                             "JSON config managed by the frontend. "
                             'Format: {"ratios": [...], "custom_ratio": 1.0, "custom_enabled": false}'
-                        ),
-                    },
-                ),
-                "mode": (
-                    RATIO_MODES,
-                    {
-                        "default": MODE_DETERMINISTIC,
-                        "tooltip": (
-                            "Deterministic: same seed always picks the same ratio. "
-                            "Random (No Repeat): cycles through every selected ratio before repeating."
                         ),
                     },
                 ),

@@ -273,9 +273,10 @@ app.registerExtension({
                 }
                 
                 for (let w of this.widgets) {
-                    if (w === configWidget) continue;
-                    if (w === infoWidget) break;
-                    h += 24; 
+                    // Count every real widget regardless of where the JS-added
+                    // info widget lands in the list, so nothing is cut off.
+                    if (w === configWidget || w === infoWidget) continue;
+                    h += 24;
                 }
 
                 // Calculate dynamically if visible, else use generous fallback
