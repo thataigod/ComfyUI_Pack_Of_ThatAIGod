@@ -568,5 +568,75 @@ class TestParsingDetails(unittest.TestCase):
             self.assertEqual(list(space["views"]), ["Front", "Back"])
 
 
+class TestResolveWarnings(unittest.TestCase):
+    def test_movement_bare_phrases_warn_and_are_ignored(self):
+        with TmpWildcards() as tmp:
+            tmp.write(
+                "camera/movements/drift.txt",
+                "#@based_on: Pan\n"
+                "a bare phrase outside blocks\n"
+                "#@close\n"
+                "a close drift\n"
+                "#@wide\n"
+                "a wide drift\n",
+            )
+            with self.assertLogs("ThatAIGod", level="WARNING") as logs:
+                space = core.load_option_space(tmp.wildcards)
+            self.assertTrue(any("bare phrase" in message for message in logs.output))
+            record = space["movements"]["drift"]
+            self.assertIn("a close drift", record["close"])
+            self.assertIn("a wide drift", record["wide"])
+            self.assertNotIn("phrases", record)
+
+    def test_close_and_long_directives_outside_sizes_warn(self):
+        with TmpWildcards() as tmp:
+            tmp.write("camera/views/odd.txt", "#@based_on: Front\n#@close: true\n#@long: true\na view phrase\n")
+            with self.assertLogs("ThatAIGod", level="WARNING") as logs:
+                space = core.load_option_space(tmp.wildcards)
+            self.assertTrue(any("#close" in message for message in logs.output))
+            self.assertTrue(any("#long" in message for message in logs.output))
+            self.assertNotIn("close", space["views"]["odd"])
+            self.assertNotIn("long", space["views"]["odd"])
+
+    def test_build_shot_fills_missing_axes_from_builtins(self):
+        with TmpWildcards() as tmp:
+            tmp.write("camera/views/Front.txt", "Front\n")
+            space = core.load_option_space(tmp.wildcards)
+            del space["looks"]
+            with self.assertLogs("ThatAIGod", level="WARNING") as logs:
+                shot = core.build_shot(
+                    json.dumps({"views": ["Front"]}),
+                    "Full Auto",
+                    3,
+                    1024,
+                    1024,
+                    option_space=space,
+                )
+            self.assertTrue(any("missing axis" in message for message in logs.output))
+            self.assertIn(shot["look"], core.LOOKS)
+
+
+class TestCameraTreeSignature(unittest.TestCase):
+    def test_missing_camera_tree_returns_empty(self):
+        with TmpWildcards() as tmp:
+            self.assertEqual(core.camera_tree_signature(tmp.wildcards), "")
+
+    def test_signature_stable_until_option_files_change(self):
+        with TmpWildcards() as tmp:
+            tmp.write("camera/views/Front.txt", "Front\n")
+            first = core.camera_tree_signature(tmp.wildcards)
+            self.assertEqual(first, core.camera_tree_signature(tmp.wildcards))
+            tmp.write("camera/views/Custom.txt", "#@based_on: Front\ncustom\n")
+            self.assertNotEqual(first, core.camera_tree_signature(tmp.wildcards))
+
+    def test_signature_ignores_non_option_files(self):
+        with TmpWildcards() as tmp:
+            tmp.write("camera/views/Front.txt", "Front\n")
+            first = core.camera_tree_signature(tmp.wildcards)
+            tmp.write("camera/views/_notes.txt", "notes\n")
+            tmp.write("camera/views/.hidden.txt", "hidden\n")
+            self.assertEqual(first, core.camera_tree_signature(tmp.wildcards))
+
+
 if __name__ == "__main__":
     unittest.main()

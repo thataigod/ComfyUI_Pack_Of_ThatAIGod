@@ -2,6 +2,7 @@
 
 import json
 import random
+import threading
 import unittest
 from typing import Any
 
@@ -49,6 +50,14 @@ class TestFaceVisible(unittest.TestCase):
         }
         self.assertFalse(face_visible("custom-overhead", "Front", option_space=space))
         self.assertNotIn("face", visible_regions("Full", "custom-overhead", "Front", option_space=space))
+
+    def test_unknown_angle_raises_clear_value_error(self):
+        with self.assertRaises(ValueError):
+            face_visible("Nonexistent Angle", "Front")
+
+    def test_unknown_view_raises_clear_value_error(self):
+        with self.assertRaises(ValueError):
+            face_visible("Eye Level", "Nonexistent View")
 
 
 class TestVisibleRegions(unittest.TestCase):
@@ -108,6 +117,14 @@ class TestVisibleRegions(unittest.TestCase):
         for size in ("Long", "Extreme Long"):
             self.assertIn("environment", visible_regions(size, "Eye Level", "Front"))
         self.assertNotIn("environment", visible_regions("Full", "Eye Level", "Front"))
+
+    def test_unknown_names_raise_clear_value_error(self):
+        with self.assertRaises(ValueError):
+            visible_regions("Nonexistent Size", "Eye Level", "Front")
+        with self.assertRaises(ValueError):
+            visible_regions("Full", "Nonexistent Angle", "Front")
+        with self.assertRaises(ValueError):
+            visible_regions("Full", "Eye Level", "Nonexistent View")
 
 
 class TestParseConfig(unittest.TestCase):
@@ -228,6 +245,30 @@ class TestShotBag(unittest.TestCase):
         first_a = [a.draw() for _ in range(3)]
         first_b = [b.draw() for _ in range(3)]
         self.assertNotEqual(first_a, first_b)
+
+    def test_concurrent_draws_are_lossless(self):
+        bag = ShotBag(9006, self._small_config())
+        draws: list[tuple] = []
+        draws_lock = threading.Lock()
+
+        def worker() -> None:
+            for _ in range(20):
+                combo = tuple(sorted(bag.draw().items()))
+                with draws_lock:
+                    draws.append(combo)
+
+        threads = [threading.Thread(target=worker) for _ in range(8)]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+        self.assertEqual(len(draws), 160)
+        counts: dict[tuple, int] = {}
+        for combo in draws:
+            counts[combo] = counts.get(combo, 0) + 1
+        # 160 draws over the 32-combo deck = exactly 5 full cycles: the lock
+        # makes every draw atomic so no combination is lost or duplicated.
+        self.assertEqual(set(counts.values()), {5})
 
 
 class TestBuildShotDeterministic(unittest.TestCase):
@@ -451,17 +492,47 @@ class TestBuildShotModes(unittest.TestCase):
             rng_b.choice(core._SHOT_PHRASES["Close-Up"]),
         )
 
-    def test_bag_is_shared_per_seed_and_config(self):
+    def test_bag_shared_across_seeds_for_same_config(self):
+        # The deck must survive seed changes (control_after_generate) so the
+        # no-repeat cycle continues instead of restarting on every run.
         config = json.dumps({"sizes": ["Close-Up", "Full"]})
         parsed = parse_config(config)
+        core._BAGS.clear()
         bag_a = core._get_bag(123, parsed)
         bag_b = core._get_bag(123, parsed)
         bag_c = core._get_bag(456, parsed)
         self.assertIs(bag_a, bag_b)
-        self.assertIsNot(bag_a, bag_c)
+        self.assertIs(bag_a, bag_c)
+        core._BAGS.clear()
+
+    def test_no_repeat_deck_survives_seed_changes(self):
+        config = json.dumps(
+            {
+                "sizes": ["Close-Up", "Full"],
+                "angles": ["Eye Level"],
+                "views": ["Front"],
+                "movements": ["Static"],
+                "tilts": ["None"],
+                "looks": ["Leica M6"],
+            }
+        )
+        core._BAGS.clear()
+        first_two: list[str] = []
+        seen: set[str] = set()
+        for seed in (500, 501, 502, 503):
+            shot = build_shot(config, NO_REPEAT_MODE, seed, 1024, 1024)
+            seen.add(shot["shot_size"])
+            if seed in (500, 501):
+                first_two.append(shot["shot_size"])
+        # Incrementing seeds consume the SAME shuffled deck: the first two
+        # runs yield both combos and the cycle continues instead of repeating.
+        self.assertNotEqual(first_two[0], first_two[1])
+        self.assertEqual(seen, {"Close-Up", "Full"})
+        core._BAGS.clear()
 
     def test_bag_lru_evicts_oldest_after_max(self):
-        # _MAX_BAGS is 64 — creating 65 distinct bags must evict the oldest
+        # _MAX_BAGS is 64 — creating 65 distinct config fingerprints must
+        # evict the oldest (bags are keyed by config, not seed).
         core._BAGS.clear()
         base_cfg = {
             "sizes": ["Close-Up"],
@@ -471,14 +542,41 @@ class TestBuildShotModes(unittest.TestCase):
             "tilts": ["None"],
             "looks": ["Leica M6"],
         }
-        for seed in range(core._MAX_BAGS + 5):
-            core._get_bag(seed, base_cfg)
+        for i in range(core._MAX_BAGS + 5):
+            core._get_bag(i, {**base_cfg, "sizes": [f"custom-{i}"]})
         self.assertEqual(len(core._BAGS), core._MAX_BAGS)
-        oldest_key = (0, json.dumps(base_cfg, sort_keys=True))
-        newest_key = (core._MAX_BAGS + 4, json.dumps(base_cfg, sort_keys=True))
-        self.assertNotIn(oldest_key, core._BAGS)
-        self.assertIn(newest_key, core._BAGS)
+        oldest_fp = json.dumps({**base_cfg, "sizes": ["custom-0"]}, sort_keys=True)
+        newest_fp = json.dumps({**base_cfg, "sizes": [f"custom-{core._MAX_BAGS + 4}"]}, sort_keys=True)
+        self.assertNotIn(oldest_fp, core._BAGS)
+        self.assertIn(newest_fp, core._BAGS)
         core._BAGS.clear()
+
+    def test_view_phrase_unknown_placeholders_are_literal_not_crashes(self):
+        space = core._builtin_space()
+        space["views"]["quirky"] = {
+            "name": "quirky",
+            "azimuth": 45,
+            "hides": frozenset({"back", "buttocks"}),
+            "keyword": "Quirky View",
+            "phrases": (
+                "the subject at {pose} seen from the {side}",
+                "the subject framed by {0} toward the {side}",
+            ),
+            "shortcuts": frozenset(),
+        }
+        shot = build_shot(
+            json.dumps({"views": ["quirky"], "sizes": ["Full"], "angles": ["Eye Level"]}),
+            "Deterministic (Seed)",
+            1,
+            1024,
+            1024,
+            option_space=space,
+        )
+        # {side} is substituted; unknown placeholders stay literal instead of
+        # raising KeyError/IndexError from str.format.
+        self.assertIn(shot["side"], ("left", "right"))
+        self.assertNotIn("{side}", shot["description"])
+        self.assertTrue("{pose}" in shot["description"] or "{0}" in shot["description"])
 
     def test_shot_shape(self):
         shot = build_shot(DEFAULT_CONFIG_JSON, "Deterministic (Seed)", 8, 1024, 1024)

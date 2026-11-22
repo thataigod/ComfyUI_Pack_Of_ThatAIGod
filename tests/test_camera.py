@@ -2,10 +2,15 @@
 
 import json
 import math
+import os
+import tempfile
 import unittest
+from unittest import mock
 
-from _camera_core import DEFAULT_CONFIG_JSON
+from _camera_core import DEFAULT_CONFIG_JSON, camera_tree_signature
 from Camera import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS, Camera
+
+_PACK_WILDCARDS = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "wildcards")
 
 
 class TestInputTypes(unittest.TestCase):
@@ -62,7 +67,10 @@ class TestIsChanged(unittest.TestCase):
 
     def test_deterministic_is_stable_tuple(self):
         changed = Camera.IS_CHANGED(**{"Seed": 5, "Wildcard Mode": "Deterministic (Seed)", "Camera Config": "{}"})
-        self.assertEqual(changed, (5, "Deterministic (Seed)", "{}", 1024, 1024))
+        self.assertEqual(
+            changed,
+            (5, "Deterministic (Seed)", "{}", 1024, 1024, camera_tree_signature(_PACK_WILDCARDS)),
+        )
 
     def test_deterministic_includes_dimensions(self):
         base = Camera.IS_CHANGED(**{"Seed": 5, "Wildcard Mode": "Deterministic (Seed)", "Camera Config": "{}"})
@@ -70,7 +78,7 @@ class TestIsChanged(unittest.TestCase):
             **{"Seed": 5, "Wildcard Mode": "Deterministic (Seed)", "Camera Config": "{}", "Width": 768, "Height": 1152}
         )
         self.assertNotEqual(base, changed)
-        self.assertEqual(changed, (5, "Deterministic (Seed)", "{}", 768, 1152))
+        self.assertEqual(changed, (5, "Deterministic (Seed)", "{}", 768, 1152, camera_tree_signature(_PACK_WILDCARDS)))
 
     def test_dimensions_clamped_in_is_changed(self):
         # Outside-range values are clamped to [64, 16384] just like shoot() does
@@ -90,6 +98,19 @@ class TestIsChanged(unittest.TestCase):
     def test_missing_mode_uses_default(self):
         changed = Camera.IS_CHANGED()
         self.assertIsInstance(changed, tuple)
+
+    def test_wildcard_file_edits_change_cache_key(self):
+        kwargs = {"Seed": 5, "Wildcard Mode": "Deterministic (Seed)", "Camera Config": "{}"}
+        with tempfile.TemporaryDirectory() as tmp:
+            wildcards = os.path.join(tmp, "wildcards")
+            os.makedirs(os.path.join(wildcards, "camera", "views"))
+            with mock.patch("Camera._WILDCARDS_DIR", wildcards):
+                before = Camera.IS_CHANGED(**kwargs)
+                with open(os.path.join(wildcards, "camera", "views", "custom.txt"), "w", encoding="utf-8") as f:
+                    f.write("#@based_on: Front\ncustom view phrase\n")
+                after = Camera.IS_CHANGED(**kwargs)
+        self.assertEqual(before[:5], after[:5])
+        self.assertNotEqual(before[5], after[5])
 
 
 class TestShoot(unittest.TestCase):

@@ -26,6 +26,7 @@ import logging
 import os
 import random
 import re
+import threading
 import zlib
 from collections import OrderedDict
 from itertools import product
@@ -565,7 +566,13 @@ def face_visible(
         ``True`` when the face (and therefore eyes, facial skin) is visible.
     """
     space = option_space if option_space is not None else _builtin_space()
-    hidden = _augmented_hides(space["angles"][angle], space["views"][view])
+    angle_rec = space["angles"].get(angle)
+    view_rec = space["views"].get(view)
+    if angle_rec is None:
+        raise ValueError(f"unknown camera angle {angle!r}; pass a wildcard-derived option_space for custom options")
+    if view_rec is None:
+        raise ValueError(f"unknown camera view {view!r}; pass a wildcard-derived option_space for custom options")
+    hidden = _augmented_hides(angle_rec, view_rec)
     return "face" not in hidden
 
 
@@ -592,8 +599,17 @@ def visible_regions(
         The visible region names, ordered as in the size's base list.
     """
     space = option_space if option_space is not None else _builtin_space()
-    base = list(space["sizes"][size]["regions"])
-    hidden = _augmented_hides(space["angles"][angle], space["views"][view])
+    size_rec = space["sizes"].get(size)
+    angle_rec = space["angles"].get(angle)
+    view_rec = space["views"].get(view)
+    if size_rec is None:
+        raise ValueError(f"unknown camera size {size!r}; pass a wildcard-derived option_space for custom options")
+    if angle_rec is None:
+        raise ValueError(f"unknown camera angle {angle!r}; pass a wildcard-derived option_space for custom options")
+    if view_rec is None:
+        raise ValueError(f"unknown camera view {view!r}; pass a wildcard-derived option_space for custom options")
+    base = list(size_rec["regions"])
+    hidden = _augmented_hides(angle_rec, view_rec)
     return [region for region in base if region not in hidden]
 
 
@@ -1011,7 +1027,15 @@ def _resolve_option(
         return None
     record = dict(base)
     if parsed["phrases"]:
-        if axis == "tilts":
+        if axis == "movements":
+            # Movement records read only the close/wide buckets; bare lines
+            # outside #@close/#@wide blocks have no effect — warn so authors
+            # notice instead of silently losing the text.
+            logging.getLogger("ThatAIGod").warning(
+                "Camera: movement option %r has bare phrase lines outside #@close/#@wide blocks; ignored",
+                name,
+            )
+        elif axis == "tilts":
             # Mirror builtin normalization so custom ", framed ..." does not
             # produce a double comma when joined with ", ".
             record["phrases"] = tuple(phrase.strip().lstrip(", ") for phrase in parsed["phrases"])
@@ -1049,10 +1073,18 @@ def _resolve_option(
                 continue
             record[field] = parsed[field]
     # `close`/`long` bools are sizes-only (framing buckets).
-    if parsed["close"] is not None and axis == "sizes":
-        record["close"] = parsed["close"]
-    if parsed.get("long") is not None and axis == "sizes":
-        record["long"] = parsed["long"]
+    for field in ("close", "long"):
+        if parsed[field] is None:
+            continue
+        if axis == "sizes":
+            record[field] = parsed[field]
+        else:
+            logging.getLogger("ThatAIGod").warning(
+                "Camera: #%s directive on axis %r is sizes-only, ignored for %r",
+                field,
+                axis,
+                name,
+            )
     if parsed["regions"] is not None:
         record["regions"] = parsed["regions"]
     if parsed["hides"] is not None:
@@ -1147,6 +1179,36 @@ def option_shortcuts(space: dict[str, dict[str, dict[str, Any]]], axis: str) -> 
     return [(group, members[group]) for group in ordered]
 
 
+def camera_tree_signature(wildcards_dir: str) -> str:
+    """Return a stable digest of the ``camera/`` option tree's file state.
+
+    Used by the Camera node's ``IS_CHANGED`` so that edits, additions or
+    deletions of wildcard option files invalidate the execution cache even
+    when no widget value changed.  Only ``.txt`` option files (matching the
+    loader's filters) contribute; a missing camera tree yields ``""``.
+    """
+    root = os.path.join(wildcards_dir, _CAMERA_DIR_NAME)
+    if not os.path.isdir(root):
+        return ""
+    entries: list[str] = []
+    for axis in _AXIS_DIRS:
+        axis_dir = os.path.join(root, axis)
+        try:
+            files = sorted(os.listdir(axis_dir))
+        except OSError:  # pragma: no cover - filesystem race
+            continue
+        for entry in files:
+            if not entry.endswith(".txt") or entry.startswith((".", "_")):
+                continue
+            try:
+                mtime = int(os.path.getmtime(os.path.join(axis_dir, entry)))
+            except OSError:  # pragma: no cover - filesystem race
+                continue
+            entries.append(f"{axis}/{entry}:{mtime}")
+    digest = zlib.crc32("\n".join(entries).encode("utf-8"))
+    return f"{len(entries)}-{digest:08x}"
+
+
 # Keyword overrides: the tokens that actually reach the model.  These may
 # differ from the axis option names (which stay a js/config contract) so the
 # prompt carries model-friendly tags while the UI keeps its vocabulary.
@@ -1196,7 +1258,9 @@ def _pick_view_phrase(rng: random.Random, phrases: tuple[str, ...], side: str) -
         return phrase
     if not side:
         return phrase.replace("the {side}", "the camera").replace("{side}", "camera")
-    return phrase.format(side=side)
+    # Literal substitution — never str.format: a wildcard-file phrase with an
+    # unknown placeholder (e.g. "{pose}", "{0}") must not crash the node.
+    return phrase.replace("{side}", side)
 
 
 def _compose_description(
@@ -1400,6 +1464,7 @@ class ShotBag:
             self._deck = [tuple()]
         self._round: int = 0
         self._index: int = 0
+        self._lock = threading.Lock()
         self._shuffle()
 
     def _shuffle(self) -> None:
@@ -1409,35 +1474,43 @@ class ShotBag:
         self._index = 0
 
     def draw(self) -> dict[str, str]:
-        """Return the next axis combination as an ``{axis: value}`` dict."""
-        if self._index >= len(self._deck):
-            self._shuffle()
-        combo = self._deck[self._index]
-        self._index += 1
+        """Return the next axis combination as an ``{axis: value}`` dict.
+
+        Thread-safe: ComfyUI may execute several nodes concurrently, and the
+        check-then-act advance of ``_index`` must be atomic per bag.
+        """
+        with self._lock:
+            if self._index >= len(self._deck):
+                self._shuffle()
+            combo = self._deck[self._index]
+            self._index += 1
         return dict(zip(self._keys, combo, strict=True))
 
 
-# Registry keyed by (seed, config fingerprint) so the same bag is shared
-# across executions for the lifetime of the process (session-scoped).
-# Bounded LRU to prevent unbounded growth when farming many seeds/configs:
-# the oldest entry is evicted, which resets its shuffle cycle — the trade-off
-# is acceptable versus holding 50k+ tuples per bag forever (see D3/D4).
+# Registry keyed by the config fingerprint alone: the deck must survive seed
+# changes so a seed widget with control_after_generate keeps consuming the
+# same shuffled deck (a per-seed key would use only draw #0 of each fresh
+# shuffle and repeat early).  Bounded LRU to prevent unbounded growth when
+# farming many configs: the oldest entry is evicted, which resets its
+# shuffle cycle — the trade-off is acceptable versus holding 50k+ tuples per
+# bag forever (see D3/D4).
 _MAX_BAGS: int = 64
-_BAGS: OrderedDict[tuple[int, str], ShotBag] = OrderedDict()
+_BAGS: OrderedDict[str, ShotBag] = OrderedDict()
+_BAGS_LOCK = threading.Lock()
 
 
 def _get_bag(seed: int, config: dict[str, list[str]]) -> ShotBag:
     fingerprint = json.dumps(config, sort_keys=True)
-    key = (seed, fingerprint)
-    bag = _BAGS.get(key)
-    if bag is not None:
-        _BAGS.move_to_end(key)
+    with _BAGS_LOCK:
+        bag = _BAGS.get(fingerprint)
+        if bag is not None:
+            _BAGS.move_to_end(fingerprint)
+            return bag
+        bag = ShotBag(seed, config)
+        _BAGS[fingerprint] = bag
+        if len(_BAGS) > _MAX_BAGS:
+            _BAGS.popitem(last=False)
         return bag
-    bag = ShotBag(seed, config)
-    _BAGS[key] = bag
-    if len(_BAGS) > _MAX_BAGS:
-        _BAGS.popitem(last=False)
-    return bag
 
 
 def _variant_rng(seed: int, combo: tuple[str, ...]) -> random.Random:
@@ -1485,6 +1558,16 @@ def build_shot(
         space = load_option_space(wildcards_dir)
     if space is None:
         space = _builtin_space()
+    # A caller-supplied space (tests/embeddings) may lack axes; fill from the
+    # built-ins so Full Auto's space iteration and record lookups cannot KeyError.
+    missing_axes = [axis for axis in _AXIS_DIRS if axis not in space]
+    if missing_axes:
+        builtin = _builtin_space()
+        for axis in missing_axes:
+            logging.getLogger("ThatAIGod").warning(
+                "Camera: option space missing axis %r, using built-ins", axis
+            )
+            space[axis] = builtin[axis]
     config = parse_config(config_json, space)
 
     if mode not in (DETERMINISTIC_MODE, FULL_AUTO_MODE, NO_REPEAT_MODE):  # pragma: no cover - defensive, UI restricts values
@@ -1580,6 +1663,7 @@ __all__: list[str] = [
     "build_shot",
     "load_option_space",
     "option_shortcuts",
+    "camera_tree_signature",
     "DEFAULT_CONFIG_JSON",
     "DETERMINISTIC_MODE",
     "FULL_AUTO_MODE",

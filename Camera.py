@@ -29,10 +29,12 @@ from typing import Any
 from _camera_core import (
     _AXIS_DIRS,
     DEFAULT_CONFIG_JSON,
+    DETERMINISTIC_MODE,
     FULL_AUTO_MODE,
     NO_REPEAT_MODE,
     _builtin_space,
     build_shot,
+    camera_tree_signature,
     load_option_space,
     option_shortcuts,
 )
@@ -140,9 +142,9 @@ class Camera:
                     },
                 ),
                 "Wildcard Mode": (
-                    ["Deterministic (Seed)", "Full Auto", "Random (No Repeat)"],
+                    [DETERMINISTIC_MODE, FULL_AUTO_MODE, NO_REPEAT_MODE],
                     {
-                        "default": "Deterministic (Seed)",
+                        "default": DETERMINISTIC_MODE,
                         "tooltip": (
                             "Deterministic (Seed): seeded pick from the active sets. "
                             "Full Auto: seeded pick over the whole space. "
@@ -182,6 +184,10 @@ class Camera:
             config_key,
             clamp_dimension(round_to_multiple(_safe_int(kwargs.get("Width", 1024), 1024))),
             clamp_dimension(round_to_multiple(_safe_int(kwargs.get("Height", 1024), 1024))),
+            # Wildcard option-file edits must invalidate the cache even when
+            # no widget changed (Deterministic/Full Auto only; No Repeat is
+            # NaN above and always re-executes).
+            camera_tree_signature(_WILDCARDS_DIR),
         )
 
     def shoot(self, **kwargs: Any) -> dict[str, Any]:
@@ -201,7 +207,7 @@ class Camera:
         width: int = clamp_dimension(round_to_multiple(_safe_int(kwargs.get("Width", 1024), 1024)))
         height: int = clamp_dimension(round_to_multiple(_safe_int(kwargs.get("Height", 1024), 1024)))
         seed: int = _safe_int(kwargs.get("Seed", 0), 0)
-        mode: str = kwargs.get("Wildcard Mode", "Deterministic (Seed)")
+        mode: str = kwargs.get("Wildcard Mode", DETERMINISTIC_MODE)
 
         shot = build_shot(config_json, mode, seed, width, height, wildcards_dir=_WILDCARDS_DIR)
 
