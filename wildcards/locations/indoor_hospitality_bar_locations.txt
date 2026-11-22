@@ -1,0 +1,28 @@
+#@setting: indoor
+#@domain: hospitality
+#@place: bar
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+in a cocktail bar with a wall of bottles and velvet stools
+in a speakeasy bar with dark leather booths and a brass rail
+in a rooftop bar with glass balustrades and a skyline below
+#@time: morning
+in a bar with stools stacked on tables and a mop bucket, in the morning
+#@time: noon
+in an empty bar with a striped floor and a bare counter, at noon
+#@time: afternoon
+in a bar with tinted windows and a mahogany counter, in the afternoon
+#@time: golden hour
+in a bar with a row of bottles and an early customer, at golden hour
+#@time: dusk
+in a bar with a neon sign and a street window, at dusk
+#@time: night
+in a bar with condensation on the glasses and a brass tap, at night
+#@time: night
+in a bar with a bartender shaking a cocktail and mirrored walls, at night
+#@time: blue hour
+in a bar with a street window and a bowl of peanuts, at blue hour
+#@time: midnight
+in a bar with last drinks and shadows in the corners, at midnight

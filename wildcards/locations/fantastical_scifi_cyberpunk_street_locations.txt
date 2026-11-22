@@ -1,0 +1,30 @@
+#@setting: fantastical
+#@domain: scifi
+#@place: cyberpunk_street
+#@region: universal
+#@era: futuristic
+#@privacy: public
+#@climate: temperate
+on a neon-drenched cyberpunk street with holographic billboards
+in a crowded cyberpunk street of noodle stalls and steam vents
+along a cyberpunk street block of chrome arches and humming trams
+on a rooftop market above a cyberpunk street with drone traffic
+beside a data terminal glowing cyan on a cyberpunk street
+in a cyberpunk street underpass of broken lights and a noodle counter
+along a rain-soaked cyberpunk street under looping holo-adverts
+#@time: dawn
+on a cyberpunk street at dawn with neon still burning
+#@time: morning
+on a cyberpunk street in the morning with delivery drones
+#@time: noon
+on a cyberpunk street at noon in flat grey smog
+#@time: afternoon
+on a cyberpunk street in the afternoon with surging crowds
+#@time: golden hour
+on a cyberpunk street at golden hour as smog turns amber
+#@time: dusk
+on a cyberpunk street at dusk with rain and flickering signs
+#@time: night
+on a cyberpunk street at night under a blaze of neon
+#@time: midnight
+on a cyberpunk street at midnight with rolling steam and neon glow

@@ -1,0 +1,3 @@
+__semi_outdoor_courtyard_locations__
+__semi_outdoor_veranda_locations__
+__semi_outdoor_covered_locations__

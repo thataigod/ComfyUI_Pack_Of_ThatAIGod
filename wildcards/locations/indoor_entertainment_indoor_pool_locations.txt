@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: entertainment
+#@place: indoor_pool
+#@region: universal
+#@era: contemporary
+#@privacy: semi_public
+#@climate: humid
+in an indoor swimming pool with turquoise water
+beside a hotel pool under a glass roof
+at the shallow end of a leisure pool
+on the pool deck of a spa with rolled towels
+#@time: dawn
+in an indoor pool lane with floating ropes, at dawn
+#@time: morning
+at a pool ladder with chrome rails, in the morning
+#@time: noon
+along a poolside walkway with mosaic tiles, at noon
+#@time: afternoon
+in a pool changing room with lockers, in the afternoon
+#@time: golden hour
+at a pool viewing gallery with tiered benches, at golden hour
+#@time: night
+in a children's pool with a small slide, at night
+#@time: night
+beside a lap pool with starting blocks, at night
+#@time: midnight
+in a pool hall with arched windows, at midnight

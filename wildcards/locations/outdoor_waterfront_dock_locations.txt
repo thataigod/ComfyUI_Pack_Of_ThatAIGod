@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: waterfront
+#@place: dock
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+on a working dock with timber fenders
+on a container dock with a gantry crane
+along a dock edge with rusted chains
+at a dock with trawlers tied bow to stern
+on a floating dock with life rings
+#@time: dawn
+on a dock with idling engines in the mist, at dawn
+#@time: morning
+on a dock with cranes swinging overhead, in the morning
+#@time: noon
+on a dock with oil rainbows on the water, at noon
+#@time: afternoon
+on a dock with long shadows across the quay, in the afternoon
+#@time: golden hour
+on a dock with cranes black against copper, at golden hour
+#@time: dusk
+on a dock as the quay lamps flicker on, at dusk
+#@time: night
+on a dock with sodium lights on black water, at night

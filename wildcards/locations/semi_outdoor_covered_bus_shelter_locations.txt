@@ -1,0 +1,28 @@
+#@setting: semi_outdoor
+#@domain: covered
+#@place: bus_shelter
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+at a bus shelter with a glass canopy
+at a bus shelter with a curved roof
+at a bus shelter with a slatted roof
+at a roadside bus shelter with a low wall
+at a bus shelter with a glass wall and wooden bench
+#@time: dawn
+at a bus shelter at dawn with an empty road
+#@time: morning
+at a bus shelter in the morning with crowded commuters
+#@time: noon
+at a bus shelter at noon with thin shade beneath the roof
+#@time: afternoon
+at a bus shelter in the afternoon with shadows on the pavement
+#@time: golden hour
+at a bus shelter at golden hour with amber light through panels
+#@time: dusk
+at a bus shelter at dusk with the interior lamp flickering
+#@time: night
+at a bus shelter at night with rain on the canopy
+#@time: midnight
+at a bus shelter at midnight with the glass beaded and street deserted

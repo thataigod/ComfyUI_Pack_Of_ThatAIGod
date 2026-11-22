@@ -1,0 +1,27 @@
+#@setting: outdoor
+#@domain: gardens
+#@place: palace
+#@region: european
+#@era: traditional
+#@privacy: semi_private
+#@climate: temperate
+in a palace garden with clipped hedges
+amid the formal parterres with a stone staircase
+in an ornamental palace garden with a reflecting pool
+along a lime avenue with a summer pavilion
+#@time: dawn
+in a palace garden at dawn with misty parterres
+#@time: morning
+in a palace garden in the morning with raking gardeners
+#@time: noon
+in a palace garden at noon with a bright pool
+#@time: afternoon
+in a palace garden in the afternoon with warm statues
+#@time: golden hour
+in a palace garden at golden hour with gilded fountains
+#@time: dusk
+in a palace garden at dusk with lit fountains
+#@time: night
+in a palace garden at night with moonlit topiary
+#@time: midnight
+in a palace garden at midnight with still water

@@ -1,0 +1,23 @@
+#@setting: outdoor
+#@domain: urban
+#@place: night_market
+#@region: east_asian
+#@era: contemporary
+#@privacy: public
+#@climate: warm
+in a night market with paper lanterns
+along a market lane with skewers sizzling
+in a crowded street market with spice stalls
+at a night market with hanging seafood
+#@time: golden hour
+at a night market at golden hour with warming bulbs
+#@time: dusk
+at a night market at dusk with gathering crowds
+#@time: blue hour
+at a night market in blue hour with neon reflections
+#@time: night
+at a night market at night with crowded aisles
+#@time: night
+at a night market late at night with drifting smoke
+#@time: midnight
+at a night market near midnight with packing crates

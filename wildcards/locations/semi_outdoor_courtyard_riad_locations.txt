@@ -1,0 +1,28 @@
+#@setting: semi_outdoor
+#@domain: courtyard
+#@place: riad
+#@region: middle_eastern
+#@era: traditional
+#@privacy: private
+#@climate: warm
+in a riad courtyard with a mosaic fountain
+in a riad inner courtyard with horseshoe arches
+under a riad arcade with carved plaster
+at a riad courtyard fountain with orange blossom
+beside a riad reflecting pool with blue-and-white tiles
+#@time: dawn
+in a riad courtyard at dawn with cool light on the tiles
+#@time: morning
+in a riad courtyard in the morning with sun on carved plaster
+#@time: noon
+in a riad courtyard at noon with shade beneath the arches
+#@time: afternoon
+in a riad courtyard in the afternoon with pierced-screen light on tiles
+#@time: golden hour
+in a riad courtyard at golden hour with amber light on zellige
+#@time: dusk
+in a riad courtyard at dusk with pierced-metal lanterns lit
+#@time: blue hour
+in a riad courtyard in blue hour with indigo light in the arches
+#@time: night
+in a riad courtyard at night with lanterns mirrored in the pool

@@ -1,0 +1,26 @@
+#@setting: indoor
+#@domain: workplace
+#@place: office
+#@region: universal
+#@era: contemporary
+#@privacy: semi_public
+#@climate: temperate
+in an open-plan office with rows of desks
+in a corner office with a broad desk
+in a startup office with standing desks
+#@time: morning
+in an office with steaming coffee mugs, in the morning
+#@time: morning
+in an office with a humming printer, in the morning
+#@time: noon
+in an office with low dividing screens, at noon
+#@time: afternoon
+in an office with wheeled desk chairs, in the afternoon
+#@time: golden hour
+in an office with lowered window blinds, at golden hour
+#@time: dusk
+in an office with a cluttered break room, at dusk
+#@time: night
+in an office with abandoned coffee cups, at night
+#@time: midnight
+in an empty office with a lone monitor, at midnight

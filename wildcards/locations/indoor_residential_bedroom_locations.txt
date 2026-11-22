@@ -1,0 +1,32 @@
+#@setting: indoor
+#@domain: residential
+#@place: bedroom
+#@region: universal
+#@era: timeless
+#@privacy: private
+#@climate: temperate
+in a serene bedroom with a padded headboard
+beside a four-poster bed in a bedroom with carved nightstands
+in a minimalist bedroom with a low platform bed
+#@time: morning
+in a bedroom with rumpled linen sheets, in the morning
+#@time: morning
+in a bedroom with an unmade bed, in the morning
+#@time: morning
+in a bedroom with white cotton sheets and a tall window, in the morning
+#@time: noon
+in a pale bedroom with a neatly made bed, at noon
+#@time: afternoon
+in a warm bedroom with a striped duvet and a rattan armchair, in the afternoon
+#@time: golden hour
+in a bedroom with a brass bed frame and honeyed floorboards, at golden hour
+#@time: dusk
+in a bedroom with a pale quilt and a bedside carafe, at dusk
+#@time: night
+in a bedroom with a bolster pillow and a folded throw, at night
+#@time: night
+in a bedroom with heavy curtains and a tumbler of water, at night
+#@time: blue hour
+in a bedroom with an open window and a distant streetlamp, at blue hour
+#@time: midnight
+in a bedroom with a silver hairbrush on the dresser, at midnight

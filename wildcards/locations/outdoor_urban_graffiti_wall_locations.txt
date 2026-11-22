@@ -1,0 +1,27 @@
+#@setting: outdoor
+#@domain: urban
+#@place: graffiti_wall
+#@region: north_american
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+beside a long concrete wall with layered graffiti
+in front of a brick wall with bubble letters
+beside a railway wall with murals and stencils
+at a graffiti-covered underpass with scattered cans
+#@time: dawn
+at a graffiti wall at dawn with fresh paint
+#@time: morning
+at a graffiti wall in the morning with a lone skater
+#@time: noon
+at a graffiti wall at noon with popping colour
+#@time: afternoon
+at a graffiti wall in the afternoon with deepening reds
+#@time: golden hour
+at a graffiti wall at golden hour with amber murals
+#@time: dusk
+at a graffiti wall at dusk with a humming streetlamp
+#@time: night
+at a graffiti wall at night with a harsh security lamp
+#@time: midnight
+at a graffiti wall at midnight with a single floodlight

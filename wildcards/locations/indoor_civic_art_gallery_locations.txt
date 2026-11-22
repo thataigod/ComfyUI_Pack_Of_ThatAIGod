@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: civic
+#@place: art_gallery
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+in a white-walled art gallery with polished concrete
+inside a private gallery with wooden floors
+amid a gallery of abstract paintings with tall windows
+along a gallery corridor with framed photographs
+#@time: morning
+in a sculpture gallery with a marble bench, in the morning
+#@time: noon
+at a gallery reception desk with catalogues, at noon
+#@time: noon
+in a print room with flat drawers, at noon
+#@time: afternoon
+beside a gallery wall with discreet labels, in the afternoon
+#@time: golden hour
+under a gallery arch with plaster moldings, at golden hour
+#@time: dusk
+in a contemporary gallery with bare walls, at dusk
+#@time: night
+in a gallery anteroom with pale plaster, at night
+#@time: midnight
+in a gallery storeroom with wrapped canvases, at midnight

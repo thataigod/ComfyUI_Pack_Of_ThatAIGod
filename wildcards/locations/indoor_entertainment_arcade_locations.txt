@@ -1,0 +1,25 @@
+#@setting: indoor
+#@domain: entertainment
+#@place: arcade
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a video arcade with banks of cabinets
+inside a retro arcade with pinball machines
+amid rows of claw machines with plush prizes
+in an arcade prize corner with plush toys
+#@time: morning
+at a coin pusher with stacked tokens, in the morning
+#@time: noon
+beside an air hockey table with worn paddles, at noon
+#@time: afternoon
+in an arcade cabinet row with joystick panels, in the afternoon
+#@time: golden hour
+at an arcade change machine with coin slots, at golden hour
+#@time: dusk
+along an arcade aisle with patterned carpet, at dusk
+#@time: night
+in an arcade snack bar with plastic trays, at night
+#@time: midnight
+at a dance machine with metal pads, at midnight

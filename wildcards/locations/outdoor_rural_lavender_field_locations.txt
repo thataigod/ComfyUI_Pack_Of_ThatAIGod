@@ -1,0 +1,28 @@
+#@setting: outdoor
+#@domain: rural
+#@place: lavender_field
+#@region: european
+#@era: timeless
+#@privacy: public
+#@climate: warm
+in a lavender field with tight purple rows
+in a lavender field on a chalk plateau
+in a flowering lavender field with drying bundles
+on a lavender farm with rows to the horizon
+along a lavender field edge with wild poppies
+#@time: dawn
+in a dewy lavender field with mist in the hollows, at dawn
+#@time: morning
+in a lavender field with bees already busy, in the morning
+#@time: noon
+in a lavender field with deep violet shadows, at noon
+#@time: afternoon
+in a lavender field with long shadows between rows, in the afternoon
+#@time: golden hour
+in a lavender field with rows glowing purple, at golden hour
+#@time: dusk
+in a lavender field with a lamp in the farmhouse, at dusk
+#@time: blue hour
+in a lavender field with hills darkening beyond, at blue hour
+#@time: night
+in a moonlit lavender field with silvered blooms, at night

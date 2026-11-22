@@ -1,0 +1,30 @@
+#@setting: fantastical
+#@domain: scifi
+#@place: holographic_city
+#@region: universal
+#@era: futuristic
+#@privacy: public
+#@climate: void
+in a holographic city of translucent towers that shimmer
+along a holographic city boulevard where digital trees flicker
+within a holographic city plaza where fractal arches bloom
+atop a holographic city wireframe skybridge above a grid of light
+beside a holographic city fountain of pure light in a park
+in a holographic city square where avatars flicker
+along a holographic city canal of scrolling light and glyphs
+#@time: dawn
+in a holographic city at dawn as the grid softens to gold
+#@time: morning
+in a holographic city in the morning with bustling avatars
+#@time: noon
+in a holographic city at noon with crisp unshadowed brightness
+#@time: afternoon
+in a holographic city in the afternoon with impossible pastels
+#@time: golden hour
+in a holographic city at golden hour with glowing amber data streams
+#@time: dusk
+in a holographic city at dusk with a cooling glowing grid
+#@time: night
+in a holographic city at night under neon circuitry and drifting code
+#@time: midnight
+in a holographic city at midnight with low power and dim wireframes

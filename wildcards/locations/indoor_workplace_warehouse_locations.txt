@@ -1,0 +1,23 @@
+#@setting: indoor
+#@domain: workplace
+#@place: warehouse
+#@region: universal
+#@era: contemporary
+#@privacy: private
+#@climate: temperate
+in a vast warehouse with steel racking
+in a distribution warehouse with conveyor belts
+in a cold-storage warehouse with insulated doors
+in a warehouse mezzanine with shrink-wrapped pallets
+#@time: morning
+in a warehouse with rolled-up shutters, in the morning
+#@time: noon
+in a warehouse with stacked wooden pallets, at noon
+#@time: afternoon
+in a warehouse with long loading bays, in the afternoon
+#@time: dusk
+in a warehouse with idle forklifts, at dusk
+#@time: night
+in a warehouse with a reversing forklift, at night
+#@time: midnight
+in a silent warehouse with taped floor lanes, at midnight

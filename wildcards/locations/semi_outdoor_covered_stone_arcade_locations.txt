@@ -1,0 +1,28 @@
+#@setting: semi_outdoor
+#@domain: covered
+#@place: stone_arcade
+#@region: european
+#@era: traditional
+#@privacy: public
+#@climate: temperate
+in a stone arcade with round arches
+in a stone arcade with vaulted bays
+under a stone arcade with thick piers
+in a stone arcade with a timber ceiling
+in a stone arcade with grey marble columns
+#@time: dawn
+in a stone arcade at dawn with shuttered shopfronts
+#@time: morning
+in a stone arcade in the morning with delivery carts rolling past
+#@time: noon
+in a stone arcade at noon with cool shade within the bays
+#@time: afternoon
+in a stone arcade in the afternoon with light slanting between piers
+#@time: golden hour
+in a stone arcade at golden hour with the bays aglow
+#@time: dusk
+in a stone arcade at dusk with iron lanterns coming on
+#@time: blue hour
+in a stone arcade in blue hour with warm windows shining
+#@time: night
+in a stone arcade at night with wet cobbles under lanterns

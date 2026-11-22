@@ -1,0 +1,28 @@
+#@setting: outdoor
+#@domain: waterfront
+#@place: marina
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+on a marina pontoon with white yachts
+along a marina walkway with moored sailing boats
+at a marina with polished hulls
+on a yacht marina jetty with brass fittings
+beside a marina clubhouse with sunshades
+#@time: dawn
+at a still marina with halyards tapping, at dawn
+#@time: morning
+at a marina with crews scrubbing decks, in the morning
+#@time: noon
+at a marina with sharp shadows under the awnings, at noon
+#@time: afternoon
+at a marina with gulls on the breakwater, in the afternoon
+#@time: golden hour
+at a marina with hulls glowing bronze, at golden hour
+#@time: dusk
+at a marina as deck lights wink on, at dusk
+#@time: blue hour
+at a marina with lamps along the pontoons, at blue hour
+#@time: night
+at a marina with mast lights mirrored on still water, at night

@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: rural
+#@place: farmland
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+across the ploughed farmland with straight furrows
+along a wheat field margin with scarlet poppies
+in a hayfield with standing stooks
+across the open farmland with deep hedgerows
+on a grassy pasture with grazing cattle
+#@time: dawn
+across the dewy farmland with mist in the hollows, at dawn
+#@time: morning
+across the farmland with bright light on the crops, in the morning
+#@time: noon
+across the farmland with heat shimmer over the wheat, at noon
+#@time: afternoon
+across the farmland with swallows feeding low, in the afternoon
+#@time: golden hour
+across the farmland with wheat turned to gold, at golden hour
+#@time: dusk
+across the farmland with rooks settling in the trees, at dusk
+#@time: night
+across the moonlit farmland with mist along the hedgerows, at night

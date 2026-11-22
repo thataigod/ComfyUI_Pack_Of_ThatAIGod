@@ -1,0 +1,29 @@
+#@setting: outdoor
+#@domain: urban
+#@place: alley
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a cramped back alley with fire escapes
+along a narrow alley with faded murals
+in a dim service alley with steam vents
+along a cobbled alley with leaning timber houses
+#@time: dawn
+in an alley at dawn with mist at the drain
+#@time: morning
+in an alley in the morning with milk crates
+#@time: noon
+in an alley at noon with a bright strip of sky
+#@time: afternoon
+in an alley in the afternoon with peeling paint
+#@time: golden hour
+in an alley at golden hour with amber graffiti
+#@time: dusk
+in an alley at dusk with a single bulb
+#@time: blue hour
+in an alley in blue hour with deep shadow
+#@time: night
+in an alley at night with a fog of steam
+#@time: midnight
+in an alley at midnight with rats in the dark

@@ -1,0 +1,22 @@
+#@setting: fantastical
+#@domain: mythological
+#@place: undersea_kingdom
+#@region: ocean_depths
+#@era: timeless
+#@privacy: public
+#@climate: cold
+in an undersea kingdom of coral spires and pearl domes
+along an avenue of glowing anemones in an undersea kingdom
+within a nacre throne hall in an undersea kingdom
+atop a sunken temple in an undersea kingdom of barnacled stone
+in an undersea kingdom plaza where merfolk ride seahorses
+beneath a woven pearl dome in an undersea kingdom
+amid a tube sponge garden in an undersea kingdom
+in a drowned library within an undersea kingdom
+beside a glowing trench in an undersea kingdom with leviathan lights
+#@time: noon
+in an undersea kingdom at noon with bright shafts of sunlight
+#@time: dusk
+in an undersea kingdom at dusk as the first lamps are lit
+#@time: midnight
+in an undersea kingdom at midnight with only bioluminescence

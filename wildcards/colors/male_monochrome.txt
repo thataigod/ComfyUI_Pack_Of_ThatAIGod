@@ -1,0 +1,8 @@
+Black
+Charcoal
+Dark gray
+Medium gray
+Light gray
+Silver gray
+White
+Slate gray

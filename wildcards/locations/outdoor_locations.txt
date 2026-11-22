@@ -1,0 +1,5 @@
+__outdoor_urban_locations__
+__outdoor_nature_locations__
+__outdoor_waterfront_locations__
+__outdoor_rural_locations__
+__outdoor_gardens_locations__

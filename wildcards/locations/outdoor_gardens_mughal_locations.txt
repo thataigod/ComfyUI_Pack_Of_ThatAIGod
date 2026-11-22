@@ -1,0 +1,27 @@
+#@setting: outdoor
+#@domain: gardens
+#@place: mughal
+#@region: south_asian
+#@era: traditional
+#@privacy: semi_private
+#@climate: warm
+in a Mughal garden with a central water channel
+amid the charbagh quadrants with water runnels
+in a walled Mughal garden with cusped arch pavilions
+along a raised walkway with lotus pools
+#@time: dawn
+in a Mughal garden at dawn with mist on the channel
+#@time: morning
+in a Mughal garden in the morning with fountain sunlight
+#@time: noon
+in a Mughal garden at noon with deep pavilion shade
+#@time: afternoon
+in a Mughal garden in the afternoon with warm flowerbeds
+#@time: golden hour
+in a Mughal garden at golden hour with rose-gold marble
+#@time: dusk
+in a Mughal garden at dusk with a violet sky
+#@time: night
+in a Mughal garden at night with lit pavilions
+#@time: midnight
+in a Mughal garden at midnight with still pools

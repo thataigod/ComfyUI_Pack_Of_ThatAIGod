@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: hilltop
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+on a grassy hilltop with a lone tree
+on a bare hilltop with a stone cairn
+at the crest of a hilltop with grazing sheep
+on a hilltop with harebells in the grass
+on a rounded hilltop with drystone walls
+#@time: dawn
+on a misty hilltop with a gold horizon, at dawn
+#@time: morning
+on a bright hilltop with rising larks, in the morning
+#@time: noon
+on a sunlit hilltop with buzzing clover, at noon
+#@time: afternoon
+on a warm hilltop with long shadows, in the afternoon
+#@time: golden hour
+on a gilded hilltop with a stretched shadow, at golden hour
+#@time: dusk
+on a dusky hilltop with a distant lamp, at dusk
+#@time: night
+on a starry hilltop with a dark valley, at night

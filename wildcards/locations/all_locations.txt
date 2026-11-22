@@ -1,0 +1,4 @@
+__indoor_locations__
+__semi_outdoor_locations__
+__outdoor_locations__
+__fantastical_locations__

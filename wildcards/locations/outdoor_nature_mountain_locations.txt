@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: mountain
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: alpine
+on a rocky mountain ridge with clouds below
+on a mountain trail with a sheer drop
+amid alpine mountain peaks with circling eagles
+on a mountain shoulder with a valley view
+at the foot of a mountain wall with tumbled boulders
+#@time: dawn
+on a dawn-lit mountain with crimson alpenglow
+#@time: morning
+on a clear mountain with mist burning off, in the morning
+#@time: noon
+on a stark mountain with deep gullies, at noon
+#@time: afternoon
+on a sunlit mountain with moving shadows, in the afternoon
+#@time: golden hour
+on a golden mountain with a cloud sea
+#@time: dusk
+on a dusky mountain with violet shadows, at dusk
+#@time: night
+on a moonlit mountain with silvered rock, at night

@@ -1,0 +1,26 @@
+#@setting: indoor
+#@domain: commercial
+#@place: indoor_market
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in an indoor market with timber produce stalls
+in a market hall with cast-iron columns
+in a market lane with spice sacks
+#@time: dawn
+in an indoor market with crated vegetables, at dawn
+#@time: morning
+in a market hall with canvas awnings, in the morning
+#@time: noon
+in a market aisle with pyramids of fruit, at noon
+#@time: afternoon
+in a market with brass weighing scales, in the afternoon
+#@time: golden hour
+in an indoor market with hanging textiles, at golden hour
+#@time: dusk
+in a market hall with closed shutter stalls, at dusk
+#@time: night
+in a market aisle with empty produce crates, at night
+#@time: midnight
+in a quiet indoor market with a cold room, at midnight

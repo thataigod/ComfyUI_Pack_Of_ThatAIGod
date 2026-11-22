@@ -1,0 +1,38 @@
+#@setting: outdoor
+#@domain: nature
+#@place: misty_forest
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: cool
+#@weather: mist
+in a misty forest with veiled trunks
+#@weather: mist
+on a forest path with drifting mist
+#@weather: mist
+in a misty forest with dripping branches
+#@weather: mist
+in a misty forest grove with sodden leaves
+#@weather: mist
+on a misty forest ridge with silhouetted firs
+#@time: dawn
+#@weather: mist
+in a misty forest with mist among ferns, at dawn
+#@time: morning
+#@weather: mist
+in a misty forest with mist on wet bark, in the morning
+#@time: noon
+#@weather: mist
+in a misty forest with thinning white mist, at noon
+#@time: afternoon
+#@weather: mist
+in a misty forest with mist in the hollows, in the afternoon
+#@time: golden hour
+#@weather: mist
+in a misty forest with amber-lit mist, at golden hour
+#@time: dusk
+#@weather: mist
+in a misty forest with blue evening mist, at dusk
+#@time: night
+#@weather: mist
+in a misty forest with moonlit mist, at night

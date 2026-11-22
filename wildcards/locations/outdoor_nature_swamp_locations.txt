@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: swamp
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: humid
+in a cypress swamp with hanging moss
+in a reed-choked swamp with lily pads
+in a mangrove swamp with tangled roots
+in a peat swamp with black pools
+on a rotting boardwalk through a swamp with fireflies
+#@time: dawn
+in a misty swamp with a frog chorus, at dawn
+#@time: morning
+in a pale swamp with rising steam, in the morning
+#@time: noon
+in a hot swamp with droning insects, at noon
+#@time: afternoon
+in a green swamp with moving shadows, in the afternoon
+#@time: golden hour
+in an amber swamp with fiery water, at golden hour
+#@time: dusk
+in a dusky swamp with rising fireflies, at dusk
+#@time: night
+in a night swamp with glowing fireflies

@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: hospitality
+#@place: hotel_lobby
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+in a grand hotel lobby with marble floors and a sweeping staircase
+in a boutique hotel lobby with velvet sofas and dark timber panelling
+in a modern hotel lobby with a glass wall and a minimal reception desk
+in an art-deco hotel lobby with a mosaic floor and brass elevator doors
+#@time: morning
+in a hotel lobby with tall windows and a polished marble floor, in the morning
+#@time: afternoon
+in a hotel lobby with leather armchairs and potted palms, in the afternoon
+#@time: golden hour
+in a hotel lobby with revolving doors and a brass luggage cart, at golden hour
+#@time: dusk
+in a hotel lobby with glass doors and a chandelier overhead, at dusk
+#@time: night
+in a hotel lobby with marble reflections and a lone receptionist, at night
+#@time: night
+in a hotel lobby with a bellhop cart and a high ceiling, at night
+#@time: blue hour
+in a hotel lobby with a tufted settee and a newspaper stand, at blue hour
+#@time: midnight
+in a hotel lobby with a night porter behind the desk, at midnight

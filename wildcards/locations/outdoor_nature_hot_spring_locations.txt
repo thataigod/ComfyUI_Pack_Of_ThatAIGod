@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: hot_spring
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: warm
+in a hot spring with turquoise water
+in a natural hot spring with rising steam
+on a travertine hot spring terrace with warm basins
+in a forest hot spring with smooth boulders
+within a mountain hot spring with drifting steam
+#@time: dawn
+in a dawn hot spring with thick steam
+#@time: morning
+in a sunlit hot spring with glowing water, in the morning
+#@time: noon
+in a bright hot spring with white terraces, at noon
+#@time: afternoon
+in a warm hot spring with deep pool colour, in the afternoon
+#@time: golden hour
+in a golden hot spring with amber steam
+#@time: dusk
+in a dusky hot spring with pink steam, at dusk
+#@time: night
+in a night hot spring with ghosting steam

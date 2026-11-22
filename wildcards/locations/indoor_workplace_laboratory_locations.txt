@@ -1,0 +1,25 @@
+#@setting: indoor
+#@domain: workplace
+#@place: laboratory
+#@region: universal
+#@era: contemporary
+#@privacy: private
+#@climate: temperate
+in a scientific laboratory with fume hoods
+in a research lab with sample racks
+in a clean-room laboratory with steel surfaces
+in a teaching laboratory with reagent shelves
+#@time: morning
+in a laboratory with prepared sample trays, in the morning
+#@time: noon
+in a laboratory with clinical instruments, at noon
+#@time: afternoon
+in a laboratory with labelled specimen jars, in the afternoon
+#@time: golden hour
+in a laboratory with glass distillation flasks, at golden hour
+#@time: dusk
+in a laboratory with humming bench equipment, at dusk
+#@time: night
+in a laboratory with a lone researcher, at night
+#@time: midnight
+in a silent laboratory with capped sample tubes, at midnight

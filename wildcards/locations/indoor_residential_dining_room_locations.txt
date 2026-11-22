@@ -1,0 +1,30 @@
+#@setting: indoor
+#@domain: residential
+#@place: dining_room
+#@region: universal
+#@era: timeless
+#@privacy: semi_private
+#@climate: temperate
+in a formal dining room with a long mahogany table
+in a farmhouse dining room with a reclaimed wood table
+beside a dining table with white china and folded napkins
+#@time: morning
+in a dining room with a polished table and a vase of tulips, in the morning
+#@time: morning
+in a dining room with a glass pitcher of orange juice, in the morning
+#@time: noon
+in a dining room with a mirror and a bowl of green apples, at noon
+#@time: afternoon
+in a dining room with a lace tablecloth and a bowl of pears, in the afternoon
+#@time: golden hour
+in a dining room with bay windows and a set table, at golden hour
+#@time: dusk
+in a dining room with a chandelier and a dark sideboard, at dusk
+#@time: night
+in a dining room with crystal glassware and a linen cloth, at night
+#@time: night
+in a dining room with velvet chairs and a deep red rug, at night
+#@time: blue hour
+in a dining room with empty chairs and a folded tablecloth, at blue hour
+#@time: midnight
+in a dining room with a carved hutch and a silver tureen, at midnight

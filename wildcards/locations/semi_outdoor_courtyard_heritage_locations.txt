@@ -1,0 +1,28 @@
+#@setting: semi_outdoor
+#@domain: courtyard
+#@place: heritage
+#@region: european
+#@era: colonial
+#@privacy: semi_private
+#@climate: temperate
+in a heritage courtyard with ivy on old brick
+on a heritage cloister walk with worn stone columns
+under a heritage stone arcade with faded frescoes
+at a heritage courtyard fountain with gravel paths
+beside a heritage courtyard loggia with climbing roses
+#@time: dawn
+in a heritage courtyard at dawn with mist between columns
+#@time: morning
+in a heritage courtyard in the morning with soft light on the colonnade
+#@time: noon
+in a heritage courtyard at noon with deep shade under the arcade
+#@time: afternoon
+in a heritage courtyard in the afternoon with long pillar shadows
+#@time: golden hour
+in a heritage courtyard at golden hour with amber light on the brick
+#@time: dusk
+in a heritage courtyard at dusk with lanterns lit along the cloister
+#@time: blue hour
+in a heritage courtyard in blue hour with indigo shade in the cloister
+#@time: night
+in a heritage courtyard at night with moonlight on the dry fountain

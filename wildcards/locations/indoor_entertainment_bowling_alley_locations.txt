@@ -1,0 +1,25 @@
+#@setting: indoor
+#@domain: entertainment
+#@place: bowling_alley
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a bowling alley with polished wooden lanes
+at a bowling lane with a rack of pins
+in a bowling alley arcade area with ball racks
+at the shoe counter of a bowling alley with rental shoes
+#@time: morning
+along a bowling alley concourse with lockers, in the morning
+#@time: noon
+at a bowling return rack with spare balls, at noon
+#@time: afternoon
+in a bowling alley snack bar with vinyl stools, in the afternoon
+#@time: golden hour
+beside a bowling scoring console with worn buttons, at golden hour
+#@time: dusk
+in a bowling alley back lane with pin-setting machines, at dusk
+#@time: night
+at a bowling alley party room with paper banners, at night
+#@time: midnight
+in a bowling alley pro shop with drilled balls, at midnight

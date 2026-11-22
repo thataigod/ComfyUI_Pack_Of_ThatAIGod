@@ -1,0 +1,26 @@
+#@setting: fantastical
+#@domain: surreal
+#@place: floating_islands
+#@region: universal
+#@era: dreamlike
+#@privacy: public
+#@climate: temperate
+on a floating island adrift in a sea of clouds
+atop a floating island crowned by a ruined temple
+beneath a floating island where roots dangle in the mist
+on a chain bridge between two floating islands
+in a floating island village of windmills and sky-barges
+amid floating islands drifting past grazing sky-whales
+beside a floating island's spinning crystal heart
+#@time: dawn
+on a floating island at dawn with rose-gold clouds
+#@time: morning
+on a floating island in the morning with bright clear air
+#@time: noon
+on a floating island at noon with hard shadows on the grass
+#@time: golden hour
+on a floating island at golden hour above a molten-gold cloud sea
+#@time: dusk
+on a floating island at dusk with lanterns and stars below
+#@time: night
+on a floating island at night under a river of stars

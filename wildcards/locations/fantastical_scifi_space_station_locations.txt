@@ -1,0 +1,30 @@
+#@setting: fantastical
+#@domain: scifi
+#@place: space_station
+#@region: universal
+#@era: futuristic
+#@privacy: public
+#@climate: void
+in a vast orbital space station above a turning planet
+within a space station observation deck beneath a glass dome
+along a space station promenade of shops and hydroponic gardens
+in a space station docking bay where shuttles rest in cradles
+beside a space station reactor core humming with blue light
+in a space station medical bay with white cots and star windows
+along a space station spine corridor of ribbed metal and airlocks
+#@time: dawn
+on a space station at dawn cycle with sunlight over the limb
+#@time: morning
+on a space station in the morning with shuttles queued
+#@time: noon
+on a space station at noon with hard sunlight and crowds
+#@time: afternoon
+on a space station in the afternoon with cargo drones
+#@time: golden hour
+on a space station at golden hour turning through the terminator line
+#@time: dusk
+on a space station at dusk with warming lights and shrinking sun
+#@time: night
+on a space station at night with steady stars and dim lights
+#@time: midnight
+on a space station at midnight with a humming night shift

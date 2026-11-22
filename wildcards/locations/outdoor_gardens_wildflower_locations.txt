@@ -1,0 +1,27 @@
+#@setting: outdoor
+#@domain: gardens
+#@place: wildflower
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+in a wildflower meadow with winding mown paths
+amid the wildflower drifts with a wooden gate
+in a wildflower garden with cornflowers and cosmos
+across a wildflower meadow with seed heads
+#@time: dawn
+in a wildflower meadow at dawn with dewy petals
+#@time: morning
+in a wildflower meadow in the morning with waking bees
+#@time: noon
+in a wildflower meadow at noon with humming air
+#@time: afternoon
+in a wildflower meadow in the afternoon with drifting seed
+#@time: golden hour
+in a wildflower meadow at golden hour with amber stems
+#@time: dusk
+in a wildflower meadow at dusk with rising moths
+#@time: night
+in a wildflower meadow at night with beaded dew
+#@time: midnight
+in a wildflower meadow at midnight with silvered seed heads

@@ -1,0 +1,65 @@
+wearing a casually styled __colors/female_pastel__ colored soaked cotton shirt in a soft weave with rolled sleeves, that clings softly to the frame as rain streams down
+wearing a rain-drenched __colors/female_light__ colored cotton shirt in light cotton __patterns/female_blouse_patterns__ that clings to the shoulders and turns translucent at the cuffs
+wearing a soaked __colors/female_nude__ colored silk slip dress in liquid silk __patterns/female_lingerie_lace_detail__ that clings to the waist and sheers where wet
+wearing a rain-soaked __colors/female_cool__ colored chiffon dress in fine chiffon __patterns/female_party_dress_detail__ that sticks lightly and turns sheer at the shoulders
+wearing a drenched __colors/female_dark__ colored jersey wrap dress in soft jersey __patterns/female_costume_detail__ that clings and drips at the hem as she walks
+wearing a soaked __colors/female_warm__ colored linen sundress in breathable linen with thin straps, that darkens with water and clings gently to the figure
+wearing a rain-slicked __colors/female_neon__ colored cotton tee in fitted cotton __patterns/female_casual_top_print__ that clings to the torso and sheers against the skin
+wearing a rain-drenched __colors/female_metallic__ colored silk blouse in wet silk __patterns/female_blouse_patterns__ that shines with rainwater and clings softly
+wearing a soaked __colors/female_vivid__ colored chiffon maxi skirt in flowing chiffon __patterns/female_saree_motifs__ that wraps damply around the legs as she moves
+wearing a rain-soaked __colors/female_muted__ colored jersey maxi dress in soft jersey with a scoop neck, that clings in slow folds and drips softly
+wearing a soaked __colors/female_jewel__ colored silk camisole in delicate silk __patterns/female_lingerie_lace_detail__ that clings and sheers over the camisole beneath
+wearing a rain-drenched __colors/female_candy__ colored cotton sundress in light cotton __patterns/female_casual_top_print__ that turns translucent and clings at the waist
+wearing a soaked __colors/female_bright__ colored linen wrap dress in crisp linen __patterns/female_costume_detail__ that clings damply and sheers in the rain
+wearing a rain-soaked __colors/female_tropical__ colored chiffon blouse in sheer chiffon with a tie neck, that sticks lightly to the shoulders and turns translucent
+wearing a drenched __colors/female_monochrome__ colored silk slip dress in fluid silk __patterns/female_party_dress_detail__ that clings like water and turns sheer along the seams
+wearing a soaked __colors/female_neutral__ colored cotton button-down in fine cotton __patterns/female_blouse_patterns__ that clings to the frame and shows the camisole beneath
+wearing a rain-drenched __colors/female_dusty__ colored linen shirt dress in washed linen __patterns/female_lingerie_lace_detail__ that darkens with rain and clings at the waist
+wearing a soaked __colors/female_earthtone__ colored jersey cover-up in soft jersey __patterns/female_swimwear_print__ that sticks to the figure and drips after the swim
+wearing a rain-soaked __colors/female_spring__ colored chiffon tiered dress in airy chiffon __patterns/female_party_dress_detail__ that flutters damply and sheers at the hem
+wearing a soaked __colors/female_summer__ colored cotton midi dress in breezy cotton with a smocked bodice, that clings lightly and turns translucent in the rain
+wearing a drenched __colors/female_winter__ colored silk blouse in heavy silk __patterns/female_costume_detail__ that clings cold and sheers at the shoulders
+wearing a rain-soaked __colors/female_autumn__ colored cotton overshirt in brushed cotton __patterns/female_casual_top_print__ that clings at the elbows and darkens with rain
+wearing a soaked __colors/female_pastel__ colored chiffon blouse in floating chiffon __patterns/female_blouse_patterns__ that clings softly and turns sheer at the sleeves
+wearing a rain-drenched __colors/female_light__ colored linen midi dress in soft linen with a tie waist, that clings gently and dries in soft creases
+wearing a soaked __colors/female_nude__ colored silk chemise in washed silk __patterns/female_lingerie_lace_detail__ that clings and sheers over the slip beneath
+wearing a rain-soaked __colors/female_cool__ colored jersey wrap top in fine jersey __patterns/female_costume_detail__ that clings damply across the shoulders
+wearing a drenched __colors/female_dark__ colored cotton graphic tee in heavyweight cotton __patterns/female_streetwear_graphic__ that clings to the torso and darkens with water
+wearing a soaked __colors/female_warm__ colored linen cover-up in crinkled linen with wide sleeves __patterns/female_swimwear_print__ that clings wetly and drips at the cuffs
+wearing a rain-drenched __colors/female_neon__ colored cotton blouse in crisp cotton __patterns/female_blouse_patterns__ that clings at the waist and turns translucent at the yoke
+wearing a soaked __colors/female_metallic__ colored silk slip in shimmering silk __patterns/female_party_dress_detail__ that clings like liquid and sheers in the light
+wearing a rain-drenched __colors/female_vivid__ colored chiffon wrap dress in layered chiffon __patterns/female_costume_detail__ that clings lightly to the frame as she walks
+wearing a soaked __colors/female_muted__ colored jersey tee in soft jersey __patterns/female_lingerie_lace_detail__ that clings to the shoulders and sheers at the neckline
+wearing a rain-soaked __colors/female_jewel__ colored silk wrap blouse in fluid silk with a draped neckline, that clings softly and sheers where soaked
+wearing a drenched __colors/female_candy__ colored cotton crop top in ribbed cotton __patterns/female_casual_top_print__ that clings and turns translucent at the edges
+wearing a soaked __colors/female_bright__ colored chiffon cover-up in sheer chiffon __patterns/female_swimwear_print__ that sticks to the figure and drips after the pool
+wearing a rain-drenched __colors/female_tropical__ colored linen shirt in slubby linen __patterns/female_blouse_patterns__ that clings at the back and darkens at the collar
+wearing a soaked __colors/female_monochrome__ colored cotton shirt in poplin cotton __patterns/female_costume_detail__ that clings to the frame and sheers at the sleeves
+wearing a rain-soaked __colors/female_neutral__ colored linen blouse in natural linen with a button front, that clings gently and softens as it dries
+wearing a drenched __colors/female_dusty__ colored silk midi dress in crepe silk __patterns/female_party_dress_detail__ that clings in soft folds and sheers at the hem
+wearing a soaked __colors/female_earthtone__ colored cotton sundress in washed cotton __patterns/female_casual_top_print__ that clings lightly and darkens with rain
+wearing a rain-drenched __colors/female_spring__ colored chiffon blouse in soft chiffon __patterns/female_lingerie_lace_detail__ that clings airily and turns sheer at the cuffs
+wearing a soaked __colors/female_summer__ colored cotton camisole in light cotton __patterns/female_blouse_patterns__ that clings and turns see-through where soaked
+wearing a rain-soaked __colors/female_winter__ colored jersey knit top in fine jersey with long sleeves, that clings and darkens down the sleeves
+wearing a soaked __colors/female_autumn__ colored linen overshirt in rustic linen __patterns/female_blouse_patterns__ that clings at the elbows and sheers at the shoulders
+wearing a rain-drenched __colors/female_pastel__ colored chiffon dress in soft chiffon __patterns/female_party_dress_detail__ that clings at the waist and floats at the hem
+wearing a soaked __colors/female_light__ colored cotton blouse in fine cotton __patterns/female_casual_top_print__ that clings softly and turns translucent in patches
+wearing a rain-soaked __colors/female_nude__ colored silk slip in nude silk with a lace hem, that clings like water and turns sheer down the front
+wearing a soaked __colors/female_cool__ colored jersey cover-up dress in slinky jersey __patterns/female_swimwear_print__ that clings to the figure and drips from the hem
+wearing a drenched __colors/female_dark__ colored cotton shirt in stiff cotton __patterns/female_blouse_patterns__ that clings at the shoulders and darkens with rain
+wearing a rain-soaked __colors/female_warm__ colored silk camisole in washed silk __patterns/female_lingerie_lace_detail__ that clings and sheers at the neckline
+wearing a soaked __colors/female_neon__ colored chiffon sundress in bright chiffon with a ruffled hem, that clings lightly and turns sheer in the rain
+wearing a rain-drenched __colors/female_metallic__ colored silk skirt in fluid silk __patterns/female_garment_detail__ that wraps damply and sheers where soaked
+wearing a soaked __colors/female_vivid__ colored cotton wrap dress in crisp cotton __patterns/female_costume_detail__ that clings at the waist and dries in soft folds
+wearing a rain-soaked __colors/female_muted__ colored linen tee in soft linen __patterns/female_casual_top_print__ that clings lightly and turns translucent at the edges
+wearing a drenched __colors/female_jewel__ colored silk blouse in liquid silk __patterns/female_blouse_patterns__ that clings and sheers over the camisole beneath
+wearing a soaked __colors/female_candy__ colored cotton layered dress in light cotton with a tiered skirt, that clings at the top and swings damp at the hem
+wearing a rain-drenched __colors/female_bright__ colored chiffon tunic in sheer chiffon __patterns/female_swimwear_print__ that sticks lightly and drips down the sleeves
+wearing a soaked __colors/female_tropical__ colored jersey slip dress in soft jersey __patterns/female_party_dress_detail__ that clings in damp folds and sheers at the straps
+wearing a rain-soaked __colors/female_monochrome__ colored cotton slip dress in fine cotton __patterns/female_lingerie_lace_detail__ that clings and darkens with water
+wearing a drenched __colors/female_neutral__ colored cotton pullover in soft cotton __patterns/female_streetwear_graphic__ that clings at the shoulders and darkens with rain
+wearing a soaked __colors/female_dusty__ colored linen kimono in washed linen with wide sleeves, that clings at the back and drips at the hem
+wearing a rain-soaked __colors/female_earthtone__ colored cotton tunic in natural cotton __patterns/female_blouse_patterns__ that clings gently and sheers in patches
+wearing a soaked __colors/female_spring__ colored silk blouse in airy silk __patterns/female_lingerie_lace_detail__ that clings and turns sheer along the sleeves
+wearing a rain-drenched __colors/female_summer__ colored cotton tank top in ribbed cotton __patterns/female_casual_top_print__ that clings and turns translucent through the knit
+wearing a soaked __colors/female_winter__ colored jersey dress in brushed jersey __patterns/female_party_dress_detail__ that clings in heavy folds and drips at the hem

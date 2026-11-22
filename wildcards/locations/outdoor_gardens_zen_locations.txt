@@ -1,0 +1,28 @@
+#@setting: outdoor
+#@domain: gardens
+#@place: zen
+#@region: east_asian
+#@era: traditional
+#@privacy: semi_private
+#@climate: temperate
+in a zen garden with raked white gravel
+amid the sand patterns with a stone lantern
+in a zen courtyard with a bamboo fence
+beside a dry stone garden with raked curves
+in a zen garden with a wooden veranda
+#@time: dawn
+in a zen garden at dawn with mist on the gravel
+#@time: morning
+in a zen garden in the morning with cool shade
+#@time: noon
+in a zen garden at noon with sharp stone shadows
+#@time: afternoon
+in a zen garden in the afternoon with creeping light
+#@time: golden hour
+in a zen garden at golden hour with glowing gravel
+#@time: dusk
+in a zen garden at dusk with one lit lantern
+#@time: night
+in a zen garden at night with moonlit gravel
+#@time: midnight
+in a zen garden at midnight with the sound of water

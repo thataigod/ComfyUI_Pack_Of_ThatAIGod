@@ -1,0 +1,38 @@
+#@setting: outdoor
+#@domain: nature
+#@place: foggy_moor
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: cool
+#@weather: fog
+on a foggy moor with grey fog
+#@weather: fog
+on a windswept moorland in fog with peat hags
+#@weather: fog
+on a high foggy moor with looming standing stones
+#@weather: fog
+on a foggy moor with dark peat pools
+#@weather: fog
+on a bleak moorland in fog with a ruined wall
+#@time: dawn
+#@weather: fog
+on a foggy moor with fog over heather, at dawn
+#@time: morning
+#@weather: fog
+on a foggy moor with fog beading on grass, in the morning
+#@time: noon
+#@weather: fog
+on a foggy moor with thinning white fog, at noon
+#@time: afternoon
+#@weather: fog
+on a foggy moor with fog against hills, in the afternoon
+#@time: golden hour
+#@weather: fog
+on a foggy moor with amber-lit fog, at golden hour
+#@time: dusk
+#@weather: fog
+on a foggy moor with blue dusk fog
+#@time: night
+#@weather: fog
+on a foggy moor with moonlit fog, at night

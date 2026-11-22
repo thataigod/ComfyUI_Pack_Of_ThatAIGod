@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: civic
+#@place: palace_interior
+#@region: universal
+#@era: colonial
+#@privacy: public
+#@climate: temperate
+in a palace durbar hall with mirrored walls
+inside an opulent palace room with gilded cornices
+amid a palace corridor of arched doorways
+in a palace ballroom with a checkerboard floor
+#@time: morning
+at a palace throne room with a raised dais, in the morning
+#@time: morning
+in a palace library with leather-bound books, in the morning
+#@time: noon
+along a palace gallery with family portraits, at noon
+#@time: afternoon
+in a palace dining room with a long table, in the afternoon
+#@time: golden hour
+in a palace antechamber with silk drapes, at golden hour
+#@time: dusk
+in a palace chapel with painted panels, at dusk
+#@time: night
+beside a palace staircase with carved balustrades, at night
+#@time: midnight
+in a palace bedchamber with a canopied bed, at midnight

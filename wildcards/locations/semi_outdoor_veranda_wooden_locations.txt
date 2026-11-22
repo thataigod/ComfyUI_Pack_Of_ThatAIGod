@@ -1,0 +1,28 @@
+#@setting: semi_outdoor
+#@domain: veranda
+#@place: wooden
+#@region: universal
+#@era: timeless
+#@privacy: semi_private
+#@climate: temperate
+on a wooden veranda with a porch swing
+on a wooden veranda with weathered boards and rocking chairs
+on a wooden veranda with a beadboard ceiling
+on a wooden veranda with a hanging lantern and wicker table
+under a wooden veranda eave with a sleeping dog
+#@time: dawn
+on a wooden veranda at dawn with dew on the rail
+#@time: morning
+on a wooden veranda in the morning with coffee steam rising
+#@time: noon
+on a wooden veranda at noon with deep shade under the eaves
+#@time: afternoon
+on a wooden veranda in the afternoon with warm slatted light
+#@time: golden hour
+on a wooden veranda at golden hour with honeyed light on the rails
+#@time: dusk
+on a wooden veranda at dusk with fireflies in the blue air
+#@time: night
+on a wooden veranda at night with moths circling a single bulb
+#@time: midnight
+on a wooden veranda at midnight with moonlight on the still swing

@@ -1,0 +1,26 @@
+#@setting: indoor
+#@domain: commercial
+#@place: shopping_mall
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a shopping mall with polished marble corridors
+on a mall mezzanine with potted palms
+in a mall concourse with hanging banners
+#@time: morning
+in a shopping mall with a glass atrium, in the morning
+#@time: noon
+in a mall food court with stacked chairs, at noon
+#@time: afternoon
+in a mall walkway with a central fountain, in the afternoon
+#@time: golden hour
+on a mall balcony with storefront signs, at golden hour
+#@time: dusk
+in a shopping mall with an escalator rail, at dusk
+#@time: night
+in a mall corridor with shuttered kiosks, at night
+#@time: night
+in a mall arcade with a ticket booth, at night
+#@time: midnight
+in a silent mall with closed storefronts, at midnight

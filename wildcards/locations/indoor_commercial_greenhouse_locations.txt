@@ -1,0 +1,26 @@
+#@setting: indoor
+#@domain: commercial
+#@place: greenhouse
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: warm
+in a glass greenhouse with gravel paths
+in a commercial greenhouse with seedling benches
+in a humid greenhouse with tropical foliage
+#@time: dawn
+in a greenhouse with misted glass panes, at dawn
+#@time: morning
+in a greenhouse with watering cans, in the morning
+#@time: noon
+in a greenhouse with open roof vents, at noon
+#@time: afternoon
+in a greenhouse with terracotta plant pots, in the afternoon
+#@time: golden hour
+in a greenhouse with leafy ferns, at golden hour
+#@time: dusk
+in a greenhouse with irrigation pipes, at dusk
+#@time: night
+in a greenhouse with rows of seedlings, at night
+#@time: midnight
+in a heated greenhouse with a potting bench, at midnight

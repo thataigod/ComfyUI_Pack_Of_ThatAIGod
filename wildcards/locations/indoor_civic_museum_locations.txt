@@ -1,0 +1,29 @@
+#@setting: indoor
+#@domain: civic
+#@place: museum
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+in a grand museum hall with glass display cases
+inside a natural history museum with a dinosaur skeleton
+amid the galleries of an art museum with framed canvases
+along a museum corridor with velvet ropes
+#@time: dawn
+in a museum atrium with a hanging sculpture, at dawn
+#@time: morning
+at a museum entrance with marble steps, in the morning
+#@time: morning
+in an antiquity wing with carved reliefs, in the morning
+#@time: noon
+beside a museum display case with bronze artifacts, at noon
+#@time: afternoon
+in a museum storeroom with wrapped specimens, in the afternoon
+#@time: golden hour
+in a museum gallery with classical busts, at golden hour
+#@time: dusk
+in a museum courtyard with a glass roof, at dusk
+#@time: night
+at a museum ticket desk with printed maps, at night
+#@time: midnight
+in a museum archive with wooden cabinets, at midnight

@@ -1,0 +1,30 @@
+#@setting: fantastical
+#@domain: fantasy
+#@place: wizard_tower
+#@region: universal
+#@era: medieval
+#@privacy: private
+#@climate: temperate
+in a wizard tower study with floating candles and stacked grimoires
+within a wizard tower spiral library where ladders glide along shelves
+atop a wizard tower observatory with a brass orrery
+in a wizard tower laboratory of bubbling retorts and reagents
+beside a wizard tower summoning circle of silver runes
+in a wizard tower stairwell where steps rearrange beneath your feet
+amid a wizard tower cellar of sealed jars and a slumbering golem
+#@time: dawn
+in a wizard tower at dawn with rosy light on the orrery
+#@time: morning
+in a wizard tower in the morning with a dozing familiar
+#@time: noon
+in a wizard tower at noon with sunlight through a great telescope
+#@time: afternoon
+in a wizard tower in the afternoon with potions steeping
+#@time: golden hour
+atop a wizard tower at golden hour above gold clouds
+#@time: dusk
+in a wizard tower at dusk with wards flickering to life
+#@time: night
+in a wizard tower at night with bubbling alembics and wheeling stars
+#@time: midnight
+in a wizard tower at midnight with only the orb's glow

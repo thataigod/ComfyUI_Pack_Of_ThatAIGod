@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: residential
+#@place: dressing_room
+#@region: universal
+#@era: timeless
+#@privacy: private
+#@climate: temperate
+in a walk-in dressing room with open wardrobes
+in an elegant dressing room with a vanity mirror and perfume bottles
+beside a rack of silk robes in a dressing room with soft carpet
+in a boutique-style dressing room with mirrored panels and rows of shoes
+#@time: morning
+in a dressing room with a rack of clothes and a jewellery tray, in the morning
+#@time: afternoon
+in a dressing room with sheer blinds and boxes of shoes, in the afternoon
+#@time: golden hour
+in a dressing room with a goose-neck mirror and scattered scarves, at golden hour
+#@time: dusk
+in a dressing room with a velvet stool and a jewellery box, at dusk
+#@time: night
+in a dressing room with a dress draped over a chair, at night
+#@time: night
+in a dressing room with a shoe rack and a half-open wardrobe, at night
+#@time: blue hour
+in a dressing room with a tall mirror and a silk slip, at blue hour
+#@time: midnight
+in a dressing room with a fur stole and a discarded gown, at midnight

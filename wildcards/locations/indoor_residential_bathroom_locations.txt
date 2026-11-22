@@ -1,0 +1,32 @@
+#@setting: indoor
+#@domain: residential
+#@place: bathroom
+#@region: universal
+#@era: timeless
+#@privacy: intimate
+#@climate: humid
+in a spa-like bathroom with a freestanding tub
+in a vintage bathroom with a clawfoot tub and checkered floor
+beside a glass walk-in shower in a modern bathroom with brass fixtures
+#@time: dawn
+in a bathroom with a fogged mirror and a toothbrush cup, at dawn
+#@time: morning
+in a bathroom with frosted glass and a steaming shower, in the morning
+#@time: morning
+in a bathroom with a white tile wall and a fluffy robe, in the morning
+#@time: noon
+in a bathroom with a marble vanity and a tray of amber bottles, at noon
+#@time: afternoon
+in a bathroom with a small window and a foam-filled tub, in the afternoon
+#@time: golden hour
+in a bathroom with chrome taps and a damp towel, at golden hour
+#@time: dusk
+in a bathroom with beaded condensation and a stone counter, at dusk
+#@time: night
+in a bathroom with a deep soaking bath and a folded towel, at night
+#@time: night
+in a bathroom with a glass of water on the basin edge, at night
+#@time: blue hour
+in a bathroom with a dripping showerhead and a tiled niche, at blue hour
+#@time: midnight
+in a bathroom with a cold tile floor and a bath mat, at midnight

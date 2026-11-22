@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: desert
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: arid
+on a red desert plateau with wind-carved rocks
+amid rolling desert dunes with rippled sand
+in a rocky desert with scattered mesas
+at the edge of a desert erg with dune crests
+in a dry desert wash with a lone acacia
+#@time: dawn
+in a cool desert with blue shadows, at dawn
+#@time: morning
+in a warming desert with keen light, in the morning
+#@time: noon
+in a blazing desert with quivering heat, at noon
+#@time: afternoon
+in an amber desert with pooled shadows, in the afternoon
+#@time: golden hour
+in a burning desert with orange sand, at golden hour
+#@time: dusk
+in a violet desert with first stars, at dusk
+#@time: night
+in a cold desert with starlit sand, at night

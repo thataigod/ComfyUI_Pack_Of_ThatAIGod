@@ -1,0 +1,20 @@
+wearing pointe shoes in __colors/female_pastel__ tones with satin ribbons tied at the ankles
+wearing soft ballet slippers in __colors/female_nude__ tones with elastic straps
+wearing dance heels in __colors/female_dark__ tones with adjustable ankle straps
+wearing latin dance heels in __colors/female_metallic__ tones with strappy crystal accents
+carrying a dance bag in __colors/female_candy__ tones with a mesh pocket and ribboned handles
+wearing pointe shoes in __colors/female_light__ tones with reinforced toes and silk ribbons
+wearing ballet slippers in __colors/female_pastel__ tones with cross-strap elastics
+wearing ballroom dance heels in __colors/female_nude__ tones with suede soles
+carrying a dance bag in __colors/female_bright__ tones with embroidered initials and a shoe compartment
+wearing ribbon laces in __colors/female_warm__ tones crisscrossed around her ankles
+wearing pointe shoes in __colors/female_metallic__ tones with hand-stitched satin ribbons
+wearing ballet slippers in __colors/female_dusty__ tones with soft leather soles
+wearing salsa dance heels in __colors/female_jewel__ tones with open toes and buckle closure
+wearing character shoes in __colors/female_cool__ tones with a low heel and ankle strap
+carrying a dance bag in __colors/female_tropical__ tones with a charm zip pull and adjustable strap
+wearing ribbon laces in __colors/female_spring__ tones tied in a neat bow over ballet slippers
+wearing dance heels in __colors/female_muted__ tones with a stable block heel and cushioned sole
+wearing ballet slippers in __colors/female_dark__ tones with soft suede patches
+carrying a dance bag in __colors/female_jewel__ tones with a quilted panel and a matching coin purse
+wearing pointe shoes in __colors/female_neon__ tones with elastic drawstrings and satin ribbons

@@ -1,0 +1,30 @@
+#@setting: fantastical
+#@domain: scifi
+#@place: alien_planet
+#@region: universal
+#@era: futuristic
+#@privacy: public
+#@climate: hot
+on an alien planet of rust-red mesas and twin suns
+in an alien planet's jungle where luminous fronds curl and creatures skitter
+beside a turquoise ocean on an alien planet with crystal spires
+along a black volcanic ridge on an alien planet
+amid a magenta plain on an alien planet with humming monoliths
+in a green-rivered canyon on an alien planet with luminous stalactites
+across a cracked salt flat on an alien planet beneath ring debris
+#@time: dawn
+on an alien planet at dawn as two suns rise
+#@time: morning
+on an alien planet in the morning with methane mist burning off
+#@time: noon
+on an alien planet at noon under a harsh white sun
+#@time: afternoon
+on an alien planet in the afternoon with a distant dust storm
+#@time: golden hour
+on an alien planet at golden hour with amber and violet sky
+#@time: dusk
+on an alien planet at dusk with the second sun setting
+#@time: night
+on an alien planet at night under unfamiliar constellations
+#@time: midnight
+on an alien planet at midnight with three moons and cold wind

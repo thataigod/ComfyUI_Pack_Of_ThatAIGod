@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: waterfall
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+at the base of a waterfall with a green pool
+on a mossy ledge beside a waterfall with drifting spray
+in a river gorge below a waterfall with wet boulders
+inside a rock alcove behind a waterfall with cool spray
+at the top of a waterfall with a smooth lip
+#@time: dawn
+at a misty waterfall with pale light, at dawn
+#@time: morning
+at a sunlit waterfall with a rainbow, in the morning
+#@time: noon
+at a bright waterfall with white water, at noon
+#@time: afternoon
+at a warm waterfall with deep shadows, in the afternoon
+#@time: golden hour
+at a golden waterfall with amber spray
+#@time: dusk
+at a dusky waterfall with grey water, at dusk
+#@time: night
+at a moonlit waterfall with black water, at night

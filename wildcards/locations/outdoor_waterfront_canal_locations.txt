@@ -1,0 +1,28 @@
+#@setting: outdoor
+#@domain: waterfront
+#@place: canal
+#@region: universal
+#@era: vintage
+#@privacy: public
+#@climate: temperate
+along a canal towpath with moored narrowboats
+on a canal bank with lock gates
+along a city canal with houseboats
+at a canal basin with working barges
+on a quiet canal with a wooden footbridge
+#@time: dawn
+along a misty canal with dripping willows, at dawn
+#@time: morning
+along a canal with ducks paddling the green water, in the morning
+#@time: noon
+along a canal with bright paint on the narrowboats, at noon
+#@time: afternoon
+along a canal with long reflections of bridges, in the afternoon
+#@time: golden hour
+along a canal with water turned to brass, at golden hour
+#@time: dusk
+along a canal as lamps come on, at dusk
+#@time: blue hour
+along a canal with lit cabin windows, at blue hour
+#@time: night
+along a canal with lamp reflections stretching long, at night

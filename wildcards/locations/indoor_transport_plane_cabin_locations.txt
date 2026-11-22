@@ -1,0 +1,25 @@
+#@setting: indoor
+#@domain: transport
+#@place: plane_cabin
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in an aeroplane cabin with overhead lockers
+in a first-class cabin with lie-flat pods
+in a private plane cabin with leather seats
+in an economy cabin with seatback screens
+#@time: dawn
+in a plane cabin with oval windows, at dawn
+#@time: morning
+in a plane cabin with breakfast trays, in the morning
+#@time: noon
+in a plane cabin with a crowded aisle, at noon
+#@time: afternoon
+in a plane cabin with a drink trolley, in the afternoon
+#@time: golden hour
+in a plane cabin with reclined seatbacks, at golden hour
+#@time: night
+in a plane cabin with folded blankets, at night
+#@time: midnight
+in a quiet plane cabin with sleeping passengers, at midnight

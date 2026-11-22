@@ -1,0 +1,29 @@
+#@setting: outdoor
+#@domain: urban
+#@place: rooftop
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+on a flat city rooftop with satellite dishes
+atop an apartment block with water tanks
+on a rooftop terrace with fairy lights
+on a warehouse roof with gravel and skylights
+#@time: dawn
+on a rooftop at dawn with a chill breeze
+#@time: morning
+on a rooftop in the morning with snapping laundry
+#@time: noon
+on a rooftop at noon with heat shimmer
+#@time: afternoon
+on a rooftop in the afternoon with distant sirens
+#@time: golden hour
+on a rooftop at golden hour with an amber skyline
+#@time: dusk
+on a rooftop at dusk with violet haze
+#@time: blue hour
+on a rooftop in blue hour with warm windows
+#@time: night
+on a rooftop at night with a glittering city
+#@time: midnight
+on a rooftop at midnight with moonlight on the parapet

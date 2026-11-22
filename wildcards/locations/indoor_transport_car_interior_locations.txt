@@ -1,0 +1,25 @@
+#@setting: indoor
+#@domain: transport
+#@place: car_interior
+#@region: universal
+#@era: contemporary
+#@privacy: private
+#@climate: temperate
+inside a compact car with cracked leather seats
+inside a luxury saloon with quilted leather seats
+inside a vintage car with chrome dials
+inside a family estate car with child seats
+#@time: dawn
+inside a car with misted windows, at dawn
+#@time: morning
+inside a car with a dashboard coffee cup, in the morning
+#@time: noon
+inside a car with the air conditioning on, at noon
+#@time: afternoon
+inside a car with a worn passenger seat, in the afternoon
+#@time: golden hour
+inside a car with a leather steering wheel, at golden hour
+#@time: night
+inside a car with a beaded seat cover, at night
+#@time: midnight
+inside a parked car with a blank instrument cluster, at midnight

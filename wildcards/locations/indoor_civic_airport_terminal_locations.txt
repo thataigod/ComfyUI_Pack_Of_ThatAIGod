@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: civic
+#@place: airport_terminal
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in an airport terminal with a departures board
+inside a departure lounge with rows of seats
+along a terminal concourse with moving walkways
+at a check-in row with stanchion queues
+#@time: dawn
+in an airport gate lounge with wide windows, at dawn
+#@time: morning
+beside the baggage carousel with steel rails, in the morning
+#@time: noon
+in a security hall with screening lanes, at noon
+#@time: afternoon
+along a duty-free aisle with perfume counters, in the afternoon
+#@time: golden hour
+at an airport cafe with high stools, at golden hour
+#@time: dusk
+inside a jet bridge with ribbed walls, at dusk
+#@time: night
+in a passport hall with booth windows, at night
+#@time: midnight
+at a boarding gate with queue barriers, at midnight

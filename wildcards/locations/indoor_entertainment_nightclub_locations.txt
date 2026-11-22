@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: entertainment
+#@place: nightclub
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a nightclub with a packed dancefloor
+at a bar in a nightclub with bottle shelves
+in a VIP booth of a nightclub with velvet ropes
+in a nightclub side room with coat hooks
+#@time: morning
+at a nightclub entrance with a rope barrier, in the morning
+#@time: afternoon
+in a nightclub cloakroom with numbered tags, in the afternoon
+#@time: golden hour
+along a nightclub corridor with padded walls, at golden hour
+#@time: dusk
+at a nightclub DJ booth with twin decks, at dusk
+#@time: night
+in a nightclub lounge with leather banquettes, at night
+#@time: night
+beside a nightclub bar with chrome stools, at night
+#@time: night
+in a nightclub backstage room with costume racks, at night
+#@time: midnight
+in a nightclub foyer with mirrored panels, at midnight

@@ -1,0 +1,28 @@
+#@setting: indoor
+#@domain: commercial
+#@place: boutique
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a boutique with warm oak shelving
+in a designer boutique with a mirrored plinth
+in a walk-in boutique with velvet fitting benches
+#@time: morning
+in a boutique with brass clothing rails, in the morning
+#@time: morning
+in a boutique with folded cashmere scarves, in the morning
+#@time: noon
+in a boutique with a glass display counter, at noon
+#@time: afternoon
+in a boutique with a rack of silk dresses, in the afternoon
+#@time: golden hour
+in a boutique with a velvet ottoman, at golden hour
+#@time: dusk
+in a boutique with a handbag display shelf, at dusk
+#@time: blue hour
+in a boutique with a tall arched mirror, at blue hour
+#@time: night
+in a boutique with a single clothing rack, at night
+#@time: midnight
+in a shuttered boutique with covered mannequins, at midnight

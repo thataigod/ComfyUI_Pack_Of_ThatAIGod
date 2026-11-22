@@ -1,0 +1,27 @@
+#@setting: outdoor
+#@domain: gardens
+#@place: botanical
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a glass-domed botanical garden with palm houses
+amid the botanical beds with a conservatory
+in a botanical garden with themed zones
+along a botanical walk with specimen trees
+#@time: dawn
+in a botanical garden at dawn with mist on the ponds
+#@time: morning
+in a botanical garden in the morning with early gardeners
+#@time: noon
+in a botanical garden at noon with sun through glass
+#@time: afternoon
+in a botanical garden in the afternoon with warm flowerbeds
+#@time: golden hour
+in a botanical garden at golden hour with glowing paths
+#@time: dusk
+in a botanical garden at dusk with conservatory lights
+#@time: night
+in a botanical garden at night with moths in the beams
+#@time: midnight
+in a botanical garden at midnight with a closed glasshouse

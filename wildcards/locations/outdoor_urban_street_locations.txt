@@ -1,0 +1,29 @@
+#@setting: outdoor
+#@domain: urban
+#@place: street
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a broad city avenue with glass towers
+along a narrow cobbled street with Tudor shopfronts
+on a wide boulevard with plane trees
+in a downtown street with grimy brick facades
+#@time: dawn
+in a city street at dawn with empty lanes
+#@time: morning
+in a city street in the morning with coffee steam
+#@time: noon
+in a city street at noon with hard shadows
+#@time: afternoon
+in a city street in the afternoon with bus queues
+#@time: golden hour
+in a city street at golden hour with amber towers
+#@time: dusk
+in a city street at dusk with buzzing neon
+#@time: blue hour
+in a city street in blue hour with cool pavement
+#@time: night
+in a city street at night with wet reflections
+#@time: midnight
+in a city street at midnight with a flickering streetlight

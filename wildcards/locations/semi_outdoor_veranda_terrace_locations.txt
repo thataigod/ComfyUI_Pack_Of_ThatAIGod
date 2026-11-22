@@ -1,0 +1,28 @@
+#@setting: semi_outdoor
+#@domain: veranda
+#@place: terrace
+#@region: universal
+#@era: contemporary
+#@privacy: semi_private
+#@climate: temperate
+on a stone terrace with low balustrades
+on a terrace shaded by a canvas awning
+on a tiled terrace with climbing vines
+on a terrace with a tiled fountain
+on a terrace with a wooden deck and lounge chairs
+#@time: dawn
+on a terrace at dawn with dew on the balustrade
+#@time: morning
+on a terrace in the morning with birds in the olive trees
+#@time: noon
+on a terrace at noon with shade beneath the pergola
+#@time: afternoon
+on a terrace in the afternoon with long shadows from the posts
+#@time: golden hour
+on a terrace at golden hour with amber light on the balustrade
+#@time: dusk
+on a terrace at dusk with lanterns lit above the treetops
+#@time: blue hour
+on a terrace in blue hour with warm glow from the house
+#@time: night
+on a terrace at night with festoon lights and a cool breeze

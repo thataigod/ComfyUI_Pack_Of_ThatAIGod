@@ -1,0 +1,30 @@
+#@setting: fantastical
+#@domain: fantasy
+#@place: castle
+#@region: universal
+#@era: medieval
+#@privacy: public
+#@climate: temperate
+in a stone castle courtyard with snapping banners
+within a torch-lit castle great hall with antlered chandeliers
+atop a castle curtain wall above a green valley
+within a castle gatehouse with an iron portcullis
+along a castle spiral stair winding up a round tower
+in a castle armoury with racks of oiled swords
+beside a castle chapel with painted saints and candles
+#@time: dawn
+in a castle bailey at dawn with mist on the flagstones
+#@time: morning
+in a castle training yard in the morning with straw dummies
+#@time: noon
+in a castle courtyard at noon with sun on the battlements
+#@time: afternoon
+in a castle library in the afternoon with heavy oak tomes
+#@time: golden hour
+atop a castle tower at golden hour above gilded town roofs
+#@time: dusk
+in a castle hall at dusk with candles kindling and long shadows
+#@time: night
+in a castle corridor at night lit by sputtering wall torches
+#@time: midnight
+in a castle great hall at midnight with a dying hearth

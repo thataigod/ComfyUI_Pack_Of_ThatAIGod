@@ -1,0 +1,9 @@
+Gold
+Silver
+Bronze
+Pewter
+Gunmetal
+Platinum
+Brass
+Chrome
+Titanium

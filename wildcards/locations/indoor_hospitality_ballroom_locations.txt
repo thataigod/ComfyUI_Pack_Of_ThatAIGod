@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: hospitality
+#@place: ballroom
+#@region: universal
+#@era: traditional
+#@privacy: public
+#@climate: temperate
+in a grand ballroom with crystal chandeliers
+in an opulent ballroom with gilded mirrors and a raised orchestra stage
+in a historic ballroom with frescoed ceilings and velvet rope balconies
+in a romantic ballroom with white fabric drapes and a checkered dance floor
+#@time: morning
+in a ballroom with tall windows and an empty parquet floor, in the morning
+#@time: afternoon
+in a ballroom with a bare dance floor and tall drapes, in the afternoon
+#@time: golden hour
+in a ballroom with arched windows and a marble floor, at golden hour
+#@time: dusk
+in a ballroom with tall drapes and a balcony rail, at dusk
+#@time: night
+in a ballroom with a crowded floor and gowned dancers, at night
+#@time: night
+in a ballroom with gilded walls and couples in shadow, at night
+#@time: blue hour
+in a ballroom with tall windows and a coffered ceiling, at blue hour
+#@time: midnight
+in a ballroom with rose petals on the floor, at midnight

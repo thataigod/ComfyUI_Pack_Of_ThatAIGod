@@ -1,0 +1,29 @@
+#@setting: indoor
+#@domain: civic
+#@place: temple_interior
+#@region: south_asian
+#@era: ancient
+#@privacy: public
+#@climate: warm
+in a temple sanctum with carved stone pillars
+inside a pillared temple hall with granite floors
+amid the stone pillars of a temple mandap
+in a temple antechamber with worn stone steps
+#@time: dawn
+along a temple corridor with brass bells, at dawn
+#@time: morning
+at a temple shrine with carved stone niches, in the morning
+#@time: morning
+in a temple side hall with painted murals, in the morning
+#@time: noon
+beneath a temple dome with stone ribs, at noon
+#@time: afternoon
+in a temple colonnade with granite columns, in the afternoon
+#@time: golden hour
+in a temple vestibule with brass studs, at golden hour
+#@time: dusk
+at a temple doorway with carved lintels, at dusk
+#@time: night
+in a temple storeroom with copper vessels, at night
+#@time: midnight
+inside a temple mandap with painted ceiling panels, at midnight

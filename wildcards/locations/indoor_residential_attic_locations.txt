@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: residential
+#@place: attic
+#@region: universal
+#@era: vintage
+#@privacy: private
+#@climate: cool
+in a dusty attic with exposed rafters and cobwebbed trunks
+in a converted attic with sloped ceilings and a striped daybed
+inside an attic with old furniture and yellowed photographs
+in a forgotten attic with a dollhouse and a mountain of suitcases
+#@time: morning
+in an attic with a round window and a bare wooden floor, in the morning
+#@time: afternoon
+in an attic with dusty boxes and an old sewing machine, in the afternoon
+#@time: golden hour
+in an attic with old newspapers and a forgotten rocking horse, at golden hour
+#@time: dusk
+in an attic with a small window and a wooden chest, at dusk
+#@time: night
+in an attic with an old dress form and a steamer trunk, at night
+#@time: night
+in an attic with packed boxes and a skylight, at night
+#@time: blue hour
+in an attic with an open skylight and drifting dust, at blue hour
+#@time: midnight
+in an attic with a sheet-covered armchair and a crib, at midnight

@@ -1,0 +1,28 @@
+#@setting: outdoor
+#@domain: rural
+#@place: vineyard
+#@region: european
+#@era: contemporary
+#@privacy: public
+#@climate: warm
+along a vineyard row on a terraced slope
+in a vineyard with trellised vines
+along a vineyard path with cypress trees
+on a vineyard hillside with pale chalk soil
+in a vineyard beside an old stone press-house
+#@time: dawn
+in a misty vineyard with dew on the leaves, at dawn
+#@time: morning
+in a vineyard with workers between the vines, in the morning
+#@time: noon
+in a vineyard with deep shade beneath the canopy, at noon
+#@time: afternoon
+in a vineyard with long shadows down the rows, in the afternoon
+#@time: golden hour
+in a vineyard with backlit grapes and warm terraces, at golden hour
+#@time: dusk
+in a vineyard with a lamp in the farmhouse, at dusk
+#@time: blue hour
+in a vineyard with mist returning to the valley, at blue hour
+#@time: night
+in a vineyard with moonlight silvering the leaves, at night

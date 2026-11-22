@@ -1,0 +1,9 @@
+__scenes/female_sarees_scene__
+__scenes/female_lehenga_choli_scene__
+__scenes/female_anarkali_scene__
+__scenes/female_salwar_suits_scene__
+__scenes/female_sharara_gharara_scene__
+__scenes/female_patiala_suit_scene__
+__scenes/female_kurti_sets_scene__
+__scenes/female_nauvari_dhoti_saree_scene__
+__scenes/female_mekhela_chador_scene__

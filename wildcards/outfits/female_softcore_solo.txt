@@ -1,0 +1,65 @@
+wearing a teasingly styled __colors/female_jewel__ colored silk robe in silk, untied and falling open as she kneels on a bed of rumpled sheets
+wearing a softly styled __colors/female_pastel__ colored lace bralette in lace, seated cross-legged on a rug with her hair loose over one shoulder
+wearing a lazily styled __colors/female_nude__ colored oversized cotton shirt in cotton, half-buttoned and slipping off one shoulder as she stretches on a rug
+wearing an invitingly styled __colors/female_cool__ colored satin slip in satin, lying on her side on pale sheets with a sheet drawn over one hip
+wearing a gently styled __colors/female_warm__ colored chiffon camisole in chiffon, arch-backed on a sofa with one arm reaching overhead
+wearing a dreamily styled __colors/female_dusty__ colored sheer robe in sheer, drifting open as she sits at a vanity brushing her hair
+wearing a softly styled __colors/female_light__ colored silk chemise in silk, curled on a window seat with her knees tucked to one side
+wearing a casually styled __colors/female_earthtone__ colored cotton nightshirt in cotton, loose and falling to mid-thigh as she leans against a doorframe
+wearing a delicately styled __colors/female_metallic__ colored satin camisole in satin, reclining on a chaise with one knee raised
+wearing a playfully styled __colors/female_candy__ colored lace bralette in lace, lying on her stomach on a quilt with her ankles crossed
+wearing an elegantly styled __colors/female_dark__ colored silk kimono robe in silk, open over bare shoulders as she stands by a window in morning light
+wearing a tenderly styled __colors/female_tropical__ colored sheer top in sheer, seated sideways on a stool with her weight on one hip
+wearing a warmly styled __colors/female_autumn__ colored cotton slip in cotton, kneeling upright on a fur rug with her hands on her thighs
+wearing a boldly styled __colors/female_jewel__ colored silk robe in silk __patterns/female_lingerie_lace_detail__, falling open as she kneels on the bed and lets down her hair
+wearing a subtly styled __colors/female_pastel__ colored lace bralette in lace __patterns/female_lingerie_lace_detail__, seated on a stool with her hands resting behind her and her shoulders bare
+wearing a tenderly styled __colors/female_nude__ colored satin slip in satin __patterns/female_lingerie_lace_detail__, lying on her side with a sheet drawn across one hip
+wearing a lazily styled __colors/female_light__ colored cotton shirt in cotton __patterns/female_lingerie_lace_detail__, half-buttoned and slipping from one shoulder as she stretches across a rug
+wearing an invitingly styled __colors/female_cool__ colored chiffon camisole in chiffon __patterns/female_lingerie_lace_detail__, arch-backed on a sofa with her arms overhead
+wearing a playfully styled __colors/female_candy__ colored satin shorts set in satin __patterns/female_lingerie_lace_detail__, curled on a window seat with her knees tucked up
+wearing a dreamily styled __colors/female_dusty__ colored sheer robe in sheer __patterns/female_lingerie_lace_detail__, drifting open as she stands in a doorway with her hair loose
+wearing a teasingly styled __colors/female_warm__ colored cotton nightshirt in cotton __patterns/female_lingerie_lace_detail__, loose to mid-thigh as she leans back on her hands on the bed
+wearing an elegantly styled __colors/female_metallic__ colored silk chemise in silk __patterns/female_lingerie_lace_detail__, reclining on a chaise with one knee raised and her hair spilling
+wearing a sultrily styled __colors/female_dark__ colored satin corset in satin __patterns/female_lingerie_lace_detail__, seated at the edge of the bed with her weight on one hip
+wearing a gently styled __colors/female_earthtone__ colored lace bodysuit in lace __patterns/female_lingerie_lace_detail__, kneeling on a rug with her back gently arched
+wearing a softly styled __colors/female_neutral__ colored cotton tee in cotton __patterns/female_lingerie_lace_detail__, sitting cross-legged on tangled sheets with her hands behind her
+wearing a warmly styled __colors/female_autumn__ colored satin robe in satin __patterns/female_lingerie_lace_detail__, untied and falling open as she turns from the window
+wearing a temptingly styled __colors/female_vivid__ colored sheer top in sheer __patterns/female_lingerie_lace_detail__, lying on her stomach on a quilt with her ankles crossed
+wearing a subtly styled __colors/female_muted__ colored silk camisole in silk __patterns/female_lingerie_lace_detail__, seated sideways on a stool with her legs angled away
+wearing a delicately styled __colors/female_monochrome__ colored lace bralette in lace __patterns/female_lingerie_lace_detail__, stretching her arms above her head on a sunlit rug
+wearing an alluringly styled __colors/female_bright__ colored chiffon slip in chiffon __patterns/female_lingerie_lace_detail__, drifting around her as she stands with her hip cocked
+wearing a sultrily styled __colors/female_dusty__ colored lace bodysuit in lace __patterns/female_lingerie_lace_detail__, reclining on a velvet sofa with one arm behind her head
+wearing a casually styled __colors/female_spring__ colored cotton shirt in cotton __patterns/female_blouse_patterns__, half-buttoned with the sleeves pushed up as she lounges on a sofa
+wearing a smoothly styled __colors/female_summer__ colored satin camisole in satin __patterns/female_blouse_patterns__, seated on the floor with her knees drawn to her chest
+wearing an enchantingly styled __colors/female_tropical__ colored silk robe in silk __patterns/female_blouse_patterns__, falling open as she kneels on the bed with her hair over one shoulder
+wearing a boldly styled __colors/female_neon__ colored lace bralette in lace __patterns/female_blouse_patterns__, arching back on a rug with her arms stretched long
+wearing a lazily styled __colors/female_winter__ colored cotton nightshirt in cotton __patterns/female_blouse_patterns__, slipping off one shoulder as she leans against a wall
+wearing a provocatively styled __colors/female_jewel__ colored sheer blouse in sheer __patterns/female_blouse_patterns__, loose and open as she sits at the vanity
+wearing an invitingly styled __colors/female_pastel__ colored satin slip in satin __patterns/female_blouse_patterns__, lying on her side with a sheet over one hip and her hair fanned out
+wearing a softly styled __colors/female_nude__ colored chiffon camisole in chiffon __patterns/female_blouse_patterns__, reclining on a chaise with one leg extended
+wearing a playfully styled __colors/female_light__ colored lace bodysuit in lace __patterns/female_blouse_patterns__, kneeling upright on a fur rug with her hands on her thighs
+wearing a dreamily styled __colors/female_dusty__ colored silk chemise in silk __patterns/female_blouse_patterns__, curled on her side on pale sheets with her knees tucked
+wearing a teasingly styled __colors/female_cool__ colored cotton shorts set in cotton __patterns/female_blouse_patterns__, stretching on a rug with her back gently arched
+wearing a warmly styled __colors/female_warm__ colored satin robe in satin __patterns/female_blouse_patterns__, untied as she perches on the edge of a bed with her ankles crossed
+wearing a gently styled __colors/female_earthtone__ colored sheer top in sheer __patterns/female_blouse_patterns__, seated sideways at a window with her chin on her knee
+wearing a sultrily styled __colors/female_metallic__ colored silk slip in silk __patterns/female_blouse_patterns__, lying on a velvet sofa with one arm trailing off the edge
+wearing a calmly styled __colors/female_monochrome__ colored cotton tee in cotton __patterns/female_blouse_patterns__, loose over bare legs as she leans back on her hands on the bed
+wearing a delicately styled __colors/female_muted__ colored lace camisole in lace __patterns/female_blouse_patterns__, kneeling on the bed with her weight settled on her heels
+wearing an elegantly styled __colors/female_neutral__ colored chiffon robe in chiffon __patterns/female_blouse_patterns__, drifting open as she stands with her back partly turned
+wearing a temptingly styled __colors/female_vivid__ colored silk robe in silk __patterns/female_party_dress_detail__, falling open as she reclines on a chaise with her hair loose
+wearing a subtly styled __colors/female_candy__ colored satin camisole in satin __patterns/female_party_dress_detail__, seated on the floor with her knees to one side
+wearing an alluringly styled __colors/female_dark__ colored lace bralette in lace __patterns/female_party_dress_detail__, arch-backed on a sofa with her arms lifted overhead
+wearing a lazily styled __colors/female_spring__ colored cotton shirt in cotton __patterns/female_party_dress_detail__, half-buttoned as she lies on her stomach on a quilt
+wearing a dreamily styled __colors/female_summer__ colored chiffon slip in chiffon __patterns/female_party_dress_detail__, drifting around her as she stretches on a rug
+wearing a teasingly styled __colors/female_tropical__ colored sheer robe in sheer __patterns/female_party_dress_detail__, open as she kneels on the bed with her hands on her thighs
+wearing a gently styled __colors/female_neon__ colored satin slip in satin __patterns/female_party_dress_detail__, lying on her side with a sheet drawn over one hip
+wearing a gracefully styled __colors/female_winter__ colored silk chemise in silk __patterns/female_party_dress_detail__, curled on a window seat with her hair over one shoulder
+wearing an invitingly styled __colors/female_bright__ colored lace bodysuit in lace __patterns/female_party_dress_detail__, seated at the vanity with her shoulders bare
+wearing a softly styled __colors/female_cool__ colored cotton nightshirt in cotton __patterns/female_party_dress_detail__, loose to mid-thigh as she leans in a doorway
+wearing a playfully styled __colors/female_pastel__ colored satin shorts set in satin __patterns/female_party_dress_detail__, stretched out on a daybed with her ankles crossed
+wearing a warmly styled __colors/female_autumn__ colored chiffon camisole in chiffon __patterns/female_party_dress_detail__, reclining on a rug with one knee raised
+wearing a boldly styled __colors/female_jewel__ colored silk robe in silk __patterns/female_party_dress_detail__, untied as she turns from the window with her hair swinging
+wearing an elegantly styled __colors/female_nude__ colored satin corset in satin __patterns/female_party_dress_detail__, seated on the edge of the bed with her weight on one hip
+wearing a delicately styled __colors/female_light__ colored lace camisole in lace __patterns/female_party_dress_detail__, lying on tangled sheets with one arm above her head
+wearing a subtly styled __colors/female_dusty__ colored cotton tee in cotton __patterns/female_party_dress_detail__, loose over bare legs as she curls up in an armchair
+wearing a sultrily styled __colors/female_metallic__ colored sheer slip in sheer __patterns/female_party_dress_detail__, flowing around her as she stands in candlelight

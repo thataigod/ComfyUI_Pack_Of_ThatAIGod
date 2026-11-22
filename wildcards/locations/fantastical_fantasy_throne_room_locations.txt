@@ -1,0 +1,30 @@
+#@setting: fantastical
+#@domain: fantasy
+#@place: throne_room
+#@region: universal
+#@era: medieval
+#@privacy: public
+#@climate: temperate
+in a grand throne room with soaring pillars and a marble dais
+within a throne room hung with velvet banners
+at the foot of a throne room dais with crimson carpet
+along a throne room colonnade of stern king statues
+beneath a throne room's stained-glass crowning window
+in a throne room antechamber of polished black marble
+beside a throne room hearth with carved heraldic beasts
+#@time: dawn
+in a throne room at dawn with pale light and empty posts
+#@time: morning
+in a throne room in the morning as courtiers gather
+#@time: noon
+in a throne room at noon with sunbeams striking the dais
+#@time: afternoon
+in a throne room in the afternoon with quiet scribes
+#@time: golden hour
+in a throne room at golden hour with amber banners
+#@time: dusk
+in a throne room at dusk with braziers lit and doors barred
+#@time: night
+in a throne room at night lit by ranks of candles
+#@time: midnight
+in a throne room at midnight with moonlight on the marble

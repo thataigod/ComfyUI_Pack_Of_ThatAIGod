@@ -1,0 +1,27 @@
+#@setting: outdoor
+#@domain: urban
+#@place: plaza
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a vast paved plaza with a fountain
+on a modern city square with a giant sculpture
+in a historic plaza with an obelisk
+across an empty concrete plaza with tiled murals
+#@time: dawn
+in a plaza at dawn with scattering pigeons
+#@time: morning
+in a plaza in the morning with vendors setting stalls
+#@time: noon
+in a plaza at noon with blinding light
+#@time: afternoon
+in a plaza in the afternoon with long shadows
+#@time: golden hour
+in a plaza at golden hour with a glowing colonnade
+#@time: dusk
+in a plaza at dusk with silver fountain water
+#@time: night
+in a plaza at night with a lit monument
+#@time: midnight
+in a plaza at midnight with one glinting lamp

@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: residential
+#@place: basement
+#@region: universal
+#@era: timeless
+#@privacy: private
+#@climate: cool
+in a basement with exposed pipes and a rumbling furnace
+in a finished basement with a worn sofa and a dartboard
+in a cluttered basement with shelves of preserves and a workbench
+in an old basement with a stone wall and dusty wine bottles
+#@time: morning
+in a basement with a high window and a metal shelf, in the morning
+#@time: afternoon
+in a basement with a small window and stacked boxes, in the afternoon
+#@time: golden hour
+in a basement with a ground-level window and a concrete ledge, at golden hour
+#@time: dusk
+in a basement with a fuse box and a stack of paint cans, at dusk
+#@time: night
+in a basement with a small television and a folding chair, at night
+#@time: night
+in a basement with a pool table and pipes in shadow, at night
+#@time: blue hour
+in a basement with a window well and a laundry sink, at blue hour
+#@time: midnight
+in a basement with a sump pump and a low ceiling, at midnight

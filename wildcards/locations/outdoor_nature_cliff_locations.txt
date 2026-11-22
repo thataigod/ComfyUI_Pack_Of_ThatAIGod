@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: cliff
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+on a chalk cliff with wind-bent grass
+on a coastal cliff with breaking waves
+at the edge of a sea cliff with salt spray
+on a cliff path with sea thrift
+on a granite cliff with nesting seabirds
+#@time: dawn
+on a dawn cliff with crying gulls
+#@time: morning
+on a windy cliff with a glittering sea, in the morning
+#@time: noon
+on a sunlit cliff with deep rock shadows, at noon
+#@time: afternoon
+on a warm cliff with waves below, in the afternoon
+#@time: golden hour
+on a bronze-lit cliff with an amber headland, at golden hour
+#@time: dusk
+on a dusky cliff with a sweeping lighthouse beam, at dusk
+#@time: night
+on a moonlit cliff with roaring wind, at night

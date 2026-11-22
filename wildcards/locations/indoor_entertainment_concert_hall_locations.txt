@@ -1,0 +1,25 @@
+#@setting: indoor
+#@domain: entertainment
+#@place: concert_hall
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a concert hall with acoustic wood panelling
+inside a recital hall with a grand piano
+in a concert hall foyer with a sweeping staircase
+in the organ loft of a concert hall with tall pipes
+#@time: morning
+at a concert hall stage door with call sheets, in the morning
+#@time: afternoon
+along a concert hall corridor with framed scores, in the afternoon
+#@time: golden hour
+in a concert hall balcony with tiered seats, at golden hour
+#@time: dusk
+at a concert hall bar with brass rails, at dusk
+#@time: night
+in a rehearsal room with music stands, at night
+#@time: night
+in a concert hall lobby with stone columns, at night
+#@time: midnight
+in a concert hall green room with vanity mirrors, at midnight

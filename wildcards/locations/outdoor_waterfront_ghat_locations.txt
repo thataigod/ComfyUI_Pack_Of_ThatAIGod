@@ -1,0 +1,30 @@
+#@setting: outdoor
+#@domain: waterfront
+#@place: ghat
+#@region: south_asian
+#@era: traditional
+#@privacy: semi_private
+#@climate: warm
+on the broad stone ghat steps with brass urns
+along a riverside ghat with painted pillars
+at a ghat with onion-domed pavilions
+on worn ghat steps with drifting incense
+along a ghat at the water's edge with moored boats
+#@time: dawn
+on a misty ghat with the first bathers, at dawn
+#@time: morning
+on a ghat with floating flower lamps, in the morning
+#@time: noon
+on a hot ghat with vendors' awnings, at noon
+#@time: afternoon
+on a ghat with idle priests on the steps, in the afternoon
+#@time: golden hour
+on a ghat with aarti flames along the bank, at golden hour
+#@time: dusk
+on a ghat with lamps floating downstream, at dusk
+#@time: blue hour
+on a ghat with garlands glowing on dark steps, at blue hour
+#@time: night
+on a ghat with a few oil lamps burning, at night
+#@time: midnight
+on a ghat with a still black river, at midnight

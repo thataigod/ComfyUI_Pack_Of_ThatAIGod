@@ -1,0 +1,27 @@
+#@setting: outdoor
+#@domain: urban
+#@place: skate_park
+#@region: north_american
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a concrete skate park with a scuffed bowl
+at a graffiti-tagged skate bowl with scattered boards
+on a paved skate plaza with a chain-link fence
+in a weathered skate park with painted lines
+#@time: dawn
+at a skate park at dawn with dew on the concrete
+#@time: morning
+at a skate park in the morning with the first skaters
+#@time: noon
+at a skate park at noon with clattering wheels
+#@time: afternoon
+at a skate park in the afternoon with a small crowd
+#@time: golden hour
+at a skate park at golden hour with long shadows
+#@time: dusk
+at a skate park at dusk with floodlights snapping on
+#@time: night
+at a skate park at night with chalk dust
+#@time: midnight
+at a skate park at midnight with moonlight on the bowl

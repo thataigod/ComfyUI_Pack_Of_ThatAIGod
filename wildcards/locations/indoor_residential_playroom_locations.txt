@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: residential
+#@place: playroom
+#@region: universal
+#@era: contemporary
+#@privacy: private
+#@climate: temperate
+in a private playroom with a low leather bench
+beside a wide leather bench in a playroom with a folded velvet throw
+in a padded playroom with soft floor mats and coiled ropes
+in a tidy playroom with leather cuffs and silken cords on hooks
+in a mirrored playroom with a velvet chaise and a polished wood floor
+beside a wooden rack in a playroom with coiled ropes and silk sashes
+in a warm-toned playroom with a leather bench and hanging silks
+in a minimal playroom with dark padded panels and a tall mirror
+#@time: dusk
+in a playroom with closed blinds and a leather bench, at dusk
+#@time: dusk
+beside a curtained alcove in a playroom with a velvet chaise, at dusk
+#@time: night
+in a playroom with a hanging swing and a low table, at night
+#@time: night
+in a quiet playroom with polished wood and folded silks, at night
+#@time: midnight
+in a playroom with a mirrored corner and a low stool, at midnight
+#@time: midnight
+in a playroom with a padded wall and still leather straps, at midnight

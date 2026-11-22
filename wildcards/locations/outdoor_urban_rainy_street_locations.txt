@@ -1,0 +1,42 @@
+#@setting: outdoor
+#@domain: urban
+#@place: rainy_street
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: cool
+#@weather: rain
+in a rain-soaked street with mirrored puddles
+#@weather: rain
+along a rain-slick street with overflowing gutters
+#@weather: rain
+on a wet street with rain-smeared shop signs
+#@weather: rain
+in a downpour street with rain off the eaves
+#@time: dawn
+#@weather: rain
+in a rainy street at dawn with grey drizzle
+#@time: morning
+#@weather: rain
+in a rainy street in the morning with bobbing umbrellas
+#@time: noon
+#@weather: rain
+in a rainy street at noon with rain drumming
+#@time: afternoon
+#@weather: rain
+in a rainy street in the afternoon with wet leaves
+#@time: golden hour
+#@weather: rain
+in a rainy street at golden hour with rain-gilded road
+#@time: dusk
+#@weather: rain
+in a rainy street at dusk with neon in the puddles
+#@time: blue hour
+#@weather: rain
+in a rainy street in blue hour with a wet gleam
+#@time: night
+#@weather: rain
+in a rainy street at night with raindrops under lamps
+#@time: midnight
+#@weather: rain
+in a rainy street at midnight with a leaky awning

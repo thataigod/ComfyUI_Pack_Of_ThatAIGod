@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: canyon
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: arid
+in a slot canyon with carved sandstone
+on a canyon rim with a vast gorge
+at the bottom of a canyon with green water
+in a red rock canyon with hoodoos
+on a canyon ledge with swallows below
+#@time: dawn
+in a cool canyon with blue walls, at dawn
+#@time: morning
+in a bright canyon with a sunlit river, in the morning
+#@time: noon
+in a noon canyon with black shadows
+#@time: afternoon
+in a warm canyon with split light, in the afternoon
+#@time: golden hour
+in an ember-lit canyon with glowing rock, at golden hour
+#@time: dusk
+in a dusky canyon with purple walls, at dusk
+#@time: night
+in a night canyon with a ribbon of stars

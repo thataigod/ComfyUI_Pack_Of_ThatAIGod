@@ -1,0 +1,30 @@
+#@setting: indoor
+#@domain: residential
+#@place: kitchen
+#@region: universal
+#@era: timeless
+#@privacy: semi_private
+#@climate: temperate
+in a rustic kitchen with a farmhouse sink and copper pots
+in a modern kitchen with matte black cabinetry and a marble island
+in a country kitchen with open shelves and a pine table
+#@time: morning
+in a kitchen with a white tile backsplash and a boiling kettle, in the morning
+#@time: morning
+beside a kitchen island with a bowl of oranges and a coffee mug, in the morning
+#@time: noon
+in a kitchen with stainless steel appliances and fresh herbs, at noon
+#@time: afternoon
+in a kitchen with a tiled floor and a cooling tray of cookies, in the afternoon
+#@time: golden hour
+in a kitchen with jars of dried pasta on the windowsill, at golden hour
+#@time: dusk
+in a kitchen with a range hood above the sink, at dusk
+#@time: night
+in a kitchen with a bowl of fruit on the counter, at night
+#@time: night
+in a kitchen with a wooden table and a hanging pot rack, at night
+#@time: blue hour
+in a kitchen with a bread box and a spice rack, at blue hour
+#@time: midnight
+in a kitchen with a refrigerator and a half-drunk glass of water, at midnight

@@ -1,0 +1,27 @@
+#@setting: outdoor
+#@domain: gardens
+#@place: rose
+#@region: european
+#@era: timeless
+#@privacy: semi_private
+#@climate: temperate
+in a walled rose garden with climbing roses
+amid the rose beds with gravel paths
+in a formal rose garden with a tiered fountain
+along a rose pergola with drifting petals
+#@time: dawn
+in a rose garden at dawn with dewy petals
+#@time: morning
+in a rose garden in the morning with buzzing bees
+#@time: noon
+in a rose garden at noon with heavy fragrance
+#@time: afternoon
+in a rose garden in the afternoon with warm petals
+#@time: golden hour
+in a rose garden at golden hour with amber blooms
+#@time: dusk
+in a rose garden at dusk with a lit lantern
+#@time: night
+in a rose garden at night with pale moonlight
+#@time: midnight
+in a rose garden at midnight with silvered petals

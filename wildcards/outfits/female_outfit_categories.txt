@@ -1,0 +1,16 @@
+__outfits/female_traditional_outfits__
+__outfits/female_casual_outfits__
+__outfits/female_formal_outfits__
+__outfits/female_party_outfits__
+__outfits/female_swimwear__
+__outfits/female_lingerie_outfits__
+__outfits/female_athletic_outfits__
+__outfits/female_streetwear__
+__outfits/female_costume_outfits__
+__outfits/female_sleepwear__
+__outfits/female_bridal__
+__outfits/female_dancewear__
+__outfits/female_resort_wear__
+__outfits/female_uniform__
+__outfits/female_outerwear__
+__outfits/female_festival_wear__

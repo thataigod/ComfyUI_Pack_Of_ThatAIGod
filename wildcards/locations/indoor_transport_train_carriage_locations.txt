@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: transport
+#@place: train_carriage
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+aboard a train carriage with reclining seats
+inside a subway carriage with metal grab poles
+aboard a sleeper carriage with curtained berths
+aboard a high-speed carriage with fold-out tables
+#@time: dawn
+aboard a train carriage with few passengers, at dawn
+#@time: morning
+aboard a commuter train with station announcements, in the morning
+#@time: noon
+aboard a train with a rattling trolley, at noon
+#@time: afternoon
+aboard a train carriage with vacant seats, in the afternoon
+#@time: golden hour
+aboard a train with a narrow aisle, at golden hour
+#@time: dusk
+aboard a train carriage with a luggage rack, at dusk
+#@time: night
+aboard a sleeper train with drawn curtains, at night
+#@time: midnight
+aboard a sleeper train with sleeping passengers, at midnight

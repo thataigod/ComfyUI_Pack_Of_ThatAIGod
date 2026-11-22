@@ -1,0 +1,29 @@
+#@setting: indoor
+#@domain: civic
+#@place: library
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+in a hushed library with oak shelves
+inside a modern library with pale wood shelving
+amid the narrow stacks of worn hardbacks
+in a reference library with long tables
+#@time: dawn
+along a library aisle with a rolling ladder, at dawn
+#@time: morning
+at a library reading desk with carved legs, in the morning
+#@time: morning
+in a periodicals room with bound volumes, in the morning
+#@time: noon
+in a library map room with flat drawers, at noon
+#@time: afternoon
+in a library gallery with iron railings, in the afternoon
+#@time: golden hour
+in a rare book room with glass cabinets, at golden hour
+#@time: dusk
+at a library returns counter with a book trolley, at dusk
+#@time: night
+in a library study carrel with cork boards, at night
+#@time: midnight
+inside a library atrium with a hanging globe, at midnight

@@ -1,0 +1,25 @@
+#@setting: indoor
+#@domain: commercial
+#@place: photo_studio
+#@region: universal
+#@era: contemporary
+#@privacy: semi_public
+#@climate: temperate
+in a photo studio with a white cyclorama
+in a photography studio with a paper backdrop
+in a loft photo studio with exposed brick
+in a compact studio with a green screen
+#@time: morning
+in a photo studio with a ready backdrop, in the morning
+#@time: noon
+in a studio with a tripod and cables, at noon
+#@time: afternoon
+in a studio with seamless paper rolls, in the afternoon
+#@time: golden hour
+in a studio with sandbagged tripods, at golden hour
+#@time: dusk
+in a studio with a packed equipment case, at dusk
+#@time: night
+in a studio with coiled power cables, at night
+#@time: midnight
+in an idle studio with a covered camera, at midnight

@@ -1,0 +1,28 @@
+#@setting: indoor
+#@domain: residential
+#@place: home_office
+#@region: universal
+#@era: timeless
+#@privacy: private
+#@climate: temperate
+in a home office with a dark walnut desk
+in a home office with a white desk and a potted fern
+beside a bay window in a home office with a laptop and coffee
+#@time: morning
+in a home office with a wooden desk and a cooling cup of tea, in the morning
+#@time: morning
+in a home office with an open notebook and a clutter of pens, in the morning
+#@time: afternoon
+in a home office with half-closed blinds and a document-strewn desk, in the afternoon
+#@time: golden hour
+in a home office with a stack of papers and a framed print, at golden hour
+#@time: dusk
+in a home office with a filing cabinet and a leather wastebasket, at dusk
+#@time: night
+in a home office with a monitor and a mug of cold coffee, at night
+#@time: night
+in a home office with overflowing bookshelves and a worn armchair, at night
+#@time: blue hour
+in a home office with a glass desk and a sleek chair, at blue hour
+#@time: midnight
+in a home office with a keyboard and a stack of folders, at midnight

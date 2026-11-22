@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: hospitality
+#@place: banquet_hall
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+in a vast banquet hall with round tables and white linens
+in a decorated banquet hall with gold sashes and floral centerpieces
+in a hotel banquet hall with patterned carpet and a long buffet
+in an empty banquet hall with stacked chairs and ribbons on the chandeliers
+#@time: morning
+in a banquet hall with high windows and staff laying cutlery, in the morning
+#@time: afternoon
+in a banquet hall with bare tables and a swept floor, in the afternoon
+#@time: golden hour
+in a banquet hall with clerestory windows and a half-set table, at golden hour
+#@time: dusk
+in a banquet hall with tall windows and a parquet floor, at dusk
+#@time: night
+in a banquet hall with chandeliers over a crowded floor, at night
+#@time: night
+in a banquet hall with white linens and a waiting dance floor, at night
+#@time: blue hour
+in a banquet hall with high windows and candlesticks on tables, at blue hour
+#@time: midnight
+in a banquet hall with confetti over the carpet, at midnight

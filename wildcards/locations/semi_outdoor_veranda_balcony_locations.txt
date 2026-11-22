@@ -1,0 +1,28 @@
+#@setting: semi_outdoor
+#@domain: veranda
+#@place: balcony
+#@region: universal
+#@era: contemporary
+#@privacy: private
+#@climate: temperate
+on a city balcony with a wrought-iron railing
+on an apartment balcony with a bistro table
+on a narrow balcony with potted herbs
+on a balcony with a glass balustrade and string lights
+on a Juliet balcony with spilling geraniums
+#@time: dawn
+on a balcony at dawn with cool light on the railing
+#@time: morning
+on a balcony in the morning with sun on the pots
+#@time: noon
+on a balcony at noon with a striped awning casting shade
+#@time: afternoon
+on a balcony in the afternoon with warm light on the walls
+#@time: golden hour
+on a balcony at golden hour with rooftops aglow
+#@time: dusk
+on a balcony at dusk with city lights flickering on
+#@time: night
+on a balcony at night with string lights and a cool breeze
+#@time: midnight
+on a balcony at midnight with dew beading the rail

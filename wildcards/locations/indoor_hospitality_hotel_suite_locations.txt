@@ -1,0 +1,28 @@
+#@setting: indoor
+#@domain: hospitality
+#@place: hotel_suite
+#@region: universal
+#@era: timeless
+#@privacy: private
+#@climate: temperate
+in a luxury hotel suite with a king bed and silk cushions
+in a classic hotel suite with a sitting area and a writing desk
+in a hotel suite with a marble bathroom and a fruit basket
+#@time: morning
+in a hotel suite with sheer drapes and a rumpled white bed, in the morning
+#@time: morning
+in a hotel suite with a room-service tray and a newspaper, in the morning
+#@time: afternoon
+in a hotel suite with a velvet chaise and an open suitcase, in the afternoon
+#@time: golden hour
+in a hotel suite with a glass of wine on the windowsill, at golden hour
+#@time: dusk
+in a hotel suite with a corner sofa and a city view, at dusk
+#@time: night
+in a hotel suite with a turned-down bed and a luggage rack, at night
+#@time: night
+in a hotel suite with heavy drapes and a padded headboard, at night
+#@time: blue hour
+in a hotel suite with a coffee table and a city skyline, at blue hour
+#@time: midnight
+in a hotel suite with a robe over a chair and a tall window, at midnight

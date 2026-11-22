@@ -1,0 +1,25 @@
+#@setting: indoor
+#@domain: entertainment
+#@place: theatre
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a grand theatre auditorium with red velvet seats
+inside a black-box theatre with tiered seating
+in a theatre foyer with framed playbills
+in a theatre backstage area with coiled ropes
+#@time: morning
+at a theatre box office with brass grilles, in the morning
+#@time: afternoon
+along a theatre corridor with numbered doors, in the afternoon
+#@time: golden hour
+in a theatre dressing room with vanity mirrors, at golden hour
+#@time: dusk
+at a theatre fly floor with counterweight ropes, at dusk
+#@time: night
+in a theatre orchestra pit with music stands, at night
+#@time: night
+in a theatre lobby with marble floors, at night
+#@time: midnight
+in a theatre prop store with painted furniture, at midnight

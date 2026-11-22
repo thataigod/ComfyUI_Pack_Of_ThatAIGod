@@ -1,0 +1,28 @@
+#@setting: semi_outdoor
+#@domain: courtyard
+#@place: temple
+#@region: south_asian
+#@era: ancient
+#@privacy: semi_private
+#@climate: humid
+in a temple courtyard with carved stone pillars
+on a temple courtyard paved in worn granite with a sacred banyan
+under a temple mandapa with intricate carvings
+at a temple courtyard tank reflecting the gopuram
+beside a temple flagstaff with incense drifting
+#@time: dawn
+in a temple courtyard at dawn with mist over the tank
+#@time: morning
+in a temple courtyard in the morning with sun on the gopuram
+#@time: noon
+in a temple courtyard at noon with cool darkness in the colonnade
+#@time: afternoon
+in a temple courtyard in the afternoon with slanting light through pillars
+#@time: golden hour
+in a temple courtyard at golden hour with lamps being lit
+#@time: dusk
+in a temple courtyard at dusk with rows of oil lamps
+#@time: night
+in a temple courtyard at night with lamplight and silent bells
+#@time: midnight
+in a temple courtyard at midnight with moonlight on the carvings

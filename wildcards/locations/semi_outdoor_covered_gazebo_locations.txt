@@ -1,0 +1,28 @@
+#@setting: semi_outdoor
+#@domain: covered
+#@place: gazebo
+#@region: universal
+#@era: timeless
+#@privacy: semi_private
+#@climate: temperate
+in a garden gazebo with a lattice cupola
+in a white gazebo with a domed roof
+under a gazebo frame with hanging baskets
+at a pond-side gazebo with a screen of reeds
+in a canvas-roofed gazebo with wicker chairs
+#@time: dawn
+in a gazebo at dawn with cool light through the lattice
+#@time: morning
+in a gazebo in the morning with birds in the hedges
+#@time: noon
+in a gazebo at noon with cool shade under the cupola
+#@time: afternoon
+in a gazebo in the afternoon with long shadows on the grass
+#@time: golden hour
+in a gazebo at golden hour with amber light on the posts
+#@time: dusk
+in a gazebo at dusk with a lantern lit inside
+#@time: blue hour
+in a gazebo in blue hour with cool twilight through the lattice
+#@time: night
+in a gazebo at night with moths circling a single lamp

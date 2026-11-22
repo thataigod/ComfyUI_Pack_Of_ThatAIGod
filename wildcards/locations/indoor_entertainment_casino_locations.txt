@@ -1,0 +1,25 @@
+#@setting: indoor
+#@domain: entertainment
+#@place: casino
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+on a casino floor with rows of slot machines
+at a green baize poker table with stacked chips
+in a casino hall with mirrored ceilings
+in a casino sportsbook with leather seats
+#@time: morning
+at a roulette table with a numbered wheel, in the morning
+#@time: noon
+beside a craps table with felt markings, at noon
+#@time: afternoon
+along a casino aisle with carpet patterns, in the afternoon
+#@time: golden hour
+at a cashier cage with brass grilles, at golden hour
+#@time: dusk
+in a high-limit room with velvet ropes, at dusk
+#@time: night
+in a casino lounge with low settees, at night
+#@time: midnight
+in a casino lobby with marble columns, at midnight

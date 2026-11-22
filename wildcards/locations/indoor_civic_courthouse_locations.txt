@@ -1,0 +1,25 @@
+#@setting: indoor
+#@domain: civic
+#@place: courthouse
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a courthouse lobby with marble columns
+inside a panelled courtroom with a judge's bench
+along a courthouse corridor with closed doors
+in a jury room with a long table
+#@time: dawn
+at a courthouse security desk with metal detectors, at dawn
+#@time: morning
+in a clerk's office with filing cabinets, in the morning
+#@time: noon
+inside a witness room with vinyl chairs, at noon
+#@time: afternoon
+along a courthouse stairwell with brass handrails, in the afternoon
+#@time: dusk
+in a public gallery with wooden benches, at dusk
+#@time: night
+at a courthouse entrance with stone steps, at night
+#@time: midnight
+in a records archive with steel shelving, at midnight

@@ -1,0 +1,65 @@
+wearing a cozily styled __colors/female_warm__ colored puffer coat in down with a high funnel collar and long sleeves that wrap her snugly from shoulders to knees
+wearing a warmly styled __colors/female_cool__ colored puffer coat in down with a quilted hood and elastic cuffs __patterns/female_athletic_stripe__ that covers her torso and falls to mid-thigh
+wearing a boldly styled __colors/female_neon__ colored puffer coat in down with a front zip and roomy side pockets __patterns/female_streetwear_graphic__ that fully covers her torso and arms
+wearing a comfortably styled __colors/female_dusty__ colored puffer coat in down with a detachable hood and ribbed hem __patterns/female_casual_bottom_wash__ that keeps her warm from collar to hips
+wearing a freshly styled __colors/female_summer__ colored puffer coat in down with reflective zip pulls and a high collar __patterns/female_athletic_stripe__ that covers her shoulders and falls to the knees
+wearing a modernly styled __colors/female_monochrome__ colored puffer coat in down with an oversized hood and dropped shoulders __patterns/female_streetwear_graphic__ that drapes over her torso and covers her to the hips
+wearing a relaxedly styled __colors/female_muted__ colored puffer coat in down with a zip-off hood and snap placket __patterns/female_casual_bottom_wash__ that wraps her from neck to thighs
+wearing a neatly styled __colors/female_dark__ colored puffer coat in down with a stand collar and zip pockets __patterns/female_athletic_stripe__ that fully covers her torso and sits at the hips
+wearing a sharply styled __colors/female_neutral__ colored trench coat in gabardine with notch lapels and a belted waist __patterns/female_formal_blazer_detail__ that fully covers her torso and falls below the knee
+wearing an elegantly styled __colors/female_nude__ colored trench coat in gabardine with peak lapels and long sleeves __patterns/female_formal_blazer_detail__ that covers her shoulders and falls to the calves
+wearing a classically styled __colors/female_earthtone__ colored trench coat in gabardine with double-breasted buttons and epaulettes __patterns/female_formal_blazer_detail__ that fully covers her torso and legs
+wearing a crisply styled __colors/female_light__ colored trench coat in gabardine with a storm flap and buckled cuffs __patterns/female_formal_blazer_detail__ that wraps her from shoulders to mid-calf
+wearing a breezily styled __colors/female_pastel__ colored trench coat in gabardine with raglan sleeves and patch pockets that cover her torso and falls to the knee
+wearing a sleekly styled __colors/female_dark__ colored trench coat in gabardine with wide lapels and a self-tie belt that fully covers her torso and legs with a fluid drape
+wearing a gracefully styled __colors/female_dusty__ colored trench coat in gabardine with a shawl collar and welt pockets __patterns/female_formal_blazer_detail__ that covers her shoulders and falls below the knee
+wearing a confidently styled __colors/female_monochrome__ colored trench coat in gabardine with a high-neck collar and buttoned storm flap __patterns/female_formal_blazer_detail__ that fully covers her torso and knees
+wearing a sharply styled __colors/female_cool__ colored wool overcoat in wool with notch lapels and flap pockets __patterns/female_formal_blazer_detail__ that fully covers her torso and calves
+wearing an elegantly styled __colors/female_muted__ colored wool overcoat in wool with a shawl collar and long sleeves that wrap her from shoulders to knees
+wearing a classically styled __colors/female_jewel__ colored wool overcoat in wool with peak lapels and a half belt __patterns/female_formal_blazer_detail__ that covers her torso and falls below the knee
+wearing a smartly styled __colors/female_winter__ colored wool overcoat in cashmere with a collar-neck and buttoned front __patterns/female_formal_blazer_detail__ that fully covers her torso and legs
+wearing a tastefully styled __colors/female_neutral__ colored wool overcoat in cashmere with a shawl collar and deep patch pockets __patterns/female_formal_blazer_detail__ that wraps her from neck to mid-calf
+wearing a precisely styled __colors/female_dark__ colored wool overcoat in tweed with notch lapels and welt pockets __patterns/female_formal_blazer_detail__ that fully covers her torso and falls to the calves
+wearing a refinedly styled __colors/female_autumn__ colored wool overcoat in tweed with peak lapels and horn buttons __patterns/female_formal_blazer_detail__ that covers her shoulders and falls below the knee
+wearing a softly styled __colors/female_spring__ colored wool overcoat in cashmere with a draped shawl collar that wraps her from shoulders to knees
+wearing a rustically styled __colors/female_earthtone__ colored shearling jacket in shearling with a wide collar and zipped front __patterns/female_casual_bottom_wash__ that covers her torso and sits at the hips
+wearing a warmly styled __colors/female_candy__ colored shearling jacket in leather with a plush collar and belted hem that keeps her snug from shoulders to waist
+wearing a boldly styled __colors/female_vivid__ colored shearling jacket in leather with an asymmetric zip and wide lapels __patterns/female_streetwear_graphic__ that covers her torso and ends at the hips
+wearing a lightly styled __colors/female_tropical__ colored shearling jacket in shearling with rolled cuffs and patch pockets __patterns/female_casual_bottom_wash__ that wraps her from shoulders to hips
+wearing a smartly styled __colors/female_metallic__ colored shearling jacket in leather with a ribbed hem and snap cuffs __patterns/female_athletic_stripe__ that covers her torso and falls to the waist
+wearing a freshly styled __colors/female_cool__ colored shearling jacket in shearling with a funnel neck and zip pockets __patterns/female_streetwear_graphic__ that fully covers her torso and hits at the hips
+wearing a snugly styled __colors/female_dusty__ colored shearling jacket in shearling with toggle buttons and a stand collar that covers her shoulders and keeps her warm to the waist
+wearing an elegantly styled __colors/female_jewel__ colored cape coat in wool with a draped front and concealed clasp __patterns/female_formal_blazer_detail__ that covers her shoulders and falls to the knees
+wearing a gracefully styled __colors/female_nude__ colored cape coat in cashmere with a roll collar and arm slits __patterns/female_formal_blazer_detail__ that drapes over her shoulders and falls below the knee
+wearing a softly styled __colors/female_pastel__ colored cape coat in tweed with a hooded collar and toggle clasp that covers her shoulders and cascades to the calves
+wearing a chicly styled __colors/female_dark__ colored cape coat in wool with a high funnel collar and buttoned placket __patterns/female_formal_blazer_detail__ that fully covers her shoulders and upper arms
+wearing a finely styled __colors/female_monochrome__ colored cape coat in cashmere with a shawl collar and welt arm openings __patterns/female_formal_blazer_detail__ that drapes from shoulders to mid-calf
+wearing a breezily styled __colors/female_light__ colored cape coat in tweed with fringed trim and a front tie __patterns/female_casual_bottom_wash__ that covers her shoulders and swings to the knees
+wearing a modernly styled __colors/female_neon__ colored cape coat in wool with an oversized hood and snap front __patterns/female_streetwear_graphic__ that covers her shoulders and drapes to the hips
+wearing a warmly styled __colors/female_winter__ colored parka with scarf in down with a fur-trimmed hood and zip front __patterns/female_athletic_stripe__ that wraps her from head to knees
+wearing a crisply styled __colors/female_cool__ colored parka with scarf in gabardine with a drawstring waist and flap pockets __patterns/female_athletic_stripe__ that covers her torso and falls to mid-thigh
+wearing a cozily styled __colors/female_monochrome__ colored parka with scarf in down with a sherpa-lined hood and snap storm flap __patterns/female_streetwear_graphic__ that keeps her warm from collar to knees
+wearing a comfortably styled __colors/female_muted__ colored parka with scarf in gabardine with a fishtail hem and buttoned pockets __patterns/female_casual_bottom_wash__ that covers her torso and falls below the hips
+wearing a freshly styled __colors/female_earthtone__ colored parka with scarf in down with a quilted lining and toggle hood __patterns/female_casual_bottom_wash__ that wraps her from shoulders to thighs
+wearing a neatly styled __colors/female_dark__ colored parka with scarf in gabardine with a high collar and zipped side vents that cover her torso and falls to the knees
+wearing a stylishly styled __colors/female_vivid__ colored parka with scarf in down with a hooded collar and utility pockets __patterns/female_streetwear_graphic__ that fully covers her torso and hits below the hips
+wearing a sharply styled __colors/female_neutral__ colored peacoat in wool with wide notch lapels and double-breasted buttons __patterns/female_formal_blazer_detail__ that fully covers her torso and falls below the hips
+wearing a classically styled __colors/female_dark__ colored peacoat in wool with a sailor collar and anchor buttons __patterns/female_formal_blazer_detail__ that covers her torso and falls to mid-thigh
+wearing an elegantly styled __colors/female_cool__ colored peacoat in gabardine with peak lapels and welt pockets that fully covers her torso and falls to the knees
+wearing a confidently styled __colors/female_warm__ colored peacoat in wool with a high collar and belted back __patterns/female_formal_blazer_detail__ that wraps her from shoulders to hips
+wearing a smartly styled __colors/female_muted__ colored peacoat in wool with a shawl collar and flap pockets __patterns/female_formal_blazer_detail__ that fully covers her torso and upper arms
+wearing a precisely styled __colors/female_autumn__ colored peacoat in tweed with a notch collar and buttoned front __patterns/female_formal_blazer_detail__ that covers her torso and falls to the hips
+wearing a neatly styled __colors/female_light__ colored peacoat in wool with a layered collar and patch pockets that cover her shoulders and falls below the waist
+wearing a cozily styled __colors/female_spring__ colored duffle coat in wool with a hooded collar and toggle fastenings __patterns/female_formal_blazer_detail__ that fully covers her torso and falls to the knees
+wearing a rustically styled __colors/female_earthtone__ colored duffle coat in tweed with oversized toggles and patch pockets __patterns/female_formal_blazer_detail__ that wraps her from shoulders to mid-calf
+wearing a warmly styled __colors/female_dusty__ colored duffle coat in wool with a funnel hood and wooden toggles that cover her torso and falls below the knee
+wearing a softly styled __colors/female_pastel__ colored duffle coat in cashmere with a draped hood and toggle placket __patterns/female_formal_blazer_detail__ that covers her shoulders and falls to the calves
+wearing a freshly styled __colors/female_neutral__ colored duffle coat in wool with a buttoned hood and roomy pockets __patterns/female_casual_bottom_wash__ that fully covers her torso and legs
+wearing a classically styled __colors/female_dark__ colored duffle coat in wool with a large hood and jute toggles __patterns/female_formal_blazer_detail__ that covers her torso and falls to the knees
+wearing an elegantly styled __colors/female_metallic__ colored duffle coat in cashmere with a shawl hood and toggle detail __patterns/female_formal_blazer_detail__ that wraps her from neck to below the knee
+wearing a sharply styled __colors/female_monochrome__ colored longline coat over layers in wool with notch lapels and a belted waist __patterns/female_formal_blazer_detail__ that fully covers her torso and legs
+wearing a sleekly styled __colors/female_dark__ colored longline coat over layers in cashmere with a collarless neckline and long sleeves __patterns/female_formal_blazer_detail__ that drapes over her torso and falls to the calves
+wearing an elegantly styled __colors/female_nude__ colored longline coat over layers in gabardine with a self-tie belt and flap pockets that cover her torso and falls below the knee
+wearing a confidently styled __colors/female_muted__ colored longline coat over layers in wool with peak lapels and a storm flap __patterns/female_formal_blazer_detail__ that wraps her from shoulders to mid-calf
+wearing a gracefully styled __colors/female_jewel__ colored longline coat over layers in cashmere with a shawl collar and patch pockets __patterns/female_formal_blazer_detail__ that fully covers her torso and legs
+wearing a modernly styled __colors/female_cool__ colored longline coat over layers in gabardine with a detachable belt and utility pockets __patterns/female_casual_bottom_wash__ that covers her torso and falls to the knees

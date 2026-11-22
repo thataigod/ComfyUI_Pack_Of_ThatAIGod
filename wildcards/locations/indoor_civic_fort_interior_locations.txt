@@ -1,0 +1,29 @@
+#@setting: indoor
+#@domain: civic
+#@place: fort_interior
+#@region: universal
+#@era: medieval
+#@privacy: public
+#@climate: temperate
+in a fort's stone hall with thick walls
+inside a fortress keep with a spiral stair
+along a fort rampart walk with crenellations
+in a fort's barracks room with straw pallets
+#@time: dawn
+at a fort gatehouse with an iron portcullis, at dawn
+#@time: morning
+in a castle armoury with racked spears, in the morning
+#@time: morning
+along a fortress tunnel with barrel vaulting, in the morning
+#@time: noon
+in a fort watchtower with narrow arrow slits, at noon
+#@time: afternoon
+beside a fort well with a rope windlass, in the afternoon
+#@time: golden hour
+in a stone magazine with powder barrels, at golden hour
+#@time: dusk
+in a fort postern with a low arch, at dusk
+#@time: night
+in a guardroom with a trestle table, at night
+#@time: midnight
+at a fort chapel with a stone altar, at midnight

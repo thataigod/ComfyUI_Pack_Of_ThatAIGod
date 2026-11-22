@@ -1,0 +1,30 @@
+#@setting: fantastical
+#@domain: fantasy
+#@place: elven_glade
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+in an elven glade where slender trees arch into silver light
+within an elven glade clearing ringed by white flowers and standing stones
+beneath an elven glade's great tree with a living-wood palace
+beside a clear elven glade stream crossed by woven-root bridges
+amid an elven glade gathering with moss-soft ground and drifting petals
+in an elven glade where pale deer watch from the treeline
+along an elven glade boardwalk threading between ferns and springs
+#@time: dawn
+in an elven glade at dawn with silver mist and elven song
+#@time: morning
+in an elven glade in the morning with dew-bright leaves
+#@time: noon
+in an elven glade at noon with green-gold light through the canopy
+#@time: afternoon
+in an elven glade in the afternoon with drifting petals and laughter
+#@time: golden hour
+in an elven glade at golden hour with light on white bark
+#@time: dusk
+in an elven glade at dusk with lanterns rousing and silver trees
+#@time: night
+in an elven glade at night lit by softly glowing blossoms
+#@time: midnight
+in an elven glade at midnight beneath a canopy of stars

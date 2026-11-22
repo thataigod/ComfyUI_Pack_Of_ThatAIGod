@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: bamboo_grove
+#@region: east_asian
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+in a bamboo grove with tall green culms
+on a stone path through a bamboo grove with fallen leaves
+amid a towering bamboo grove with knuckled stalks
+in a bamboo grove with fresh shoots
+at the edge of a bamboo grove with a shrine gate
+#@time: dawn
+in a dawn bamboo grove with pale light
+#@time: morning
+in a sunlit bamboo grove with striped stalks, in the morning
+#@time: noon
+in a bright bamboo grove with deep green shade, at noon
+#@time: afternoon
+in a warm bamboo grove with mossy shadows, in the afternoon
+#@time: golden hour
+in a golden bamboo grove with amber culms
+#@time: dusk
+in a dusky bamboo grove with creaking stalks, at dusk
+#@time: night
+in a moonlit bamboo grove with a paper lantern, at night

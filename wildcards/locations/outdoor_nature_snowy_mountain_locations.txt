@@ -1,0 +1,38 @@
+#@setting: outdoor
+#@domain: nature
+#@place: snowy_mountain
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: cold
+#@weather: snow
+on a mountain slope with deep snow drifts
+#@weather: snow
+on a snowy mountain pass with driving snow
+#@weather: snow
+on a snowy mountain shoulder with fresh snow
+#@weather: snow
+at the foot of a snowy mountain with settling snow
+#@weather: snow
+on a high snowy mountain ridge with wind-driven snow
+#@time: dawn
+#@weather: snow
+on a dawn snowy mountain with windblown snow
+#@time: morning
+#@weather: snow
+on a snowy mountain with snow-covered pines, in the morning
+#@time: noon
+#@weather: snow
+on a snowy mountain with snow hissing downhill, at noon
+#@time: afternoon
+#@weather: snow
+on a snowy mountain with snow drifting past pines, in the afternoon
+#@time: golden hour
+#@weather: snow
+on a snowy mountain with gold-tinted snow, at golden hour
+#@time: dusk
+#@weather: snow
+on a snowy mountain with lilac snow shadows, at dusk
+#@time: night
+#@weather: snow
+on a snowy mountain with moonlit snowfields, at night

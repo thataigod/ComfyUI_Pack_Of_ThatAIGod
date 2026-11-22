@@ -1,0 +1,26 @@
+#@setting: fantastical
+#@domain: fantasy
+#@place: dungeon
+#@region: universal
+#@era: medieval
+#@privacy: private
+#@climate: cold
+in a dank stone dungeon with mossy walls and rusted bars
+within a dungeon cell lit by a guttering torch
+along a dungeon corridor of barred doors and ankle-deep water
+beside a dungeon torture rack with rusted iron implements
+in a dungeon oubliette beneath a castle with one shaft of light
+in a dungeon guardroom with a scarred table and ale
+at the base of a dungeon shaft descending into blackness
+#@time: morning
+in a dungeon in the morning with weak grey light
+#@time: noon
+in a dungeon at noon with a bright shaft through a grate
+#@time: dusk
+in a dungeon at dusk with guttering torchlight and sinking shadows
+#@time: blue hour
+in a dungeon in blue hour with cold light on wet stone
+#@time: night
+in a dungeon at night with rats stirring and distant chains
+#@time: midnight
+in a dungeon at midnight with only the drip of water

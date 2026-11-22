@@ -1,0 +1,28 @@
+#@setting: outdoor
+#@domain: waterfront
+#@place: beach
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: warm
+on a wide sandy beach with tufts of dune grass
+on a palm-fringed beach with leaning trunks
+on a shell-strewn beach with tide pools
+along a wet beach with hissing foam
+on a crescent cove beach with a lifeguard tower
+#@time: dawn
+on a grey beach with mist on the tideline, at dawn
+#@time: morning
+on a bright beach with crisp footprints in the sand, in the morning
+#@time: noon
+on a glaring beach with striped umbrellas, at noon
+#@time: afternoon
+on a warm beach with shadows from the rocks, in the afternoon
+#@time: golden hour
+on a beach with wet sand mirroring gold, at golden hour
+#@time: dusk
+on a dusky beach with gulls against violet sky, at dusk
+#@time: blue hour
+on a beach with one lamp on the promenade, at blue hour
+#@time: night
+on a dark beach with phosphorescence in the foam, at night

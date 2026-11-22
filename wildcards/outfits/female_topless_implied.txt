@@ -1,0 +1,65 @@
+wearing an unbuttoned __colors/female_jewel__ colored linen shirt left open with the sleeves rolled and one side held across her chest
+wearing an unzipped __colors/female_earthtone__ colored jersey jacket over bare skin with the front hanging open and one arm crossed over her chest
+wearing a loosely wrapped __colors/female_dusty__ colored cotton towel tucked at her chest with the ends falling over her arms
+wearing a __colors/female_dark__ colored silk robe falling open at the front with the belt hanging loose and one hand across her chest
+wearing a __colors/female_cool__ colored cotton apron tied at the waist with the bib resting low and one arm folded over her front
+wearing an unbuttoned __colors/female_candy__ colored silk shirt sliding off one shoulder and loosely held together over her chest
+wearing a __colors/female_bright__ colored linen robe draped over her shoulders and hanging open with a single hand at the lapel
+wearing a towel wrap in __colors/female_autumn__ colored cotton settled at her chest with the folds held closed by one arm
+wearing an oversized __colors/female_winter__ colored cotton shirt left open with the cuffs loose and one side gathered across her front
+wearing a __colors/female_warm__ colored satin robe slipping from both shoulders and held loosely at the front with one hand
+wearing a __colors/female_vivid__ colored linen apron over bare skin with the straps crossed behind her neck and one forearm resting across her chest
+wearing a __colors/female_tropical__ colored silk shirt draped over one shoulder with the front open and loosely covering her chest
+wearing a __colors/female_summer__ colored cotton towel wrapped at her torso and held closed at the front with one hand
+wearing an unbuttoned __colors/female_spring__ colored cotton shirt left open with one side held across her chest, __patterns/female_blouse_patterns__
+wearing an unzipped __colors/female_pastel__ colored silk jacket hanging open over bare skin with one arm folded across her front, __patterns/female_blouse_patterns__
+wearing a loosely tied __colors/female_nude__ colored satin robe falling open at the front with the belt trailing, __patterns/female_lingerie_lace_detail__
+wearing a __colors/female_neutral__ colored linen towel wrap tucked above her chest with the folds held by one arm, __patterns/female_lingerie_lace_detail__
+wearing a __colors/female_neon__ colored cotton apron tied at the waist with the bib low and one forearm resting across her chest, __patterns/female_casual_top_print__
+wearing an unbuttoned __colors/female_muted__ colored silk shirt with the front hanging open and one hand at the collar, __patterns/female_blouse_patterns__
+wearing a __colors/female_monochrome__ colored chiffon robe drifting open over her shoulders with a single hand at the front, __patterns/female_lingerie_lace_detail__
+wearing an open __colors/female_metallic__ colored linen shirt sliding from one shoulder and loosely gathered across her front, __patterns/female_casual_top_print__
+wearing a __colors/female_light__ colored cotton towel loosely wrapped at her chest with the ends tucked and one arm covering, __patterns/female_lingerie_lace_detail__
+wearing an unzipped __colors/female_jewel__ colored jersey jacket over bare skin with the front open and one side lifted across her chest, __patterns/female_casual_top_print__
+wearing a __colors/female_earthtone__ colored silk robe hanging open with the lapels falling back and one hand across her front, __patterns/female_blouse_patterns__
+wearing an unbuttoned __colors/female_dusty__ colored linen shirt with the sleeves rolled and one end held over her chest, __patterns/female_casual_top_print__
+wearing a __colors/female_dark__ colored satin wrap loosely covering her front and slipping from one shoulder, __patterns/female_party_dress_detail__
+wearing a __colors/female_cool__ colored cotton apron over bare skin with the straps crossed behind her neck and one arm folded across her chest, __patterns/female_casual_top_print__
+wearing an open __colors/female_candy__ colored silk shirt hanging off both shoulders and held together with one hand, __patterns/female_blouse_patterns__
+wearing a __colors/female_bright__ colored jersey towel wrap tucked at her chest with the lower folds falling past her hips, __patterns/female_casual_top_print__
+wearing an unbuttoned __colors/female_autumn__ colored chiffon shirt left open with the hem floating and one side across her chest, __patterns/female_lingerie_lace_detail__
+wearing a __colors/female_winter__ colored linen robe draped open over her front with the belt knotted at the waist, __patterns/female_blouse_patterns__
+wearing a __colors/female_warm__ colored silk shirt unbuttoned and falling open with one sleeve slipping down, __patterns/female_blouse_patterns__
+wearing a __colors/female_vivid__ colored cotton shirt tied loosely at the waist and open above, one arm crossed over her chest, __patterns/female_casual_top_print__
+wearing a __colors/female_tropical__ colored satin robe slipping from her shoulders and held low across her front, __patterns/female_party_dress_detail__
+wearing a __colors/female_summer__ colored chiffon shirt hanging open with one side lifted across her chest and the other drifting, __patterns/female_blouse_patterns__
+wearing an unbuttoned __colors/female_spring__ colored linen shirt with one arm through the sleeve and the rest draped across her front, __patterns/female_blouse_patterns__
+wearing a __colors/female_pastel__ colored cotton towel wrapped snug at her torso and tucked with one hand, __patterns/female_lingerie_lace_detail__
+wearing a __colors/female_nude__ colored silk robe falling open with the sleeves pushed up and one hand at her chest, __patterns/female_lingerie_lace_detail__
+wearing an unzipped __colors/female_neutral__ colored jersey jacket over bare skin with the front hanging loose and one arm across her front, __patterns/female_blouse_patterns__
+wearing a __colors/female_neon__ colored linen apron over bare skin with the bib resting low and the ties crossed at her back, __patterns/female_blouse_patterns__
+wearing an open __colors/female_muted__ colored soft silk shirt with one side held across her chest and the other trailing, __patterns/female_casual_top_print__
+wearing a __colors/female_monochrome__ colored cotton towel wrap tucked below her collarbone with the ends loosely held, __patterns/female_lingerie_lace_detail__
+wearing a __colors/female_metallic__ colored satin robe hanging open over her front with the belt undone and flowing, __patterns/female_party_dress_detail__
+wearing an unbuttoned __colors/female_light__ colored linen shirt sliding off one shoulder with one hand at the collar, __patterns/female_casual_top_print__
+wearing a __colors/female_jewel__ colored silk wrap held across her chest and knotted at one shoulder, __patterns/female_lingerie_lace_detail__
+wearing an open __colors/female_earthtone__ colored jersey shirt with the front wide open and one arm folded across her chest, __patterns/female_casual_top_print__
+wearing a __colors/female_dusty__ colored cotton apron over bare skin with the neck strap loose and one forearm across her front, __patterns/female_party_dress_detail__
+wearing an unzipped __colors/female_dark__ colored linen jacket falling open with the collar turned up and one hand across her chest, __patterns/female_blouse_patterns__
+wearing a __colors/female_cool__ colored silk towel wrap in soft folds at her chest with one end held over her arm, __patterns/female_lingerie_lace_detail__
+wearing a __colors/female_candy__ colored chiffon robe drifting open over her front with the sash trailing behind, __patterns/female_party_dress_detail__
+wearing an unbuttoned __colors/female_bright__ colored cotton shirt with the tails knotted at the waist and the front open, one arm across her chest, __patterns/female_party_dress_detail__
+wearing a __colors/female_autumn__ colored linen robe draped over one shoulder and open at the front, __patterns/female_blouse_patterns__
+wearing a __colors/female_winter__ colored satin shirt falling open with the sleeves loose and one side gathered across her front, __patterns/female_blouse_patterns__
+wearing a __colors/female_warm__ colored cotton towel wrapped high at her chest with the folds held by one arm, __patterns/female_lingerie_lace_detail__
+wearing an open __colors/female_vivid__ colored silk blouse hanging off her shoulders with one hand covering at the front, __patterns/female_blouse_patterns__
+wearing a __colors/female_tropical__ colored jersey robe tied at the waist and falling open at the top, __patterns/female_casual_top_print__
+wearing a __colors/female_summer__ colored chiffon shirt unbuttoned with the front floating open and one arm across her chest, __patterns/female_blouse_patterns__
+wearing an unzipped __colors/female_spring__ colored jersey jacket over bare skin with the front open and one side raised across her chest, __patterns/female_lingerie_lace_detail__
+wearing a __colors/female_pastel__ colored cotton towel wrap tucked at her chest with one end held across her arm, __patterns/female_blouse_patterns__
+wearing a __colors/female_nude__ colored silk robe falling open with the collar slipping from one shoulder, __patterns/female_party_dress_detail__
+wearing a __colors/female_neutral__ colored linen shirt left open over bare skin with one side held across her chest, __patterns/female_blouse_patterns__
+wearing a __colors/female_neon__ colored satin wrap settled across her front and knotted at one shoulder, __patterns/female_lingerie_lace_detail__
+wearing a __colors/female_muted__ colored chiffon robe drifting open with the sash hanging loose behind her, __patterns/female_formal_skirt_detail__
+wearing a __colors/female_monochrome__ colored cotton apron over bare skin with the bib low and the waist ties knotted at the front, __patterns/female_casual_top_print__
+wearing an unbuttoned __colors/female_light__ colored linen shirt falling open with one cuff loose and the other hand at her chest, __patterns/female_lingerie_lace_detail__

@@ -1,0 +1,30 @@
+#@setting: indoor
+#@domain: hospitality
+#@place: spa
+#@region: universal
+#@era: timeless
+#@privacy: semi_private
+#@climate: humid
+in a tranquil spa with stone alcoves and a mosaic plunge pool
+in a luxury spa with teak loungers and folded towels
+in a wellness spa with a cedar sauna and eucalyptus bundles
+#@time: dawn
+in a spa with damp stone tiles and a steam room, at dawn
+#@time: morning
+in a spa with slatted screens and a soaking tub, in the morning
+#@time: noon
+in a spa with a glass ceiling and a turquoise pool, at noon
+#@time: afternoon
+in a spa with a row of loungers and a tray of herbal tea, in the afternoon
+#@time: golden hour
+in a spa with wet stone and rising steam, at golden hour
+#@time: dusk
+in a spa with a stone basin and a wooden bucket, at dusk
+#@time: night
+in a spa with a stone bench and a bamboo screen, at night
+#@time: night
+in a spa with a warm stone slab and a copper bowl, at night
+#@time: blue hour
+in a spa with frosted glass and a wooden bench, at blue hour
+#@time: midnight
+in a spa with wet tiles and a bamboo mat, at midnight

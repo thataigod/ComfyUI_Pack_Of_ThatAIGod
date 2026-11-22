@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: riverbank
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+on a grassy riverbank with trailing willows
+on the sandy bank of a slow river with alders
+at the edge of a winding river with gravel shingle
+on a wildflower riverbank with a footbridge
+in the shallows of a clear river with darting fish
+#@time: dawn
+on a misty riverbank with pale willows, at dawn
+#@time: morning
+on a sparkling riverbank with birdsong, in the morning
+#@time: noon
+on a sunlit riverbank with dragonflies, at noon
+#@time: afternoon
+on a warm riverbank with long reflections, in the afternoon
+#@time: golden hour
+on a golden riverbank with glowing willows
+#@time: dusk
+on a dusky riverbank with flickering bats, at dusk
+#@time: night
+on a moonlit riverbank with whispering reeds, at night

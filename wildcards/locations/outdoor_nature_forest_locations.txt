@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: forest
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+in a sunlit forest clearing with fallen leaves
+on a forest trail with exposed roots
+in an old-growth forest with green shafts of light
+in a birch forest with silver trunks
+beneath a beech canopy with leaf litter
+#@time: dawn
+in a quiet forest with birdsong overhead, at dawn
+#@time: morning
+in a dew-damp forest with glistening ferns, in the morning
+#@time: noon
+in a bright forest with butterflies over the undergrowth, at noon
+#@time: afternoon
+in a shaded forest with long afternoon shadows
+#@time: golden hour
+in an amber-lit forest with drifting pollen, at golden hour
+#@time: dusk
+in a darkening forest with the first fireflies, at dusk
+#@time: night
+in a moonlit forest with calling owls, at night

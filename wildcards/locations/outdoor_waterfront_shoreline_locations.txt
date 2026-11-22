@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: waterfront
+#@place: shoreline
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+along a rocky shoreline with tide pools
+on a pebbled shoreline with driftwood
+along a flat rocky shoreline with blowholes
+on a wild shoreline with marram grass
+along a shelving shingle shoreline with a stranded rowing boat
+#@time: dawn
+along a misty shoreline with wet black rocks, at dawn
+#@time: morning
+along a bright shoreline with seabirds on the rocks, in the morning
+#@time: noon
+along a glaring shoreline with crisp shadows in the tide pools, at noon
+#@time: afternoon
+along a warm shoreline with long breakers rolling in, in the afternoon
+#@time: golden hour
+along a shoreline with surf turned amber, at golden hour
+#@time: dusk
+along a darkening shoreline with gulls on the ledges, at dusk
+#@time: night
+along a moonlit shoreline with spray glowing white, at night

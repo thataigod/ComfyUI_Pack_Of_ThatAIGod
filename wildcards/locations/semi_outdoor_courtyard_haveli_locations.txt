@@ -1,0 +1,28 @@
+#@setting: semi_outdoor
+#@domain: courtyard
+#@place: haveli
+#@region: south_asian
+#@era: traditional
+#@privacy: private
+#@climate: warm
+in a haveli courtyard with carved sandstone arches
+in a haveli inner courtyard with painted murals
+under a haveli veranda with latticed screens
+at a haveli courtyard fountain with marble inlay
+on a raised haveli courtyard platform with bolsters
+#@time: dawn
+in a haveli courtyard at dawn with cool light on sandstone
+#@time: morning
+in a haveli courtyard in the morning with marigolds on the swing
+#@time: noon
+in a haveli courtyard at noon with dark relief beneath the jharokhas
+#@time: afternoon
+in a haveli courtyard in the afternoon with amber light on the inlay
+#@time: golden hour
+in a haveli courtyard at golden hour with rose-gold sandstone
+#@time: dusk
+in a haveli courtyard at dusk with oil lamps along the ledge
+#@time: night
+in a haveli courtyard at night with moonlight by the fountain
+#@time: midnight
+in a haveli courtyard at midnight with stars above the carved roofline

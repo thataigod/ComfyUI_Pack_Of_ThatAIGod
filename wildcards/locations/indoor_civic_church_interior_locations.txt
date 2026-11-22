@@ -1,0 +1,29 @@
+#@setting: indoor
+#@domain: civic
+#@place: church_interior
+#@region: european
+#@era: ancient
+#@privacy: public
+#@climate: temperate
+in a stone church nave with ribbed vaults
+inside a quiet chapel with a carved altarpiece
+beneath a gothic cathedral's rose window
+amid the pews of an old church with brass plaques
+#@time: dawn
+along a church aisle with flagstone flooring, at dawn
+#@time: morning
+in a church vestry with carved oak cupboards, in the morning
+#@time: morning
+inside a baptistry with a stone font, in the morning
+#@time: noon
+in a church transept with marble columns, at noon
+#@time: afternoon
+at a church altar rail with carved balusters, in the afternoon
+#@time: golden hour
+in a choir stall with wooden misericords, at golden hour
+#@time: dusk
+in a church porch with iron hinges, at dusk
+#@time: night
+in a cathedral crypt with low vaulting, at night
+#@time: midnight
+beside a church organ with tall pipes, at midnight

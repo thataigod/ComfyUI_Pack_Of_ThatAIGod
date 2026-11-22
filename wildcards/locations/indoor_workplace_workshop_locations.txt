@@ -1,0 +1,23 @@
+#@setting: indoor
+#@domain: workplace
+#@place: workshop
+#@region: universal
+#@era: contemporary
+#@privacy: semi_public
+#@climate: temperate
+in a carpentry workshop with a workbench
+in a metal workshop with a welding bay
+in a garage workshop with a vehicle lift
+in a pottery workshop with a clay wheel
+#@time: morning
+in a workshop with cut timber, in the morning
+#@time: noon
+in a workshop with running machines, at noon
+#@time: afternoon
+in a workshop with sawdust on the bench, in the afternoon
+#@time: dusk
+in a workshop with dust-coated shelves, at dusk
+#@time: night
+in a workshop with a humming compressor, at night
+#@time: midnight
+in a closed workshop with coiled extension cords, at midnight

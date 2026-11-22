@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: glacier
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: polar
+on a blue glacier with deep crevasses
+on a glacial moraine beside a glacier with meltwater
+in a snowfield on a glacier with sastrugi
+at the edge of a glacier tongue with meltwater streams
+on a polar ice plain beside a glacier with pressure ridges
+#@time: dawn
+on a dawn glacier with gold-lit ice
+#@time: morning
+on a bright glacier with pale blue ice, in the morning
+#@time: noon
+on a noon glacier with glittering crystals
+#@time: afternoon
+on a warm-lit glacier with blue crevasses, in the afternoon
+#@time: golden hour
+on a rose-lit glacier with amber peaks, at golden hour
+#@time: dusk
+on a dusky glacier with lilac snow, at dusk
+#@time: night
+on a night glacier with green aurora

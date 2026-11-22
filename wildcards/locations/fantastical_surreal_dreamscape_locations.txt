@@ -1,0 +1,21 @@
+#@setting: fantastical
+#@domain: surreal
+#@place: dreamscape
+#@region: universal
+#@era: dreamlike
+#@privacy: private
+#@climate: void
+in a dreamscape where staircases climb into open sky
+amid dreamscape fields of melting clocks on a violet horizon
+within a dreamscape corridor of whispering, lagging mirrors
+beneath a dreamscape inverted ocean with fish swimming through clouds
+in a dreamscape room where furniture drifts and floors ripple
+along a dreamscape path of soft light that rewrites itself
+atop a dreamscape hill of folded paper under slow-turning eyes
+beside a dreamscape train station where trains arrive from memories
+#@time: dusk
+in a dreamscape at dusk as colors bleed together
+#@time: night
+in a dreamscape at night where shadows breathe
+#@time: midnight
+in a dreamscape at midnight with a humming moon

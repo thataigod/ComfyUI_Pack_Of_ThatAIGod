@@ -1,0 +1,28 @@
+#@setting: indoor
+#@domain: residential
+#@place: living_room
+#@region: universal
+#@era: timeless
+#@privacy: semi_private
+#@climate: temperate
+in a comfortable living room with a deep sectional sofa
+beside a brick fireplace in a living room with worn leather armchairs
+in a sunken living room with a low mid-century sofa
+#@time: morning
+in a living room with a cream linen sofa and tall windows, in the morning
+#@time: morning
+beside a coffee table in a living room with houseplants, in the morning
+#@time: afternoon
+in an airy living room with a beige sectional, in the afternoon
+#@time: golden hour
+in a living room with a bookshelf and parquet floors, at golden hour
+#@time: dusk
+in a living room with a blue-grey rug and a low table, at dusk
+#@time: night
+in a living room with a crackling fireplace and a dark television, at night
+#@time: night
+beside a sofa in a living room with a muted television, at night
+#@time: blue hour
+in a living room with a wingback armchair and a wool throw, at blue hour
+#@time: midnight
+in a living room with a blanket heaped on the couch, at midnight

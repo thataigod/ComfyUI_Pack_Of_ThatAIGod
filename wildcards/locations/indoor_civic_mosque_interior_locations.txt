@@ -1,0 +1,29 @@
+#@setting: indoor
+#@domain: civic
+#@place: mosque_interior
+#@region: middle_eastern
+#@era: ancient
+#@privacy: public
+#@climate: warm
+in a mosque prayer hall with geometric tilework
+inside a domed mosque with calligraphy bands
+along a mosque colonnade with pierced screens
+in a mosque's colonnaded gallery with patterned screens
+#@time: dawn
+at a mosque mihrab with carved stucco, at dawn
+#@time: morning
+beside a mosque minbar with inlaid wood, in the morning
+#@time: morning
+under a mosque dome with painted pendentives, in the morning
+#@time: noon
+in a mosque ablution hall with marble basins, at noon
+#@time: afternoon
+along a mosque corridor with tile borders, in the afternoon
+#@time: golden hour
+in a mosque library with bound manuscripts, at golden hour
+#@time: dusk
+at a mosque entrance with a carved arch, at dusk
+#@time: night
+in a mosque side hall with stone columns, at night
+#@time: midnight
+in a mosque vestibule with mosaic panels, at midnight

@@ -1,0 +1,30 @@
+#@setting: outdoor
+#@domain: waterfront
+#@place: island
+#@region: tropical
+#@era: timeless
+#@privacy: semi_public
+#@climate: tropical
+on a palm-clad island with a white sand spit
+on a rocky island with seabird cliffs
+in a lagoon island with a stilted shack
+on a volcanic island with tide pools
+along an island shore with sea grapes
+#@time: dawn
+on a tropical island with mist over the lagoon, at dawn
+#@time: morning
+on a tropical island with bright sun on the reef, in the morning
+#@time: noon
+on a tropical island with white sand glare, at noon
+#@time: afternoon
+on a tropical island with palms casting long shadows, in the afternoon
+#@time: golden hour
+on a tropical island with palms rim-lit, at golden hour
+#@time: dusk
+on a tropical island with frigate birds overhead, at dusk
+#@time: blue hour
+on a tropical island with a first star, at blue hour
+#@time: night
+on a tropical island with bioluminescence in the shallows, at night
+#@time: midnight
+on a tropical island under a sky full of stars, at midnight

@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: hospitality
+#@place: lounge
+#@region: universal
+#@era: timeless
+#@privacy: semi_private
+#@climate: temperate
+in a plush lounge with deep armchairs and velvet curtains
+in a hotel lounge with leather club chairs and a grand piano
+in a Moroccan lounge with low sofas and patterned poufs
+in a quieter lounge with a long bar and dark chesterfields
+#@time: morning
+in a lounge with tall windows and a silver coffee service, in the morning
+#@time: afternoon
+in a lounge with a chaise and an open book left face-down, in the afternoon
+#@time: golden hour
+in a lounge with a grand piano and a tray of drinks, at golden hour
+#@time: dusk
+in a lounge with terrace doors and a low table, at dusk
+#@time: night
+in a lounge with cigar smoke and a tufted ottoman, at night
+#@time: night
+in a lounge with a fire crackling and dark wood panelling, at night
+#@time: blue hour
+in a lounge with a corner bar and a velvet sofa, at blue hour
+#@time: midnight
+in a lounge with embers in the grate and a sheet-music stand, at midnight

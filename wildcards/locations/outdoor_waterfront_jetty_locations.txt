@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: waterfront
+#@place: jetty
+#@region: universal
+#@era: vintage
+#@privacy: public
+#@climate: temperate
+on a narrow timber jetty with mooring posts
+at the end of a jetty with a single lantern
+on a stone jetty with iron rings
+along a jetty over the shallows with small boats
+on a weathered jetty with an old bait bucket
+#@time: dawn
+on a jetty with dew on the planks, at dawn
+#@time: morning
+on a jetty with boats coming alongside, in the morning
+#@time: noon
+on a jetty with clear water full of fish, at noon
+#@time: afternoon
+on a jetty with long shadows on the planks, in the afternoon
+#@time: golden hour
+on a jetty with water turned molten gold, at golden hour
+#@time: dusk
+on a jetty with a lit lantern and dark tide, at dusk
+#@time: night
+on a jetty with moonlight along the boards, at night

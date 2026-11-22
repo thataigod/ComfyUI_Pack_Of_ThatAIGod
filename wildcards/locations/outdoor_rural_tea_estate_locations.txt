@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: rural
+#@place: tea_estate
+#@region: south_asian
+#@era: contemporary
+#@privacy: public
+#@climate: tropical
+on a tea estate with clipped bushes in rolling rows
+along the tea terraces with pickers' baskets
+on a tea estate slope with a planter's bungalow
+along a tea estate track with a weighing shed
+in a tea garden with eucalyptus windbreaks
+#@time: dawn
+on a misty tea estate with wet green leaves, at dawn
+#@time: morning
+on a tea estate with pickers at work, in the morning
+#@time: noon
+on a tea estate with glistening leaves, at noon
+#@time: afternoon
+on a tea estate with long shadows along the rows, in the afternoon
+#@time: golden hour
+on a tea estate with hills glowing, at golden hour
+#@time: dusk
+on a tea estate with lamps lit in the bungalow, at dusk
+#@time: night
+on a moonlit tea estate with mist in the low ground, at night

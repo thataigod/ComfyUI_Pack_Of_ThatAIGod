@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: entertainment
+#@place: convention_hall
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a convention hall with carpeted aisles
+inside an exhibition centre with partitioned stands
+in a convention hall foyer with registration desks
+in a convention hall loading bay with stacked crates
+#@time: morning
+at a convention booth with banner displays, in the morning
+#@time: noon
+along a convention aisle with vendor stalls, at noon
+#@time: afternoon
+in a convention seminar room with folding chairs, in the afternoon
+#@time: golden hour
+at a convention registration desk with lanyards, at golden hour
+#@time: dusk
+in a convention hall stage area with a lectern, at dusk
+#@time: night
+in an exhibition hall with hanging signs, at night
+#@time: night
+in a convention cloakroom with numbered racks, at night
+#@time: midnight
+at a convention catering counter with urns, at midnight

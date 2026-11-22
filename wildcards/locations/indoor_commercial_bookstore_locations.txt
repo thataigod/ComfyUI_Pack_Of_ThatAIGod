@@ -1,0 +1,26 @@
+#@setting: indoor
+#@domain: commercial
+#@place: bookstore
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a snug bookstore with rolling ladders
+in a modern bookstore with a reading bench
+in a cluttered bookshop with leaning paperbacks
+#@time: dawn
+in a bookstore with sealed delivery boxes, at dawn
+#@time: morning
+in a bookstore with a new-releases table, in the morning
+#@time: noon
+in a bookstore with a window display, at noon
+#@time: afternoon
+in a bookstore with overstocked back shelves, in the afternoon
+#@time: golden hour
+in a bookstore with a leather armchair, at golden hour
+#@time: dusk
+in a bookstore with a reading nook, at dusk
+#@time: night
+in a bookstore with a closed sign, at night
+#@time: midnight
+in a closed bookstore with stacked returns, at midnight

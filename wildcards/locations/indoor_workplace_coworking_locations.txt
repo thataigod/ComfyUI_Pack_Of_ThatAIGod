@@ -1,0 +1,25 @@
+#@setting: indoor
+#@domain: workplace
+#@place: coworking
+#@region: universal
+#@era: contemporary
+#@privacy: semi_public
+#@climate: temperate
+in a coworking space with phone booths
+in a coworking loft with hot desks
+in a coworking lounge with board game shelves
+in a coworking wing with cork pinboards
+#@time: morning
+in a coworking space with brewing coffee, in the morning
+#@time: noon
+in a coworking hub with scattered laptops, at noon
+#@time: afternoon
+in a coworking space with whiteboard walls, in the afternoon
+#@time: golden hour
+in a coworking loft with shared desks, at golden hour
+#@time: dusk
+in a coworking space with wrapped-up calls, at dusk
+#@time: night
+in a coworking space with a quiet hush, at night
+#@time: midnight
+in an empty coworking space with a forgotten monitor, at midnight

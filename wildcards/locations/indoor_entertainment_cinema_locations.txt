@@ -1,0 +1,25 @@
+#@setting: indoor
+#@domain: entertainment
+#@place: cinema
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+in a cinema auditorium with tiered rows
+inside a cinema lobby with a popcorn stand
+amid the aisle of a small screen with plush recliners
+in a cinema projection booth with film reels
+#@time: morning
+at a cinema ticket kiosk with poster panels, in the morning
+#@time: afternoon
+along a cinema corridor with numbered doors, in the afternoon
+#@time: golden hour
+in a cinema concession stand with candy shelves, at golden hour
+#@time: dusk
+at a cinema box office with glass partitions, at dusk
+#@time: night
+in an IMAX cinema with a curved screen, at night
+#@time: night
+in a cinema foyer with framed posters, at night
+#@time: midnight
+in a cinema balcony with raked seating, at midnight

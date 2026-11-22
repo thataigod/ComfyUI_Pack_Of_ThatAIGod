@@ -1,0 +1,30 @@
+#@setting: outdoor
+#@domain: rural
+#@place: village
+#@region: universal
+#@era: traditional
+#@privacy: public
+#@climate: temperate
+in a village lane with whitewashed cottages
+on a village green with a war memorial
+along a cobbled village street with hanging baskets
+in a village square with a stone fountain
+on the edge of a village with allotments
+#@time: dawn
+in a village with mist on the green, at dawn
+#@time: morning
+in a village with sun on the shopfronts, in the morning
+#@time: noon
+in a village with deep shade under the awnings, at noon
+#@time: afternoon
+in a village with long shadows on the green, in the afternoon
+#@time: golden hour
+in a village with the church tower silhouetted, at golden hour
+#@time: dusk
+in a village as windows light up, at dusk
+#@time: blue hour
+in a village with a lamp above the pub door, at blue hour
+#@time: night
+in a village with the church tower against stars, at night
+#@time: midnight
+in a silent village with moonlight on the cobbles, at midnight

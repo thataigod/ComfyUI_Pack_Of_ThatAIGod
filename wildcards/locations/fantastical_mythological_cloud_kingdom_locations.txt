@@ -1,0 +1,22 @@
+#@setting: fantastical
+#@domain: mythological
+#@place: cloud_kingdom
+#@region: sky_realm
+#@era: timeless
+#@privacy: public
+#@climate: void
+in a cloud kingdom of billowing towers and cloud-bridges
+along a cloud kingdom walkway of woven cloud that holds firm
+within a cloud kingdom great hall with mist-heaped thrones
+atop a cloud kingdom castle drifting above an endless blue
+in a cloud kingdom garden where blossoms are spun from vapor
+amid a cloud kingdom market where traders barter bottled weather
+beneath a cloud kingdom waterfall pouring into open sky
+in a cloud kingdom rookery where winged beasts nest
+beside a cloud kingdom gate of wrought silver mist
+#@time: dawn
+in a cloud kingdom at dawn as the cloud sea turns pink
+#@time: golden hour
+in a cloud kingdom at golden hour with long soft shadows
+#@time: night
+in a cloud kingdom at night under a clear field of stars

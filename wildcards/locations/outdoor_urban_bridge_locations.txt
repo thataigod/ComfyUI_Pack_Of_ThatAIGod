@@ -1,0 +1,27 @@
+#@setting: outdoor
+#@domain: urban
+#@place: bridge
+#@region: european
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+on an old stone arch bridge with iron railings
+on a steel suspension bridge with fog-bound cables
+on a wooden footbridge with lanterns
+along a viaduct bridge with rusted girders
+#@time: dawn
+on a bridge at dawn with mist on the water
+#@time: morning
+on a bridge in the morning with commuters crossing
+#@time: noon
+on a bridge at noon with bright water
+#@time: afternoon
+on a bridge in the afternoon with gulls on the parapet
+#@time: golden hour
+on a bridge at golden hour with a golden river
+#@time: dusk
+on a bridge at dusk with reflected city lights
+#@time: night
+on a bridge at night with black water
+#@time: midnight
+on a bridge at midnight with an empty deck

@@ -1,0 +1,28 @@
+#@setting: indoor
+#@domain: hospitality
+#@place: cafe
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+in a cozy cafe with exposed brick and mismatched armchairs
+in a corner cafe with marble bistro tables and a pastry case
+in a retro cafe with checkerboard floors and vinyl booths
+#@time: morning
+in a cafe with steaming cups and a scatter of newspapers, in the morning
+#@time: morning
+in a cafe with a window seat and a croissant on a plate, in the morning
+#@time: afternoon
+in a cafe with an open laptop and a half-finished latte, in the afternoon
+#@time: golden hour
+in a cafe with an espresso machine and a wooden counter, at golden hour
+#@time: dusk
+in a cafe with a chalkboard menu and a tiled counter, at dusk
+#@time: night
+in a cafe with a nearly empty room and a quiet hum, at night
+#@time: night
+in a cafe with a lone barista wiping the counter, at night
+#@time: blue hour
+in a cafe with a ceramic cup and a folded newspaper, at blue hour
+#@time: midnight
+in a cafe with chairs upturned and raindrops on the window, at midnight

@@ -1,0 +1,23 @@
+#@setting: indoor
+#@domain: commercial
+#@place: salon
+#@region: universal
+#@era: contemporary
+#@privacy: semi_public
+#@climate: temperate
+in a hair salon with a row of mirrors
+in a nail salon with padded chairs
+in a beauty salon with white basins
+in a chic salon with a waiting sofa
+#@time: morning
+in a salon with freshly swept floors, in the morning
+#@time: noon
+in a busy salon with humming hair dryers, at noon
+#@time: afternoon
+in a salon with tiled floors, in the afternoon
+#@time: dusk
+in a salon with a basket of brushes, at dusk
+#@time: night
+in a salon with stacked chairs, at night
+#@time: midnight
+in a closed salon with a steriliser, at midnight

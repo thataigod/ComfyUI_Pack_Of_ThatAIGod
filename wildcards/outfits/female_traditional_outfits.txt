@@ -1,0 +1,9 @@
+__female_sarees__
+__female_lehenga_choli__
+__female_anarkali__
+__female_salwar_suits__
+__female_sharara_gharara__
+__female_patiala_suit__
+__female_kurti_sets__
+__female_nauvari_dhoti_saree__
+__female_mekhela_chador__

@@ -1,0 +1,28 @@
+#@setting: semi_outdoor
+#@domain: covered
+#@place: pergola
+#@region: universal
+#@era: timeless
+#@privacy: semi_private
+#@climate: temperate
+under a wisteria-heavy pergola with a gravel floor
+under a timber pergola with climbing roses
+under a grapevine pergola with a stone bench
+under a white pergola with sheer curtains
+under a weathered timber pergola with jasmine overhead
+#@time: dawn
+under a pergola at dawn with dew on the wooden table
+#@time: morning
+under a pergola in the morning with dappled gravel and birdsong
+#@time: noon
+under a pergola at noon with deep leaf-shade beneath the beams
+#@time: afternoon
+under a pergola in the afternoon with warm light through leaves
+#@time: golden hour
+under a pergola at golden hour with leaves outlined in amber
+#@time: dusk
+under a pergola at dusk with lanterns lit on the beams
+#@time: blue hour
+under a pergola in blue hour with warm lamps among the vines
+#@time: night
+under a pergola at night with bulbs hanging among dark vines

@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: cave
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: cool
+in a limestone cave with dripping stalactites
+in a sea cave with echoing water
+in a cave chamber with crystal formations
+at the mouth of a cave with mossy rocks
+in a narrow cave passage with wet gravel
+#@time: noon
+in a dim cave chamber with a lone lamp, at noon
+#@time: afternoon
+in a cave alcove with warm lantern light, in the afternoon
+#@time: golden hour
+in a cave grotto with amber stone, at golden hour
+#@time: dusk
+in a shadowed cave with dim blue reflections, at dusk
+#@time: blue hour
+in a deep cave with a lantern glow, at blue hour
+#@time: night
+in a cold cave with glistening flowstone, at night
+#@time: midnight
+in a pitch-dark cave with a narrow lantern beam, at midnight

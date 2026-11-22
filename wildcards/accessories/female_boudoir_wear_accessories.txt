@@ -1,0 +1,20 @@
+wearing marabou slippers in __colors/female_pastel__ marabou with fluffy trim
+wearing marabou-trimmed slippers in __colors/female_jewel__ satin with soft soles
+wearing a satin eye mask in __colors/female_pastel__ satin with a silk ribbon tie
+wearing a lace-trimmed satin eye mask in __colors/female_nude__ satin
+wearing silk gloves in __colors/female_light__ silk with a smooth finish
+wearing long silk gloves in __colors/female_jewel__ silk with embroidered cuffs
+carrying a crystal champagne flute in one hand with a marabou-trimmed robe loosely draped
+carrying a champagne flute with a delicate gold rim held loosely at her side
+wearing a feather boa draped over the shoulders in __colors/female_pastel__ marabou
+wearing an ostrich-feather boa wrapped around the arms in __colors/female_nude__ feathers
+wearing marabou-trimmed mules in __colors/female_tropical__ marabou with satin soles
+wearing a silk dressing gown over the set in __colors/female_cool__ silk with a belted waist
+wearing a satin robe over the set in __colors/female_dusty__ satin with lace-trimmed edges
+carrying a satin vanity bag in __colors/female_jewel__ satin with a pearl clasp
+wearing sheer gloves in __colors/female_light__ mesh with a delicate finish
+wearing a velvet eye mask in __colors/female_dark__ velvet with a silk ribbon tie
+wearing satin slippers in __colors/female_metallic__ satin with a soft sheen
+carrying a champagne saucer in one hand with a feather-trimmed robe
+wearing a marabou stole draped over the arms in __colors/female_candy__ marabou
+wearing pearl-buttoned silk gloves in __colors/female_nude__ silk with scalloped cuffs

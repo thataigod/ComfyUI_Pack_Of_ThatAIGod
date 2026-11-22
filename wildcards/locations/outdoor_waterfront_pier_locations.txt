@@ -1,0 +1,28 @@
+#@setting: outdoor
+#@domain: waterfront
+#@place: pier
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+on a long wooden pier with iron lamps
+on a seaside pier with a ferris wheel
+at the end of a pier with mooring bollards
+along a pier deck with tackle boxes
+on a concrete pier beside a rusting crane
+#@time: dawn
+on a misty pier with lamps still burning, at dawn
+#@time: morning
+on a pier with anglers setting up their rods, in the morning
+#@time: noon
+on a hot pier with a shimmering sea, at noon
+#@time: afternoon
+on a pier with anglers packing up, in the afternoon
+#@time: golden hour
+on a pier with the sea burning bronze, at golden hour
+#@time: dusk
+on a pier as the lamps come on, at dusk
+#@time: blue hour
+on a pier with lamps strung along the rail, at blue hour
+#@time: night
+on a pier with bulbs reflected in black water, at night

@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: entertainment
+#@place: indoor_gym
+#@region: universal
+#@era: contemporary
+#@privacy: semi_public
+#@climate: temperate
+in a gym with rows of treadmills
+in a weights room with squat racks
+on a gym floor with resistance machines
+at the boxing corner of a gym with heavy bags
+#@time: dawn
+in a gym studio with mirrored walls, at dawn
+#@time: morning
+at a gym reception desk with towel stacks, in the morning
+#@time: noon
+along a gym locker aisle with metal doors, at noon
+#@time: afternoon
+in a gym stretching area with foam mats, in the afternoon
+#@time: golden hour
+at a gym water station with paper cups, at golden hour
+#@time: night
+in a gym cycle room with stationary bikes, at night
+#@time: night
+beside a gym climbing wall with colored holds, at night
+#@time: midnight
+in a gym corridor with rubber flooring, at midnight

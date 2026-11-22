@@ -1,0 +1,23 @@
+#@setting: indoor
+#@domain: transport
+#@place: elevator
+#@region: universal
+#@era: contemporary
+#@privacy: semi_public
+#@climate: temperate
+in a mirrored elevator with a brass handrail
+in a glass elevator with a shopping centre view
+in an old elevator with a folding gate
+in a service elevator with scuffed walls
+#@time: morning
+in an elevator with a panel of buttons, in the morning
+#@time: noon
+in a crowded elevator with a floor indicator, at noon
+#@time: afternoon
+in an elevator with a carpeted floor, in the afternoon
+#@time: dusk
+in an elevator with a service key panel, at dusk
+#@time: night
+in an elevator with a mirror wall, at night
+#@time: midnight
+in a stalled elevator with a pressed button, at midnight

@@ -1,0 +1,65 @@
+wearing glossy __colors/female_metallic__ body paint that coats the shoulders and arms in a seamless liquid gold sheen
+wearing gilded __colors/female_metallic__ gold-leaf accents that trace the collarbones, shoulders and waist
+wearing an oiled __colors/female_nude__ body glaze that catches a soft sheen along the collarbones and hips
+wearing shimmering __colors/female_light__ body oil that leaves a dewy sheen across the shoulders and arms
+wearing pearlescent __colors/female_pastel__ body paint that shifts softly between pink and pearl in the light
+wearing slick __colors/female_dark__ body gloss that gives the shoulders and legs a wet-look shine
+wearing fine __colors/female_muted__ body shimmer dusted over the arms and chest for a soft glow
+wearing UV-reactive __colors/female_neon__ body paint that glows vivid under blacklight across the torso
+wearing glittering __colors/female_vivid__ body glitter scattered over the shoulders and hips like stardust
+wearing a fine mist of __colors/female_metallic__ body shimmer that gilds the arms and back in soft light
+wearing glossy __colors/female_monochrome__ body paint that sculpts the waist and shoulders in tonal black and white
+wearing delicate painted-on lace motifs in __colors/female_dusty__ body paint that suggest a lace neckline and hip trim
+wearing tasteful __colors/female_neutral__ pasties with matching body paint that keeps the coverage minimal and artistic
+wearing glittering __colors/female_pastel__ body glitter in fine shimmer __patterns/female_swimwear_print__, that sparkles across the chest and shoulders
+wearing shimmering __colors/female_metallic__ body paint in liquid metal __patterns/female_swimwear_print__, that reflects the light across the torso
+wearing UV-reactive __colors/female_neon__ body paint in glow pigment __patterns/female_swimwear_print__, that glows down the arms under blacklight
+wearing glossy __colors/female_vivid__ body paint in high-gloss pigment __patterns/female_swimwear_print__, that coats the shoulders, ribs and hips
+wearing pearlescent __colors/female_candy__ body paint in opal pigment __patterns/female_swimwear_print__, that shimmers over the collarbones
+wearing bold __colors/female_tropical__ body paint in saturated pigment __patterns/female_swimwear_print__, that covers the torso and upper arms
+wearing subtle __colors/female_muted__ body paint in matte pigment __patterns/female_swimwear_print__, that follows the lines of the shoulders
+wearing luminous __colors/female_bright__ body paint in neon pigment __patterns/female_swimwear_print__, that frames the waist and collarbones
+wearing pearlescent __colors/female_cool__ body paint in silk-finish pigment __patterns/female_swimwear_print__, that ripples over the ribs
+wearing glittering __colors/female_jewel__ body paint in crystal-fleck pigment __patterns/female_swimwear_print__, that scatters light across the hips
+wearing glossy __colors/female_dark__ body paint in mirror-finish pigment __patterns/female_swimwear_print__, that traces the shoulders and spine
+wearing shimmering __colors/female_warm__ body paint in fine gold pigment __patterns/female_swimwear_print__, that warms the shoulders in soft light
+wearing glittering __colors/female_candy__ body glitter in sugar-fine shimmer __patterns/female_casual_top_print__, that dusts the shoulders and collarbones
+wearing bright __colors/female_bright__ body paint in vivid pigment __patterns/female_casual_top_print__, that wraps the torso and hips
+wearing soft __colors/female_pastel__ body paint in chalky pigment __patterns/female_casual_top_print__, that washes over the shoulders and arms
+wearing dense __colors/female_dark__ body paint in rich pigment __patterns/female_casual_top_print__, that covers the torso in deep tones
+wearing playful __colors/female_candy__ body paint in glossy pigment __patterns/female_casual_top_print__, that decorates the shoulders and waist
+wearing abstract __colors/female_tropical__ body paint in watercolor pigment __patterns/female_casual_top_print__, that blooms across the back and hips
+wearing bohemian __colors/female_earthtone__ body paint in earthy pigment __patterns/female_casual_top_print__, that patterns the arms and midriff
+wearing crisp __colors/female_cool__ body paint in satin pigment __patterns/female_casual_top_print__, that stripes down the arms and sides
+wearing hand-painted __colors/female_spring__ body paint in fine pigment __patterns/female_saree_motifs__, that ornaments the shoulders and waist
+wearing delicate __colors/female_light__ body paint in silk pigment __patterns/female_saree_motifs__, that floats across the collarbones and arms
+wearing intricate __colors/female_jewel__ body paint in metallic pigment __patterns/female_saree_motifs__, that covers the torso and upper arms
+wearing softly patterned __colors/female_dusty__ body paint in matte pigment __patterns/female_saree_motifs__, that drapes over the shoulders and back
+wearing artisan __colors/female_earthtone__ body paint in natural pigment __patterns/female_saree_motifs__, that details the arms and midriff
+wearing fine-line __colors/female_winter__ body paint in cool pigment __patterns/female_saree_motifs__, that traces the collarbones and ribs
+wearing graphic __colors/female_monochrome__ body paint in bold pigment __patterns/female_athletic_stripe__, that panels the torso in sharp lines
+wearing sculpted __colors/female_dark__ body paint in contour pigment __patterns/female_athletic_stripe__, that sharpens the shoulders and waist
+wearing geometric __colors/female_neon__ body paint in UV pigment __patterns/female_athletic_stripe__, that angles across the ribs and hips
+wearing sleek __colors/female_metallic__ body paint in chrome pigment __patterns/female_athletic_stripe__, that streaks along the arms and sides
+wearing sporty __colors/female_vivid__ body paint in flex pigment __patterns/female_athletic_stripe__, that follows the shoulders and legs
+wearing reflective __colors/female_cool__ body paint in pearl pigment __patterns/female_athletic_stripe__, that lights the shoulders and waist
+wearing trompe-l'oeil __colors/female_pastel__ body paint __patterns/female_party_dress_detail__, that mirrors a lace bodice against the skin
+wearing trompe-l'oeil __colors/female_jewel__ body paint __patterns/female_party_dress_detail__, that paints a corset and garter lines onto the waist
+wearing illusion __colors/female_vivid__ body paint __patterns/female_party_dress_detail__, that draws sequined panels across the torso
+wearing trompe-l'oeil __colors/female_dusty__ body paint __patterns/female_party_dress_detail__, that sketches a draped neckline and slit
+wearing detailed __colors/female_metallic__ body paint __patterns/female_party_dress_detail__, that gilds the neckline and hip lines
+wearing festive __colors/female_candy__ body paint __patterns/female_party_dress_detail__, that bejewels the collarbones with painted gems
+wearing painted-on __colors/female_light__ body paint __patterns/female_lingerie_lace_detail__, that mimics scalloped edges against the skin
+wearing delicate __colors/female_nude__ body paint __patterns/female_lingerie_lace_detail__, that paints lace bands at the hips and bust
+wearing trompe-l'oeil __colors/female_dusty__ body paint __patterns/female_lingerie_lace_detail__, that draws a bodice and garter straps in paint
+wearing silk-illusion __colors/female_cool__ body paint __patterns/female_lingerie_lace_detail__, that traces fine straps over the shoulders
+wearing painted-on __colors/female_pastel__ body paint __patterns/female_lingerie_lace_detail__, that reads as a lace corset and hip bands
+wearing fine-line __colors/female_metallic__ body paint __patterns/female_lingerie_lace_detail__, that gilds painted lace along the neckline
+wearing elegant __colors/female_jewel__ body paint __patterns/female_lingerie_lace_detail__, that frames the chest in painted scalloped lace
+wearing painterly __colors/female_warm__ body paint __patterns/female_lingerie_lace_detail__, that sketches satin ribbons along the waist
+wearing painted-on __colors/female_vivid__ body paint __patterns/female_costume_detail__, that conjures a corset and feathered neckline
+wearing theatrical __colors/female_neon__ body paint __patterns/female_costume_detail__, that draws lace trims and ribboned seams
+wearing fantasy __colors/female_jewel__ body paint __patterns/female_costume_detail__, that traces regal trim along the shoulders
+wearing dramatic __colors/female_dark__ body paint __patterns/female_costume_detail__, that sketches a corseted silhouette in paint
+wearing ornate __colors/female_metallic__ body paint __patterns/female_costume_detail__, that gilds painted trims along the collarbones
+wearing celebratory __colors/female_tropical__ body paint __patterns/female_costume_detail__, that paints floral embroideries over the arms

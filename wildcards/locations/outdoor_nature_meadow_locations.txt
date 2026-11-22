@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: meadow
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+in a wildflower meadow with drifting bees
+on a rolling meadow with scattered hawthorns
+amid a hay meadow with low swallows
+at the edge of a summer meadow with a weathered fence
+in a highland meadow with silver wind waves
+#@time: dawn
+in a dewy meadow with pale flowers, at dawn
+#@time: morning
+in a sunlit meadow with finches on seed heads, in the morning
+#@time: noon
+in a buzzing meadow with shimmering heat, at noon
+#@time: afternoon
+in a warm meadow with long grass shadows, in the afternoon
+#@time: golden hour
+in a golden meadow with crossing swallows
+#@time: dusk
+in a twilight meadow with flitting bats, at dusk
+#@time: night
+in a moonlit meadow with distant owl calls, at night

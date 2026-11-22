@@ -1,0 +1,65 @@
+wearing a cozily styled __colors/female_pastel__ colored pajama set in cotton with a button-up top and elastic-waist pants that fits softly and falls relaxed to the ankles
+wearing a softly styled __colors/female_warm__ colored nightgown in modal with a scoop neckline and short sleeves that drape gently and falls to mid-calf
+wearing a comfortably styled __colors/female_cool__ colored sleep shirt in cotton with a collared neckline and long sleeves that fall loosely to mid-thigh
+wearing a snugly styled __colors/female_earthtone__ colored two-piece sleep set in jersey with a rounded neckline and tapered pants that sit close and covers the legs fully
+wearing a breezily styled __colors/female_light__ colored sleep shorts set in cotton with a camisole top and drawstring shorts that rests lightly on the hips and keeps the legs cool
+wearing a gently styled __colors/female_dusty__ colored camisole sleep set in satin with a lace-trimmed camisole and matching shorts that skim the body and falls softly to the knees
+wearing a warmly styled __colors/female_spring__ colored flannel pajama set in flannel __patterns/female_casual_top_print__ and a button-up top, elastic-waist pants that fits cozily and drapes to the ankles
+wearing an elegantly styled __colors/female_vivid__ colored satin pajama set in satin __patterns/female_lingerie_lace_detail__ and a notched-collar shirt, relaxed-fit pants that glides smoothly and falls to the ankles
+wearing a freshly styled __colors/female_candy__ colored sleep romper in jersey __patterns/female_casual_top_print__ and a button-front bodice, short cuffed legs that sit easily and skims to mid-thigh
+wearing a lightly styled __colors/female_neon__ colored thermal sleepwear set in thermal knit __patterns/female_casual_top_print__ and a ribbed crew top, matching leggings that hug gently and covers the legs fully
+wearing a neatly styled __colors/female_tropical__ colored pajama set in cotton __patterns/female_casual_top_print__ and a piped button front, elastic-waist pants that fits neatly and falls straight to the ankles
+wearing a softly styled __colors/female_jewel__ colored nightgown in silk __patterns/female_lingerie_lace_detail__ and a V-neckline, delicate straps that drape fluidly and falls to mid-calf
+wearing a comfortably styled __colors/female_summer__ colored sleep shorts set in cotton __patterns/female_casual_top_print__ and a short-sleeve top, drawstring shorts that sit loosely and keeps the legs free
+wearing a cozily styled __colors/female_autumn__ colored oversized sleep tee in jersey __patterns/female_casual_top_print__ and a crew neckline, dropped shoulders that fall loosely to mid-thigh
+wearing a warmly styled __colors/female_winter__ colored two-piece sleep set in flannel __patterns/female_casual_top_print__ and a chest pocket, cuffed sleeves and pants that fits snugly and covers the legs fully
+wearing an elegantly styled __colors/female_neutral__ colored satin pajama set in satin __patterns/female_lingerie_lace_detail__ and a lace-trimmed collar, flowing pants that drape smoothly and falls to the ankles
+wearing a gently styled __colors/female_nude__ colored nightgown in modal __patterns/female_lingerie_lace_detail__ and a round neckline, cap sleeves that fall softly and brushes the calves
+wearing a snugly styled __colors/female_metallic__ colored sleep romper in jersey __patterns/female_casual_top_print__ and a zip-front bodice, cuffed shorts that fits closely and skims to mid-thigh
+wearing a breezily styled __colors/female_monochrome__ colored sleep shirt in cotton __patterns/female_casual_top_print__ and a camp collar, side slits that fall airily to mid-thigh
+wearing a softly styled __colors/female_pastel__ colored camisole sleep set in satin __patterns/female_lingerie_lace_detail__ and a lace-trimmed camisole, matching shorts that skim the hips and rests lightly to mid-thigh
+wearing a cozily styled __colors/female_bright__ colored thermal sleepwear set in thermal knit __patterns/female_casual_top_print__ and a high neckline, ribbed cuffs that sit warmly and covers to the wrists and ankles
+wearing a neatly styled __colors/female_dark__ colored pajama set in cotton __patterns/female_casual_top_print__ and a notch collar, straight-leg pants that fall cleanly to the ankles
+wearing a lightly styled __colors/female_earthtone__ colored nightgown in jersey __patterns/female_casual_top_print__ and a henley neckline, long sleeves that drape loosely and falls to mid-calf
+wearing a warmly styled __colors/female_cool__ colored sleep shirt in flannel __patterns/female_casual_top_print__ and a chest pocket, rolled cuffs that fall warmly to mid-thigh
+wearing an elegantly styled __colors/female_warm__ colored satin pajama set in satin __patterns/female_lingerie_lace_detail__ and a shawl collar, wide-leg pants that flow elegantly and falls to the ankles
+wearing a snugly styled __colors/female_light__ colored two-piece sleep set in jersey __patterns/female_lingerie_lace_detail__ and a scoop top, cuffed pants that hug softly and tapers to the ankles
+wearing a freshly styled __colors/female_spring__ colored sleep shorts set in cotton __patterns/female_casual_top_print__ and a graphic top, elastic shorts that sit easily and rests at mid-thigh
+wearing a cozily styled __colors/female_tropical__ colored pajama set in modal with a button-through top and soft trousers that drape lightly and falls to the ankles
+wearing a softly styled __colors/female_neon__ colored nightgown in satin with a lace-trimmed neckline and thin straps that fall smoothly and sweeps to the ankles
+wearing a comfortably styled __colors/female_jewel__ colored sleep shirt in modal with a henley neckline and short sleeves that rests easily and falls to mid-thigh
+wearing a snugly styled __colors/female_autumn__ colored two-piece sleep set in thermal knit with a crew neckline and ribbed cuffs that wrap softly and covers to the ankles
+wearing a breezily styled __colors/female_winter__ colored sleep romper in cotton with a button front and rolled cuffs that sit lightly and skims to mid-thigh
+wearing a gently styled __colors/female_summer__ colored camisole sleep set in jersey with a scoop camisole and short sleep shorts that rests softly and covers to mid-thigh
+wearing a neatly styled __colors/female_dusty__ colored robe over pajamas in modal with a belted robe and matching sleep set beneath that layers softly and falls to the calves
+wearing a warmly styled __colors/female_earthtone__ colored flannel pajama set in flannel __patterns/female_casual_top_print__ and a button-up top, brushed pants that fits cozily and covers to the ankles
+wearing a cozily styled __colors/female_nude__ colored pajama set in cotton __patterns/female_casual_top_print__ and a rounded collar, piping details that fall softly to the ankles
+wearing an elegantly styled __colors/female_metallic__ colored satin pajama set in satin __patterns/female_lingerie_lace_detail__ and a piped collar, bias-cut pants that slides smoothly and pools to the ankles
+wearing a lightly styled __colors/female_monochrome__ colored nightgown in silk __patterns/female_lingerie_lace_detail__ and a cowl neckline, thin straps that floats gently and falls to the knees
+wearing a softly styled __colors/female_bright__ colored sleep shorts set in jersey __patterns/female_casual_top_print__ and a raglan top, soft shorts that sit easily and keeps the legs free
+wearing a snugly styled __colors/female_dark__ colored sleep romper in cotton __patterns/female_casual_top_print__ and a snap-front bodice, patch pockets that fits neatly and skims to mid-thigh
+wearing a freshly styled __colors/female_warm__ colored thermal sleepwear set in thermal knit __patterns/female_casual_top_print__ and a waffle-knit top, matching joggers that hug warmly and covers to the ankles
+wearing a comfortably styled __colors/female_cool__ colored oversized sleep tee in cotton __patterns/female_casual_top_print__ and a boat neckline, side slits that fall loosely to mid-thigh
+wearing a neatly styled __colors/female_pastel__ colored nightgown in modal __patterns/female_lingerie_lace_detail__ and a sweetheart neckline, lace-trimmed straps that drape gently and falls to mid-calf
+wearing a gently styled __colors/female_spring__ colored robe over pajamas in satin __patterns/female_lingerie_lace_detail__ and a belted robe, matching camisole set beneath that layers smoothly and falls to the knees
+wearing a warmly styled __colors/female_tropical__ colored pajama set in flannel __patterns/female_casual_top_print__ and a button front, brushed flannel pants that fits snugly and covers to the ankles
+wearing a cozily styled __colors/female_vivid__ colored two-piece sleep set in jersey __patterns/female_casual_top_print__ and a henley top, jogger pants that drape easily and tapers to the ankles
+wearing a lightly styled __colors/female_light__ colored sleep shirt in modal __patterns/female_lingerie_lace_detail__ and a V-neckline, lace edging that floats softly to mid-thigh
+wearing a snugly styled __colors/female_neutral__ colored camisole sleep set in satin __patterns/female_lingerie_lace_detail__ and a lace-trimmed camisole, satin shorts that skim softly and rests to mid-thigh
+wearing a softly styled __colors/female_candy__ colored sleep romper in jersey __patterns/female_casual_top_print__ and a tie-front bodice, flutter shorts that sit lightly and skims to mid-thigh
+wearing an elegantly styled __colors/female_autumn__ colored satin pajama set in satin __patterns/female_lingerie_lace_detail__ and a monogrammed pocket, flowing pants that fall gracefully to the ankles
+wearing a breezily styled __colors/female_winter__ colored pajama set in cotton __patterns/female_casual_top_print__ and a camp collar, wide-leg pants that hang airily and falls to the ankles
+wearing a comfortably styled __colors/female_summer__ colored nightgown in jersey __patterns/female_casual_top_print__ and a scoop neckline, short sleeves that drape loosely and falls to the knees
+wearing a warmly styled __colors/female_jewel__ colored oversized sleep tee in flannel __patterns/female_casual_top_print__ and a crew neckline, chest pocket that falls warmly to mid-thigh
+wearing a neatly styled __colors/female_neon__ colored thermal sleepwear set in thermal knit __patterns/female_casual_top_print__ and a zip-up top, thermal leggings that fits closely and covers to the ankles
+wearing a gently styled __colors/female_bright__ colored two-piece sleep set in modal __patterns/female_lingerie_lace_detail__ and a lace-trimmed tank, soft pants that drape gently and falls to the ankles
+wearing a snugly styled __colors/female_earthtone__ colored sleep shorts set in jersey __patterns/female_casual_top_print__ and a cropped top, boxer shorts that rests softly and covers to mid-thigh
+wearing a freshly styled __colors/female_nude__ colored robe over pajamas in cotton __patterns/female_casual_top_print__ and a kimono-style robe, matching tank and shorts beneath that layers lightly and falls to the knees
+wearing a cozily styled __colors/female_dark__ colored nightgown in modal __patterns/female_lingerie_lace_detail__ and a square neckline, lace straps that fall softly and sweeps to the calves
+wearing a lightly styled __colors/female_monochrome__ colored pajama set in jersey __patterns/female_casual_top_print__ and a baseball collar, tapered pants that fall easily to the ankles
+wearing a softly styled __colors/female_metallic__ colored sleep shirt in satin __patterns/female_lingerie_lace_detail__ and a shawl collar, side vents that glides softly to mid-thigh
+wearing a warmly styled __colors/female_pastel__ colored sleep romper in flannel __patterns/female_casual_top_print__ and a button front, cuffed shorts that fits warmly and skims to mid-thigh
+wearing a comfortably styled __colors/female_warm__ colored camisole sleep set in modal __patterns/female_lingerie_lace_detail__ and a lace-trimmed camisole, modal shorts that rests gently and covers softly to mid-thigh
+wearing a neatly styled __colors/female_cool__ colored thermal sleepwear set in thermal knit __patterns/female_casual_top_print__ and a quarter-zip top, ribbed joggers that hug softly and covers to the ankles
+wearing a gently styled __colors/female_vivid__ colored oversized sleep tee in silk __patterns/female_lingerie_lace_detail__ and a V-neckline, lace-trimmed hem that floats loosely to mid-thigh
+wearing an elegantly styled __colors/female_spring__ colored satin pajama set in satin __patterns/female_lingerie_lace_detail__ and a contrast piping, cuffed pants that fall elegantly to the ankles

@@ -1,0 +1,28 @@
+#@setting: semi_outdoor
+#@domain: covered
+#@place: market_stall
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+at a market stall under a striped awning
+at a market stall with a slatted canopy
+at a market stall counter with baskets of fruit
+at a fabric-draped market stall with racks of scarves
+under a corrugated market stall roof with stacked boxes
+#@time: dawn
+at a market stall at dawn with produce set out
+#@time: morning
+at a market stall in the morning with brisk trade
+#@time: noon
+at a market stall at noon with shade over the counter
+#@time: afternoon
+at a market stall in the afternoon with warm canvas light
+#@time: golden hour
+at a market stall at golden hour with amber light on crates
+#@time: dusk
+at a market stall at dusk with bulbs flickering on
+#@time: night
+at a market stall at night with shutters half down
+#@time: midnight
+at a market stall at midnight with moonlight on the awnings

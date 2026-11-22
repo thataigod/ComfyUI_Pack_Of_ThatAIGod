@@ -1,0 +1,28 @@
+#@setting: outdoor
+#@domain: rural
+#@place: barn
+#@region: universal
+#@era: traditional
+#@privacy: semi_private
+#@climate: temperate
+in a timber barn with hay bales
+in a red barn with swallows under the eaves
+on a barn threshing floor with an old wagon
+in a stone barn with a hanging lantern
+at a barn entrance with grain sacks
+#@time: dawn
+in a barn with pale light through the slats, at dawn
+#@time: morning
+in a barn with dust motes over the hay, in the morning
+#@time: noon
+in a cool barn with deep shade inside, at noon
+#@time: afternoon
+in a barn with long shadows from the beams, in the afternoon
+#@time: golden hour
+in a barn with the doorway ablaze, at golden hour
+#@time: dusk
+in a barn with a lantern lit on its hook, at dusk
+#@time: blue hour
+in a barn with a lit farmhouse window beyond, at blue hour
+#@time: night
+in a barn with moonlight through the board gaps, at night

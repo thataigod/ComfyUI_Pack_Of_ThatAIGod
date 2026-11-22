@@ -1,0 +1,27 @@
+#@setting: outdoor
+#@domain: gardens
+#@place: rooftop
+#@region: universal
+#@era: contemporary
+#@privacy: semi_private
+#@climate: temperate
+in a rooftop garden with raised beds
+amid the herb planters with a green wall
+in a rooftop garden with climbing jasmine
+on a green roof with city views
+#@time: dawn
+in a rooftop garden at dawn with a cool breeze
+#@time: morning
+in a rooftop garden in the morning with watering cans
+#@time: noon
+in a rooftop garden at noon with bees over herbs
+#@time: afternoon
+in a rooftop garden in the afternoon with warm planters
+#@time: golden hour
+in a rooftop garden at golden hour with gilded leaves
+#@time: dusk
+in a rooftop garden at dusk with flickering string lights
+#@time: night
+in a rooftop garden at night with a glittering skyline
+#@time: midnight
+in a rooftop garden at midnight with a still fountain

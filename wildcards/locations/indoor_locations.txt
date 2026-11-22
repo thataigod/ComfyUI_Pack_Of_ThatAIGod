@@ -1,0 +1,7 @@
+__indoor_residential_locations__
+__indoor_hospitality_locations__
+__indoor_commercial_locations__
+__indoor_workplace_locations__
+__indoor_civic_locations__
+__indoor_entertainment_locations__
+__indoor_transport_locations__

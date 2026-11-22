@@ -1,0 +1,30 @@
+#@setting: fantastical
+#@domain: scifi
+#@place: spaceship_bridge
+#@region: universal
+#@era: futuristic
+#@privacy: private
+#@climate: void
+on a spaceship bridge with a wraparound viewscreen of streaming stars
+aboard a spaceship bridge with holographic consoles and command chairs
+within a spaceship bridge where crew stations curve around a command dais
+beside a spaceship bridge helm console with glowing controls and a nebula
+at a spaceship bridge tactical station with target overlays and a schematic
+on a spaceship bridge where a star map floats above navigation
+along a spaceship bridge railing overlooking the lower command deck
+#@time: dawn
+on a spaceship bridge at ship's dawn with soft waking lights
+#@time: morning
+on a spaceship bridge at ship's morning with full crew posts
+#@time: noon
+on a spaceship bridge at ship's noon with bright panels
+#@time: afternoon
+on a spaceship bridge in the afternoon watch above an asteroid field
+#@time: golden hour
+on a spaceship bridge at golden hour with a red giant ahead
+#@time: dusk
+on a spaceship bridge at dusk with amber standby lighting
+#@time: night
+on a spaceship bridge at night with blue lights and skeleton watch
+#@time: midnight
+on a spaceship bridge at midnight with starlight and one officer

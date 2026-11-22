@@ -1,0 +1,30 @@
+#@setting: fantastical
+#@domain: fantasy
+#@place: enchanted_forest
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+in an enchanted forest where pale mushrooms glow along a mossy trail
+within an enchanted forest grove of silver-barked chiming trees
+beneath an enchanted forest canopy of luminous blue blossoms
+along an enchanted forest path between wall-high roots and runes
+beside an enchanted forest pool ringed by glowing reeds
+in an enchanted forest hollow with a toadstool ring
+amid an enchanted forest tangle of luminous parting vines
+#@time: dawn
+in an enchanted forest at dawn with mist and clear birdsong
+#@time: morning
+in an enchanted forest in the morning with dew on the ferns
+#@time: noon
+in an enchanted forest at noon with dappled green light
+#@time: afternoon
+in an enchanted forest in the afternoon with warm luminous petals
+#@time: golden hour
+in an enchanted forest at golden hour on silvered branches
+#@time: dusk
+in an enchanted forest at dusk with waking fireflies and glowing trees
+#@time: night
+in an enchanted forest at night lit by phosphorescent fungi
+#@time: midnight
+in an enchanted forest at midnight with deep blue moonlight

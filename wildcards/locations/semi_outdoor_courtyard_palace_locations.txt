@@ -1,0 +1,28 @@
+#@setting: semi_outdoor
+#@domain: courtyard
+#@place: palace
+#@region: south_asian
+#@era: medieval
+#@privacy: private
+#@climate: warm
+in a palace courtyard with a long marble water channel
+in a palace courtyard with arched galleries and inlaid marble
+under a palace colonnade with cusped arches
+at a palace courtyard pavilion flanked by stone elephants
+beside a palace courtyard pool with lotus flowers
+#@time: dawn
+in a palace courtyard at dawn with mist on the water channel
+#@time: morning
+in a palace courtyard in the morning with swallows above the colonnade
+#@time: noon
+in a palace courtyard at noon with blinding light on white marble
+#@time: afternoon
+in a palace courtyard in the afternoon with honeyed light through arches
+#@time: golden hour
+in a palace courtyard at golden hour with sandstone aflame
+#@time: dusk
+in a palace courtyard at dusk with fountains lit beneath the domes
+#@time: blue hour
+in a palace courtyard in blue hour with dusk pooling on marble
+#@time: night
+in a palace courtyard at night with lanterns above the water channel

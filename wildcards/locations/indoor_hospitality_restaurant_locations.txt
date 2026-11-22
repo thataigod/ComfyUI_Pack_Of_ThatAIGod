@@ -1,0 +1,27 @@
+#@setting: indoor
+#@domain: hospitality
+#@place: restaurant
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+in an elegant restaurant with white tablecloths and silver cutlery
+in a rustic trattoria with checkered cloths and a wood-fired oven
+in a fine-dining restaurant with plush banquettes and a wine wall
+in a rooftop restaurant with glass walls and a city view
+#@time: morning
+in a restaurant with bare tables and stacked chairs, in the morning
+#@time: afternoon
+in a restaurant with empty tables and folded napkins, in the afternoon
+#@time: golden hour
+in a restaurant with arched windows and a single rose, at golden hour
+#@time: dusk
+in a restaurant with a street window and a linen runner, at dusk
+#@time: night
+in a restaurant with clinking glassware and a crowded room, at night
+#@time: night
+in a restaurant with a waiter crossing the room, at night
+#@time: blue hour
+in a restaurant with a quiet corner and a coat stand, at blue hour
+#@time: midnight
+in a restaurant with chairs on tables and a lingering guest, at midnight

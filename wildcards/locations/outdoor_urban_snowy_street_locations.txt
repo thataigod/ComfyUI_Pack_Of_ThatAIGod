@@ -1,0 +1,42 @@
+#@setting: outdoor
+#@domain: urban
+#@place: snowy_street
+#@region: european
+#@era: contemporary
+#@privacy: public
+#@climate: cold
+#@weather: snow
+in a snowbound street with frosted shop windows
+#@weather: snow
+along a quiet street with snow-laden roofs
+#@weather: snow
+on a frozen street with fresh snow
+#@weather: snow
+in a street with drifting snow against the railings
+#@time: dawn
+#@weather: snow
+in a snowy street at dawn with untracked snow
+#@time: morning
+#@weather: snow
+in a snowy street in the morning with shovelled snow
+#@time: noon
+#@weather: snow
+in a snowy street at noon with snow in the gutters
+#@time: afternoon
+#@weather: snow
+in a snowy street in the afternoon with sliding snow
+#@time: golden hour
+#@weather: snow
+in a snowy street at golden hour with blue snow shadows
+#@time: dusk
+#@weather: snow
+in a snowy street at dusk with snow through the lamplight
+#@time: blue hour
+#@weather: snow
+in a snowy street in blue hour with deep snowdrifts
+#@time: night
+#@weather: snow
+in a snowy street at night with drifting flakes
+#@time: midnight
+#@weather: snow
+in a snowy street at midnight with untouched snow

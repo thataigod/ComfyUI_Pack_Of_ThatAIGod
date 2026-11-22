@@ -1,0 +1,27 @@
+#@setting: outdoor
+#@domain: urban
+#@place: sidewalk
+#@region: north_american
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+on a cracked city sidewalk with shop awnings
+along a leafy sidewalk with brownstone stoops
+on a wide pavement with a newspaper stand
+on a brick-paved sidewalk with parked scooters
+#@time: dawn
+on a sidewalk at dawn with paper deliveries
+#@time: morning
+on a sidewalk in the morning with a fruit stand
+#@time: noon
+on a sidewalk at noon with a warm bench
+#@time: afternoon
+on a sidewalk in the afternoon with long shadows
+#@time: golden hour
+on a sidewalk at golden hour with amber shopfronts
+#@time: dusk
+on a sidewalk at dusk with flickering streetlamps
+#@time: night
+on a sidewalk at night with a closed flower stall
+#@time: midnight
+on a sidewalk at midnight with a buzzing neon sign

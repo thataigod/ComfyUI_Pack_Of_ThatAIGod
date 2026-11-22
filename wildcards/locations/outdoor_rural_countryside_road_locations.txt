@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: rural
+#@place: countryside_road
+#@region: universal
+#@era: contemporary
+#@privacy: public
+#@climate: temperate
+on a winding country road with deep hedgerows
+along a dirt country track with stone walls
+on a sunken country lane with cow parsley
+along a country road with a cattle grid
+on a straight country road with poplars
+#@time: dawn
+on a misty country road with dew on the grass, at dawn
+#@time: morning
+on a country road with long shadows on the hedgerows, in the morning
+#@time: noon
+on a country road with heat wavering over asphalt, at noon
+#@time: afternoon
+on a country road with warm light through the trees, in the afternoon
+#@time: golden hour
+on a country road with hedgerows glowing amber, at golden hour
+#@time: dusk
+on a country road with first lights in a farmhouse, at dusk
+#@time: night
+on a moonlit country road with hedges black, at night

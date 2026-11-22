@@ -1,0 +1,28 @@
+#@setting: outdoor
+#@domain: rural
+#@place: orchard
+#@region: universal
+#@era: timeless
+#@privacy: semi_private
+#@climate: temperate
+in an apple orchard with a wooden ladder
+in an orchard row with drifting blossom
+in a walled orchard with espaliered pears
+in a cherry orchard with netting overhead
+in an orchard with a cider press
+#@time: dawn
+in a dewy orchard with mist between the trunks, at dawn
+#@time: morning
+in an orchard with bees busy in the blossom, in the morning
+#@time: noon
+in an orchard with dappled shade under the boughs, at noon
+#@time: afternoon
+in an orchard with long shadows on the path, in the afternoon
+#@time: golden hour
+in an orchard with backlit fruit glowing, at golden hour
+#@time: dusk
+in an orchard with rows fading to blue-grey, at dusk
+#@time: blue hour
+in an orchard with blossom pale in half-light, at blue hour
+#@time: night
+in an orchard with branches black against stars, at night

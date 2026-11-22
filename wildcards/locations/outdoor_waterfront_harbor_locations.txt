@@ -1,0 +1,30 @@
+#@setting: outdoor
+#@domain: waterfront
+#@place: harbor
+#@region: universal
+#@era: vintage
+#@privacy: public
+#@climate: temperate
+on a stone harbor wall with creels
+along a harbor quay with tall-masted schooners
+in a sheltered harbor with painted luggers
+on a harbor front with old warehouses
+at the mouth of a harbor with channel buoys
+#@time: dawn
+at a misty harbor with lanterns on the quay, at dawn
+#@time: morning
+at a harbor with fish being landed, in the morning
+#@time: noon
+at a harbor with ropes drying in the sun, at noon
+#@time: afternoon
+at a harbor with gulls on the capstans, in the afternoon
+#@time: golden hour
+at a harbor with rigging gilded by light, at golden hour
+#@time: dusk
+at a harbor as lamps light along the quay, at dusk
+#@time: blue hour
+at a harbor with a sweeping lighthouse beam, at blue hour
+#@time: night
+at a harbor with masts black against stars, at night
+#@time: midnight
+at a harbor with one lamp on the pier, at midnight

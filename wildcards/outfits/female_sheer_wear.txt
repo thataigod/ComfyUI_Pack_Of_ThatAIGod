@@ -1,0 +1,65 @@
+wearing a delicately styled __colors/female_pastel__ colored sheer mesh dress in fine mesh with a soft cowl neck and long sleeves, that reveals the silhouette in soft focus
+wearing an ethereally styled __colors/female_light__ colored tulle midi skirt in layered tulle __patterns/female_party_dress_detail__ that floats to show the legs beneath translucent layers
+wearing an elegantly styled __colors/female_nude__ colored organza blouse in crisp organza __patterns/female_lingerie_lace_detail__ that shows a camisole through the sheer fabric
+wearing an airily styled __colors/female_cool__ colored chiffon maxi dress in flowing chiffon __patterns/female_party_dress_detail__ that drifts to reveal shoulders and back
+wearing a daringly styled __colors/female_dark__ colored sheer bodysuit in stretch mesh __patterns/female_lingerie_lace_detail__ that layers thinly over the figure
+wearing a softly styled __colors/female_warm__ colored gauze wrap dress in double gauze with a tie waist and flutter sleeves, that parts gently to show the legs as she moves
+wearing a temptingly styled __colors/female_neon__ colored sheer cocktail dress in layered organza __patterns/female_costume_detail__ that reveals the outline of the figure in the light
+wearing a gracefully styled __colors/female_metallic__ colored tulle overskirt in airy tulle __patterns/female_party_dress_detail__ that shows the satin slip through translucent layers
+wearing an invitingly styled __colors/female_vivid__ colored lace overlay dress in floral lace __patterns/female_blouse_patterns__ that reveals bare shoulders and arms
+wearing a lightly styled __colors/female_muted__ colored mesh top in fine mesh with a boat neck and long sleeves, that shows the camisole beneath through the open weave
+wearing a teasingly styled __colors/female_jewel__ colored sheer chiffon blouse in sheer chiffon __patterns/female_lingerie_lace_detail__ that clings softly and shows the waistline beneath
+wearing an opulently styled __colors/female_candy__ colored organza gown in sheer organza __patterns/female_saree_motifs__ that drifts around her as she walks
+wearing a boldly styled __colors/female_bright__ colored tulle ball gown in voluminous tulle __patterns/female_lingerie_lace_detail__ that layers over a fitted bodice and shows the legs through the skirt
+wearing a dreamily styled __colors/female_tropical__ colored chiffon sundress in breezy chiffon with thin straps and a smocked back, that flutters to show the shape beneath
+wearing a seductively styled __colors/female_monochrome__ colored sheer robe in fine mesh over a slip dress __patterns/female_lingerie_lace_detail__ that drapes open as she moves
+wearing a delicately styled __colors/female_neutral__ colored organza wrap dress in sheer organza __patterns/female_costume_detail__ that softly shows the lining beneath
+wearing a wispily styled __colors/female_dusty__ colored mesh kimono in fine mesh __patterns/female_lingerie_lace_detail__ that skims the figure and reveals the dress beneath
+wearing a gracefully styled __colors/female_earthtone__ colored gauze maxi dress in crinkled gauze __patterns/female_anarkali_embroidery__ that parts in the breeze to show the legs beneath
+wearing an enchantingly styled __colors/female_spring__ colored chiffon tiered dress in airy chiffon __patterns/female_blouse_patterns__ that floats to show the layers beneath
+wearing an airily styled __colors/female_summer__ colored sheer gauze shirt in light gauze __patterns/female_casual_top_print__ that turns translucent in the sunlight
+wearing an ethereally styled __colors/female_winter__ colored tulle tea-length dress in soft tulle with a fitted bodice and cap sleeves, that shows the figure in a soft haze
+wearing a tantalizingly styled __colors/female_autumn__ colored lace midi dress in sheer lace over a lining __patterns/female_lingerie_lace_detail__ that reveals the slip beneath through the lace
+wearing a beautifully styled __colors/female_pastel__ colored organza peplum top in crisp organza __patterns/female_party_dress_detail__ that shows the camisole through the fabric
+wearing a stunningly styled __colors/female_light__ colored mesh maxi dress in fine mesh __patterns/female_swimwear_print__ that layers lightly over the body
+wearing an alluringly styled __colors/female_nude__ colored sheer slip dress in sheer chiffon with thin straps and a low back, that drifts to show the figure beneath
+wearing a dreamily styled __colors/female_cool__ colored tulle slip dress in fine tulle __patterns/female_lingerie_lace_detail__ that floats in soft layers over the lining
+wearing a mysteriously styled __colors/female_dark__ colored lace bodysuit in fine lace __patterns/female_costume_detail__ that shows the skirt beneath through the open lace
+wearing a softly styled __colors/female_warm__ colored chiffon robe dress in sheer chiffon __patterns/female_lingerie_lace_detail__ that wraps softly and shows the waist beneath
+wearing a thrillingly styled __colors/female_neon__ colored organza cocktail dress in structured organza with a fitted bodice and full skirt, that reveals the lining through sheer panels
+wearing a shimmeringly styled __colors/female_metallic__ colored sheer mesh gown in shimmering mesh __patterns/female_party_dress_detail__ that sparkles and shows the figure beneath
+wearing a brazenly styled __colors/female_vivid__ colored tulle layered gown in layered tulle __patterns/female_lingerie_lace_detail__ that builds soft volume and shows the legs beneath
+wearing a delicately styled __colors/female_muted__ colored organza blouse dress in sheer organza __patterns/female_blouse_patterns__ that skims the figure in the light
+wearing an exquisitely styled __colors/female_jewel__ colored lace tea dress in fine lace over a nude slip, that reveals the shoulders and arms through the sleeves
+wearing a playfully styled __colors/female_candy__ colored tulle tutu dress in airy tulle __patterns/female_lingerie_lace_detail__ that bounces softly and shows the legs beneath
+wearing a vivaciously styled __colors/female_bright__ colored chiffon maxi skirt in flowing chiffon __patterns/female_anarkali_embroidery__ that swings to show the legs through the fabric
+wearing a breezily styled __colors/female_tropical__ colored sheer cover-up dress in fine mesh __patterns/female_swimwear_print__ that layers lightly over the swimwear beneath
+wearing a minimally styled __colors/female_monochrome__ colored mesh dress in fine mesh __patterns/female_lingerie_lace_detail__ that shows the slip beneath through the weave
+wearing a quietly styled __colors/female_neutral__ colored gauze midi dress in soft gauze with a button front and rolled sleeves, that shows the camisole beneath as it moves
+wearing a romantically styled __colors/female_dusty__ colored organza midi skirt in layered organza __patterns/female_saree_motifs__ that moves in soft waves and shows the legs beneath
+wearing a naturally styled __colors/female_earthtone__ colored gauze blouse in crinkled gauze __patterns/female_costume_detail__ that shows a camisole through the soft weave
+wearing a freshly styled __colors/female_spring__ colored chiffon wrap dress in breezy chiffon __patterns/female_party_dress_detail__ that flutters to show the waist beneath
+wearing a sunnily styled __colors/female_summer__ colored gauze sundress in light gauze __patterns/female_casual_top_print__ that turns breezy and translucent in the sun
+wearing a frostily styled __colors/female_winter__ colored tulle overdress in fine tulle __patterns/female_lingerie_lace_detail__ that layers over a slip like frost
+wearing a dreamily styled __colors/female_autumn__ colored lace blouse in sheer lace __patterns/female_blouse_patterns__ that shows the camisole through the pattern
+wearing a lightly styled __colors/female_pastel__ colored tulle wrap skirt in soft tulle __patterns/female_lingerie_lace_detail__ that floats over the skirt beneath
+wearing an elegantly styled __colors/female_light__ colored organza overshirt in sheer organza with wide sleeves and a tie front, that shows the top beneath as it moves
+wearing a subtly styled __colors/female_nude__ colored mesh bodysuit in fine mesh __patterns/female_lingerie_lace_detail__ that disappears against the skin and layers under the skirt
+wearing a dreamily styled __colors/female_cool__ colored organza gown in weightless organza __patterns/female_party_dress_detail__ that trails softly and shows the slip beneath
+wearing a moodily styled __colors/female_dark__ colored chiffon gown in sheer chiffon __patterns/female_saree_motifs__ that darkens in the light and shows the figure beneath
+wearing a gracefully styled __colors/female_warm__ colored tulle layered skirt in soft tulle over a silk slip with a satin waistband, that shows the legs through the haze
+wearing a boldly styled __colors/female_neon__ colored mesh halter dress in fine mesh __patterns/female_costume_detail__ that glows under the lights and shows the figure
+wearing a gleamingly styled __colors/female_metallic__ colored organza blouse in metallic organza __patterns/female_blouse_patterns__ that catches the light and shows the camisole beneath
+wearing a strikingly styled __colors/female_vivid__ colored lace panel dress in sheer lace __patterns/female_lingerie_lace_detail__ that shows the lining through the lace panels
+wearing a simply styled __colors/female_muted__ colored chiffon midi dress in soft chiffon with a V-neck and flowy skirt, that drifts to show the shape beneath
+wearing a regally styled __colors/female_jewel__ colored tulle gown in layered tulle __patterns/female_party_dress_detail__ that glimmers softly and shows the legs beneath
+wearing a sweetly styled __colors/female_candy__ colored organza party dress in crisp organza __patterns/female_lingerie_lace_detail__ that shows the slip beneath through the layers
+wearing a cheerfully styled __colors/female_bright__ colored mesh cover-up in fine mesh __patterns/female_swimwear_print__ that drapes over the bikini and shows the shape beneath
+wearing a breezily styled __colors/female_tropical__ colored chiffon sundress in airy chiffon __patterns/female_saree_motifs__ that floats as she walks and shows the legs beneath
+wearing a chicly styled __colors/female_monochrome__ colored mesh maxi dress in fine mesh __patterns/female_costume_detail__ that stays sheer and shows the slip beneath
+wearing a casually styled __colors/female_neutral__ colored gauze overshirt in washed gauze __patterns/female_casual_top_print__ that hangs open and shows the top beneath
+wearing a tenderly styled __colors/female_dusty__ colored tulle midi dress in soft tulle with a gathered waist, that shows the legs in a gentle haze
+wearing a warmly styled __colors/female_earthtone__ colored gauze blouse in soft gauze __patterns/female_blouse_patterns__ that shows a camisole through the open weave
+wearing a daintily styled __colors/female_spring__ colored lace slip dress in sheer lace __patterns/female_lingerie_lace_detail__ that layers over a slip and shows the shoulders
+wearing a lightly styled __colors/female_summer__ colored organza sundress in crisp organza __patterns/female_party_dress_detail__ that holds its shape and shows the lining through the fabric
+wearing a frostily styled __colors/female_winter__ colored tulle cape dress in fine tulle __patterns/female_lingerie_lace_detail__ that drapes from the shoulders and shows the slip beneath

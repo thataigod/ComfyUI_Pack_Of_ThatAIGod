@@ -1,0 +1,28 @@
+#@setting: semi_outdoor
+#@domain: veranda
+#@place: rooftop_terrace
+#@region: universal
+#@era: contemporary
+#@privacy: semi_private
+#@climate: temperate
+on a rooftop terrace with a glass railing
+on a rooftop terrace with string lights and a daybed
+on a rooftop terrace with a wooden deck and plunge pool
+on a rooftop terrace overlooking tiled rooftops with a bar counter
+on a rooftop terrace with a canopy sail and planters
+#@time: dawn
+on a rooftop terrace at dawn with mist over the rooftops
+#@time: morning
+on a rooftop terrace in the morning with soft sun on planters
+#@time: noon
+on a rooftop terrace at noon with shade under the sail canopy
+#@time: afternoon
+on a rooftop terrace in the afternoon with a warm breeze
+#@time: golden hour
+on a rooftop terrace at golden hour with amber light on the city
+#@time: dusk
+on a rooftop terrace at dusk with festoon lights coming on
+#@time: night
+on a rooftop terrace at night with the city glittering below
+#@time: midnight
+on a rooftop terrace at midnight with a lone lantern

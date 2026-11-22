@@ -1,0 +1,26 @@
+#@setting: outdoor
+#@domain: nature
+#@place: lakeside
+#@region: universal
+#@era: timeless
+#@privacy: public
+#@climate: temperate
+on a pebble lakeside shore with a weathered jetty
+at a mountain lakeside with tall reeds
+on a grassy lakeshore with a campfire ring
+on a jetty at a quiet lake with mooring posts
+in a lakeside cove with smooth rock slabs
+#@time: dawn
+at a misty lakeside with glassy reflections, at dawn
+#@time: morning
+at a bright lakeside with sharp peaks, in the morning
+#@time: noon
+at a sunlit lakeside with pine shadows, at noon
+#@time: afternoon
+at a warm lakeside with lengthening shadows, in the afternoon
+#@time: golden hour
+at a golden lakeside with a flaming reflection
+#@time: dusk
+at a dusky lakeside with steel-blue water, at dusk
+#@time: night
+at a starry lakeside with mirrored stars, at night

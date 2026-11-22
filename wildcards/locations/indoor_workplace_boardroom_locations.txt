@@ -1,0 +1,26 @@
+#@setting: indoor
+#@domain: workplace
+#@place: boardroom
+#@region: universal
+#@era: contemporary
+#@privacy: private
+#@climate: temperate
+in a formal boardroom with a mahogany table
+in a corporate boardroom with a video screen
+in a modern meeting room with an oval table
+#@time: morning
+in a boardroom with water glasses set out, in the morning
+#@time: morning
+in a boardroom with neatly stacked folders, in the morning
+#@time: noon
+in a boardroom with laid-out documents, at noon
+#@time: afternoon
+in a boardroom with a polished table, in the afternoon
+#@time: golden hour
+in a boardroom with a glass wall, at golden hour
+#@time: dusk
+in a boardroom with empty leather chairs, at dusk
+#@time: night
+in a boardroom with a projector screen, at night
+#@time: midnight
+in a silent boardroom with a blank screen, at midnight
