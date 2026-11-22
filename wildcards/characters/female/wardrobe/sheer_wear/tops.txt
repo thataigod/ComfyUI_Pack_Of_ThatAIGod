@@ -1,0 +1,33 @@
+#@lewdity: 80
+
+#@lewdity: 75
+#@fit: bust, waist, shoulders
+an organza blouse in a __colors/female_nude__ colored crisp organza __patterns/female_lingerie_lace_detail__ that shows a camisole through the sheer fabric
+#@lewdity: 75
+#@fit: bust, waist, shoulders
+a mesh top in a __colors/female_muted__ colored fine mesh with a boat neck and long sleeves that shows the camisole beneath through the open weave
+#@lewdity: 75
+#@fit: bust, waist, shoulders
+a sheer chiffon blouse in a __colors/female_jewel__ colored sheer chiffon __patterns/female_lingerie_lace_detail__ that clings softly and shows the waistline beneath
+#@lewdity: 75
+#@fit: bust, waist, shoulders
+a lace blouse in a __colors/female_autumn__ colored sheer lace __patterns/female_blouse_patterns__ that shows a camisole through the pattern
+#@lewdity: 75
+#@fit: bust, waist, shoulders
+a gauze blouse in a __colors/female_earthtone__ colored crinkled gauze __patterns/female_blouse_patterns__ that shows a camisole through the soft weave
+#@lewdity: 75
+#@fit: bust, waist
+an organza peplum top in a __colors/female_pastel__ colored crisp organza __patterns/female_party_dress_detail__ that shows a camisole through the fabric
+#@lewdity: 75
+#@fit: bust, waist, shoulders
+a metallic organza blouse in a __colors/female_metallic__ colored metallic organza __patterns/female_blouse_patterns__ that catches the light and shows the camisole beneath
+#@lewdity: 75
+#@fit: bust, waist, shoulders
+an organza overshirt in a __colors/female_light__ colored sheer organza with wide sleeves and a tie front that shows the top beneath
+#@lewdity: 75
+#@fit: bust, waist, shoulders
+a gauze overshirt in a __colors/female_neutral__ colored washed gauze __patterns/female_casual_top_print__ that hangs open and shows the top beneath
+#@lewdity: 75
+#@condition: sunlit, translucent
+#@fit: bust, waist, shoulders
+a sheer gauze shirt in a __colors/female_summer__ colored light gauze __patterns/female_casual_top_print__ that turns translucent in the sunlight

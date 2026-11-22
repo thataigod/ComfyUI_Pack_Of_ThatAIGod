@@ -1,0 +1,18 @@
+#@lewdity: 80
+
+#@fit: bust
+a seductively styled __colors/female_light__ colored bridal lace bra with scalloped cups and pearl-trimmed straps
+#@fit: bust
+an elegantly styled __colors/female_light__ colored ivory satin bra __patterns/female_party_dress_detail__ with a smooth pearl sheen
+#@fit: bust, waist
+an invitingly styled __colors/female_nude__ colored bridal lace corset __patterns/female_lingerie_lace_detail__ with boned cups pushing up the bust
+#@fit: bust, waist
+a sultrily styled __colors/female_pastel__ colored bridal satin corset __patterns/female_fetish_detail__ with a boned bodice and garter straps
+#@fit: bust, waist
+a teasingly styled __colors/female_pastel__ colored pearl-trimmed satin corset __patterns/female_party_dress_detail__ pushing up the bust over a bared midriff
+#@fit: bust, waist
+an elegantly styled __colors/female_light__ colored lace bridal bustier __patterns/female_lingerie_lace_detail__ lifting the bust over a bared midriff
+#@fit: bust, waist
+a sizzlingly styled __colors/female_nude__ colored bridal satin bustier __patterns/female_lingerie_lace_detail__ with a smooth shine and lifted bust
+#@fit: bust, waist
+a sultrily styled __colors/female_nude__ colored bridal tulle corset __patterns/female_fetish_detail__ with sheer boning and lace beneath

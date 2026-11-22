@@ -1,8 +1,21 @@
+#@lewdity: 80
+
 #@fit: waist, hips
-#@no_modifiers: fabric
-matching lace panties
+matching lace panties with scalloped edges
+#@fit: hips, thighs
+#@lewdity: 75
+silk shorts with a soft drape and lace-trimmed legs
+#@fit: hips
+#@lewdity: 90
+a __colors/female_pastel__ colored matching lace thong with high-cut legs
+#@fit: hips
+#@lewdity: 90
+a __colors/female_nude__ colored satin thong with a smooth high-cut finish
+#@fit: hips
+__colors/female_earthtone__ colored mesh panties with sheer sides
 #@fit: waist, hips
-#@no_modifiers: fabric
-silk shorts
-#@fit: waist, hips
-a matching lace thong, __pastel_colors_female__
+__colors/female_neutral__ colored cotton panties with a ribbed comfort band
+#@fit: hips
+__colors/female_bright__ colored satin panties with a smooth glossy finish
+#@fit: hips
+__colors/female_warm__ colored sheer panties with a delicate scalloped trim

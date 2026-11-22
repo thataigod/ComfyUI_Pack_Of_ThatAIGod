@@ -1,3 +1,48 @@
+#@lewdity: 10
+
 #@fit: waist, hips
-#@mishap: the lehenga hem riding up her thighs
-a flowing lehenga skirt, __jeweltone_colors_female__
+a flowing lehenga skirt in __colors/female_jewel__
+#@fit: hips, thighs
+churidar bottoms in __colors/female_light__ with ankle gathers
+#@fit: hips, thighs
+palazzo pants in __colors/female_neutral__ with wide flowing legs
+#@fit: hips, thighs
+a heavily pleated Patiala salwar in __colors/female_earthtone__ with baggy drop-crotch and multiple pleats
+#@fit: hips, thighs
+salwar pants in __colors/female_nude__ with a straight relaxed fit
+#@fit: hips, thighs
+a silk sharara in __colors/female_jewel__ with wide palazzo flare from the waist
+#@fit: hips, thighs
+a gharara in __colors/female_pastel__ fitted till the knee then flaring hugely with a prominent gota band at the knee
+#@fit: waist, hips, thighs
+a mekhela wrap skirt with front pleats and anchored pleats in Assamese muga silk
+#@fit: waist, hips, thighs
+a Nauvari saree in khun draped kasta-style with kashta pleats tucked between the legs as dhoti pants and back pleats
+#@fit: waist, hips, thighs
+#@lewdity: 15
+a Kanjeevaram saree in silk __patterns/female_saree_borders__ with a neatly pleated waist drape falling to the ankle
+#@fit: waist, hips, thighs
+#@lewdity: 25
+a georgette saree in __colors/female_vivid__ with a sensually draped wrap
+#@fit: waist, hips, thighs
+#@lewdity: 20
+a half-saree drape in chiffon __patterns/female_saree_borders__ draped low at the waist
+#@fit: waist, hips, thighs
+#@lewdity: 15
+a cotton saree with a simply draped waist wrap
+#@fit: waist, hips, thighs
+an A-line lehenga in silk with a circular twirl
+#@fit: waist, hips, thighs
+a mermaid lehenga in velvet with can-can lining visible at the hem
+#@fit: waist, hips, thighs
+a Banarasi lehenga in brocade __patterns/female_lehenga_work__ with structured pleats
+#@fit: waist, hips, thighs
+a net lehenga with can-can lining and pleated folds
+#@fit: waist, hips, thighs
+a tiered lehenga in chiffon __patterns/female_lehenga_work__ with a circular twirl
+#@fit: hips, thighs
+churidar bottoms in cotton lycra with snug gathers at the ankles
+#@fit: hips, thighs
+palazzo pants in linen with wide straight flare
+#@fit: hips, thighs
+a heavily pleated Patiala salwar in phulkari cotton with baggy drop-crotch and cascading pleats

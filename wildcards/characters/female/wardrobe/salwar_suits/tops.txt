@@ -1,0 +1,80 @@
+#@lewdity: 10
+
+#@fit: bust, waist
+a casually styled __colors/female_light__ colored Salwar Kameez in linen with straight cut, V-neck and 3/4 sleeves, with a dupatta draped over one shoulder that softly covers her shoulders
+#@fit: bust, waist
+a traditionally styled __colors/female_jewel__ colored Churidar Kameez in cotton with longer straight cut, round neckline and 3/4 sleeves, with a dupatta draped over one shoulder that modestly covers her chest and shoulders
+#@fit: bust, waist
+a festively styled __colors/female_warm__ colored Churidar Kameez in silk with longer straight cut, V-neck and full sleeves, with a dupatta draped over both shoulders that fully covers her torso
+#@fit: bust, waist
+an elegantly styled __colors/female_muted__ colored Churidar Kameez in crepe with longer straight cut, boat neck and 3/4 sleeves, with a dupatta draped gracefully over one shoulder that elegantly frames her neckline while modestly covering her chest
+#@fit: bust, shoulders
+a gracefully styled __colors/female_cool__ colored Churidar Kameez in georgette with longer side slits, collar neck and full sleeves, with a dupatta draped over her head and shoulder that fully covers her chest
+#@fit: bust, waist
+a traditionally styled __colors/female_earthtone__ colored Salwar Kameez in cotton __patterns/female_salwar_prints__ with side slits, round neckline and 3/4 sleeves, with a dupatta draped over one shoulder that modestly covers her chest
+#@fit: bust, shoulders
+a casually styled __colors/female_pastel__ colored Salwar Kameez in linen __patterns/female_salwar_prints__ with straight cut, boat neck and short sleeves, with a dupatta draped lightly over her arms that softly covers her shoulders
+#@fit: bust, waist
+a festively styled __colors/female_vivid__ colored Salwar Kameez in georgette __patterns/female_salwar_prints__ with side slits, V-neck and full sleeves, with a dupatta draped elegantly across her torso that modestly covers her chest and shoulders
+#@fit: bust, waist
+an elegantly styled __colors/female_muted__ colored Salwar Kameez in crepe __patterns/female_salwar_prints__ with straight cut, collar neck and 3/4 sleeves, with a dupatta draped gracefully over one shoulder that elegantly frames her neckline while modestly covering her chest
+#@fit: bust, waist
+a gracefully styled __colors/female_dusty__ colored Salwar Kameez in khadi __patterns/female_salwar_prints__ with side slits, round neckline and short sleeves, with a dupatta draped neatly over both shoulders that fully covers her torso
+#@fit: bust, waist
+a breezily styled __colors/female_summer__ colored Salwar Kameez in cotton __patterns/female_salwar_prints__ with straight cut, V-neck and full sleeves, with a dupatta draped over one shoulder that modestly covers her chest
+#@fit: bust, shoulders
+a simply styled __colors/female_neutral__ colored Salwar Kameez in linen __patterns/female_salwar_prints__ with side slits, boat neck and 3/4 sleeves, with a dupatta draped over one shoulder that softly covers her shoulders
+#@fit: bust, shoulders
+a traditionally styled __colors/female_warm__ colored Salwar Kameez in cotton __patterns/female_salwar_prints__ with side slits, collar neck and short sleeves, with a dupatta draped over her head and shoulder that fully covers her chest and shoulders
+#@fit: bust, waist
+a casually styled __colors/female_nude__ colored Salwar Kameez in khadi __patterns/female_salwar_prints__ with straight cut, round neckline and full sleeves, with a dupatta draped comfortably over one shoulder that modestly covers her torso
+#@fit: bust, waist
+a festively styled __colors/female_jewel__ colored Salwar Kameez in silk __patterns/female_salwar_prints__ with side slits, boat neck and 3/4 sleeves, with a dupatta draped over both shoulders that fully covers her torso
+#@fit: bust, waist
+an elegantly styled __colors/female_cool__ colored Salwar Kameez in georgette __patterns/female_salwar_prints__ __patterns/female_saree_motifs__ with straight cut, V-neck and short sleeves, with a dupatta draped diagonally across her torso that modestly covers her chest
+#@fit: bust, waist
+a gracefully styled __colors/female_light__ colored Salwar Kameez in crepe __patterns/female_salwar_prints__ with side slits, round neckline and full sleeves, with a dupatta draped elegantly over one shoulder that softly covers her chest
+#@fit: bust, waist
+a traditionally styled __colors/female_autumn__ colored Salwar Kameez in cotton __patterns/female_salwar_prints__ with side slits, V-neck and 3/4 sleeves, with a dupatta draped neatly over one shoulder that modestly covers her chest
+#@fit: bust, shoulders
+a casually styled __colors/female_tropical__ colored Salwar Kameez in linen __patterns/female_salwar_prints__ with straight cut, collar neck and short sleeves, with a dupatta draped breezily over her arms that modestly covers her shoulders
+#@fit: bust, shoulders
+a simply styled __colors/female_pastel__ colored Salwar Kameez in khadi __patterns/female_salwar_prints__ with straight cut, round neckline and 3/4 sleeves, with a dupatta draped over one shoulder that fully covers her upper body
+#@fit: bust, waist
+a festively styled __colors/female_dark__ colored Salwar Kameez in crepe __patterns/female_salwar_prints__ with side slits, collar neck and full sleeves, with a dupatta draped gracefully over both shoulders that fully covers her chest
+#@fit: bust, shoulders
+an elegantly styled __colors/female_spring__ colored Salwar Kameez in georgette __patterns/female_salwar_prints__ with side slits, boat neck and full sleeves, with a dupatta draped over her head and shoulder that modestly covers her chest and shoulders
+#@fit: bust, waist
+a traditionally styled __colors/female_candy__ colored Salwar Kameez in cotton __patterns/female_salwar_prints__ with straight cut, round neckline and short sleeves, with a dupatta draped over one shoulder that modestly covers her chest
+#@fit: bust, waist
+a breezily styled __colors/female_muted__ colored Salwar Kameez in linen __patterns/female_salwar_prints__ with side slits, V-neck and 3/4 sleeves, with a dupatta draped lightly over one shoulder that softly covers her torso
+#@fit: bust, waist
+a gracefully styled __colors/female_vivid__ colored Salwar Kameez in silk __patterns/female_salwar_prints__ __patterns/female_saree_motifs__ with straight cut, collar neck and short sleeves, with a dupatta draped elegantly across her torso that modestly covers her chest
+#@fit: bust, waist
+a festively styled __colors/female_jewel__ colored Churidar Kameez in silk __patterns/female_salwar_prints__ with longer straight cut, round neckline and full sleeves, with a dupatta draped over both shoulders that fully covers her torso
+#@fit: bust, waist
+an elegantly styled __colors/female_pastel__ colored Churidar Kameez in georgette __patterns/female_salwar_prints__ with longer side slits, V-neck and 3/4 sleeves, with a dupatta draped gracefully over one shoulder that modestly covers her chest
+#@fit: bust, shoulders
+a traditionally styled __colors/female_warm__ colored Churidar Kameez in cotton __patterns/female_salwar_prints__ with longer side slits, collar neck and short sleeves, with a dupatta draped over her head and shoulder that fully covers her chest and shoulders
+#@fit: bust, waist
+a gracefully styled __colors/female_dark__ colored Churidar Kameez in crepe __patterns/female_salwar_prints__ with longer straight cut, boat neck and full sleeves, with a dupatta draped elegantly across her torso that modestly covers her chest
+#@fit: bust, shoulders
+a casually styled __colors/female_earthtone__ colored Churidar Kameez in cotton __patterns/female_salwar_prints__ with longer side slits, round neckline and 3/4 sleeves, with a dupatta draped over one shoulder that softly covers her shoulders
+#@fit: bust, waist
+a simply styled __colors/female_neutral__ colored Churidar Kameez in linen __patterns/female_salwar_prints__ with longer straight cut, V-neck and short sleeves, with a dupatta draped neatly over one shoulder that modestly covers her chest
+#@fit: bust, shoulders
+a festively styled __colors/female_vivid__ colored Churidar Kameez in silk __patterns/female_salwar_prints__ __patterns/female_saree_motifs__ with longer side slits, collar neck and 3/4 sleeves, with a dupatta draped over both shoulders that fully covers her upper body
+#@fit: bust, waist
+an elegantly styled __colors/female_light__ colored Churidar Kameez in georgette __patterns/female_salwar_prints__ with longer straight cut, boat neck and short sleeves, with a dupatta draped diagonally across her torso that elegantly frames her neckline while modestly covering her chest
+#@fit: bust, waist
+a breezily styled __colors/female_summer__ colored Churidar Kameez in crepe __patterns/female_salwar_prints__ with longer side slits, round neckline and full sleeves, with a dupatta draped lightly over her arms that modestly covers her chest and shoulders
+#@fit: bust, waist
+a traditionally styled __colors/female_autumn__ colored Churidar Kameez in khadi __patterns/female_salwar_prints__ with longer side slits, V-neck and full sleeves, with a dupatta draped over one shoulder that modestly covers her torso
+#@fit: bust, waist
+a gracefully styled __colors/female_muted__ colored Churidar Kameez in cotton __patterns/female_salwar_prints__ with longer straight cut, collar neck and 3/4 sleeves, with a dupatta draped gracefully over one shoulder that fully covers her chest
+#@fit: bust, waist
+a festively styled __colors/female_tropical__ colored Churidar Kameez in georgette __patterns/female_salwar_prints__ __patterns/female_saree_motifs__ with longer side slits, boat neck and short sleeves, with a dupatta draped elegantly over one shoulder that modestly covers her chest
+#@fit: bust, shoulders
+an elegantly styled __colors/female_dusty__ colored Churidar Kameez in crepe __patterns/female_salwar_prints__ with longer straight cut, round neckline and 3/4 sleeves, with a dupatta draped over both shoulders that fully covers her torso
+#@fit: bust, waist
+a casually styled __colors/female_candy__ colored Churidar Kameez in cotton __patterns/female_salwar_prints__ with longer straight cut, boat neck and short sleeves, with a dupatta draped over one shoulder that softly covers her chest

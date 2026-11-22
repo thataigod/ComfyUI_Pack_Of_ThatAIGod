@@ -1,7 +1,49 @@
-#@fit: waist, hips
+#@lewdity: 40
+
+#@fit: waist, hips, thighs
 #@condition: sweaty
-compression leggings
-#@fit: waist, hips
+__colors/female_neon__ colored compression leggings in spandex that hug the legs and sit high on the waist
+#@fit: waist, hips, thighs
 #@condition: sweaty
-#@mishap: the running shorts riding up her thighs
-running shorts
+__colors/female_bright__ colored running shorts in cotton blend that sit on the hips and show the thighs
+#@fit: waist, hips, thighs
+__colors/female_neon__ colored high-waisted yoga pants in spandex that hug the legs and sit high on the waist
+#@fit: waist, hips, thighs
+__colors/female_jewel__ colored yoga pants in cotton blend that skim the legs and sit at the natural waist
+#@fit: waist, hips, thighs
+__colors/female_tropical__ colored yoga pants in nylon that hug the legs and sit snugly on the waist
+#@fit: waist, hips, thighs
+__colors/female_vivid__ colored high-waisted yoga pants in polyester that sculpt the figure and sit high on the waist
+#@fit: waist, hips, thighs
+__colors/female_bright__ colored leggings in polyester that hug the figure tightly
+#@fit: waist, hips, thighs
+__colors/female_vivid__ colored leggings in spandex that hug the legs and sit snugly on the hips __patterns/female_athletic_stripe__
+#@fit: waist, hips, thighs
+__colors/female_neon__ colored leggings in knit that hug the figure and sit at the natural waist __patterns/female_athletic_stripe__
+#@fit: waist, hips, thighs
+__colors/female_candy__ colored high-waisted leggings in cotton blend that sculpt the legs
+#@fit: waist, hips, thighs
+__colors/female_bright__ colored capri leggings in knit that hug the calves and sit high on the waist
+#@fit: waist, hips, thighs
+__colors/female_bright__ colored capri leggings in polyester that hug the calves __patterns/female_athletic_stripe__
+#@fit: waist, hips, thighs
+#@lewdity: 45
+__colors/female_vivid__ colored biker shorts in nylon that hug the thighs and sit high on the hips
+#@fit: waist, hips, thighs
+#@lewdity: 45
+__colors/female_tropical__ colored biker shorts in polyester that hug the thighs __patterns/female_athletic_stripe__
+#@fit: waist, hips, thighs
+#@lewdity: 45
+__colors/female_bright__ colored biker shorts in cotton blend that hug the hips and reveal the thighs
+#@fit: waist, hips, thighs
+__colors/female_bright__ colored shorts in knit that sit mid-thigh and show the legs
+#@fit: waist, hips, thighs
+__colors/female_tropical__ colored training tights in polyester that sculpt the legs
+#@fit: waist, hips, thighs
+__colors/female_vivid__ colored training tights in spandex that cling to the curves and sit high on the hips
+#@fit: waist, hips, thighs
+#@lewdity: 30
+__colors/female_neon__ colored joggers in fleece that drape softly and sit low on the hips
+#@fit: waist, hips, thighs
+#@lewdity: 30
+__colors/female_tropical__ colored joggers in nylon that sit relaxedly on the hips and hug the legs

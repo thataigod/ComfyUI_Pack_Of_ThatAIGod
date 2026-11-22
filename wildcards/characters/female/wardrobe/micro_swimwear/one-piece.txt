@@ -1,0 +1,28 @@
+#@lewdity: 90
+
+#@fit: bust, waist, hips, shoulders
+a __colors/female_neon__ colored slingshot bikini in spandex with a narrow front panel, high-cut legs and skinny shoulder strings
+#@fit: bust, waist, hips, back
+a __colors/female_nude__ colored slingshot monokini in spandex __patterns/female_swimwear_print__ with a plunging front panel and an open back
+#@fit: bust, waist, hips, shoulders
+a __colors/female_candy__ colored high-cut slingshot one-piece in spandex __patterns/female_swimwear_print__ with a sliver of a front panel
+#@fit: bust, waist, hips, shoulders
+a __colors/female_light__ colored high-cut micro one-piece in lycra __patterns/female_swimwear_print__ with a plunging front panel and skinny shoulder strings
+#@fit: bust, waist, hips, shoulders
+a __colors/female_cool__ colored high-cut micro one-piece in nylon with a scoop front panel and thin shoulder strings
+#@fit: bust, waist, hips
+a __colors/female_neutral__ colored cutout micro one-piece in lycra __patterns/female_swimwear_print__ with side cutaway panels and a plunging neckline
+#@lewdity: 85
+#@fit: bust, waist, hips, back
+a __colors/female_warm__ colored cutout monokini in lycra with front keyhole cutouts and open sides
+#@fit: bust, waist, hips, back
+a __colors/female_vivid__ colored thong one-piece swimsuit in lycra __patterns/female_swimwear_print__ with a high-cut thong back
+#@lewdity: 95
+#@fit: bust, waist, hips
+a __colors/female_jewel__ colored sheer one-piece swimsuit in mesh with a see-through bodice and high-cut legs
+#@lewdity: 95
+#@fit: bust, waist, hips, back
+a __colors/female_winter__ colored micro crochet one-piece in crochet __patterns/female_lingerie_lace_detail__ with open-weave panels and a low back
+#@lewdity: 95
+#@fit: bust, waist, hips
+a __colors/female_nude__ colored high-cut micro one-piece in mesh __patterns/female_lingerie_lace_detail__ with sheer side panels

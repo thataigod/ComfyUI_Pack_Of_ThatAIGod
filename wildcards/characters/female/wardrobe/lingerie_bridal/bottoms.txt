@@ -1,0 +1,15 @@
+#@lewdity: 80
+
+#@fit: hips
+__colors/female_light__ colored bridal lace panties with scalloped edges
+#@fit: hips
+__colors/female_light__ colored ivory satin panties __patterns/female_party_dress_detail__ with a smooth pearl sheen
+#@fit: waist, hips, thighs
+a daringly styled __colors/female_dark__ colored lace garter belt and panties set __patterns/female_lingerie_lace_detail__ with pearl-drop accents and thigh straps
+#@fit: waist, hips, thighs
+an alluringly styled __colors/female_light__ colored sheer tulle garter set __patterns/female_lingerie_lace_detail__ layered over the hips and thighs
+#@fit: waist, hips, thighs
+a captivatingly styled __colors/female_light__ colored silk garter set __patterns/female_lingerie_lace_detail__ with pearl-trimmed straps
+#@fit: hips
+#@lewdity: 90
+a sizzlingly styled __colors/female_pastel__ colored bridal satin thong with a high-cut line

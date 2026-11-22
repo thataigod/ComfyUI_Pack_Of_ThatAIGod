@@ -1,0 +1,44 @@
+#@lewdity: 30
+
+#@fit: bust, waist, hips
+#@lewdity: 20
+a flowing kaftan in __colors/female_tropical__ linen with wide sleeves and a self-tie waist, falling softly to the knee
+#@fit: bust, waist, hips
+#@lewdity: 20
+a printed kaftan in __colors/female_neutral__ cotton with side slits and tasselled ties __patterns/female_swimwear_print__, falling loosely to mid-calf
+#@fit: bust, waist, hips
+#@lewdity: 25
+a kaftan dress in __colors/female_jewel__ silk with bell sleeves and a tiered hem __patterns/female_swimwear_print__, falling gracefully to the knee
+#@fit: bust, waist, hips
+#@lewdity: 45
+a sheer beach cover-up in __colors/female_light__ chiffon with a V-neckline and rope belt, drifting airily to the knee
+#@fit: bust, waist, hips
+#@lewdity: 45
+a sheer beach cover-up in __colors/female_vivid__ rayon with a V-neckline and crochet trim __patterns/female_swimwear_print__, floating to the knee
+#@fit: bust, waist, hips
+#@lewdity: 40
+a sarong layered over a one-piece swimsuit in __colors/female_dusty__ rayon with crochet trim and a braided belt, draping over the hips
+#@fit: bust, waist, hips
+#@lewdity: 40
+a sarong wrap over a one-piece swimsuit in __colors/female_cool__ gauze with an elasticated waist and broderie trim __patterns/female_swimwear_print__, falling to a soft midi length
+#@fit: bust, waist, hips
+#@lewdity: 30
+a cruise resort set in __colors/female_spring__ linen with a cropped top and wide-leg trousers, rolled sleeves and a relaxed fit
+#@fit: bust, waist, hips
+#@lewdity: 25
+a cruise resort set in __colors/female_candy__ cotton with a halter top and palazzo pants __patterns/female_swimwear_print__, a coordinating sash at the waist
+#@fit: bust, waist, hips
+#@lewdity: 25
+a palazzo pants set in __colors/female_pastel__ gauze with a sleeveless top and drawstring waist, falling loosely to the ankle
+#@fit: bust, waist, hips
+#@lewdity: 30
+a poolside lounge set in __colors/female_summer__ rayon with a wrap top and shorts __patterns/female_swimwear_print__, resting at mid-thigh
+#@fit: bust, waist, hips
+#@lewdity: 30
+a camp-collar co-ord set in __colors/female_earthtone__ linen with a short-sleeve shirt and shorts __patterns/female_casual_top_print__, sitting neatly at mid-thigh
+#@fit: bust, waist, hips
+#@lewdity: 25
+a tropical shirt dress in __colors/female_summer__ cotton with a button placket and relaxed collar __patterns/female_swimwear_print__, falling to a floaty midi length
+#@fit: bust, waist, hips
+#@lewdity: 25
+an embroidered tunic in __colors/female_muted__ linen with a mandarin collar and pearl buttons __patterns/female_salwar_prints__, falling to a relaxed tunic length

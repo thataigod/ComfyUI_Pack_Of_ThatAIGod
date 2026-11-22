@@ -1,0 +1,50 @@
+#@lewdity: 30
+
+#@fit: bust, waist
+#@lewdity: 15
+a button-up pajama top in __colors/female_pastel__ cotton with piped edges, falling softly over the hips
+#@fit: bust, waist
+#@lewdity: 15
+a flannel pajama top in __colors/female_spring__ with a button-up front and chest pocket __patterns/female_casual_top_print__
+#@fit: bust, waist
+#@lewdity: 20
+a satin pajama shirt in __colors/female_vivid__ with a notched collar and lace-trimmed edges __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist
+#@lewdity: 20
+a satin pajama top in __colors/female_warm__ with a shawl collar and flowing sleeves __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist
+#@lewdity: 20
+a henley sleep top in __colors/female_earthtone__ jersey with a buttoned neckline and long sleeves __patterns/female_casual_top_print__
+#@fit: bust, waist
+#@lewdity: 15
+a ribbed thermal top in __colors/female_neon__ thermal knit with a crew neckline and ribbed cuffs __patterns/female_casual_top_print__
+#@fit: bust, waist
+#@lewdity: 15
+a quarter-zip thermal top in __colors/female_cool__ thermal knit with a stand collar and ribbed cuffs
+#@fit: bust, waist
+#@lewdity: 25
+a short-sleeve sleep top in __colors/female_summer__ cotton with a relaxed crew neckline
+#@fit: bust, waist
+#@lewdity: 25
+a graphic sleep top in __colors/female_spring__ cotton with a soft crew neckline __patterns/female_casual_top_print__
+#@fit: bust, waist, shoulders
+#@lewdity: 25
+a raglan sleep top in __colors/female_bright__ jersey with dropped shoulder seams __patterns/female_casual_top_print__
+#@fit: bust, waist
+#@lewdity: 30
+a cropped sleep top in __colors/female_earthtone__ jersey that ends just above the waist __patterns/female_casual_top_print__
+#@fit: bust, waist, hips
+#@lewdity: 25
+an oversized sleep tee in __colors/female_cool__ cotton with a boat neckline and side slits, falling loosely to mid-thigh
+#@fit: bust, waist, hips
+#@lewdity: 25
+an oversized flannel sleep tee in __colors/female_jewel__ with a crew neckline and chest pocket __patterns/female_casual_top_print__
+#@fit: bust, waist, hips
+#@lewdity: 30
+an oversized silk sleep tee in __colors/female_vivid__ with a V-neckline and lace-trimmed hem __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist
+#@lewdity: 40
+a lace-trimmed camisole in __colors/female_dusty__ satin with delicate spaghetti straps __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist
+#@lewdity: 30
+a jersey camisole in __colors/female_summer__ with a scoop neckline and thin straps

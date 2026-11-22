@@ -1,0 +1,37 @@
+#@lewdity: 90
+
+#@lewdity: 95
+#@fit: bust, shoulders
+a boldly styled __colors/female_dark__ colored leather harness layered over bare skin in supple leather, framing the shoulders and crossing the torso in clean straps
+#@lewdity: 95
+#@fit: bust, shoulders
+a dramatically styled __colors/female_warm__ colored leather harness over bare shoulders in saddle leather, crossing the collarbones and cinching the waist
+#@lewdity: 95
+#@fit: bust
+an invitingly styled __colors/female_spring__ colored leather harness over bare skin in supple leather, crossing the torso above lace trim
+#@fit: bust, shoulders
+a seductively styled __colors/female_neon__ colored rope harness in braided rope __patterns/female_fetish_detail__, coiling across the torso and shoulders
+#@fit: bust
+a scandalously styled __colors/female_earthtone__ colored rope harness top over a lace bra in braided rope, knotting across the torso above the lace edge
+#@fit: bust
+a boldly styled __colors/female_autumn__ colored leather harness over a lace bra in smooth leather __patterns/female_fetish_detail__, framing the chest above a lace edge
+#@fit: bust
+an elegantly styled __colors/female_dark__ colored leather chest harness over a lace bra in smooth leather __patterns/female_lingerie_lace_detail__, banding the chest above scalloped lace
+#@fit: bust, shoulders
+a wickedly styled __colors/female_vivid__ colored leather harness over a lace bra in smooth leather __patterns/female_party_dress_detail__, framing the chest above sequin trim
+#@fit: bust, shoulders
+a mysteriously styled __colors/female_monochrome__ colored leather chest harness in matte leather, banding across the chest and shoulders
+#@fit: bust, shoulders
+a mysteriously styled __colors/female_monochrome__ colored strappy chest harness in smooth leather __patterns/female_lingerie_lace_detail__, banding the shoulders above a lace edge
+#@fit: bust, shoulders
+a strappy __colors/female_jewel__ colored leather harness in supple leather __patterns/female_fetish_detail__, framing the shoulders and cinching the waist
+#@fit: bust, waist
+a dramatically styled __colors/female_warm__ colored leather collar and chest harness in rich leather __patterns/female_fetish_detail__, ringing the throat and shoulders
+#@lewdity: 85
+#@fit: bust, waist
+a daringly styled __colors/female_spring__ colored latex corset with cuff straps in glossy latex __patterns/female_fetish_detail__, cinching the waist above slim cuffs
+#@lewdity: 85
+#@fit: bust, waist
+a sleekly styled __colors/female_warm__ colored latex corset with cuff straps in glossy latex __patterns/female_lingerie_lace_detail__, cinching the waist above sheer insets
+#@fit: bust, waist
+a sleekly styled __colors/female_warm__ colored leather corset with wrist cuffs in polished leather __patterns/female_party_dress_detail__, cinching the waist above buckled cuffs

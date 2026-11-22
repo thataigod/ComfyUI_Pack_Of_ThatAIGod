@@ -1,5 +1,16 @@
-#@fit: waist, hips
+#@lewdity: 10
+
+#@fit: waist, hips, thighs
 tailored pencil trousers
 #@fit: waist, hips
-#@mishap: the pencil skirt riding up her thighs
 a knee-length pencil skirt
+#@fit: waist, hips, thighs
+wide-leg tailored trousers in __colors/female_neutral__ wool with a pressed crease
+#@fit: waist, hips, thighs
+pinstriped cigarette trousers in __colors/female_monochrome__ with side pockets
+#@fit: waist, hips
+a pleated midi skirt in __colors/female_dark__ wool falling below the knee
+#@fit: waist, hips
+a wool A-line skirt in __colors/female_muted__ falling to mid-calf
+#@fit: waist, hips, thighs
+high-rise straight trousers in __colors/female_neutral__ gabardine with a column drape

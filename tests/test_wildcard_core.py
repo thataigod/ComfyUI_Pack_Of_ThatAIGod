@@ -12,6 +12,7 @@ import _wildcard_core
 from _wildcard_core import (
     _MAX_WILDCARD_ITERATIONS,
     _WILDCARD_PATTERN,
+    KNOWN_DIRECTIVE_KEYS,
     WildcardResolver,
     _context_key,
 )
@@ -617,3 +618,140 @@ class TestWildcardResolverCore(unittest.TestCase):
             self.assertIn((newest_path, "blocks", ""), WildcardResolver._deck_cache)
         finally:
             _wildcard_core._MAX_DECK_CACHE_SIZE = original
+
+    def test_lewdity_is_known_directive_key(self):
+        self.assertIn("lewdity", KNOWN_DIRECTIVE_KEYS)
+
+    def test_pick_line_in_band_respects_file_default(self):
+        self._create("rated.txt", ["#@lewdity: 60", "a rated line", "another rated line"])
+        resolver = self._resolver(seed=0)
+        picked = resolver.pick_line_in_band("rated", None, 50, 70)
+        self.assertIn(picked[0], ("a rated line", "another rated line"))
+        self.assertEqual(picked[1].get("lewdity"), {"60"})
+        self.assertEqual(resolver.pick_line_in_band("rated", None, 0, 30), ("", {}))
+
+    def test_pick_line_in_band_per_line_override(self):
+        self._create(
+            "rated.txt",
+            ["#@lewdity: 60", "a modest line", "#@lewdity: 90", "a daring line"],
+        )
+        resolver = self._resolver(seed=0)
+        self.assertEqual(resolver.pick_line_in_band("rated", None, 80, 100)[0], "a daring line")
+        self.assertEqual(resolver.pick_line_in_band("rated", None, 50, 70)[0], "a modest line")
+
+    def test_pick_line_in_band_unrated_file_defaults_modest(self):
+        self._create("plain.txt", ["a plain line"])
+        resolver = self._resolver(seed=0)
+        self.assertEqual(resolver.pick_line_in_band("plain", None, 0, 10)[0], "a plain line")
+        self.assertEqual(resolver.pick_line_in_band("plain", None, 50, 100), ("", {}))
+
+    def test_pick_line_in_band_respects_context(self):
+        self._create(
+            "rated.txt",
+            [
+                "#@lewdity: 60",
+                "#@occasion: beach",
+                "a beach line",
+                "#@lewdity: 60",
+                "#@occasion: office",
+                "an office line",
+            ],
+        )
+        resolver = self._resolver(seed=0)
+        self.assertEqual(resolver.pick_line_in_band("rated", {"occasion": {"office"}}, 0, 100)[0], "an office line")
+        self.assertEqual(resolver.pick_line_in_band("rated", {"occasion": {"gym"}}, 0, 100), ("", {}))
+
+    def test_pick_line_in_band_missing_file_returns_empty(self):
+        self.assertEqual(self._resolver().pick_line_in_band("missing", None, 0, 100), ("", {}))
+
+    def test_pick_line_in_band_deterministic_and_no_repeat(self):
+        self._create("rated.txt", ["#@lewdity: 60", "line one", "line two", "line three"])
+        seeded_a = self._resolver(seed=7).pick_line_in_band("rated", None, 0, 100)[0]
+        seeded_b = self._resolver(seed=7).pick_line_in_band("rated", None, 0, 100)[0]
+        self.assertEqual(seeded_a, seeded_b)
+        deck_resolver = self._resolver(mode="Random (No Repeat)")
+        drawn = {deck_resolver.pick_line_in_band("rated", None, 0, 100)[0] for _ in range(3)}
+        self.assertEqual(drawn, {"line one", "line two", "line three"})
+
+    def test_pick_line_in_band_bands_do_not_share_decks(self):
+        self._create("rated.txt", ["#@lewdity: 10", "modest", "#@lewdity: 90", "daring"])
+        resolver = self._resolver(mode="Random (No Repeat)")
+        low_draws = {resolver.pick_line_in_band("rated", None, 0, 50)[0] for _ in range(2)}
+        self.assertEqual(low_draws, {"modest"})
+        high_draws = {resolver.pick_line_in_band("rated", None, 51, 100)[0] for _ in range(2)}
+        self.assertEqual(high_draws, {"daring"})
+
+    def test_file_lewdity_invalid_header_returns_zero(self):
+        self._create("rated.txt", ["#@lewdity: abc", "a line"])
+        self.assertEqual(WildcardResolver._file_lewdity(os.path.join(self.wildcards_dir, "rated.txt")), 0)
+
+    def test_pick_line_preferred_tagged_match_wins_exclusively(self):
+        self._create(
+            "intro.txt",
+            ["a universal line", "#@occasion: beach", "a beach line", "#@occasion: office", "an office line"],
+        )
+        resolver = self._resolver(seed=0)
+        self.assertEqual(resolver.pick_line_preferred("intro", {"occasion": {"beach"}}, "occasion")[0], "a beach line")
+        self.assertEqual(resolver.pick_line_preferred("intro", {"occasion": {"office"}}, "occasion")[0], "an office line")
+
+    def test_pick_line_preferred_falls_back_to_universal(self):
+        self._create("intro.txt", ["a universal line", "#@occasion: beach", "a beach line"])
+        resolver = self._resolver(seed=0)
+        picked = resolver.pick_line_preferred("intro", {"occasion": {"gym"}}, "occasion")
+        self.assertEqual(picked[0], "a universal line")
+
+    def test_pick_line_preferred_nonmatching_tagged_excluded(self):
+        self._create("intro.txt", ["#@occasion: beach", "a beach line", "#@occasion: office", "an office line"])
+        resolver = self._resolver(seed=0)
+        self.assertEqual(resolver.pick_line_preferred("intro", {"occasion": {"gym"}}, "occasion"), ("", {}))
+
+    def test_pick_line_preferred_unasserted_key_all_eligible(self):
+        self._create("intro.txt", ["a universal line", "#@occasion: beach", "a beach line"])
+        resolver = self._resolver(seed=0)
+        picked = resolver.pick_line_preferred("intro", None, "occasion")
+        self.assertIn(picked[0], ("a universal line", "a beach line"))
+
+    def test_pick_line_preferred_missing_file_returns_empty(self):
+        self.assertEqual(self._resolver().pick_line_preferred("missing", None, "occasion"), ("", {}))
+
+    def test_pick_line_preferred_deterministic_and_no_repeat(self):
+        self._create("intro.txt", ["#@occasion: beach", "line one", "#@occasion: beach", "line two"])
+        a = self._resolver(seed=7).pick_line_preferred("intro", {"occasion": {"beach"}}, "occasion")[0]
+        b = self._resolver(seed=7).pick_line_preferred("intro", {"occasion": {"beach"}}, "occasion")[0]
+        self.assertEqual(a, b)
+        deck_resolver = self._resolver(mode="Random (No Repeat)")
+        drawn = {deck_resolver.pick_line_preferred("intro", {"occasion": {"beach"}}, "occasion")[0] for _ in range(2)}
+        self.assertEqual(drawn, {"line one", "line two"})
+
+    def test_pick_line_in_band_directives_only_file_returns_empty(self):
+        self._create("rated.txt", ["#@lewdity: 60\n"])
+        self.assertEqual(self._resolver().pick_line_in_band("rated", None, 0, 100), ("", {}))
+
+    def test_pick_line_in_band_skips_deep_ineligible_tags(self):
+        self._create("rated.txt", ["#@lewdity: 60", "#@occasion: gym", "__gated__"])
+        self._create("gated.txt", ["#@occasion: beach", "sand"])
+        resolver = self._resolver(seed=0)
+        self.assertEqual(resolver.pick_line_in_band("rated", {"occasion": {"gym"}}, 0, 100), ("", {}))
+
+    def test_pick_line_in_band_non_numeric_override_uses_file_default(self):
+        self._create(
+            "rated.txt",
+            ["#@lewdity: 60", "#@lewdity: abc", "a line with a broken override", "#@lewdity: 60", "another line"],
+        )
+        resolver = self._resolver(seed=0)
+        picked = resolver.pick_line_in_band("rated", None, 55, 65)
+        self.assertIn(picked[0], ("a line with a broken override", "another line"))
+
+    def test_file_lewdity_blank_first_line_still_finds_header(self):
+        path = self._create("rated.txt", ["", "#@lewdity: 60", "a line"])
+        self.assertEqual(WildcardResolver._file_lewdity(path), 60)
+
+    def test_pick_line_preferred_directives_only_file_returns_empty(self):
+        self._create("intro.txt", ["#@occasion: beach\n"])
+        self.assertEqual(self._resolver().pick_line_preferred("intro", {"occasion": {"beach"}}, "occasion"), ("", {}))
+
+    def test_pick_line_preferred_skips_deep_ineligible_tags(self):
+        self._create("intro.txt", ["#@occasion: beach", "__gated__"])
+        self._create("gated.txt", ["#@occasion: office", "a desk"])
+        resolver = self._resolver(seed=0)
+        self.assertEqual(resolver.pick_line_preferred("intro", {"occasion": {"beach"}}, "occasion"), ("", {}))

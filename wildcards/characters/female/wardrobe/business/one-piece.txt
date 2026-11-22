@@ -1,2 +1,8 @@
+#@lewdity: 10
+
 #@fit: bust, waist, hips
-a tailored sheath dress, __neutral_colors_female__
+a tailored sheath dress in __colors/female_neutral__
+#@fit: bust, waist, hips
+a belted shirt dress in __colors/female_muted__ crepe falling to the knee
+#@fit: bust, waist, hips
+a wrap-front midi dress in __colors/female_dark__ with a modest V and three-quarter sleeves

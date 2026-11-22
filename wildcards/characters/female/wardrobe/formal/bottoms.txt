@@ -1,5 +1,40 @@
+#@lewdity: 15
+
 #@fit: waist, hips
-an elegant floor-length skirt
+an elegant floor-length skirt with a soft flare
+#@fit: waist, hips, thighs
+silk trousers with a tailored straight leg
+#@fit: waist, hips, thighs
+__colors/female_neutral__ colored tailored trousers in crepe with a sharp crease
+#@fit: waist, hips, thighs
+__colors/female_light__ colored tailored trousers in wool with a straight leg
+#@fit: waist, hips, thighs
+__colors/female_dark__ colored straight-leg trousers in crepe
+#@fit: waist, hips, thighs
+__colors/female_muted__ colored wide-leg formal trousers in flowing crepe
 #@fit: waist, hips
-#@no_modifiers: fabric
-silk trousers
+a __colors/female_neutral__ colored pencil skirt in crepe __patterns/female_formal_skirt_detail__ that falls elegantly to the knee
+#@fit: waist, hips
+a __colors/female_dark__ colored pencil skirt in wool that falls just below the knee
+#@fit: waist, hips
+a __colors/female_monochrome__ colored pencil skirt in twill that falls below the knee
+#@fit: waist, hips
+a __colors/female_light__ colored pencil skirt in crepe __patterns/female_formal_skirt_detail__ with a back vent
+#@fit: waist, hips
+#@lewdity: 20
+a __colors/female_dusty__ colored pleated midi skirt in chiffon
+#@fit: waist, hips
+#@lewdity: 25
+a satin evening slip skirt with a bias cut
+#@fit: waist, hips
+#@lewdity: 25
+a sequined midi skirt with a soft shimmer
+#@fit: waist, hips
+#@lewdity: 25
+a metallic evening skirt with a column silhouette
+#@fit: waist, hips
+#@lewdity: 20
+a floor-length mermaid skirt in velvet
+#@fit: waist, hips
+#@lewdity: 10
+a pleated full-length skirt in tweed

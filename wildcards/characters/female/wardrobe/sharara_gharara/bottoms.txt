@@ -1,0 +1,44 @@
+#@lewdity: 10
+
+#@fit: hips, thighs
+a festive __colors/female_warm__ colored sharara in brocade __patterns/female_lehenga_work__ with a divided skirt silhouette and flowing panels
+#@fit: hips, thighs
+a regally styled __colors/female_bright__ colored gharara in velvet __patterns/female_saree_motifs__ with a dramatic knee flare and ruched panels, a prominent gota band at the knee
+#@fit: hips, thighs
+a gracefully styled __colors/female_cool__ colored sharara in net __patterns/female_blouse_patterns__ with umbrella flare from the waist and soft pleats
+#@fit: hips, thighs
+a classically styled __colors/female_earthtone__ colored sharara in georgette with voluminous wide-leg flare from the hip
+#@fit: hips, thighs
+a royally styled __colors/female_tropical__ colored gharara in silk __patterns/female_lehenga_work__ with fitted thighs and huge flared calves in pleated layers, a prominent gota band at the knee
+#@fit: hips, thighs
+a grandly styled __colors/female_spring__ colored sharara in brocade __patterns/female_saree_motifs__ with circular palazzo flare and soft gathers
+#@fit: hips, thighs
+a radiantly styled __colors/female_autumn__ colored sharara in net __patterns/female_lehenga_work__ with tiered waist flare and layered panels
+#@fit: hips, thighs
+a glamorously styled __colors/female_candy__ colored sharara in silk __patterns/female_lehenga_work__ with pleated wide-leg flare from the waist
+#@fit: hips, thighs
+a beautifully styled __colors/female_light__ colored gharara in georgette __patterns/female_saree_motifs__ with fitted thighs and a dramatic flare in ruched layers, a prominent gota band at the knee
+#@fit: hips, thighs
+a luxuriously styled __colors/female_neutral__ colored sharara in velvet __patterns/female_lehenga_work__ with wide palazzo flare from the hip and soft gathers
+#@fit: hips, thighs
+a charmingly styled __colors/female_dusty__ colored sharara in khadi silk __patterns/female_saree_motifs__ with a flowing waist flare like a divided skirt
+#@fit: hips, thighs
+a vividly styled __colors/female_nude__ colored sharara in georgette __patterns/female_lehenga_work__ __patterns/female_saree_motifs__ with circular umbrella flare from the waist
+#@fit: hips, thighs
+a lavishly styled __colors/female_jewel__ colored gharara in net __patterns/female_lehenga_work__ fitted till the knee then flaring dramatically with net layers, a prominent gota band at the knee
+#@fit: hips, thighs
+a splendidly styled __colors/female_bright__ colored sharara in silk __patterns/female_blouse_patterns__ with a divided skirt silhouette and tiered flare
+#@fit: hips, thighs
+a majestically styled __colors/female_pastel__ colored sharara in brocade __patterns/female_lehenga_work__ with voluminous wide-leg flare from the waist
+#@fit: hips, thighs
+a richly styled __colors/female_autumn__ colored sharara in khadi silk with a flowing waist flare and divided skirt panels
+#@fit: hips, thighs
+a grandly styled __colors/female_spring__ colored gharara in brocade __patterns/female_lehenga_work__ with fitted thighs and a huge flare in brocade pleats, a prominent gota band at the knee
+#@fit: hips, thighs
+a beautifully styled __colors/female_summer__ colored sharara in velvet __patterns/female_saree_motifs__ with umbrella flare from the waist and pleated folds
+#@fit: hips, thighs
+a royally styled __colors/female_winter__ colored sharara in net __patterns/female_lehenga_work__ with wide palazzo flare from the hip
+#@fit: hips, thighs
+a festively styled __colors/female_vivid__ colored gharara in khadi silk __patterns/female_lehenga_work__ __patterns/female_saree_motifs__ fitted till the knee then flaring hugely with layered circular panels, a prominent gota band at the knee
+#@fit: hips, thighs
+a gracefully styled __colors/female_earthtone__ colored sharara in georgette __patterns/female_saree_motifs__ with tiered waist flare and soft gathers

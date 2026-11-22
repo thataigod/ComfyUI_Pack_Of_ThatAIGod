@@ -1,4 +1,47 @@
+#@lewdity: 80
+
 #@fit: bust, waist, hips
-a lace teddy, __neutral_colors_female__
+a seductively styled __colors/female_neutral__ colored lace teddy with scalloped cups, high-cut legs and sheer panels at the bust and hips
 #@fit: bust, waist, hips
-a silk babydoll, __pastel_colors_female__
+an enticingly styled __colors/female_pastel__ colored silk babydoll with a flowing hem over a bared midriff
+#@fit: bust, waist, hips
+a provocatively styled __colors/female_vivid__ colored mesh teddy with netted sheer over the bust and hips
+#@fit: bust, waist, hips, back
+#@lewdity: 85
+a sultrily styled __colors/female_vivid__ colored mesh teddy with a strappy halter neck and an open back
+#@fit: bust, waist, hips
+a sensually styled __colors/female_spring__ colored silk teddy __patterns/female_lingerie_lace_detail__ with sheer side panels
+#@fit: bust, waist, hips
+a temptingly styled __colors/female_cool__ colored satin teddy __patterns/female_lingerie_lace_detail__ with a high-cut shape
+#@fit: bust, waist, hips
+a sizzlingly styled __colors/female_bright__ colored satin babydoll __patterns/female_lingerie_lace_detail__ with a flowing hem over a bared midriff
+#@fit: bust, waist, hips
+a teasingly styled __colors/female_light__ colored chiffon babydoll with a fluttering hem over the thighs
+#@fit: bust, waist, hips
+an invitingly styled __colors/female_monochrome__ colored lace babydoll __patterns/female_blouse_patterns__ with a scalloped hem over the thighs
+#@fit: bust, waist, hips
+a provocatively styled __colors/female_pastel__ colored mesh babydoll with underwire cups, a flutter hem and a lace set beneath the sheer overlay
+#@fit: bust, waist, hips
+an enticingly styled __colors/female_nude__ colored sheer babydoll __patterns/female_lingerie_lace_detail__ with a transparent overlay and a lace bra beneath
+#@fit: bust, waist, hips
+an alluringly styled __colors/female_nude__ colored sheer chemise __patterns/female_blouse_patterns__ with a lace bra beneath and a sheer hem
+#@fit: bust, waist, hips
+an invitingly styled __colors/female_candy__ colored lace chemise __patterns/female_blouse_patterns__ with a sheer hem over the legs
+#@fit: bust, waist, hips
+#@lewdity: 75
+an exquisitely styled __colors/female_light__ colored silk chemise with a plunging neckline and side slits
+#@fit: bust, waist, hips
+#@lewdity: 75
+a teasingly styled __colors/female_vivid__ colored satin chemise __patterns/female_lingerie_lace_detail__ with a clinging sheen
+#@fit: bust, waist, hips
+#@lewdity: 75
+an elegantly styled __colors/female_cool__ colored chiffon chemise __patterns/female_lingerie_lace_detail__ with an airy drape over the legs
+#@fit: bust, waist, hips
+#@lewdity: 75
+an alluringly styled __colors/female_winter__ colored satin nighty __patterns/female_lingerie_lace_detail__ with a cowl neckline and side slits
+#@fit: bust, shoulders, hips
+a sultrily styled __colors/female_neon__ colored silk robe over a lace set __patterns/female_lingerie_lace_detail__ with a belted waist and flowing sleeves, draping open over the bust
+#@fit: bust, shoulders, hips
+a boldly styled __colors/female_metallic__ colored sheer robe over a lace teddy __patterns/female_lingerie_lace_detail__ with a belted waist and flowing sleeves
+#@fit: bust, shoulders, hips
+an enticingly styled __colors/female_jewel__ colored chiffon robe over a lace set __patterns/female_blouse_patterns__ drifting open over the legs

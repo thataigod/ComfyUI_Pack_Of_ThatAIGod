@@ -1,0 +1,28 @@
+#@lewdity: 10
+
+#@fit: bust, shoulders
+a high-neck __colors/female_metallic__ colored short sleeved blouse in khun that modestly covers her chest
+#@fit: bust, waist
+a round-neck __colors/female_vivid__ colored elbow sleeved blouse in silk __patterns/female_blouse_patterns__ that modestly covers her chest and midriff
+#@fit: bust, shoulders
+a high-neck __colors/female_autumn__ colored short sleeved blouse in brocade __patterns/female_blouse_patterns__ that elegantly covers her upper body
+#@fit: bust, shoulders
+a boat-neck __colors/female_light__ colored 3/4th sleeved blouse in silk that fully covers her torso
+#@fit: bust, waist
+a boat-neck __colors/female_cool__ colored 3/4th sleeved blouse in khun that modestly covers her chest and midriff
+#@fit: bust, shoulders
+a square-neck __colors/female_muted__ colored elbow sleeved blouse in silk __patterns/female_blouse_patterns__ that elegantly covers her upper body
+#@fit: bust, shoulders
+a boat-neck __colors/female_dark__ colored elbow sleeved blouse in khun __patterns/female_blouse_patterns__ that fully covers her torso
+#@fit: bust, waist
+a round-neck __colors/female_jewel__ colored 3/4th sleeved blouse in brocade that modestly covers her chest and midriff
+#@fit: bust, shoulders
+a high-neck __colors/female_warm__ colored short sleeved blouse in silk that elegantly covers her upper body
+#@fit: bust, shoulders
+a boat-neck __colors/female_pastel__ colored 3/4th sleeved blouse in cotton silk __patterns/female_blouse_patterns__ that fully covers her chest and arms
+#@fit: bust, waist
+a round-neck __colors/female_earthtone__ colored elbow sleeved blouse in khun that modestly covers her chest
+#@fit: bust, shoulders
+a boat-neck __colors/female_warm__ colored 3/4th sleeved blouse in brocade that fully covers her torso
+#@fit: bust, waist
+a round-neck __colors/female_light__ colored elbow sleeved blouse in cotton silk __patterns/female_blouse_patterns__ that elegantly covers her upper body

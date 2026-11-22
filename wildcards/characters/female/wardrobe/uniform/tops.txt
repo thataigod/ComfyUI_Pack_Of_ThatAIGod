@@ -1,0 +1,64 @@
+#@lewdity: 10
+
+#@fit: bust, waist
+a tailored flight attendant jacket in __colors/female_cool__ wool with a notched collar and flap pockets
+#@fit: bust, waist
+a fitted flight attendant blazer in __colors/female_neutral__ gabardine with piped edges and a matching belt __patterns/female_formal_blazer_detail__
+#@fit: bust, waist
+a short-sleeve flight attendant blouse in __colors/female_dark__ poplin with a neck scarf and button placket
+#@fit: bust, waist
+a flight attendant vest in __colors/female_jewel__ polyester blend with a wing collar and contrast piping
+#@fit: bust, waist, shoulders
+a police button-up shirt in __colors/female_dark__ cotton twill with a collar tie and shoulder epaulettes
+#@fit: bust, waist, shoulders
+a police short-sleeve utility shirt in __colors/female_monochrome__ polyester blend with a badge patch and pen pockets __patterns/female_casual_top_print__
+#@fit: bust, waist, shoulders
+a police duty jacket in __colors/female_dark__ canvas with a zip front, reflective piping and a radio loop __patterns/female_athletic_stripe__
+#@fit: bust, waist, shoulders
+a military dress tunic in __colors/female_jewel__ wool with a high collar and brass buttons
+#@fit: bust, waist
+a double-breasted military tunic in __colors/female_dark__ wool with a ceremonial sash and brass buttons
+#@fit: bust, waist, shoulders
+a military dress jacket in __colors/female_neutral__ gabardine with medal ribbons and polished epaulettes __patterns/female_athletic_stripe__
+#@fit: bust, waist, shoulders
+a naval officer double-breasted jacket in __colors/female_dark__ wool with gold buttons and a crisp collar
+#@fit: bust, waist
+a navy officer tunic in __colors/female_monochrome__ wool with rank stripes and brass buttons
+#@fit: bust, waist
+a hotel concierge vest in __colors/female_neutral__ wool with a wing collar and pocket watch chain
+#@fit: bust, waist
+a hotel concierge blazer in __colors/female_dark__ gabardine with a lapel pin and contrast piping __patterns/female_formal_blazer_detail__
+#@fit: bust, waist
+a double-breasted concierge vest in __colors/female_muted__ gabardine with a silk tie and brass buttons __patterns/female_formal_blazer_detail__
+#@fit: bust, waist
+a medical scrub top in __colors/female_light__ polyester blend with a V-neck and chest pockets
+#@fit: bust, waist
+a snap-front scrub top in __colors/female_cool__ cotton twill with contrast piping and utility loops __patterns/female_athletic_stripe__
+#@fit: bust, waist
+a wrap scrub top in __colors/female_dusty__ polyester blend with a sleeve pocket and badge reel __patterns/female_casual_top_print__
+#@fit: bust, waist, shoulders
+a lab coat over a button-up shirt in __colors/female_light__ cotton twill with a lapel collar and chest pocket
+#@fit: bust, waist
+a belted lab coat in __colors/female_muted__ gabardine with tonal piping and a pen pocket __patterns/female_athletic_stripe__
+#@fit: bust, waist, shoulders
+a double-breasted chef jacket in __colors/female_light__ cotton twill with a mandarin collar and knotted buttons
+#@fit: bust, waist, shoulders
+a chef jacket in __colors/female_monochrome__ poplin with a neckerchief and sleeve pocket __patterns/female_formal_blazer_detail__
+#@fit: bust, waist, shoulders
+a postal short-sleeve shirt in __colors/female_jewel__ cotton twill with a collar badge and breast pockets
+#@fit: bust, waist, shoulders
+a postal zip-front jacket in __colors/female_dark__ canvas with a reflective logo and utility pockets __patterns/female_casual_top_print__
+#@fit: bust, waist, shoulders
+a train conductor jacket in __colors/female_dark__ wool with brass buttons and a ticket pocket
+#@fit: bust, waist
+a conductor waistcoat in __colors/female_jewel__ gabardine with a bow tie and watch chain __patterns/female_formal_blazer_detail__
+#@fit: bust, waist, shoulders
+a security button-up shirt in __colors/female_dark__ canvas with a radio loop and ID badge
+#@fit: bust, waist, shoulders
+a security polo in __colors/female_monochrome__ cotton twill with reflective piping and a utility belt loop __patterns/female_athletic_stripe__
+#@fit: bust, waist, shoulders
+a pilot double-breasted jacket in __colors/female_dark__ wool with gold stripes and a wings badge
+#@fit: bust, waist, shoulders
+an airline pilot blazer in __colors/female_muted__ wool with gold braid and epaulettes __patterns/female_formal_blazer_detail__
+#@fit: bust, waist, shoulders
+a pilot short-sleeve shirt in __colors/female_light__ poplin with a tie and epaulette stripes __patterns/female_casual_top_print__

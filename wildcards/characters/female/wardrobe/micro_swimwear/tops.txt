@@ -1,0 +1,21 @@
+#@lewdity: 90
+
+#@fit: bust
+a __colors/female_candy__ colored micro triangle bikini top in lycra with tiny cups and thin halter strings
+#@fit: bust
+a __colors/female_tropical__ colored string micro top in nylon __patterns/female_swimwear_print__ with minimal string cups
+#@fit: bust
+a __colors/female_monochrome__ colored micro bandeau top in spandex __patterns/female_swimwear_print__ with strapless micro cups and a twist-front band
+#@fit: bust
+a __colors/female_bright__ colored ruched micro triangle top in nylon __patterns/female_swimwear_print__ with barely-there coverage
+#@fit: bust, shoulders
+a __colors/female_pastel__ colored crochet micro top with open weave __patterns/female_lingerie_lace_detail__
+#@lewdity: 95
+#@fit: bust
+a __colors/female_neon__ colored sheer mesh top with see-through triangle cups and string ties
+#@lewdity: 95
+#@fit: bust
+a __colors/female_metallic__ colored sheer burnout top in mesh __patterns/female_lingerie_lace_detail__ with sheer mesh cups
+#@lewdity: 95
+#@fit: bust, shoulders
+a __colors/female_autumn__ colored sheer string top in mesh with see-through triangle cups and delicate string closures

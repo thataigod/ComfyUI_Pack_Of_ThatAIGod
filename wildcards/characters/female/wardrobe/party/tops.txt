@@ -1,7 +1,54 @@
+#@lewdity: 50
+
 #@fit: bust, waist
-#@mishap: the bustier straining over her bust
-#@no_modifiers: fabric
+#@lewdity: 55
 a velvet bustier top
 #@fit: bust, waist
-#@no_modifiers: pattern
+#@lewdity: 45
 a sequined camisole
+#@fit: bust, back
+a __colors/female_neon__ colored sequin halter top
+#@fit: bust, back
+#@lewdity: 45
+a __colors/female_vivid__ colored chiffon halter top
+#@fit: bust, waist
+a __colors/female_candy__ colored lace sweetheart top
+#@fit: bust, waist
+#@lewdity: 45
+a __colors/female_neon__ colored velvet sweetheart top
+#@fit: bust, waist
+#@lewdity: 55
+a __colors/female_candy__ colored satin deep U top
+#@fit: bust, waist
+#@lewdity: 55
+a __colors/female_jewel__ colored lace deep U top
+#@fit: bust, waist
+#@lewdity: 55
+a __colors/female_jewel__ colored velvet deep V top __patterns/female_party_dress_detail__
+#@fit: bust, shoulders
+a __colors/female_vivid__ colored satin off-shoulder top __patterns/female_party_dress_detail__
+#@fit: bust, shoulders
+a __colors/female_metallic__ colored lace off-shoulder top __patterns/female_blouse_patterns__
+#@fit: bust, waist
+#@lewdity: 45
+a __colors/female_metallic__ colored silk V-neck top
+#@fit: bust, waist
+a __colors/female_candy__ colored sequin V-neck top __patterns/female_party_dress_detail__
+#@fit: bust, back
+#@lewdity: 45
+a __colors/female_vivid__ colored velvet halter top __patterns/female_party_dress_detail__
+#@fit: bust, waist
+a __colors/female_bright__ colored sequin deep V top
+#@fit: bust, waist
+#@lewdity: 55
+a mesh party crop top with sheer paneling
+#@fit: bust
+a metallic party bandeau
+#@fit: bust, back
+a one-shoulder sequin party top
+#@fit: bust, waist
+#@lewdity: 60
+a corset-style lace bustier with a front lace-up
+#@fit: bust
+#@lewdity: 45
+a velvet party camisole with lace trim

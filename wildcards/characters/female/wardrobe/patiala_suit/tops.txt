@@ -1,0 +1,58 @@
+#@lewdity: 10
+
+#@fit: bust, shoulders
+a casually styled __colors/female_pastel__ colored short hip-length kurta in linen with side slits, V-neck and 3/4 sleeves, with a dupatta draped over both shoulders that fully covers her torso
+#@fit: bust, waist
+a __colors/female_dusty__ colored short hip-length kurta in linen with side slits, collar neck and 3/4 sleeves, with a dupatta draped gracefully over one shoulder that modestly covers her chest and shoulders
+#@fit: bust, shoulders
+a traditionally styled __colors/female_light__ colored short hip-length kurta in cotton with side slits, round neckline and 3/4 sleeves, with a dupatta draped over her head and shoulder that fully covers her chest and shoulders
+#@fit: bust, waist
+a casually styled __colors/female_neutral__ colored short hip-length kurta in linen with side slits, V-neck and short sleeves, with a dupatta draped neatly over one shoulder that modestly covers her torso
+#@fit: bust, waist
+a traditionally styled __colors/female_warm__ colored short hip-length kurta in cotton __patterns/female_salwar_prints__ with side slits, collar neck and short sleeves, with a dupatta draped over one shoulder that modestly covers her chest
+#@fit: bust, shoulders
+a casually styled __colors/female_tropical__ colored short hip-length kurta in linen __patterns/female_salwar_prints__ with side slits, boat neck and short sleeves, with a dupatta draped breezily over her arms that modestly covers her shoulders
+#@fit: bust, waist
+an elegantly styled __colors/female_muted__ colored short hip-length kurta in cotton __patterns/female_salwar_prints__ with side slits, V-neck and cap sleeves, with a dupatta draped gracefully over one shoulder that elegantly frames her neckline while modestly covering her chest
+#@fit: bust, waist
+a festively styled __colors/female_jewel__ colored short hip-length kurta in silk __patterns/female_salwar_prints__ with side slits, round neckline and 3/4 sleeves, with a dupatta draped over both shoulders that fully covers her torso
+#@fit: bust, waist
+a gracefully styled __colors/female_cool__ colored short hip-length kurta in cotton __patterns/female_salwar_prints__ with side slits, V-neck and short sleeves, with a dupatta draped diagonally across her torso that modestly covers her chest
+#@fit: bust, waist
+a breezily styled __colors/female_light__ colored short hip-length kurta in linen __patterns/female_salwar_prints__ with side slits, round neckline and 3/4 sleeves, with a dupatta draped lightly over one shoulder that softly covers her chest
+#@fit: bust, waist
+a traditionally styled __colors/female_autumn__ colored short hip-length kurta in cotton __patterns/female_salwar_prints__ with side slits, V-neck and 3/4 sleeves, with a dupatta draped neatly over one shoulder that modestly covers her chest
+#@fit: bust, waist
+a casually styled __colors/female_candy__ colored short hip-length kurta in cotton __patterns/female_salwar_prints__ with side slits, round neckline and short sleeves, with a dupatta draped over one shoulder that modestly covers her chest
+#@fit: bust, waist
+a festively styled __colors/female_vivid__ colored short hip-length kurta in silk __patterns/female_salwar_prints__ __patterns/female_saree_motifs__ with side slits, collar neck and short sleeves, with a dupatta draped elegantly across her torso that modestly covers her chest
+#@fit: bust, waist
+an elegantly styled __colors/female_spring__ colored short hip-length kurta in phulkari cotton __patterns/female_salwar_prints__ __patterns/female_saree_motifs__ with side slits, boat neck and 3/4 sleeves, with a dupatta draped gracefully over one shoulder that softly covers her chest
+#@fit: bust, shoulders
+a traditionally styled __colors/female_pastel__ colored short hip-length kurta in phulkari cotton __patterns/female_salwar_prints__ with side slits, round neckline and cap sleeves, with a dupatta draped over her head and shoulder that fully covers her chest and shoulders
+#@fit: bust, waist
+a gracefully styled __colors/female_dusty__ colored short hip-length kurta in cotton __patterns/female_salwar_prints__ with side slits, collar neck and 3/4 sleeves, with a dupatta draped gracefully over one shoulder that fully covers her chest
+#@fit: bust, waist
+a festively styled __colors/female_dark__ colored short hip-length kurta in silk __patterns/female_salwar_prints__ with side slits, collar neck and 3/4 sleeves, with a dupatta draped gracefully over both shoulders that fully covers her chest
+#@fit: bust, shoulders
+a breezily styled __colors/female_earthtone__ colored short hip-length kurta in linen __patterns/female_salwar_prints__ with side slits, round neckline and short sleeves, with a dupatta draped over one shoulder that softly covers her shoulders
+#@fit: bust, waist
+a simply styled __colors/female_nude__ colored short hip-length kurta in cotton __patterns/female_salwar_prints__ with side slits, boat neck and 3/4 sleeves, with a dupatta draped over one shoulder that fully covers her upper body
+#@fit: bust, waist
+a festively styled __colors/female_bright__ colored short hip-length kurta in silk __patterns/female_salwar_prints__ with side slits, V-neck and cap sleeves, with a dupatta draped neatly over one shoulder that modestly covers her chest
+#@fit: bust, waist
+an elegantly styled __colors/female_winter__ colored short hip-length kurta in cotton __patterns/female_salwar_prints__ with side slits, boat neck and short sleeves, with a dupatta draped diagonally across her torso that elegantly frames her neckline while modestly covering her chest
+#@fit: bust, waist
+a traditionally styled __colors/female_muted__ colored short hip-length kurta in linen __patterns/female_salwar_prints__ with side slits, collar neck and cap sleeves, with a dupatta draped neatly over one shoulder that modestly covers her torso
+#@fit: bust, shoulders
+a festively styled __colors/female_warm__ colored short hip-length kurta in silk __patterns/female_salwar_prints__ __patterns/female_saree_motifs__ with side slits, V-neck and 3/4 sleeves, with a dupatta draped over her head and shoulder that fully covers her chest
+#@fit: bust, waist
+a casually styled __colors/female_tropical__ colored short hip-length kurta in cotton __patterns/female_salwar_prints__ with side slits, round neckline and 3/4 sleeves, with a dupatta draped comfortably over one shoulder that modestly covers her torso
+#@fit: bust, waist
+a gracefully styled __colors/female_vivid__ colored short hip-length kurta in cotton __patterns/female_salwar_prints__ with side slits, collar neck and short sleeves, with a dupatta draped elegantly over one shoulder that modestly covers her chest
+#@fit: bust, waist
+an elegantly styled __colors/female_cool__ colored short hip-length kurta in linen __patterns/female_salwar_prints__ with side slits, V-neck and short sleeves, with a dupatta draped over both shoulders that fully covers her torso
+#@fit: bust, shoulders
+a traditionally styled __colors/female_candy__ colored short hip-length kurta in cotton __patterns/female_salwar_prints__ with side slits, boat neck and cap sleeves, with a dupatta draped neatly over one shoulder that modestly covers her chest and shoulders
+#@fit: bust, waist
+a festively styled __colors/female_jewel__ colored short hip-length kurta in phulkari cotton __patterns/female_salwar_prints__ __patterns/female_saree_motifs__ with side slits, round neckline and short sleeves, with a dupatta draped over both shoulders that fully covers her torso

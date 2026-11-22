@@ -1,0 +1,34 @@
+#@lewdity: 10
+
+#@fit: waist, hips
+a pencil skirt in __colors/female_cool__ wool that falls neatly to the knee
+#@fit: waist, hips
+an A-line uniform skirt in __colors/female_neutral__ gabardine with piped edges __patterns/female_formal_skirt_detail__, falling to the knee
+#@fit: waist, hips
+a pleated uniform skirt in __colors/female_neutral__ wool with a waist belt and brass buttons __patterns/female_formal_skirt_detail__, falling to the knee
+#@fit: waist, hips
+a wrap uniform skirt in __colors/female_monochrome__ gabardine, falling gracefully to the knee
+#@fit: waist, hips, thighs
+straight uniform trousers in __colors/female_dark__ cotton twill with a crisp tailored fit
+#@fit: waist, hips, thighs
+utility cargo trousers in __colors/female_monochrome__ polyester blend with pen pockets and reinforced knees
+#@fit: waist, hips, thighs
+straight ceremonial trousers in __colors/female_jewel__ wool with a formal parade drape
+#@fit: waist, hips, thighs
+pleated wool trousers in __colors/female_jewel__ with a brass-buttoned waistband and refined tailored drape
+#@fit: waist, hips, thighs
+drawstring scrub trousers in __colors/female_light__ polyester blend with a clinical fit
+#@fit: waist, hips, thighs
+straight scrub trousers in __colors/female_cool__ cotton twill with cargo pockets __patterns/female_athletic_stripe__
+#@fit: waist, hips, thighs
+check chef trousers in __colors/female_neutral__ cotton twill with a kitchen-ready fit
+#@fit: waist, hips, thighs
+straight postal trousers in __colors/female_muted__ polyester blend with contrast piping __patterns/female_athletic_stripe__
+#@fit: waist, hips, thighs
+cargo postal trousers in __colors/female_cool__ cotton twill with reinforced knees
+#@fit: waist, hips, thighs
+straight conductor trousers in __colors/female_dark__ wool with a ticket pocket and heritage railway drape
+#@fit: waist, hips, thighs
+tactical cargo trousers in __colors/female_monochrome__ cotton twill with an active-duty utility fit __patterns/female_athletic_stripe__
+#@fit: waist, hips, thighs
+straight pilot trousers in __colors/female_dark__ wool with four gold stripes and a cockpit-ready fit

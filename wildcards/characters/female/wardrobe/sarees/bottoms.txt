@@ -1,0 +1,83 @@
+#@lewdity: 15
+
+#@fit: waist, hips, thighs
+a traditionally styled __colors/female_jewel__ colored Kanjeevaram saree in silk __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a neatly pleated waist drape falling to the ankle
+#@fit: waist, hips, thighs
+a modern styled __colors/female_bright__ colored half-saree in chiffon __patterns/female_saree_borders__ __patterns/female_saree_motifs__ draped low at the waist
+#@fit: waist, hips, thighs
+a bridal __colors/female_jewel__ colored Banarasi saree in brocade __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a regally draped waist wrap
+#@fit: waist, hips, thighs
+a __colors/female_jewel__ colored Paithani saree in silk __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a classic pleated drape
+#@fit: waist, hips, thighs
+a bridal __colors/female_warm__ colored Gadwal saree in silk __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with an elegantly draped wrap
+#@fit: waist, hips, thighs
+a __colors/female_vivid__ colored Patola saree in silk __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a precisely pleated drape
+#@fit: waist, hips, thighs
+a festive __colors/female_dark__ colored Mysore silk saree in silk __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a lavishly draped waist wrap
+#@fit: waist, hips, thighs
+a festive __colors/female_pastel__ colored Chanderi saree in silk cotton __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a gracefully flowing drape
+#@fit: waist, hips, thighs
+a contemporary __colors/female_light__ colored Kota Doria saree in cotton __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with an airy pleated drape
+#@fit: waist, hips, thighs
+an elegantly styled __colors/female_summer__ colored Maheshwari saree in cotton __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a soft drape
+#@fit: waist, hips, thighs
+#@lewdity: 25
+a festive __colors/female_candy__ colored Organza saree in organza __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a sheer swirling drape
+#@fit: waist, hips, thighs
+a casually styled __colors/female_earthtone__ colored cotton saree with a simply draped wrap
+#@fit: waist, hips, thighs
+a traditionally styled __colors/female_earthtone__ colored Tussar saree in tussar silk __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a naturally draped wrap
+#@fit: waist, hips, thighs
+a simply styled __colors/female_dusty__ colored khadi cotton saree __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a neatly draped wrap
+#@fit: waist, hips, thighs
+a casually styled __colors/female_nude__ colored linen saree in linen __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a breezy drape
+#@fit: waist, hips, thighs
+a traditionally styled __colors/female_earthtone__ colored Sambalpuri saree in cotton __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with an artisanal drape
+#@fit: waist, hips, thighs
+a simply styled __colors/female_monochrome__ colored cotton saree __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a minimal drape
+#@fit: waist, hips, thighs
+#@lewdity: 25
+a modern styled __colors/female_vivid__ colored georgette saree in georgette __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a sensually draped wrap
+#@fit: waist, hips, thighs
+#@lewdity: 25
+a contemporary styled __colors/female_bright__ colored chiffon saree in chiffon __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with an alluring drape
+#@fit: waist, hips, thighs
+#@lewdity: 30
+a sensually styled __colors/female_tropical__ colored net saree in net __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a boldly sheer drape
+#@fit: waist, hips, thighs
+#@lewdity: 25
+a modern styled __colors/female_vivid__ colored half-saree in organza __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a playful drape
+#@fit: waist, hips, thighs
+a glamorously styled __colors/female_jewel__ colored crepe saree in crepe __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a sleek drape
+#@fit: waist, hips, thighs
+a festive __colors/female_bright__ colored Leheria saree in chiffon __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a swirling drape
+#@fit: waist, hips, thighs
+a traditionally styled __colors/female_earthtone__ colored Bandhani saree in georgette __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with an artful drape
+#@fit: waist, hips, thighs
+a festive __colors/female_warm__ colored Paithani saree in silk __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a graceful drape
+#@fit: waist, hips, thighs
+a traditionally styled __colors/female_earthtone__ colored Ikat saree in cotton __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a vibrant drape
+#@fit: waist, hips, thighs
+a festive __colors/female_candy__ colored Ajrakh saree in cotton __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a gracefully draped wrap
+#@fit: waist, hips, thighs
+a traditionally styled __colors/female_light__ colored Chikankari saree in cotton __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a delicate drape
+#@fit: waist, hips, thighs
+a casually styled __colors/female_nude__ colored Phulkari saree in cotton __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a comfortable drape
+#@fit: waist, hips, thighs
+a simply styled __colors/female_muted__ colored Kantha saree in cotton __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a softly draped wrap
+#@fit: waist, hips, thighs
+a traditionally styled __colors/female_dusty__ colored Pochampally saree in cotton __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with an artisanally draped wrap
+#@fit: waist, hips, thighs
+a modern styled __colors/female_bright__ colored ruffle saree in georgette with a playfully ruffled drape
+#@fit: waist, hips, thighs
+#@lewdity: 25
+a contemporary styled __colors/female_monochrome__ colored Organza saree in organza __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a sheer drape
+#@fit: waist, hips, thighs
+a stylishly styled __colors/female_cool__ colored satin saree in satin with a sleekly draped wrap
+#@fit: waist, hips, thighs
+a festive __colors/female_autumn__ colored Kalamkari saree in silk with an elegantly draped wrap
+#@fit: waist, hips, thighs
+a vibrantly styled __colors/female_bright__ colored Bandhani saree in cotton with a joyfully draped wrap
+#@fit: waist, hips, thighs
+#@lewdity: 25
+a youthfully styled __colors/female_spring__ colored half-saree in cotton silk __patterns/female_saree_borders__ __patterns/female_saree_motifs__ with a playfully draped wrap

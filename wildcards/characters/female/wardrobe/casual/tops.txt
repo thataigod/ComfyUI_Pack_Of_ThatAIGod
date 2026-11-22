@@ -1,10 +1,68 @@
+#@lewdity: 25
+
 #@fit: bust, waist
-#@mishap: the crop top riding up her midriff
-a fitted crop top, __neutral_colors_female__
+#@lewdity: 30
+a fitted crop top in __colors/female_neutral__
 #@fit: bust, waist
-an oversized sweater, __muted_colors_female__
+#@lewdity: 20
+an oversized sweater in __colors/female_muted__
 #@fit: bust, waist
-a loose t-shirt, __bright_colors_female__
+a loose t-shirt in __colors/female_bright__
 #@fit: bust, waist
-#@mishap: the denim jacket slipping off her shoulders
-a denim jacket over a camisole, __neutral_colors_female__
+a denim jacket over a camisole in __colors/female_neutral__
+#@fit: bust, waist
+#@lewdity: 30
+a fitted tank top in __colors/female_bright__ jersey with a V-neckline
+#@fit: bust, waist
+a boat-neck tee in __colors/female_cool__ cotton with short sleeves
+#@fit: bust, waist
+#@lewdity: 20
+a fitted crew-neck tee in __colors/female_cool__ jersey with 3/4 sleeves
+#@fit: bust, waist
+#@lewdity: 30
+a delicate camisole in __colors/female_earthtone__ cotton with a V-neck and thin straps
+#@fit: bust, waist, shoulders
+#@lewdity: 30
+an off-shoulder top in __colors/female_light__ knit with short flounced sleeves
+#@fit: bust, waist
+#@lewdity: 20
+a henley top in __colors/female_summer__ jersey with a buttoned crew neckline and long sleeves
+#@fit: bust, waist
+a graphic tee in __colors/female_vivid__ cotton with a crew neck and short sleeves __patterns/female_casual_top_print__
+#@fit: bust, waist
+#@lewdity: 20
+a chunky knit sweater in __colors/female_winter__ with a crew neckline and long sleeves
+#@fit: bust, waist
+#@lewdity: 30
+a V-neck crop top in __colors/female_neutral__ cotton with cap sleeves __patterns/female_casual_top_print__
+#@fit: bust, waist, shoulders
+#@lewdity: 30
+an off-shoulder crop top in __colors/female_warm__ cotton with short sleeves __patterns/female_casual_top_print__
+#@fit: bust, waist
+#@lewdity: 30
+a sleeveless blouse in __colors/female_earthtone__ linen with a V-neck
+#@fit: bust, waist
+#@lewdity: 30
+a graphic crop top in __colors/female_tropical__ cotton with a crew neckline and short sleeves __patterns/female_casual_top_print__
+#@fit: bust, waist, shoulders
+a chambray shirt in __colors/female_neon__ with a boat neck and 3/4 sleeves __patterns/female_casual_top_print__
+#@fit: bust, waist, shoulders
+a V-neck denim shirt in __colors/female_vivid__ chambray with long sleeves __patterns/female_casual_top_print__
+#@fit: bust, waist, shoulders
+a linen blouse in __colors/female_candy__ with a boat neck and short sleeves __patterns/female_casual_top_print__
+#@fit: bust, waist
+#@lewdity: 30
+a knit tank in __colors/female_winter__ with a crew neckline __patterns/female_casual_top_print__
+#@fit: bust, waist
+#@lewdity: 30
+a cropped tank in __colors/female_warm__ jersey with a scoop neckline __patterns/female_casual_top_print__
+#@fit: bust, waist
+#@lewdity: 20
+a hooded sweatshirt in __colors/female_autumn__ knit with long sleeves __patterns/female_casual_top_print__
+#@fit: bust, waist, shoulders
+a puff-sleeve blouse in __colors/female_vivid__ cotton with a square neckline __patterns/female_casual_top_print__
+#@fit: bust, waist
+#@lewdity: 30
+a racerback tank in __colors/female_light__ jersey with a crew neckline __patterns/female_casual_top_print__
+#@fit: bust, waist
+a peplum top in __colors/female_cool__ cotton with a V-neck and cap sleeves __patterns/female_casual_top_print__

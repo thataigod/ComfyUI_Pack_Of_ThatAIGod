@@ -1,0 +1,73 @@
+#@lewdity: 45
+
+#@fit: bust, waist, hips
+a fluid __colors/female_pastel__ colored sleeveless leotard in lycra with a scoop back and a soft wrap sash that hugs the figure
+#@fit: bust, waist, hips
+a __colors/female_warm__ colored camisole leotard in spandex with a pinch-front bust __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist, hips
+#@lewdity: 40
+a __colors/female_dusty__ colored classic tutu in tulle with a structured bodice and layered net ruffles that cinch at the waist __patterns/female_party_dress_detail__
+#@fit: bust, waist, hips
+#@lewdity: 35
+a __colors/female_pastel__ colored romantic tutu in chiffon with a soft gathered bodice and tea-length layers
+#@fit: bust, waist, hips
+#@lewdity: 40
+a __colors/female_light__ colored platter tutu in tulle with a stiff layered plate and a jeweled bodice __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist, hips
+#@lewdity: 40
+a __colors/female_nude__ colored bell tutu in tulle with a boned bodice and soft bell-shaped layers __patterns/female_lehenga_work__
+#@fit: bust, waist, hips
+#@lewdity: 30
+a __colors/female_jewel__ colored ballroom gown in satin with a full floating skirt that sweeps the floor __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist, hips
+#@lewdity: 30
+a __colors/female_metallic__ colored ballroom gown in velvet with a feathered hem and a fitted corset bodice __patterns/female_lehenga_work__
+#@fit: bust, waist, hips
+#@lewdity: 40
+a __colors/female_dark__ colored ballroom gown in tulle with a plunging neckline and a voluminous floating skirt __patterns/female_party_dress_detail__
+#@fit: bust, waist, hips
+#@lewdity: 35
+a __colors/female_dark__ colored ballroom gown in satin with a fishtail silhouette __patterns/female_garment_detail__
+#@fit: bust, waist, hips
+#@lewdity: 35
+a __colors/female_jewel__ colored ballroom gown in tulle with a crystal-trimmed bodice and a feather-trimmed hem __patterns/female_garment_detail__
+#@fit: bust, waist, hips
+#@lewdity: 35
+a __colors/female_cool__ colored ballroom gown in satin with a corset bodice and a sweeping hem __patterns/female_lehenga_work__
+#@fit: bust, waist, hips
+#@lewdity: 60
+a __colors/female_bright__ colored latin fringe dress in lycra with long hand-cut fringe and crystal accents __patterns/female_party_dress_detail__
+#@fit: bust, waist, hips
+#@lewdity: 55
+a __colors/female_neon__ colored salsa fringe dress in spandex with a fitted bodice that swishes dramatically __patterns/female_lehenga_work__
+#@fit: bust, waist, hips
+#@lewdity: 65
+a __colors/female_candy__ colored latin fringe dress in lycra with sheer mesh panels and beaded fringe that reveals the midriff __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist, hips
+#@lewdity: 60
+a __colors/female_metallic__ colored salsa fringe dress in satin with a beaded sweetheart bodice and tiered fringe __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist, hips
+#@lewdity: 60
+a __colors/female_dark__ colored salsa fringe dress in mesh with long swinging fringe __patterns/female_party_dress_detail__
+#@fit: bust, waist, hips
+#@lewdity: 65
+a __colors/female_tropical__ colored latin fringe dress in lycra with a deep V neckline that sways with every step __patterns/female_party_dress_detail__
+#@fit: bust, waist, hips
+#@lewdity: 30
+a __colors/female_muted__ colored contemporary dance dress in jersey with a draped asymmetric hem and a fitted bodice
+#@fit: bust, waist, hips
+#@lewdity: 40
+a __colors/female_cool__ colored contemporary dance dress in chiffon with sheer mesh panels and flowing layers __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist, hips
+a __colors/female_dusty__ colored contemporary dance dress in mesh with a draped back that floats airily __patterns/female_party_dress_detail__
+#@fit: bust, waist, hips
+#@lewdity: 35
+a __colors/female_winter__ colored contemporary dance dress in chiffon with a satin bow detail at the bust and sheer layered skirts __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist, hips
+#@lewdity: 40
+a __colors/female_dusty__ colored contemporary dance dress in jersey with a one-shoulder neckline and a draped skirt
+#@fit: bust, waist, hips
+#@lewdity: 35
+a __colors/female_muted__ colored contemporary dance dress in chiffon with a draped cowl back __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist, hips
+a __colors/female_spring__ colored contemporary dance dress in mesh with asymmetric layered skirts __patterns/female_saree_motifs__

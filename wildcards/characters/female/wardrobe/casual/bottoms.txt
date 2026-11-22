@@ -1,10 +1,47 @@
+#@lewdity: 25
+
 #@fit: waist, hips
-#@no_modifiers: fabric
-high-waisted jeans
+#@lewdity: 20
+high-waisted skinny jeans in __colors/female_neutral__ denim that hug the legs
 #@fit: waist, hips
-#@mishap: the mini skirt hem riding up her thighs
-#@no_modifiers: fabric
-a denim mini-skirt
+#@lewdity: 30
+a denim mini-skirt that hugs the hips and sits high on the waist
 #@fit: waist, hips
-#@no_modifiers: fabric
-linen trousers
+#@lewdity: 20
+linen trousers in __colors/female_light__ that drape loosely and sit comfortably on the hips
+#@fit: waist, hips, thighs
+#@lewdity: 20
+straight-leg jeans in __colors/female_dusty__ denim that fall relaxed at the natural waist
+#@fit: waist, hips, thighs
+#@lewdity: 20
+flared jeans in __colors/female_monochrome__ denim that widen from the knee and sit at the waist
+#@fit: waist, hips, thighs
+#@lewdity: 30
+high-waisted denim shorts in __colors/female_nude__ that sit mid-thigh
+#@fit: waist, hips, thighs
+#@lewdity: 30
+cutoff shorts in __colors/female_dark__ denim with frayed hems, sitting high on the hips
+#@fit: waist, hips, thighs
+#@lewdity: 30
+linen shorts in __colors/female_muted__ that fall loosely to mid-thigh
+#@fit: waist, hips, thighs
+#@lewdity: 30
+chambray shorts in __colors/female_summer__ that sit comfortably at the waist
+#@fit: waist, hips, thighs
+#@lewdity: 30
+a pleated mini skirt in __colors/female_earthtone__ chambray that flares gently from a high waist
+#@fit: waist, hips
+#@lewdity: 30
+a cotton mini skirt in __colors/female_vivid__ that sits high on the waist and shows the legs
+#@fit: waist, hips, thighs
+#@lewdity: 20
+jersey joggers in __colors/female_earthtone__ that drape softly at the hips
+#@fit: waist, hips, thighs
+#@lewdity: 30
+jogger shorts in __colors/female_bright__ jersey that sit relaxed on the hips
+#@fit: waist, hips, thighs
+jersey leggings in __colors/female_jewel__ that hug the legs from a high waist
+#@fit: waist, hips, thighs
+linen culottes in __colors/female_tropical__ that flow to mid-calf
+#@fit: waist, hips, thighs
+linen palazzo pants in __colors/female_candy__ with wide flowing legs

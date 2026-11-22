@@ -1,1516 +1,754 @@
-"""Tests for the pure character engine in ``_character_core.py``."""
+"""Tests for the pure character engine v2 in ``_character_core.py``.
 
+The engine is exercised against a synthetic wildcards tree: a custom persona
+("maya") with descriptors, a lewdity band and a personal wardrobe; a shared
+common wardrobe (``characters/female/wardrobe``) with band-rated slot files;
+matching locations plus a small location taxonomy; and extras pools.
+"""
+
+import logging
 import os
+import shutil
+import sys
 import tempfile
 import unittest
-from typing import Any
-from unittest import mock
+from unittest.mock import patch
 
-import _character_core as core
-from _character_core import build_character
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from _character_core import (
+    _EXTRA_CAP,
+    WARDROBE_COMPLETE,
+    WARDROBE_EXTERNAL,
+    WARDROBE_INTERNAL,
+    WARDROBE_MODES,
+    _background,
+    _catalog_occasions,
+    _compose_fit,
+    _context,
+    _fill_slots,
+    _parse_lewdity_value,
+    _pick_category,
+    _pose_context,
+    _read_gender,
+    _read_lewdity_file,
+    _read_measurements,
+    _regions_from_camera,
+    _resolve_lewdity,
+    _resolve_slot,
+    _roll_extras,
+    _roll_occasion,
+    _safe_persona,
+    _tag_basename,
+    _tag_path,
+    _wardrobe_plan,
+    build_character,
+)
 from _wildcard_core import WildcardResolver
 
-_PACK_WILDCARDS = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "wildcards")
+_CACHES = (
+    WildcardResolver._file_index_cache,
+    WildcardResolver._file_mtimes,
+    WildcardResolver._annotations_cache,
+    WildcardResolver._block_cache,
+    WildcardResolver._deck_cache,
+    WildcardResolver._choice_deck_cache,
+)
 
 
-class FakeRng:
-    """Deterministic stand-in RNG for forcing one-piece substitution branches."""
+class EngineFixture(unittest.TestCase):
+    """Shared fixture: tmp wildcards root with persona, wardrobes, locations, extras."""
 
-    def __init__(self, random_value: float) -> None:
-        self.random_value = random_value
+    def setUp(self):
+        self.temp_dir = tempfile.mkdtemp()
+        self.wildcards = os.path.join(self.temp_dir, "wildcards")
+        os.makedirs(self.wildcards)
+        for cache in _CACHES:
+            cache.clear()
 
-    def random(self) -> float:
-        return self.random_value
+    def tearDown(self):
+        for cache in _CACHES:
+            cache.clear()
+        shutil.rmtree(self.temp_dir, ignore_errors=True)
 
-    def choice(self, seq: list) -> object:
-        return seq[0]
-
-    def shuffle(self, seq: list) -> None:
-        return None
-
-
-class TmpWildcards:
-    """Build a minimal wildcards tree in a temp directory."""
-
-    def __init__(self) -> None:
-        self._tmp = tempfile.TemporaryDirectory()
-        self.dir = self._tmp.name
-
-    def write(self, rel: str, content: str) -> None:
-        path = os.path.join(self.dir, rel)
+    def _write(self, rel: str, content: str) -> str:
+        path = os.path.join(self.wildcards, rel.replace("/", os.sep))
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w", encoding="utf-8") as f:
             f.write(content)
+        return path
 
-    def __enter__(self) -> "TmpWildcards":
-        return self
+    def _resolver(self, mode: str = "Deterministic (Seed)", seed: int = 0) -> WildcardResolver:
+        return WildcardResolver(self.wildcards, mode=mode, seed=seed)
 
-    def __exit__(self, *exc_info: object) -> None:
-        self.cleanup()
+    def _make_maya(self, lewdity: str = "20-80") -> None:
+        base = "characters/maya"
+        self._write(f"{base}/gender.txt", "female\n")
+        if lewdity is not None:
+            self._write(f"{base}/lewdity.txt", lewdity + "\n")
+        self._write(
+            f"{base}/subject_intro.txt",
+            "a poised woman with dark hair\n"
+            "#@occasion: beach\n"
+            "a relaxed beachgoer with salt-tousled hair\n"
+            "#@occasion: office\n"
+            "a composed professional with neat dark hair\n",
+        )
+        self._write(f"{base}/face.txt", "a soft oval face with warm eyes\n")
+        self._write(f"{base}/hair.txt", "long dark hair in a loose braid\n")
+        self._write(f"{base}/profile.txt", "a fine-boned profile\n")
+        self._write(
+            f"{base}/pose.txt",
+            "#@facing: front\n"
+            "#@awareness: aware\n"
+            "standing tall with calm confidence\n"
+            "#@facing: profile\n"
+            "walking past, glancing away\n",
+        )
+        self._write(f"{base}/trigger.txt", "maya_lora\n")
+        self._write(f"{base}/measurements.txt", "#@bust: generous\n#@thighs: toned\n")
+        self._write(
+            f"{base}/wardrobe/catalog.txt",
+            "#@occasion: home\n__characters/maya/wardrobe/loungewear__\n",
+        )
+        self._write(
+            f"{base}/wardrobe/loungewear/tops.txt",
+            "#@lewdity: 10\na soft knit loungewear top\nanother cozy tee\n",
+        )
 
-    def cleanup(self) -> None:
-        self._tmp.cleanup()
-
-
-def _make_persona(tmp: TmpWildcards, name: str = "tester") -> None:
-    base = f"characters/{name}"
-    tmp.write(f"{base}/subject_intro.txt", "Tester, a fictional subject")
-    tmp.write(f"{base}/face.txt", "a face with gentle features")
-    tmp.write(f"{base}/hair.txt", "short dark hair")
-    tmp.write(f"{base}/neck.txt", "a slender neck")
-    tmp.write(f"{base}/shoulders.txt", "soft shoulders")
-    tmp.write(f"{base}/body.txt", "a lean torso")
-    tmp.write(f"{base}/arms.txt", "toned arms")
-    tmp.write(f"{base}/legs.txt", "long legs")
-    tmp.write(f"{base}/feet.txt", "small feet")
-    tmp.write(f"{base}/pose.txt", "standing with weight on one hip")
-
-
-def _make_persona_wardrobe(tmp: TmpWildcards, name: str = "tester") -> None:
-    base = f"characters/{name}/wardrobe"
-    tmp.write(f"{base}/catalog.txt", f"__characters/{name}/wardrobe/signature__")
-    tmp.write(f"{base}/signature/tops.txt", "a fitted top")
-    tmp.write(f"{base}/signature/bottoms.txt", "tailored trousers")
-    tmp.write(f"{base}/signature/shoes.txt", "leather shoes")
-    tmp.write(f"{base}/signature/accessories.txt", "a delicate necklace")
-
-
-def _make_common_wardrobe(tmp: TmpWildcards) -> None:
-    tmp.write("characters/female/wardrobe/catalog.txt", "__characters/female/wardrobe/business__\n__characters/female/wardrobe/swimwear__")
-    tmp.write("characters/female/wardrobe/business.txt", "#@occasion: office, formal, wedding\nbusiness outfit")
-    tmp.write("characters/female/wardrobe/swimwear.txt", "#@occasion: beach, pool, resort\nswimwear outfit")
-    tmp.write("characters/female/wardrobe/business/tops.txt", "a blazer and blouse")
-    tmp.write("characters/female/wardrobe/business/bottoms.txt", "a pencil skirt")
-    tmp.write("characters/female/wardrobe/business/shoes.txt", "court heels")
-    tmp.write("characters/female/wardrobe/swimwear/one-piece.txt", "a black one-piece swimsuit")
-    tmp.write("characters/female/wardrobe/swimwear/shoes.txt", "sandals")
-
-
-def _full_camera() -> dict:
-    return {
-        "type": "camera",
-        "regions": [
-            "face",
-            "hair",
-            "neck",
-            "shoulders",
-            "chest",
-            "back",
-            "breasts",
-            "navel",
-            "arms",
-            "hands",
-            "waist",
-            "hips",
-            "buttocks",
-            "thighs",
-            "legs",
-            "feet",
-            "skin",
-        ],
-        "face_visible": True,
-        "view": "Front",
-    }
-
-
-class TestSafePersona(unittest.TestCase):
-    def test_normal_name_passes_through(self):
-        self.assertEqual(core._safe_persona("Rohini Smirnova"), "Rohini Smirnova")
-
-    def test_empty_falls_back(self):
-        self.assertEqual(core._safe_persona(""), "female")
-        self.assertEqual(core._safe_persona(None), "female")
-
-    def test_traversal_rejected(self):
-        self.assertEqual(core._safe_persona("../evil"), "female")
-        self.assertEqual(core._safe_persona("..\\evil"), "female")
-        self.assertEqual(core._safe_persona("a/b"), "female")
-        self.assertEqual(core._safe_persona("a\\b"), "female")
-
-    def test_hidden_name_rejected(self):
-        self.assertEqual(core._safe_persona(".hidden"), "female")
-
-    def test_whitespace_stripped(self):
-        self.assertEqual(core._safe_persona("  tester  "), "tester")
+    def _make_common(self) -> None:
+        base = "characters/female/wardrobe"
+        self._write(
+            f"{base}/catalog.txt",
+            "#@occasion: casual, travel, home\n__characters/female/wardrobe/casual__\n\n"
+            "#@occasion: intimate, boudoir\n__characters/female/wardrobe/lingerie__\n\n"
+            "#@occasion: beach, pool, resort\n__characters/female/wardrobe/resort__\n",
+        )
+        self._write(
+            f"{base}/casual/tops.txt",
+            "#@lewdity: 20\n#@fit: bust\na pastel cotton tee in a soft weave\n"
+            "#@lewdity: 60\n#@fit: bust\na daring crop top with thin straps\n",
+        )
+        self._write(f"{base}/casual/bottoms.txt", "#@lewdity: 20\n#@fit: hips\ndark straight-leg jeans\n")
+        self._write(f"{base}/casual/shoes.txt", "#@lewdity: 20\nwhite canvas sneakers\n")
+        self._write(f"{base}/casual/one-piece.txt", "#@lewdity: 20\na denim overall dress\n")
+        self._write(f"{base}/lingerie/tops.txt", "#@lewdity: 85\na sheer lace bralette with delicate straps\n")
+        self._write(f"{base}/resort/one-piece.txt", "#@lewdity: 30\na flowing kaftan in airy cotton\n")
+        self._write("locations/female_casual_outfits_matching_locations.txt", "__locations/test_cafe__\n")
+        self._write("locations/female_resort_matching_locations.txt", "__locations/test_beach__\n")
+        self._write("locations/female_lingerie_matching_locations.txt", "__locations/test_diner__\n")
+        self._write(
+            "locations/test_cafe.txt",
+            "in a sunlit corner cafe with oak tables\n",
+        )
+        self._write(
+            "locations/test_diner.txt",
+            "#@time: night\nin a dim diner under humming neon signs\n"
+            "#@time: dawn\nin a misty diner at first light\n",
+        )
+        self._write("locations/test_beach.txt", "#@domain: waterfront\non a wide sandy beach with dune grass\n")
+        self._write("jewellery/female_casual_jewellery.txt", "thin gold hoop earrings\n")
+        self._write("accessories/female_casual_accessories.txt", "a woven canvas tote\n")
+        self._write("brands/female_western_highstreet.txt", "a highstreet label\n")
 
 
-class TestTagBasename(unittest.TestCase):
-    def test_tag_with_slashes(self):
-        self.assertEqual(core._tag_basename("__wardrobe/female/casual__"), "casual")
+class TestPersonaMeta(EngineFixture):
+    def test_safe_persona_rejects_traversal_and_empties(self):
+        self.assertEqual(_safe_persona("../evil"), "female")
+        self.assertEqual(_safe_persona("a/b"), "female")
+        self.assertEqual(_safe_persona("a\\b"), "female")
+        self.assertEqual(_safe_persona(""), "female")
+        self.assertEqual(_safe_persona(None), "female")
+        self.assertEqual(_safe_persona("maya"), "maya")
 
-    def test_tag_with_spaces(self):
-        self.assertEqual(core._tag_basename("__characters/Rohini Smirnova/wardrobe/signature__"), "signature")
+    def test_tag_basename(self):
+        self.assertEqual(_tag_basename("__characters/female/wardrobe/casual__"), "casual")
+        self.assertEqual(_tag_basename("plain prose"), "")
+        self.assertEqual(_tag_basename(""), "")
 
-    def test_tag_with_backslashes(self):
-        self.assertEqual(core._tag_basename("__wardrobe\\female\\casual__"), "casual")
+    def test_read_gender(self):
+        self._make_maya()
+        self.assertEqual(_read_gender(os.path.join(self.wildcards, "characters", "maya")), "female")
+        self.assertEqual(_read_gender(os.path.join(self.temp_dir, "nowhere")), "female")
+        self._write("characters/gil/gender.txt", "# comment\nmale\n")
+        self.assertEqual(_read_gender(os.path.join(self.wildcards, "characters", "gil")), "male")
 
-    def test_non_tag_line(self):
-        self.assertEqual(core._tag_basename("a plain outfit line"), "")
-        self.assertEqual(core._tag_basename(""), "")
+    def test_read_lewdity_file_comment_only_file_returns_none(self):
+        self._make_maya()
+        self._write("characters/maya/lewdity.txt", "# comment only\n# another comment\n")
+        self.assertIsNone(_read_lewdity_file(os.path.join(self.wildcards, "characters", "maya")))
+        self.assertEqual(_read_gender(os.path.join(self.temp_dir, "nowhere")), "female")
+        self._write("characters/gil/gender.txt", "# comment\nmale\n")
+        self.assertEqual(_read_gender(os.path.join(self.wildcards, "characters", "gil")), "male")
+
+    def test_parse_lewdity_value(self):
+        self.assertEqual(_parse_lewdity_value("15-85"), (15, 85))
+        self.assertEqual(_parse_lewdity_value("40"), (0, 40))
+        self.assertEqual(_parse_lewdity_value("90-10"), (10, 90))
+        self.assertEqual(_parse_lewdity_value("15–85"), (15, 85))
+        self.assertIsNone(_parse_lewdity_value("abc"))
+        self.assertIsNone(_parse_lewdity_value("abc-def"))
+        self.assertIsNone(_parse_lewdity_value("-"))
+        self.assertEqual(_parse_lewdity_value("-5"), (0, 5))
+        self.assertEqual(_parse_lewdity_value("120-140"), (120, 140))
+        self.assertEqual(_parse_lewdity_value("1-2-3"), (1, 2))
+
+    def test_read_lewdity_file(self):
+        self._make_maya()
+        self.assertEqual(_read_lewdity_file(os.path.join(self.wildcards, "characters", "maya")), (20, 80))
+        self.assertIsNone(_read_lewdity_file(os.path.join(self.temp_dir, "nowhere")))
+        self._write("characters/bad/lewdity.txt", "#@not a band\nnope\n")
+        with self.assertLogs("ThatAIGod", level=logging.WARNING):
+            self.assertIsNone(_read_lewdity_file(os.path.join(self.wildcards, "characters", "bad")))
+
+    def test_resolve_lewdity_overrides(self):
+        self._make_maya(lewdity=None)
+        maya_dir = os.path.join(self.wildcards, "characters", "maya")
+        self.assertIsNone(_resolve_lewdity(maya_dir, -1, -1))
+        self.assertEqual(_resolve_lewdity(maya_dir, 30, -1), (30, 10**6))
+        self.assertEqual(_resolve_lewdity(maya_dir, -1, 50), (0, 50))
+        self.assertEqual(_resolve_lewdity(maya_dir, 90, 10), (10, 90))
+        self._write("characters/maya/lewdity.txt", "20-80\n")
+        self.assertEqual(_resolve_lewdity(maya_dir, -1, -1), (20, 80))
+        self.assertEqual(_resolve_lewdity(maya_dir, 30, 40), (30, 40))
+
+    def test_read_measurements_six_zones(self):
+        self._make_maya()
+        measurements = _read_measurements(os.path.join(self.wildcards, "characters", "maya"))
+        self.assertEqual(measurements["bust"], "generous")
+        self.assertEqual(measurements["thighs"], "toned")
+        self.assertEqual(measurements["waist"], "slim")
+        self.assertEqual(measurements["back"], "smooth")
+        self.assertEqual(measurements["shoulders"], "graceful")
+        self.assertEqual(measurements["hips"], "curved")
+        self.assertEqual(
+            _read_measurements(os.path.join(self.temp_dir, "nowhere"))["thighs"],
+            "toned",
+        )
 
 
-class TestReadGender(unittest.TestCase):
-    def test_missing_file_defaults_female(self):
-        with tempfile.TemporaryDirectory() as d:
-            self.assertEqual(core._read_gender(d), "female")
-
-    def test_comment_only_defaults_female(self):
-        with TmpWildcards() as tmp:
-            tmp.write("x/gender.txt", "# comment only\n")
-            self.assertEqual(core._read_gender(os.path.join(tmp.dir, "x")), "female")
-
-    def test_reads_first_value(self):
-        with TmpWildcards() as tmp:
-            tmp.write("x/gender.txt", "# comment\nmale\n")
-            self.assertEqual(core._read_gender(os.path.join(tmp.dir, "x")), "male")
-
-    def test_case_normalised(self):
-        with TmpWildcards() as tmp:
-            tmp.write("x/gender.txt", "Female\n")
-            self.assertEqual(core._read_gender(os.path.join(tmp.dir, "x")), "female")
-
-
-class TestRegionsFromCamera(unittest.TestCase):
-    def test_none_means_all(self):
-        regions, fv, view = core._regions_from_camera(None)
-        self.assertEqual(regions, list(core._ALL_CAMERA_REGIONS))
-        self.assertTrue(fv)
+class TestCameraExtraction(EngineFixture):
+    def test_none_camera_shows_everything(self):
+        regions, face_visible, view = _regions_from_camera(None)
+        self.assertEqual(len(regions), 17)
+        self.assertTrue(face_visible)
         self.assertEqual(view, "Front")
 
-    def test_non_dict_means_all(self):
-        regions, _fv, _view = core._regions_from_camera("nope")
-        self.assertEqual(regions, list(core._ALL_CAMERA_REGIONS))
-
-    def test_invalid_regions_types_mean_all(self):
-        for bad in ("face", None, 42):
-            regions, _fv, _view = core._regions_from_camera({"regions": bad})
-            self.assertEqual(regions, list(core._ALL_CAMERA_REGIONS))
-
-    def test_empty_regions_mean_all(self):
-        regions, _fv, _view = core._regions_from_camera({"regions": []})
-        self.assertEqual(regions, list(core._ALL_CAMERA_REGIONS))
-
-    def test_unknown_names_only_mean_all(self):
-        regions, _fv, _view = core._regions_from_camera({"regions": ["bogus"]})
-        self.assertEqual(regions, list(core._ALL_CAMERA_REGIONS))
-
-    def test_subset_preserves_canonical_order(self):
-        regions, fv, view = core._regions_from_camera(
-            {"regions": ["legs", "face", "feet"], "face_visible": True, "view": "3/4 Front"}
-        )
-        self.assertEqual(regions, ["face", "legs", "feet"])
-        self.assertTrue(fv)
-        self.assertEqual(view, "3/4 Front")
-
-    def test_face_visibility_and_view_extracted(self):
-        _regions, fv, view = core._regions_from_camera({"regions": ["face"], "face_visible": False, "view": "Back"})
-        self.assertFalse(fv)
+    def test_regions_filter_and_view(self):
+        camera = {"regions": ["face", "chest", "skin"], "face_visible": False, "view": "Back"}
+        regions, face_visible, view = _regions_from_camera(camera)
+        self.assertEqual(regions, ["face", "chest", "skin"])
+        self.assertFalse(face_visible)
         self.assertEqual(view, "Back")
 
-
-class TestContext(unittest.TestCase):
-    def test_with_occasion(self):
-        self.assertEqual(core._context("office", ["face"]), {"regions": {"face"}, "occasion": {"office"}})
-
-    def test_unrestricted_omits_occasion(self):
-        self.assertEqual(core._context("", ["face"]), {"regions": {"face"}})
-
-
-class TestResolveAttribute(unittest.TestCase):
-    def test_missing_file_returns_empty(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            resolver = WildcardResolver(tmp.dir)
-            self.assertEqual(core._resolve_attribute(resolver, "characters/tester", "nose", {}), "")
-
-    def test_resolves_existing_file(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            resolver = WildcardResolver(tmp.dir)
-            value = core._resolve_attribute(resolver, "characters/tester", "hair", {})
-            self.assertEqual(value, "short dark hair")
-
-
-class TestWardrobeBase(unittest.TestCase):
-    def test_persona_wardrobe_wins(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            resolver = WildcardResolver(tmp.dir)
-            self.assertEqual(core._wardrobe_base(resolver, "characters/tester", "female", True), "characters/tester/wardrobe")
-
-    def test_common_allowed_without_persona_wardrobe(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            resolver = WildcardResolver(tmp.dir)
-            self.assertEqual(core._wardrobe_base(resolver, "characters/tester", "female", True), "characters/female/wardrobe")
-
-    def test_common_disallowed_without_persona_wardrobe(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            resolver = WildcardResolver(tmp.dir)
-            self.assertIsNone(core._wardrobe_base(resolver, "characters/tester", "female", False))
-
-
-class TestPickCategory(unittest.TestCase):
-    def test_catalog_tag_line(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            resolver = WildcardResolver(tmp.dir)
-            self.assertEqual(core._pick_category(resolver, "characters/tester/wardrobe", {}), "signature")
-
-    def test_occasion_filters_common_catalog(self):
-        with TmpWildcards() as tmp:
-            _make_common_wardrobe(tmp)
-            resolver = WildcardResolver(tmp.dir)
-            self.assertEqual(core._pick_category(resolver, "characters/female/wardrobe", {"occasion": {"beach"}}), "swimwear")
-
-    def test_file_fallback_without_tag(self):
-        with TmpWildcards() as tmp:
-            _make_common_wardrobe(tmp)
-            tmp.write("characters/female/wardrobe/catalog.txt", "a plain non-tag line")
-            resolver = WildcardResolver(tmp.dir)
-            category = core._pick_category(resolver, "characters/female/wardrobe", {"occasion": {"office"}})
-            self.assertEqual(category, "business")
-
-    def test_nothing_eligible_returns_empty(self):
-        with TmpWildcards() as tmp:
-            _make_common_wardrobe(tmp)
-            resolver = WildcardResolver(tmp.dir)
-            self.assertEqual(core._pick_category(resolver, "characters/female/wardrobe", {"occasion": {"costume"}}), "")
-
-
-class TestFillSlots(unittest.TestCase):
-    def _resolver_with(self, tmp: TmpWildcards, random_value: float | None = None) -> WildcardResolver:
-        resolver = WildcardResolver(tmp.dir, mode="Deterministic (Seed)", seed=1)
-        if random_value is not None:
-            resolver.rng = FakeRng(random_value)  # type: ignore[assignment]
-        return resolver
-
-    def test_slots_gated_by_visible_regions(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            resolver = self._resolver_with(tmp, random_value=0.9)
-            pieces = core._fill_slots(
-                resolver,
-                {"regions": {"shoulders", "chest", "waist", "arms", "face"}},
-                "characters/tester/wardrobe",
-                "signature",
-                ["face", "shoulders", "chest", "arms", "waist"],
-                False,
-            )
-            self.assertEqual(pieces, ["a fitted top", "a delicate necklace"])
-
-    def test_bottoms_require_hips_or_legs(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            resolver = self._resolver_with(tmp, random_value=0.9)
-            pieces = core._fill_slots(
-                resolver,
-                {"regions": {"legs", "hips", "feet"}},
-                "characters/tester/wardrobe",
-                "signature",
-                ["hips", "legs", "feet"],
-                False,
-            )
-            self.assertEqual(pieces, ["tailored trousers", "leather shoes"])
-
-    def test_one_piece_substitutes_top_and_bottom(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            tmp.write("characters/tester/wardrobe/signature/one-piece.txt", "a flowing gown")
-            resolver = self._resolver_with(tmp, random_value=0.1)
-            pieces = core._fill_slots(
-                resolver,
-                {"regions": {"legs", "hips", "shoulders", "chest", "feet"}},
-                "characters/tester/wardrobe",
-                "signature",
-                ["shoulders", "chest", "hips", "legs", "feet"],
-                False,
-            )
-            self.assertEqual(pieces, ["a flowing gown", "leather shoes"])
-
-    def test_one_piece_empty_resolves_to_empty(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            tmp.write("characters/tester/wardrobe/signature/one-piece.txt", "## @occasion: never")
-            resolver = self._resolver_with(tmp, random_value=0.1)
-            pieces = core._fill_slots(
-                resolver,
-                {"regions": {"hips", "legs", "shoulders", "feet"}},
-                "characters/tester/wardrobe",
-                "signature",
-                ["shoulders", "hips", "legs", "feet"],
-                False,
-            )
-            self.assertEqual(pieces, ["leather shoes"])
-
-    def test_one_piece_gets_modifier(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            tmp.write("characters/tester/wardrobe/signature/one-piece.txt", "a flowing gown")
-            tmp.write("shared/garment-style.txt", "with flowing silk")
-            resolver = self._resolver_with(tmp, random_value=0.1)
-            pieces = core._fill_slots(
-                resolver,
-                {"regions": {"hips", "legs", "shoulders", "chest", "feet"}},
-                "characters/tester/wardrobe",
-                "signature",
-                ["shoulders", "chest", "hips", "legs", "feet"],
-                True,
-            )
-            self.assertEqual(pieces, ["a flowing gown, with flowing silk", "leather shoes"])
-
-    def test_missing_slot_file_skipped(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            resolver = self._resolver_with(tmp, random_value=0.9)
-            pieces = core._fill_slots(
-                resolver,
-                {"regions": {"face"}},
-                "characters/tester/wardrobe",
-                "signature",
-                ["face"],
-                False,
-            )
-            self.assertEqual(pieces, ["a delicate necklace"])
-
-    def test_slot_file_missing_returns_empty(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            resolver = self._resolver_with(tmp, random_value=0.9)
-            value = core._resolve_slot(
-                resolver,
-                {"regions": {"face"}},
-                "characters/tester/wardrobe/signature",
-                "tops",
-                False,
-            )
-            self.assertEqual(value, ("", {}))
-
-    def test_slot_fully_filtered_skipped(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            tmp.write("characters/tester/wardrobe/signature/tops.txt", "#@occasion: never\nan occasion top")
-            resolver = self._resolver_with(tmp, random_value=0.9)
-            pieces = core._fill_slots(
-                resolver,
-                {"regions": {"shoulders", "chest"}, "occasion": {"office"}},
-                "characters/tester/wardrobe",
-                "signature",
-                ["shoulders", "chest"],
-                False,
-            )
-            self.assertEqual(pieces, [])
-
-    def test_modifier_applied_to_tagless_piece(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            tmp.write("shared/garment-style.txt", "with flowing silk")
-            resolver = self._resolver_with(tmp, random_value=0.9)
-            pieces = core._fill_slots(
-                resolver,
-                {"regions": {"shoulders", "chest"}},
-                "characters/tester/wardrobe",
-                "signature",
-                ["shoulders", "chest"],
-                True,
-            )
-            self.assertEqual(pieces, ["a fitted top, with flowing silk"])
-
-    def test_modifier_disabled(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            tmp.write("shared/garment-style.txt", "with flowing silk")
-            resolver = self._resolver_with(tmp, random_value=0.9)
-            pieces = core._fill_slots(
-                resolver,
-                {"regions": {"shoulders", "chest"}},
-                "characters/tester/wardrobe",
-                "signature",
-                ["shoulders", "chest"],
-                False,
-            )
-            self.assertEqual(pieces, ["a fitted top"])
-
-    def test_modifier_skipped_for_inline_tag(self):
-        with TmpWildcards() as tmp:
-            tmp.write("characters/tester/wardrobe/catalog.txt", "__characters/tester/wardrobe/sig__")
-            tmp.write("characters/tester/wardrobe/sig/tops.txt", "a dress, __shared/colors__")
-            tmp.write("shared/colors.txt", "crimson")
-            tmp.write("shared/garment-style.txt", "with flowing silk")
-            resolver = self._resolver_with(tmp, random_value=0.9)
-            pieces = core._fill_slots(
-                resolver,
-                {"regions": {"shoulders", "chest"}},
-                "characters/tester/wardrobe",
-                "sig",
-                ["shoulders", "chest"],
-                True,
-            )
-            self.assertEqual(pieces, ["a dress, crimson"])
-
-    def test_modifier_missing_file(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            resolver = self._resolver_with(tmp, random_value=0.9)
-            pieces = core._fill_slots(
-                resolver,
-                {"regions": {"shoulders", "chest"}},
-                "characters/tester/wardrobe",
-                "signature",
-                ["shoulders", "chest"],
-                True,
-            )
-            self.assertEqual(pieces, ["a fitted top"])
-
-    def test_modifier_not_applied_to_accessories(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            tmp.write("shared/garment-style.txt", "with flowing silk")
-            resolver = self._resolver_with(tmp, random_value=0.9)
-            pieces = core._fill_slots(
-                resolver,
-                {"regions": {"face", "neck", "hands"}},
-                "characters/tester/wardrobe",
-                "signature",
-                ["face", "neck", "hands"],
-                True,
-            )
-            self.assertEqual(pieces, ["a delicate necklace"])
-
-    def test_inline_choices_expanded(self):
-        with TmpWildcards() as tmp:
-            tmp.write("characters/tester/wardrobe/catalog.txt", "__characters/tester/wardrobe/sig__")
-            tmp.write("characters/tester/wardrobe/sig/tops.txt", "a {silk|wool} top")
-            resolver = self._resolver_with(tmp, random_value=0.9)
-            pieces = core._fill_slots(
-                resolver,
-                {"regions": {"shoulders", "chest"}},
-                "characters/tester/wardrobe",
-                "sig",
-                ["shoulders", "chest"],
-                False,
-            )
-            self.assertIn(pieces[0], ("a silk top", "a wool top"))
-
-
-class TestBuildCharacter(unittest.TestCase):
-    def test_no_camera_describes_everything(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            result = build_character(tmp.dir, "tester", None, "", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(result["type"], "character")
-            self.assertEqual(result["persona"], "tester")
-            self.assertEqual(result["regions"], list(core._ALL_CAMERA_REGIONS))
-            self.assertIn("long legs", result["description"])
-            self.assertEqual(result["pose"], "standing with weight on one hip")
-
-    def test_camera_strips_hidden_regions(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            camera = {"regions": ["face", "hair", "neck", "shoulders"], "face_visible": True, "view": "Front"}
-            result = build_character(tmp.dir, "tester", camera, "", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(result["attributes"]["legs"], "")
-            self.assertEqual(result["attributes"]["body"], "")
-            self.assertIn("gentle features", result["description"])
-
-    def test_profile_view_substitutes_profile_for_face(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            tmp.write("characters/tester/profile.txt", "a delicate side profile")
-            camera = {"regions": ["face", "hair"], "face_visible": True, "view": "Profile"}
-            result = build_character(tmp.dir, "tester", camera, "", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(result["attributes"]["face"], "")
-            self.assertEqual(result["attributes"]["profile"], "a delicate side profile")
-
-    def test_profile_view_without_profile_file_skips_face(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            camera = {"regions": ["face"], "face_visible": True, "view": "Profile"}
-            result = build_character(tmp.dir, "tester", camera, "", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(result["attributes"]["face"], "")
-            self.assertEqual(result["attributes"]["profile"], "")
-
-    def test_missing_attributes_stay_empty(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            result = build_character(tmp.dir, "tester", None, "", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(result["attributes"]["buttocks"], "")
-            self.assertEqual(result["attributes"]["navel"], "")
-
-    def test_persona_wardrobe_used_and_slots_gated(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            camera = {
-                "regions": ["face", "hair", "neck", "shoulders", "chest", "arms", "waist", "skin"],
-                "face_visible": True,
-                "view": "Front",
-            }
-            result = build_character(tmp.dir, "tester", camera, "casual", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(result["outfit_category"], "signature")
-            self.assertNotIn("tailored trousers", result["outfit"])
-            self.assertIn("a fitted top", result["outfit"])
-
-    def test_common_wardrobe_fallback_with_gender_file(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_common_wardrobe(tmp)
-            tmp.write("characters/tester/gender.txt", "female")
-            camera = _full_camera()
-            result = build_character(tmp.dir, "tester", camera, "office", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(result["outfit_category"], "business")
-            self.assertIn("a blazer and blouse", result["outfit"])
-
-    def test_common_wardrobe_default_gender_female(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_common_wardrobe(tmp)
-            camera = _full_camera()
-            result = build_character(tmp.dir, "tester", camera, "beach", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(result["outfit_category"], "swimwear")
-            self.assertIn("one-piece swimsuit", result["outfit"])
-
-    def test_common_wardrobe_disallowed_yields_no_outfit(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_common_wardrobe(tmp)
-            camera = _full_camera()
-            result = build_character(tmp.dir, "tester", camera, "office", False, False, "Deterministic (Seed)", 1)
-            self.assertEqual(result["outfit_category"], "")
-            self.assertEqual(result["outfit"], "")
-
-    def test_occasion_none_eligible_yields_no_outfit(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_common_wardrobe(tmp)
-            camera = _full_camera()
-            result = build_character(tmp.dir, "tester", camera, "costume", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(result["outfit_category"], "")
-            self.assertEqual(result["outfit"], "")
-
-    def test_unrestricted_occasion_allows_any_category(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_common_wardrobe(tmp)
-            camera = _full_camera()
-            result = build_character(tmp.dir, "tester", camera, "", True, False, "Deterministic (Seed)", 1)
-            self.assertIn(result["outfit_category"], ("business", "swimwear"))
-            self.assertEqual(result["occasion"], "")
-
-    def test_occasion_roll_on_unrestricted_with_options(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_common_wardrobe(tmp)
-            camera = _full_camera()
-            result = build_character(
-                tmp.dir,
-                "tester",
-                camera,
-                "",
-                True,
-                False,
-                "Deterministic (Seed)",
-                1,
-                occasion_options=["office", "beach", "festival"],
-            )
-            self.assertIn(result["occasion"], ("office", "beach"))
-            self.assertNotEqual(result["outfit"], "")
-            self.assertIn(result["outfit_category"], ("business", "swimwear"))
-
-    def test_occasion_roll_never_selects_uncovered(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_common_wardrobe(tmp)
-            camera = _full_camera()
-            for seed in range(10):
-                result = build_character(
-                    tmp.dir,
-                    "tester",
-                    camera,
-                    "",
-                    True,
-                    False,
-                    "Deterministic (Seed)",
-                    seed,
-                    occasion_options=["office", "beach", "festival", "costume"],
-                )
-                self.assertIn(result["occasion"], ("office", "beach"))
-
-    def test_occasion_roll_uncovered_only_stays_unrestricted(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_common_wardrobe(tmp)
-            camera = _full_camera()
-            result = build_character(
-                tmp.dir,
-                "tester",
-                camera,
-                "",
-                True,
-                False,
-                "Deterministic (Seed)",
-                1,
-                occasion_options=["festival"],
-            )
-            self.assertEqual(result["occasion"], "")
-            self.assertIn(result["outfit_category"], ("business", "swimwear"))
-
-    def test_occasion_roll_deterministic_same_seed(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_common_wardrobe(tmp)
-            camera = _full_camera()
-            kwargs = {
-                "camera": camera,
-                "occasion": "",
-                "use_common_wardrobe": True,
-                "use_shared_modifiers": False,
-                "mode": "Deterministic (Seed)",
-                "seed": 7,
-                "occasion_options": ["office", "beach"],
-            }
-            a = build_character(tmp.dir, "tester", **kwargs)
-            b = build_character(tmp.dir, "tester", **kwargs)
-            self.assertEqual(a["occasion"], b["occasion"])
-            self.assertIn(a["occasion"], ("office", "beach"))
-
-    def test_occasion_roll_skipped_without_wardrobe(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            camera = _full_camera()
-            result = build_character(
-                tmp.dir,
-                "tester",
-                camera,
-                "",
-                False,
-                False,
-                "Deterministic (Seed)",
-                1,
-                occasion_options=["office", "beach"],
-            )
-            self.assertEqual(result["occasion"], "")
-            self.assertEqual(result["outfit"], "")
-
-    def test_occasion_roll_skipped_for_agnostic_persona_wardrobe(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            camera = _full_camera()
-            result = build_character(
-                tmp.dir,
-                "tester",
-                camera,
-                "",
-                True,
-                False,
-                "Deterministic (Seed)",
-                1,
-                occasion_options=["office", "beach"],
-            )
-            self.assertEqual(result["occasion"], "")
-
-    def test_occasion_roll_no_repeat_variety(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_common_wardrobe(tmp)
-            camera = _full_camera()
-            occasions = {
-                build_character(
-                    tmp.dir,
-                    "tester",
-                    camera,
-                    "",
-                    True,
-                    False,
-                    "Random (No Repeat)",
-                    0,
-                    occasion_options=["office", "beach"],
-                )["occasion"]
-                for _ in range(16)
-            }
-            self.assertTrue(occasions <= {"office", "beach"})
-            self.assertGreater(len(occasions), 1)
-
-    def test_deterministic_same_seed_identical(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            kwargs = {
-                "camera": _full_camera(),
-                "occasion": "casual",
-                "use_common_wardrobe": True,
-                "use_shared_modifiers": True,
-                "mode": "Deterministic (Seed)",
-                "seed": 7,
-            }
-            a = build_character(tmp.dir, "tester", **kwargs)
-            b = build_character(tmp.dir, "tester", **kwargs)
-            self.assertEqual(a, b)
-
-    def test_no_repeat_mode_runs_and_varies(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            # Multiple multi-line sources: even if the shared no-repeat decks
-            # are re-created between builds (fresh unseeded shuffles), every
-            # build drawing the same line from ALL sources at once is
-            # effectively impossible.
-            tmp.write("characters/tester/face.txt", "one face\nanother face\na third face")
-            tmp.write("characters/tester/pose.txt", "one pose\ntwo pose")
-            tmp.write("characters/tester/wardrobe/signature/tops.txt", "a fitted top\nan oversized top")
-            tmp.write("shared/garment-style.txt", "with flowing silk\nwith crisp linen")
-            outs = [
-                build_character(tmp.dir, "tester", _full_camera(), "casual", True, True, "Random (No Repeat)", 0)
-                for _ in range(5)
-            ]
-            self.assertTrue(all(o["type"] == "character" for o in outs))
-            self.assertGreater(len({o["description"] for o in outs}), 1)
-
-    def test_unknown_persona_is_graceful(self):
-        result = build_character(_PACK_WILDCARDS, "does-not-exist", None, "", False, False, "Deterministic (Seed)", 1)
-        self.assertEqual(result["subject"], "")
-        self.assertEqual(result["outfit"], "")
-        self.assertEqual(result["description"], "")
-
-    def test_persona_flat_wardrobe_occasion_filtered(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            categories = {
-                "business": "#@occasion: office, formal, wedding",
-                "athletic": "#@occasion: athletic, gym, beach, travel",
-                "swimwear": "#@occasion: beach, pool, resort",
-            }
-            tmp.write(
-                "characters/tester/wardrobe/catalog.txt",
-                "__characters/tester/wardrobe/business__\n"
-                "__characters/tester/wardrobe/athletic__\n"
-                "__characters/tester/wardrobe/swimwear__",
-            )
-            for category, header in categories.items():
-                tmp.write(f"characters/tester/wardrobe/{category}.txt", f"{header}\n{category} wear")
-                garment = "an athletic garment" if category == "athletic" else f"a {category} garment"
-                tmp.write(f"characters/tester/wardrobe/{category}/tops.txt", garment)
-            gym = build_character(tmp.dir, "tester", _full_camera(), "gym", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(gym["outfit_category"], "athletic")
-            self.assertIn("an athletic garment", gym["outfit"])
-            pool = build_character(tmp.dir, "tester", _full_camera(), "pool", True, False, "Deterministic (Seed)", 2)
-            self.assertEqual(pool["outfit_category"], "swimwear")
-            self.assertIn("a swimwear garment", pool["outfit"])
-            office = build_character(tmp.dir, "tester", _full_camera(), "office", True, False, "Deterministic (Seed)", 3)
-            self.assertEqual(office["outfit_category"], "business")
-            self.assertIn("a business garment", office["outfit"])
-
-    def test_keywords_contain_pieces_without_persona(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            camera = _full_camera()
-            result = build_character(tmp.dir, "tester", camera, "casual", True, False, "Deterministic (Seed)", 1)
-            self.assertNotIn("tester", result["keywords"])
-            self.assertIn("Tester, a fictional subject", result["keywords"])
-            self.assertIn("long legs", result["keywords"])
-
-    def test_attributes_schema_is_fixed(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            result = build_character(tmp.dir, "tester", None, "", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(set(result["attributes"]), set(core._ALL_ATTRIBUTES))
-
-    def test_persona_traversal_sanitised(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            result = build_character(tmp.dir, "../tester", None, "", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(result["persona"], "female")
-
-
-class TestOccasionCoverage(unittest.TestCase):
-    def test_no_wardrobe_returns_none(self):
-        self.assertIsNone(core._occasion_coverage("some/dir", None))
-
-    def test_missing_root_returns_none(self):
-        with TmpWildcards() as tmp:
-            self.assertIsNone(core._occasion_coverage(tmp.dir, "wardrobe/missing"))
-
-    def test_untagged_category_means_universal(self):
-        with TmpWildcards() as tmp:
-            _make_common_wardrobe(tmp)
-            tmp.write("characters/female/wardrobe/loose.txt", "anything goes")
-            self.assertIsNone(core._occasion_coverage(tmp.dir, "characters/female/wardrobe"))
-
-    def test_only_catalog_means_universal(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            self.assertIsNone(core._occasion_coverage(tmp.dir, "characters/tester/wardrobe"))
-
-    def test_covered_occasions_collected(self):
-        with TmpWildcards() as tmp:
-            _make_common_wardrobe(tmp)
-            coverage = core._occasion_coverage(tmp.dir, "characters/female/wardrobe")
-            self.assertEqual(coverage, {"office", "formal", "wedding", "beach", "pool", "resort"})
-
-    def test_full_coverage_persona_wardrobe_covers_every_occasion(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            categories = {
-                "business": "office, formal, wedding",
-                "casual": "casual, travel, home, beach, party, athletic, resort",
-                "formal": "office, formal, wedding, party",
-                "party": "party, wedding, festival, costume",
-                "athletic": "athletic, gym, beach, travel",
-                "swimwear": "beach, pool, resort",
-                "lingerie": "intimate, boudoir",
-                "traditional": "festival, wedding, traditional, party",
-                "costume": "costume, party, festival",
-            }
-            base = "characters/tester/wardrobe"
-            for category, occasions in categories.items():
-                tmp.write(f"{base}/{category}.txt", f"#@occasion: {occasions}\n{category} wear")
-            coverage = core._occasion_coverage(tmp.dir, "characters/tester/wardrobe")
-            self.assertEqual(
-                coverage,
-                {
-                    "casual", "office", "formal", "wedding", "party", "festival", "costume",
-                    "athletic", "gym", "beach", "pool", "resort", "travel", "home",
-                    "intimate", "boudoir", "traditional",
-                },
-            )
-
-    def test_occasion_headers_ignore_other_directives(self):
-        with TmpWildcards() as tmp:
-            tmp.write("wardrobe/x/cat.txt", "#@outfit: formal\n#@occasion: beach, pool\nan outfit")
-            values = core._occasion_headers(os.path.join(tmp.dir, "wardrobe/x/cat.txt"))
-            self.assertEqual(values, {"beach", "pool"})
-
-    def test_occasion_headers_missing_file_empty(self):
-        self.assertEqual(core._occasion_headers(os.path.join("does", "not", "exist.txt")), set())
-
-    def test_persona_category_folders_scanned_recursively(self):
-        with TmpWildcards() as tmp:
-            tmp.write("characters/x/wardrobe/catalog.txt", "__characters/x/wardrobe/sig__")
-            tmp.write("characters/x/wardrobe/sig/tops.txt", "#@occasion: office, formal\na top")
-            tmp.write("characters/x/wardrobe/sig/bottoms.txt", "#@occasion: beach\na bottom")
-            tmp.write("characters/x/wardrobe/sig/catalog.txt", "#@occasion: never\nx")
-            tmp.write("characters/x/wardrobe/sig/outer/tops.txt", "#@occasion: travel\na top")
-            coverage = core._occasion_coverage(tmp.dir, "characters/x/wardrobe")
-            self.assertEqual(coverage, {"office", "formal", "beach", "travel"})
-
-    def test_subdirectory_unreadable_is_universal(self):
-        with TmpWildcards() as tmp:
-            tmp.write("characters/x/wardrobe/catalog.txt", "__characters/x/wardrobe/sig__")
-            tmp.write("characters/x/wardrobe/sig/tops.txt", "#@occasion: office\na top")
-            real_listdir = os.listdir
-
-            def failing(directory: str) -> list:
-                if directory.endswith(os.path.join("wardrobe", "sig")):
-                    raise OSError("unreadable")
-                return real_listdir(directory)
-
-            with mock.patch("_character_core.os.listdir", side_effect=failing):
-                coverage = core._occasion_coverage(tmp.dir, "characters/x/wardrobe")
-            self.assertIsNone(coverage)
-
-    def test_mixed_persona_categories_are_universal(self):
-        with TmpWildcards() as tmp:
-            tmp.write("characters/x/wardrobe/catalog.txt", "__characters/x/wardrobe/tagged__\n__characters/x/wardrobe/free__")
-            tmp.write("characters/x/wardrobe/tagged/tops.txt", "#@occasion: office\na top")
-            tmp.write("characters/x/wardrobe/free/bottoms.txt", "anything")
-            self.assertIsNone(core._occasion_coverage(tmp.dir, "characters/x/wardrobe"))
-
-    def test_common_wardrobe_slot_folders_not_scanned(self):
-        with TmpWildcards() as tmp:
-            _make_common_wardrobe(tmp)
-            tmp.write("characters/female/wardrobe/business/tops.txt", "#@occasion: never\nuntagged slot")
-            coverage = core._occasion_coverage(tmp.dir, "characters/female/wardrobe")
-            self.assertEqual(coverage, {"office", "formal", "wedding", "beach", "pool", "resort"})
-
-
-class TestPoseHonesty(unittest.TestCase):
-    """Pose directives agree with the camera: facing follows the view, gaze
-    only when the face is in frame."""
-
-    _POSE = (
-        "#@facing: front\n"
-        "standing tall with one hand resting on her hip\n"
-        "#@facing: profile\n"
-        "walking slowly past, lost in thought\n"
-        "#@facing: back, back three-quarter\n"
-        "caught mid-turn, glancing over her shoulder\n"
-        "#@facing: three-quarter\n"
-        "poised with her weight on one leg\n"
-        "#@facing: front\n"
-        "#@gaze: into the lens\n"
-        "seated upright, meeting the camera with a composed gaze\n"
-    )
-
-    def _build(self, tmp: TmpWildcards, camera: dict | None, seed: int = 1, pose: str | None = None) -> str:
-        _make_persona(tmp)
-        tmp.write("characters/tester/pose.txt", pose if pose is not None else self._POSE)
-        return build_character(tmp.dir, "tester", camera, "casual", True, False, "Deterministic (Seed)", seed)["pose"]
-
-    def test_front_view_picks_front_lines_only(self):
-        with TmpWildcards() as tmp:
-            pose = self._build(tmp, {"regions": ["face", "hair"], "view": "Front", "face_visible": True})
-            self.assertIn(pose, ("standing tall with one hand resting on her hip", "seated upright, meeting the camera with a composed gaze"))
-
-    def test_back_view_picks_back_lines_only(self):
-        with TmpWildcards() as tmp:
-            pose = self._build(tmp, {"regions": ["back"], "view": "Back", "face_visible": False})
-            self.assertEqual(pose, "caught mid-turn, glancing over her shoulder")
-
-    def test_profile_view_picks_profile_lines_only(self):
-        with TmpWildcards() as tmp:
-            pose = self._build(tmp, {"regions": ["face", "hair"], "view": "Profile", "face_visible": True})
-            self.assertEqual(pose, "walking slowly past, lost in thought")
-
-    def test_three_quarter_front_uses_three_quarter_vocabulary(self):
-        with TmpWildcards() as tmp:
-            pose = self._build(tmp, {"regions": ["face", "hair"], "view": "3/4 Front", "face_visible": True})
-            self.assertEqual(pose, "poised with her weight on one leg")
-
-    def test_gaze_lines_blocked_when_face_hidden(self):
-        with TmpWildcards() as tmp:
-            pose = self._build(
-                tmp,
-                {"regions": ["back"], "view": "Back", "face_visible": False},
-                pose="plainly standing, not looking at the camera\n"
-                "#@gaze: into the lens\n"
-                "seated upright, meeting the camera with a composed gaze\n",
-            )
-            self.assertEqual(pose, "plainly standing, not looking at the camera")
-
-    def test_gaze_lines_eligible_when_face_visible(self):
-        with TmpWildcards() as tmp:
-            pose = self._build(
-                tmp,
-                {"regions": ["face", "hair"], "view": "Front", "face_visible": True},
-                pose="plainly standing, not looking at the camera\n"
-                "#@gaze: into the lens\n"
-                "seated upright, meeting the camera with a composed gaze\n",
-            )
-            self.assertIn(pose, ("seated upright, meeting the camera with a composed gaze", "plainly standing, not looking at the camera"))
-
-    def test_no_pose_line_for_facing_degrades_gracefully(self):
-        with TmpWildcards() as tmp:
-            pose = self._build(
-                tmp,
-                {"regions": ["back"], "view": "Back", "face_visible": False},
-                pose="#@facing: front\n"
-                "standing tall with one hand resting on her hip\n",
-            )
-            self.assertEqual(pose, "standing tall with one hand resting on her hip")
-
-    def test_fallback_never_reveals_gaze_lines_when_face_hidden(self):
-        with TmpWildcards() as tmp:
-            pose = self._build(
-                tmp,
-                {"regions": ["back"], "view": "Back", "face_visible": False},
-                pose="#@facing: front\n"
-                "standing tall with one hand resting on her hip\n"
-                "#@facing: front\n"
-                "#@gaze: into the lens\n"
-                "seated upright, meeting the camera with a composed gaze\n",
-            )
-            self.assertEqual(pose, "standing tall with one hand resting on her hip")
-
-    def test_no_camera_imposes_no_facing_gate(self):
-        with TmpWildcards() as tmp:
-            pose = self._build(tmp, None)
-            self.assertIn(
-                pose,
-                (
-                    "standing tall with one hand resting on her hip",
-                    "seated upright, meeting the camera with a composed gaze",
-                    "walking slowly past, lost in thought",
-                    "caught mid-turn, glancing over her shoulder",
-                    "poised with her weight on one leg",
-                ),
-            )
-
-    def test_pose_deterministic_per_seed(self):
-        with TmpWildcards() as tmp:
-            a = self._build(tmp, {"regions": ["face", "hair"], "view": "Front", "face_visible": True}, seed=9)
-            b = self._build(tmp, {"regions": ["face", "hair"], "view": "Front", "face_visible": True}, seed=9)
-            self.assertEqual(a, b)
-
-
-class TestFitProse(unittest.TestCase):
-    """Garment fit clauses: measurements.txt adjectives + #@fit zones, gated by
-    the visible camera regions."""
-
-    _FIT_TOPS = (
-        "#@fit: bust, waist\n"
-        "a silk camisole\n"
-    )
-
-    def _outfit(
-        self,
-        tmp: TmpWildcards,
-        camera: dict | None,
-        seed: int = 1,
-        measurements: str | None = None,
-        tops: str | None = None,
-    ) -> str:
-        _make_persona(tmp)
-        _make_persona_wardrobe(tmp)
-        if measurements is not None:
-            tmp.write("characters/tester/measurements.txt", measurements)
-        if tops is not None:
-            tmp.write("characters/tester/wardrobe/signature/tops.txt", tops)
-        return build_character(tmp.dir, "tester", camera, "casual", True, False, "Deterministic (Seed)", seed)["outfit"]
-
-    def test_fit_clause_composed_from_measurements(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp, None, measurements="#@bust: generous\n#@waist: tiny\n", tops=self._FIT_TOPS)
-            self.assertIn("silk camisole", outfit)
-            self.assertRegex(outfit, r"(fitting snugly|loose|flowing softly|fitting comfortably) over her generous bust")
-            self.assertRegex(outfit, r"(fitting snugly|loose|flowing softly|fitting comfortably) (over|at)?.*tiny waist")
-
-    def test_fit_zone_gated_by_visibility(self):
-        with TmpWildcards() as tmp:
-            camera = {"regions": ["shoulders", "arms", "waist", "hips", "legs"], "view": "Front", "face_visible": True}
-            outfit = self._outfit(tmp, camera, measurements="#@bust: generous\n", tops=self._FIT_TOPS)
-            self.assertNotIn("bust", outfit)
-            self.assertIn("waist", outfit)
-
-    def test_no_fit_directive_means_no_clause(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp, None)
-            self.assertNotIn("fitting", outfit)
-            self.assertNotIn("over her", outfit)
-
-    def test_default_measurements_when_file_missing(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp, None, tops=self._FIT_TOPS)
-            self.assertRegex(outfit, r"over her (full|slim|curved) (bust|waist)")
-
-    def test_multiple_zones_join_clauses(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            tmp.write(
-                "characters/tester/wardrobe/catalog.txt",
-                "__characters/tester/wardrobe/signature__",
-            )
-            tmp.write(
-                "characters/tester/wardrobe/signature/one-piece.txt",
-                "#@fit: bust, waist, hips\n"
-                "a flowing gown\n",
-            )
-            outfit = self._outfit(tmp, None, measurements="#@bust: generous\n#@waist: tiny\n#@hips: flared\n")
-            self.assertIn("bust", outfit)
-            self.assertIn("waist", outfit)
-            self.assertIn("hips", outfit)
-
-    def test_fit_deterministic_per_seed(self):
-        with TmpWildcards() as tmp:
-            a = self._outfit(tmp, None, seed=5, tops=self._FIT_TOPS)
-            b = self._outfit(tmp, None, seed=5, tops=self._FIT_TOPS)
-            self.assertEqual(a, b)
-
-    def test_category_specific_style_deck_preferred(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            tmp.write("shared/garment-style.txt", "in generic fabric\n")
-            tmp.write("shared/garment-style-signature.txt", "in signature fabric\n")
-            result = build_character(tmp.dir, "tester", None, "casual", True, True, "Deterministic (Seed)", 1)
-            self.assertIn("in signature fabric", result["outfit"])
-            self.assertNotIn("in generic fabric", result["outfit"])
-
-    def test_male_pronoun_and_chest_wording(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            tmp.write("characters/tester/gender.txt", "male")
-            outfit = self._outfit(
-                tmp,
-                None,
-                tops="#@fit: bust\n"
-                "a fitted shirt\n",
-            )
-            self.assertIn("over his", outfit)
-            self.assertIn("chest", outfit)
-            self.assertNotIn("over her", outfit)
-
-
-class TestNudeState(unittest.TestCase):
-    """The nude state replaces the outfit with the persona's region-tagged
-    nude.txt — one pick per visible body block, never mentioning hidden
-    zones."""
-
-    _NUDE = (
-        "fully nude\n"
-        "#@regions: breasts\n"
-        "her exposed bust with erect pink nipples\n"
-        "#@regions: navel\n"
-        "her flat stomach with a delicate navel\n"
-        "#@regions: back\n"
-        "fully nude from behind, her bare smooth back\n"
-        "#@regions: thighs\n"
-        "nude below the waist, smooth thighs\n"
-        "#@regions: legs, feet\n"
-        "her long toned legs\n"
-    )
-
-    def test_nude_state_replaces_outfit(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            tmp.write("characters/tester/nude.txt", self._NUDE)
-            result = build_character(tmp.dir, "tester", None, "casual", True, False, "Deterministic (Seed)", 1, state="nude")
-            self.assertEqual(result["state"], "nude")
-            self.assertEqual(result["outfit_category"], "nude")
-            self.assertIn("fully nude", result["outfit"])
-            self.assertNotIn("a fitted top", result["outfit"])
-            self.assertIn("fully nude", result["description"])
-            self.assertIn("fully nude", result["keywords"])
-
-    def test_nude_respects_visible_regions(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            tmp.write("characters/tester/nude.txt", self._NUDE)
-            back_camera = {"regions": ["back", "buttocks", "thighs", "legs", "feet", "hair"], "view": "Back", "face_visible": False}
-            result = build_character(tmp.dir, "tester", back_camera, "casual", True, False, "Deterministic (Seed)", 1, state="nude")
-            self.assertNotIn("nipples", result["outfit"])
-            self.assertIn("from behind", result["outfit"])
-            self.assertIn("toned legs", result["outfit"])
-            upper_only = {"regions": ["face", "hair", "neck", "shoulders", "chest", "breasts", "navel", "arms", "hands", "waist", "hips", "skin"], "view": "Front", "face_visible": True}
-            result2 = build_character(tmp.dir, "tester", upper_only, "casual", True, False, "Deterministic (Seed)", 1, state="nude")
-            self.assertIn("nipples", result2["outfit"])
-            self.assertNotIn("toned legs", result2["outfit"])
-
-    def test_nude_state_without_nude_file(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            result = build_character(tmp.dir, "tester", None, "casual", True, False, "Deterministic (Seed)", 1, state="nude")
-            self.assertEqual(result["outfit"], "")
-            self.assertEqual(result["outfit_category"], "nude")
-
-    def test_default_state_stays_dressed(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            result = build_character(tmp.dir, "tester", None, "casual", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(result["state"], "dressed")
-            self.assertNotEqual(result["outfit_category"], "nude")
-
-
-class TestStateMachine(unittest.TestCase):
-    """State axis: explicit states, Auto weights, garment mishap/slip phrases,
-    per-garment conditions."""
-
-    def _build(self, tmp: TmpWildcards, state: str = "", seed: int = 1, occasion: str = "casual", **kwargs: Any) -> dict[str, Any]:
-        _make_persona(tmp)
-        _make_persona_wardrobe(tmp)
-        return build_character(
-            tmp.dir,
-            "tester",
-            None,
-            occasion,
-            True,
-            False,
-            "Deterministic (Seed)",
-            seed,
-            state=state,
-            **kwargs,
+    def test_invalid_regions_fall_back_to_all(self):
+        regions, _face, _view = _regions_from_camera({"regions": []})
+        self.assertEqual(len(regions), 17)
+        regions, _face, _view = _regions_from_camera({"regions": "nope"})
+        self.assertEqual(len(regions), 17)
+
+    def test_context_occasion_key(self):
+        context = _context("", ["face"])
+        self.assertNotIn("occasion", context)
+        context = _context("beach", ["face"])
+        self.assertEqual(context["occasion"], {"beach"})
+
+    def test_pose_context_asserts_facing_and_gaze(self):
+        context = _pose_context({"regions": set()}, "Profile", False)
+        self.assertEqual(context["facing"], {"profile"})
+        self.assertEqual(context["gaze"], {"unavailable"})
+        context = _pose_context({"regions": set()}, "Top Down", True)
+        self.assertNotIn("facing", context)
+        self.assertNotIn("gaze", context)
+
+
+class TestComposeFit(EngineFixture):
+    def test_declared_visible_zone_composes(self):
+        import random
+
+        rng = random.Random(1)
+        measurements = {"bust": "generous", "back": "smooth", "thighs": "toned"}
+        clause = _compose_fit(rng, frozenset({"bust"}), measurements, {"breasts"}, "female")
+        self.assertIn("her generous bust", clause)
+        self.assertNotIn("back", clause)
+
+    def test_hidden_zone_skipped(self):
+        import random
+
+        rng = random.Random(1)
+        clause = _compose_fit(rng, frozenset({"bust"}), {}, set(), "female")
+        self.assertEqual(clause, "")
+
+    def test_male_zone_word(self):
+        import random
+
+        rng = random.Random(1)
+        clause = _compose_fit(rng, frozenset({"bust"}), {"bust": "broad"}, {"breasts"}, "male")
+        self.assertIn("his broad chest", clause)
+
+    def test_new_zones_live(self):
+        import random
+
+        rng = random.Random(1)
+        clause = _compose_fit(rng, frozenset({"back", "shoulders", "thighs"}), {}, {"back", "shoulders", "thighs"}, "female")
+        self.assertIn("back", clause)
+        self.assertIn("shoulders", clause)
+        self.assertIn("thighs", clause)
+
+
+class TestWardrobeRouting(EngineFixture):
+    def test_catalog_occasions(self):
+        self._make_common()
+        resolver = self._resolver()
+        covered = _catalog_occasions(resolver, "characters/female/wardrobe")
+        self.assertEqual(covered, {"casual", "travel", "home", "intimate", "boudoir", "beach", "pool", "resort"})
+        self.assertEqual(_catalog_occasions(resolver, "characters/female/nowhere"), set())
+
+    def test_wardrobe_plan_all_modes(self):
+        self._make_maya()
+        self._make_common()
+        resolver = self._resolver()
+        band = (20, 80)
+        self.assertEqual(
+            _wardrobe_plan(resolver, "characters/maya", "female", WARDROBE_INTERNAL, band),
+            [("characters/maya/wardrobe", None)],
+        )
+        self.assertEqual(
+            _wardrobe_plan(resolver, "characters/maya", "female", WARDROBE_COMPLETE, band),
+            [("characters/female/wardrobe", None), ("characters/maya/wardrobe", None)],
+        )
+        self.assertEqual(
+            _wardrobe_plan(resolver, "characters/maya", "female", WARDROBE_EXTERNAL, band),
+            [("characters/female/wardrobe", band), ("characters/maya/wardrobe", None)],
+        )
+        # Without a band a custom persona sticks to her own clothes.
+        self.assertEqual(
+            _wardrobe_plan(resolver, "characters/maya", "female", WARDROBE_EXTERNAL, None),
+            [("characters/maya/wardrobe", None)],
+        )
+        # The generic persona IS the common wardrobe; no second source.
+        self.assertEqual(
+            _wardrobe_plan(resolver, "characters/female", "female", WARDROBE_EXTERNAL, band),
+            [("characters/female/wardrobe", band)],
+        )
+        # Internal with no personal wardrobe falls back to common (band kept).
+        self.assertEqual(
+            _wardrobe_plan(resolver, "characters/unknown", "female", WARDROBE_INTERNAL, band),
+            [("characters/female/wardrobe", band)],
+        )
+        self.assertEqual(
+            _wardrobe_plan(resolver, "characters/unknown", "female", WARDROBE_EXTERNAL, None),
+            [("characters/female/wardrobe", None)],
         )
 
-    def test_explicit_states_resolve_directly(self):
-        with TmpWildcards() as tmp:
-            for state in ("dressed", "revealing", "mishap", "slipping", "nude"):
-                result = self._build(tmp, state=state)
-                self.assertEqual(result["state"], state)
+    def test_roll_occasion(self):
+        self._make_common()
+        resolver = self._resolver(seed=0)
+        plan = _wardrobe_plan(resolver, "characters/female", "female", WARDROBE_EXTERNAL, (0, 100))
+        rolled = _roll_occasion(resolver, plan, ["beach", "gym", "office"])
+        self.assertEqual(rolled, "beach")
+        self.assertEqual(_roll_occasion(resolver, plan, ["gym"]), "")
+        self.assertEqual(_roll_occasion(resolver, [("characters/female/nowhere", None)], ["beach"]), "")
 
-    def test_auto_rolls_occasion_weighted(self):
-        with TmpWildcards() as tmp:
-            professional = self._build(tmp, occasion="office")
-            self.assertEqual(professional["state"], "dressed")
-            states = {build_character(tmp.dir, "tester", None, "casual", True, False, "Deterministic (Seed)", seed)["state"] for seed in range(60)}
-            self.assertLessEqual(states, set(core._STATE_VALUES))
-            intimate_states = {
-                build_character(tmp.dir, "tester", None, "intimate", True, False, "Deterministic (Seed)", seed)["state"] for seed in range(60)
-            }
-            self.assertIn("nude", intimate_states)
+    def test_pick_category_routes_by_occasion(self):
+        self._make_common()
+        resolver = self._resolver(seed=0)
+        context = _context("intimate", ["face"])
+        self.assertEqual(_pick_category(resolver, "characters/female/wardrobe", context), "lingerie")
+        unrestricted = _pick_category(resolver, "characters/female/wardrobe", _context("", ["face"]))
+        self.assertIn(unrestricted, {"casual", "lingerie", "resort"})
 
-    def test_state_options_subset_rolls_within(self):
-        with TmpWildcards() as tmp:
-            seen = set()
-            for seed in range(30):
-                result = build_character(
-                    tmp.dir, "tester", None, "casual", True, False, "Deterministic (Seed)", seed, state_options=["dressed", "mishap"]
-                )
-                seen.add(result["state"])
-            self.assertLessEqual(seen, {"dressed", "mishap"})
-            self.assertEqual(len(seen), 2)
+    def test_pick_category_falls_back_when_occasion_uncovered(self):
+        self._make_common()
+        resolver = self._resolver(seed=0)
+        with self.assertLogs("ThatAIGod", level=logging.WARNING):
+            category = _pick_category(resolver, "characters/female/wardrobe", _context("wedding", ["face"]))
+        self.assertIn(category, {"casual", "lingerie", "resort"})
 
-    def test_garment_mishap_phrase_wins_over_deck(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            tmp.write(
-                "characters/tester/wardrobe/signature/tops.txt",
-                "#@mishap: her blouse slipping off one shoulder\n"
-                "a silk blouse\n",
+    def test_pick_category_personal_falls_back_to_curated(self):
+        self._make_maya()
+        resolver = self._resolver(seed=0)
+        with self.assertLogs("ThatAIGod", level=logging.WARNING):
+            category = _pick_category(resolver, "characters/maya/wardrobe", _context("gym", ["face"]))
+        self.assertEqual(category, "loungewear")
+
+    def test_pick_category_nothing_available(self):
+        self._write("characters/maya/wardrobe2/catalog.txt", "no tag lines here, just prose\n")
+        resolver = self._resolver(seed=0)
+        self.assertEqual(_pick_category(resolver, "characters/maya/wardrobe2", _context("gym", ["face"])), "")
+
+
+class TestSlots(EngineFixture):
+    def setUp(self):
+        super().setUp()
+        self._make_common()
+
+    def test_resolve_slot_missing_file(self):
+        self.assertEqual(_resolve_slot(self._resolver(), None, "characters/female/wardrobe/casual", "hats", None), ("", {}))
+
+    def test_resolve_slot_band_filters_lines(self):
+        resolver = self._resolver(seed=0)
+        piece, directives = _resolve_slot(resolver, None, "characters/female/wardrobe/casual", "tops", (0, 30))
+        self.assertEqual(piece, "a pastel cotton tee in a soft weave")
+        self.assertIn("bust", directives.get("fit", ()))
+        piece, _directives = _resolve_slot(resolver, None, "characters/female/wardrobe/casual", "tops", (50, 100))
+        self.assertEqual(piece, "a daring crop top with thin straps")
+        self.assertEqual(_resolve_slot(resolver, None, "characters/female/wardrobe/casual", "tops", (0, 10)), ("", {}))
+
+    def test_resolve_slot_without_band_ignores_lewdity(self):
+        resolver = self._resolver(seed=0)
+        piece, _directives = _resolve_slot(resolver, None, "characters/female/wardrobe/lingerie", "tops", None)
+        self.assertEqual(piece, "a sheer lace bralette with delicate straps")
+
+    def test_fill_slots_forces_one_piece_without_separates(self):
+        resolver = self._resolver(seed=0)
+        pieces, directives = _fill_slots(
+            resolver, None, "characters/female/wardrobe", "resort", ["face", "chest", "hips"], (0, 100)
+        )
+        self.assertEqual(pieces, ["a flowing kaftan in airy cotton"])
+        self.assertEqual(len(directives), 1)
+
+    def test_fill_slots_one_piece_probability(self):
+        resolver = self._resolver(seed=0)
+        with patch.object(resolver.rng, "random", return_value=0.0):
+            pieces, _directives = _fill_slots(
+                resolver, None, "characters/female/wardrobe", "casual", ["shoulders", "chest", "hips", "feet"], None
             )
-            result = build_character(tmp.dir, "tester", None, "casual", True, False, "Deterministic (Seed)", 1, state="mishap")
-            self.assertIn("with her blouse slipping off one shoulder", result["outfit"])
+        joined = ", ".join(pieces)
+        self.assertIn("denim overall dress", joined)
+        self.assertNotIn("jeans", joined)
 
-    def test_generic_mishap_deck_fallback(self):
-        with TmpWildcards() as tmp:
-            tmp.write("shared/state-mishap.txt", "the hem riding up her thighs\n")
-            result = self._build(tmp, state="mishap")
-            self.assertIn("with the hem riding up her thighs", result["outfit"])
-
-    def test_slipping_state_uses_slip_deck(self):
-        with TmpWildcards() as tmp:
-            tmp.write("shared/state-slip.txt", "the dress slipping down her hips, still covering her\n")
-            result = self._build(tmp, state="slipping")
-            self.assertIn("with the dress slipping down her hips", result["outfit"])
-
-    def test_revealing_state_appends_revealing_clause(self):
-        with TmpWildcards() as tmp:
-            tmp.write("shared/state-revealing.txt", "the sheer fabric barely veiling her skin\n")
-            result = self._build(tmp, state="revealing")
-            self.assertIn("the sheer fabric barely veiling her skin", result["outfit"])
-
-    def test_condition_applied_to_eligible_garment(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            tmp.write(
-                "characters/tester/wardrobe/signature/one-piece.txt",
-                "#@condition: wet\n"
-                "a swimsuit\n",
+        resolver = self._resolver(seed=0)
+        with patch.object(resolver.rng, "random", return_value=0.99):
+            pieces, _directives = _fill_slots(
+                resolver, None, "characters/female/wardrobe", "casual", ["shoulders", "chest", "hips", "feet"], None
             )
-            tmp.write("shared/state-condition.txt", "#@condition: wet\nclinging wet to her skin\n")
-            found = False
-            for seed in range(40):
-                result = build_character(tmp.dir, "tester", None, "casual", True, False, "Deterministic (Seed)", seed)
-                if "clinging wet" in result["outfit"]:
-                    found = True
-                    break
-            self.assertTrue(found)
+        joined = ", ".join(pieces)
+        self.assertIn("jeans", joined)
+        self.assertIn("sneakers", joined)
+        self.assertNotIn("denim overall dress", joined)
 
-    def test_untagged_garment_never_gets_condition(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            tmp.write(
-                "characters/tester/wardrobe/signature/tops.txt",
-                "a wool sweater\n",
+    def test_fill_slots_skips_hidden_regions(self):
+        resolver = self._resolver(seed=0)
+        with patch.object(resolver.rng, "random", return_value=0.99):
+            pieces, _directives = _fill_slots(
+                resolver, None, "characters/female/wardrobe", "casual", ["shoulders", "chest"], None
             )
-            tmp.write("shared/state-condition.txt", "#@condition: wet\nclinging wet to her skin\n")
-            for seed in range(40):
-                result = build_character(tmp.dir, "tester", None, "casual", True, False, "Deterministic (Seed)", seed)
-                self.assertNotIn("clinging wet", result["outfit"])
+        joined = ", ".join(pieces)
+        self.assertNotIn("jeans", joined)
+        self.assertNotIn("sneakers", joined)
 
-    def test_outfit_directive_gates_attribute_variants(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            _make_persona_wardrobe(tmp)
-            tmp.write(
-                "characters/tester/hair.txt",
-                "#@outfit: signature\n"
-                "signature loose waves\n"
-                "#@outfit: business\n"
-                "business slick bun\n",
+    def test_fill_slots_empty_category(self):
+        self._write("characters/female/wardrobe/empty/tops.txt", "#@lewdity: 10\n")
+        resolver = self._resolver(seed=0)
+        pieces, directives = _fill_slots(resolver, None, "characters/female/wardrobe", "empty", ["face"], None)
+        self.assertEqual(pieces, [])
+        self.assertEqual(directives, [])
+
+
+class TestExtras(EngineFixture):
+    def setUp(self):
+        super().setUp()
+        self._make_common()
+
+    def test_roll_extras_probabilities(self):
+        resolver = self._resolver(seed=0)
+        with patch.object(resolver.rng, "random", side_effect=[0.0, 0.99, 0.99]):
+            self.assertEqual(_roll_extras(resolver, "casual"), ["thin gold hoop earrings"])
+        with patch.object(resolver.rng, "random", side_effect=[0.99, 0.99, 0.99]):
+            self.assertEqual(_roll_extras(resolver, "casual"), [])
+        with patch.object(resolver.rng, "random", side_effect=[0.0, 0.0, 0.0]):
+            extras = _roll_extras(resolver, "casual")
+        self.assertEqual(extras, ["thin gold hoop earrings", "a woven canvas tote"])
+        self.assertLessEqual(len(extras), _EXTRA_CAP)
+
+    def test_roll_extras_missing_pools_skip_silently(self):
+        resolver = self._resolver(seed=0)
+        with patch.object(resolver.rng, "random", return_value=0.0):
+            self.assertEqual(_roll_extras(resolver, "lingerie"), [])
+
+    def test_roll_extras_empty_category(self):
+        self.assertEqual(_roll_extras(self._resolver(), ""), [])
+
+    def test_roll_extras_pool_name_mapping(self):
+        self._write("jewellery/female_saree_jewellery.txt", "gold jhumka earrings\n")
+        resolver = self._resolver(seed=0)
+        with patch.object(resolver.rng, "random", side_effect=[0.0, 0.99, 0.99]):
+            self.assertEqual(_roll_extras(resolver, "sarees"), ["gold jhumka earrings"])
+
+
+class TestBackground(EngineFixture):
+    def setUp(self):
+        super().setUp()
+        self._make_common()
+
+    def test_background_resolves_matching_location(self):
+        resolver = self._resolver(seed=0)
+        background = _background(resolver, "casual", "", "")
+        self.assertEqual(background, "in a sunlit corner cafe with oak tables")
+
+    def test_background_time_filter_prefers_tagged_lines(self):
+        resolver = self._resolver(seed=0)
+        # The diner taxonomy has only time-tagged lines: a night request
+        # must resolve to the night line, never the dawn one.
+        self.assertEqual(_background(resolver, "lingerie", "night", ""), "in a dim diner under humming neon signs")
+        self.assertEqual(_background(resolver, "lingerie", "dawn", ""), "in a misty diner at first light")
+        self.assertIn(_background(resolver, "lingerie", "", ""), {"in a dim diner under humming neon signs", "in a misty diner at first light"})
+
+    def test_background_time_filter_on_universal_file_keeps_universal(self):
+        resolver = self._resolver(seed=0)
+        # The cafe taxonomy has one universal line and no time blocks: the
+        # time filter cannot invent a variant, so the universal line serves.
+        self.assertEqual(_background(resolver, "casual", "night", ""), "in a sunlit corner cafe with oak tables")
+
+    def test_background_domain_filter_excludes(self):
+        resolver = self._resolver(seed=0)
+        # The cafe taxonomy has no #@domain header, so a domain filter drops
+        # its only universal line?  No — unasserted keys never restrict; the
+        # header-less line stays eligible.
+        self.assertEqual(_background(resolver, "casual", "", "waterfront"), "in a sunlit corner cafe with oak tables")
+
+    def test_background_domain_matching(self):
+        resolver = self._resolver(seed=0)
+        self.assertEqual(_background(resolver, "resort", "", "waterfront"), "on a wide sandy beach with dune grass")
+
+    def test_background_missing_matching_file_warns(self):
+        resolver = self._resolver(seed=0)
+        with self.assertLogs("ThatAIGod", level=logging.WARNING):
+            self.assertEqual(_background(resolver, "business", "", ""), "")
+
+    def test_background_non_tag_matching_line_returns_empty(self):
+        self._write("locations/female_business_matching_locations.txt", "just prose, not a tag\n")
+        resolver = self._resolver(seed=0)
+        self.assertEqual(_background(resolver, "business", "", ""), "")
+        self.assertEqual(_tag_path("just prose, not a tag"), "")
+
+    def test_background_without_category(self):
+        self.assertEqual(_background(self._resolver(), "", "", ""), "")
+
+    def test_background_empty_matching_file(self):
+        self._write("locations/female_lingerie_matching_locations.txt", "#@occasion: intimate\n")
+        resolver = self._resolver(seed=0)
+        self.assertEqual(_background(resolver, "lingerie", "", ""), "")
+
+
+class TestBuildCharacter(EngineFixture):
+    def setUp(self):
+        super().setUp()
+        self._make_maya()
+        self._make_common()
+
+    def _build(self, **overrides):
+        params = dict(
+            wildcards_dir=self.wildcards,
+            persona="maya",
+            camera=None,
+            occasion="casual",
+            wardrobe_mode=WARDROBE_EXTERNAL,
+            mode="Deterministic (Seed)",
+            seed=0,
+            lewdity_min=-1,
+            lewdity_max=-1,
+        )
+        params.update(overrides)
+        return build_character(**params)
+
+    def test_output_shape(self):
+        character = self._build()
+        for key in (
+            "type",
+            "persona",
+            "trigger",
+            "occasion",
+            "wardrobe_mode",
+            "wardrobe_base",
+            "lewdity",
+            "regions",
+            "face_visible",
+            "attributes",
+            "pose",
+            "outfit_category",
+            "outfit",
+            "background",
+            "subject",
+            "description",
+            "keywords",
+        ):
+            self.assertIn(key, character)
+        self.assertEqual(character["type"], "character")
+        self.assertEqual(character["persona"], "maya")
+        self.assertEqual(character["trigger"], "maya_lora")
+        self.assertEqual(character["lewdity"], (20, 80))
+
+    def test_band_gates_common_wardrobe(self):
+        character = self._build(lewdity_min=20, lewdity_max=30)
+        self.assertEqual(character["wardrobe_base"], "characters/female/wardrobe")
+        self.assertEqual(character["outfit_category"], "casual")
+        self.assertIn("tee", character["outfit"])
+
+    def test_narrow_band_falls_back_to_personal_wardrobe(self):
+        character = self._build(occasion="intimate", lewdity_min=0, lewdity_max=10)
+        # Lingerie (85) is out of band; maya's loungewear serves instead.
+        self.assertEqual(character["wardrobe_base"], "characters/maya/wardrobe")
+        self.assertEqual(character["outfit_category"], "loungewear")
+
+    def test_internal_mode_uses_personal_wardrobe(self):
+        character = self._build(occasion="home", wardrobe_mode=WARDROBE_INTERNAL)
+        self.assertEqual(character["wardrobe_base"], "characters/maya/wardrobe")
+        self.assertEqual(character["outfit_category"], "loungewear")
+
+    def test_complete_mode_ignores_band(self):
+        character = self._build(occasion="intimate", wardrobe_mode=WARDROBE_COMPLETE, lewdity_min=0, lewdity_max=10)
+        self.assertEqual(character["wardrobe_base"], "characters/female/wardrobe")
+        self.assertEqual(character["outfit_category"], "lingerie")
+        self.assertIn("bralette", character["outfit"])
+
+    def test_no_lewdity_sticks_to_own_wardrobe(self):
+        lewdity_path = os.path.join(self.wildcards, "characters", "maya", "lewdity.txt")
+        if os.path.exists(lewdity_path):
+            os.remove(lewdity_path)
+        character = self._build()
+        self.assertIsNone(character["lewdity"])
+        self.assertEqual(character["wardrobe_base"], "characters/maya/wardrobe")
+
+    def test_subject_intro_universal_fallback(self):
+        character = self._build(occasion="gym")
+        self.assertEqual(character["attributes"]["intro"], "a poised woman with dark hair")
+
+    def test_occasion_rolls_from_coverage(self):
+        character = self._build(occasion="", occasion_options=["beach", "gym"])
+        self.assertEqual(character["occasion"], "beach")
+        self.assertEqual(character["outfit_category"], "resort")
+
+    def test_subject_intro_occasion_blocks(self):
+        beach = self._build(occasion="beach")
+        self.assertIn("beachgoer", beach["attributes"]["intro"])
+        office = self._build(occasion="office")
+        self.assertIn("professional", office["attributes"]["intro"])
+        self.assertNotIn("beachgoer", office["description"])
+
+    def test_camera_stripping_and_profile_substitution(self):
+        camera = {"regions": ["face", "chest"], "face_visible": True, "view": "Front"}
+        character = self._build(camera=camera)
+        self.assertIn("oval face", character["description"])
+        self.assertNotIn("braid", character["description"])
+        profile_cam = {"regions": ["face"], "face_visible": True, "view": "Profile"}
+        character = self._build(camera=profile_cam)
+        self.assertIn("fine-boned profile", character["description"])
+
+    def test_pose_respects_facing_and_falls_back(self):
+        camera = {"regions": ["face"], "face_visible": True, "view": "Back"}
+        character = self._build(camera=camera)
+        # No back-facing pose line exists; the fallback still yields a pose.
+        self.assertTrue(character["pose"])
+
+    def test_pose_fallback_blocks_gaze_when_face_hidden(self):
+        camera = {"regions": ["face"], "face_visible": False, "view": "Back"}
+        character = self._build(camera=camera)
+        # No back-facing line and the face is out of frame: the fallback pose
+        # resolves under the gaze-blocked context and never meets the lens.
+        self.assertTrue(character["pose"])
+        self.assertNotIn("lens", character["pose"])
+
+    def test_plan_base_without_category_falls_to_next(self):
+        # A common catalog with no tag lines routes nothing; the personal
+        # wardrobe later in the plan serves instead.
+        self._write("characters/female/wardrobe/catalog.txt", "no categories here, just prose\n")
+        character = self._build(occasion="home")
+        self.assertEqual(character["wardrobe_base"], "characters/maya/wardrobe")
+        self.assertEqual(character["outfit_category"], "loungewear")
+
+    def test_outfit_context_gates_attributes(self):
+        self._write("characters/maya/hair.txt", "#@outfit: lingerie\nhair pinned up elegantly\n")
+        lingerie = self._build(occasion="intimate", wardrobe_mode=WARDROBE_COMPLETE)
+        self.assertIn("pinned up", lingerie["description"])
+        casual = self._build(occasion="casual")
+        self.assertNotIn("pinned up", casual["description"])
+
+    def test_background_separate_from_description(self):
+        character = self._build()
+        self.assertEqual(character["background"], "in a sunlit corner cafe with oak tables")
+        self.assertNotIn("cafe", character["description"])
+        self.assertNotIn("cafe", character["keywords"])
+
+    def test_background_with_time_filter(self):
+        character = build_character(
+            wildcards_dir=self.wildcards,
+            persona="female",
+            camera=None,
+            occasion="intimate",
+            wardrobe_mode=WARDROBE_EXTERNAL,
+            mode="Deterministic (Seed)",
+            seed=0,
+            time_of_day="night",
+        )
+        self.assertEqual(character["background"], "in a dim diner under humming neon signs")
+
+    def test_fit_clause_uses_measurements(self):
+        camera = {"regions": ["face", "chest", "breasts"], "face_visible": True, "view": "Front"}
+        character = self._build(camera=camera, seed=3)
+        self.assertIn("generous bust", character["outfit"])
+
+    def test_no_outfit_available_warns(self):
+        # Internal mode with a category whose only slot file has no garment
+        # lines: nothing can be dressed, but the category WAS routed, so no
+        # "no category routed" warning — the outfit is simply empty.
+        self._write("characters/maya/wardrobe/loungewear/tops.txt", "#@lewdity: 10\n")
+        character = build_character(
+            wildcards_dir=self.wildcards,
+            persona="maya",
+            camera=None,
+            occasion="home",
+            wardrobe_mode=WARDROBE_INTERNAL,
+            mode="Deterministic (Seed)",
+            seed=0,
+        )
+        self.assertEqual(character["outfit_category"], "")
+        self.assertEqual(character["outfit"], "")
+        self.assertEqual(character["background"], "")
+
+    def test_no_category_routed_warns(self):
+        # A wardrobe whose catalog has no tag lines routes nothing at all.
+        self._write("characters/maya/wardrobe/catalog.txt", "no categories here, just prose\n")
+        with self.assertLogs("ThatAIGod", level=logging.WARNING):
+            character = build_character(
+                wildcards_dir=self.wildcards,
+                persona="maya",
+                camera=None,
+                occasion="home",
+                wardrobe_mode=WARDROBE_INTERNAL,
+                mode="Deterministic (Seed)",
+                seed=0,
             )
-            tmp.write(
-                "characters/tester/wardrobe/catalog.txt",
-                "__characters/tester/wardrobe/business__\n"
-                "__characters/tester/wardrobe/signature__",
+        self.assertEqual(character["outfit_category"], "")
+
+    def test_extras_ride_the_outfit(self):
+        resolver = self._resolver(seed=1)
+        with patch.object(resolver.rng, "random", side_effect=[0.0, 0.0, 0.0]):
+            character = build_character(
+                wildcards_dir=self.wildcards,
+                persona="female",
+                camera=None,
+                occasion="casual",
+                wardrobe_mode=WARDROBE_EXTERNAL,
+                mode="Deterministic (Seed)",
+                seed=1,
+                resolver=resolver,
             )
-            tmp.write("characters/tester/wardrobe/business.txt", "#@occasion: office, formal, wedding\nbusiness wear")
-            tmp.write("characters/tester/wardrobe/business/tops.txt", "a blouse")
-            business = build_character(tmp.dir, "tester", None, "office", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(business["attributes"]["hair"], "business slick bun")
-            signature = build_character(tmp.dir, "tester", None, "casual", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(signature["attributes"]["hair"], "signature loose waves")
-
-    def test_state_clause_without_outfit_pieces(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            tmp.write("shared/state-mishap.txt", "the hem riding up her thighs\n")
-            result = build_character(tmp.dir, "tester", None, "casual", True, False, "Deterministic (Seed)", 1, state="mishap")
-            self.assertEqual(result["outfit"], "with the hem riding up her thighs")
-
-    def test_state_deterministic_per_seed(self):
-        with TmpWildcards() as tmp:
-            a = self._build(tmp, seed=11)
-            b = self._build(tmp, seed=11)
-            self.assertEqual(a["state"], b["state"])
-            self.assertEqual(a["outfit"], b["outfit"])
+        self.assertIn("gold hoop earrings", character["outfit"])
+        self.assertIn("canvas tote", character["outfit"])
+        self.assertNotIn("highstreet label", character["outfit"])
 
 
-class TestModifierPipeline(unittest.TestCase):
-    """The append-phrase modifier pipeline: every tagless garment can draw
-    color, pattern, fabric and design clauses, with per-garment exclusions
-    and fixed opt-outs."""
-
-    _DECKS = {
-        "shared/colors.txt": "Sky blue\n",
-        "shared/pattern.txt": "with a floral print\n",
-        "shared/fabric.txt": "with soft cotton\n",
-        "shared/design.txt": "with an elegant cut\n",
-    }
-
-    def _outfit(
-        self,
-        tmp: TmpWildcards,
-        tops: str = "a fitted top\n",
-        category_modifiers: str | None = None,
-        decks: dict[str, str] | None = None,
-    ) -> str:
-        _make_persona(tmp)
-        _make_persona_wardrobe(tmp)
-        tmp.write("characters/tester/wardrobe/signature/tops.txt", tops)
-        # Keep the other slots out of the pipeline so assertions see only the tops.
-        for slot in ("bottoms", "shoes", "accessories"):
-            tmp.write(f"characters/tester/wardrobe/signature/{slot}.txt", "#@fixed: true\nplain piece\n")
-        if category_modifiers is not None:
-            tmp.write("characters/tester/wardrobe/signature.txt", f"#@modifiers: {category_modifiers}\nsignature wear")
-        for path, content in (decks or self._DECKS).items():
-            tmp.write(path, content)
-        return build_character(tmp.dir, "tester", None, "casual", True, True, "Deterministic (Seed)", 1)["outfit"]
-
-    def test_default_pipeline_applies_all_four_in_order(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp)
-            self.assertIn("in Sky blue", outfit)
-            self.assertIn("with a floral print", outfit)
-            self.assertIn("with soft cotton", outfit)
-            self.assertIn("with an elegant cut", outfit)
-            self.assertLess(outfit.index("in Sky blue"), outfit.index("with a floral print"))
-            self.assertLess(outfit.index("with a floral print"), outfit.index("with soft cotton"))
-            self.assertLess(outfit.index("with soft cotton"), outfit.index("with an elegant cut"))
-
-    def test_missing_decks_are_skipped(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp, decks={"shared/colors.txt": "Sky blue\n"})
-            self.assertIn("in Sky blue", outfit)
-            self.assertNotIn("floral", outfit)
-            self.assertNotIn("cotton", outfit)
-            self.assertNotIn("elegant", outfit)
-
-    def test_inline_tags_skip_the_pipeline(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp, tops="a fitted top, __shared/colors__\n")
-            self.assertIn("Sky blue", outfit)
-            self.assertNotIn("floral", outfit)
-            self.assertNotIn("cotton", outfit)
-
-    def test_fixed_garment_gets_no_modifiers(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp, tops="#@fixed: true\na fitted top\n")
-            self.assertNotIn("in Sky blue", outfit)
-            self.assertNotIn("floral", outfit)
-            self.assertNotIn("cotton", outfit)
-            self.assertNotIn("elegant", outfit)
-
-    def test_no_modifiers_excludes_dimensions(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp, tops="#@no_modifiers: fabric\na fitted top\n")
-            self.assertIn("in Sky blue", outfit)
-            self.assertNotIn("cotton", outfit)
-            self.assertIn("with an elegant cut", outfit)
-
-    def test_garment_modifiers_override_the_list(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp, tops="#@modifiers: design\na fitted top\n")
-            self.assertIn("with an elegant cut", outfit)
-            self.assertNotIn("in Sky blue", outfit)
-            self.assertNotIn("floral", outfit)
-            self.assertNotIn("cotton", outfit)
-
-    def test_category_modifiers_narrow_the_list(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp, category_modifiers="color, fabric")
-            self.assertIn("in Sky blue", outfit)
-            self.assertIn("with soft cotton", outfit)
-            self.assertNotIn("floral", outfit)
-            self.assertNotIn("elegant", outfit)
-
-    def test_unknown_modifier_names_are_skipped(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp, tops="#@modifiers: bogus\na fitted top\n")
-            self.assertEqual(outfit.split(", ")[0], "a fitted top")
-            self.assertNotIn("Sky blue", outfit)
-
-    def test_color_named_garment_skips_color_only(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp, tops="a white blouse\n")
-            self.assertNotIn("in Sky blue", outfit)
-            self.assertIn("with a floral print", outfit)
-            self.assertIn("with soft cotton", outfit)
-            self.assertIn("with an elegant cut", outfit)
-
-    def test_fabric_named_garment_skips_fabric_only(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp, tops="silk trousers\n")
-            self.assertNotIn("with soft cotton", outfit)
-            self.assertIn("in Sky blue", outfit)
-            self.assertIn("with a floral print", outfit)
-
-    def test_pattern_named_garment_skips_pattern_only(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp, tops="a floral dress\n")
-            self.assertNotIn("with a floral print", outfit)
-            self.assertIn("in Sky blue", outfit)
-            self.assertIn("with soft cotton", outfit)
-
-    def test_explicit_fixed_wins_over_auto_skip(self):
-        with TmpWildcards() as tmp:
-            outfit = self._outfit(tmp, tops="#@fixed: true\na classic black tuxedo\n")
-            self.assertNotIn("Sky blue", outfit)
-            self.assertNotIn("floral", outfit)
-            self.assertNotIn("cotton", outfit)
-            self.assertNotIn("elegant", outfit)
-
-    def test_category_fabric_deck_wins_over_shared(self):
-        with TmpWildcards() as tmp:
-            decks = dict(self._DECKS)
-            decks["shared/garment-style-signature.txt"] = "with signature fabric\n"
-            outfit = self._outfit(tmp, decks=decks)
-            self.assertIn("with signature fabric", outfit)
-            self.assertNotIn("with soft cotton", outfit)
-
-
-class TestTrigger(unittest.TestCase):
-    def test_trigger_resolved_and_kept_out_of_prose(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            tmp.write("characters/tester/trigger.txt", "cha:pak:trigger\nan alternate trigger\n")
-            result = build_character(tmp.dir, "tester", _full_camera(), "casual", True, False, "Deterministic (Seed)", 1)
-            self.assertIn(result["trigger"], ("cha:pak:trigger", "an alternate trigger"))
-            self.assertNotIn(result["trigger"], result["description"])
-            self.assertNotIn(result["trigger"], result["keywords"])
-            self.assertNotIn(result["trigger"], result["subject"])
-
-    def test_missing_trigger_file_stays_empty(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            result = build_character(tmp.dir, "tester", None, "", True, False, "Deterministic (Seed)", 1)
-            self.assertEqual(result["trigger"], "")
-
-    def test_trigger_deterministic_per_seed(self):
-        with TmpWildcards() as tmp:
-            _make_persona(tmp)
-            tmp.write("characters/tester/trigger.txt", "one\ntwo\nthree\n")
-            a = build_character(tmp.dir, "tester", None, "", True, False, "Deterministic (Seed)", 5)
-            b = build_character(tmp.dir, "tester", None, "", True, False, "Deterministic (Seed)", 5)
-            self.assertEqual(a["trigger"], b["trigger"])
+class TestWardrobeModeConstants(unittest.TestCase):
+    def test_mode_values(self):
+        self.assertEqual(
+            WARDROBE_MODES,
+            (WARDROBE_EXTERNAL, WARDROBE_INTERNAL, WARDROBE_COMPLETE),
+        )
+        self.assertEqual(WARDROBE_EXTERNAL, "Use External Wardrobe")
+        self.assertEqual(WARDROBE_INTERNAL, "Use Internal Wardrobe")
+        self.assertEqual(WARDROBE_COMPLETE, "Use Complete Wardrobe")
 
 
 if __name__ == "__main__":

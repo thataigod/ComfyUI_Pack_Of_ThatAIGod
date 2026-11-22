@@ -1,0 +1,119 @@
+#@lewdity: 20
+
+#@fit: bust, waist, hips
+#@lewdity: 15
+an ivory bridal gown in silk with a fitted corset bodice and a sheer cathedral veil that trails across the floor
+#@fit: bust, waist, hips
+a bridal gown in tulle with a cathedral train, layered organza ruffles, and a fingertip veil
+#@fit: bust, waist, hips
+#@lewdity: 25
+a mermaid bridal gown in satin with a beaded illusion neckline __patterns/female_party_dress_detail__
+#@fit: bust, waist, hips
+#@lewdity: 10
+a sheath bridal gown in velvet with a high-neck bodice and a long dramatic veil
+#@fit: bust, waist, shoulders
+#@lewdity: 25
+an off-shoulder bridal gown in satin with draped sleeves and a simple tulle veil that falls in a soft train
+#@fit: bust, waist, hips
+a ballroom bridal gown in silk with a full circular skirt __patterns/female_party_dress_detail__
+#@fit: bust, waist, shoulders
+#@lewdity: 15
+an ivory bridal gown in organza with a sheer veil that drapes over the arms
+#@fit: bust, waist, hips
+a bridal gown with a scarlet train in brocade with gold-thread borders __patterns/female_saree_borders__
+#@fit: bust, waist, hips
+a bridal gown in tulle with a ruffled skirt and a ribbon-trimmed veil
+#@fit: bust, waist, hips
+a bridal gown in organza with watercolor floral prints __patterns/female_saree_motifs__
+#@fit: bust, waist, hips
+a bridal gown in lace with floral lace motifs __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist, hips
+a bridal gown in satin with a pearl-beaded bodice and a satin sash __patterns/female_party_dress_detail__
+#@fit: bust, waist, hips
+#@lewdity: 45
+a bridal gown in velvet with a plunging illusion neckline and a high slit __patterns/female_party_dress_detail__
+#@fit: bust, waist, hips
+a bridal gown in satin with a structured peplum waist __patterns/female_party_dress_detail__
+#@fit: bust, waist, shoulders
+#@lewdity: 10
+a bridal gown in lace with sheer lace sleeves and a modest neckline
+#@fit: bust, waist, shoulders
+a bridal gown in lace with embroidered blossoms across the bodice and a floral-trimmed veil
+#@fit: bust, waist, hips
+#@lewdity: 25
+a column bridal gown in satin with a cowl neckline and a satin sash
+#@fit: bust, waist, hips
+a reception gown in satin with a sculpted bodice and a graceful flared hem
+#@fit: bust, waist, shoulders
+a reception gown in velvet with beaded cap sleeves and a short birdcage veil __patterns/female_party_dress_detail__
+#@fit: bust, waist, back
+#@lewdity: 30
+a reception gown in tulle with a corset bodice and a detachable train that reveals the back __patterns/female_party_dress_detail__
+#@fit: bust, waist, shoulders
+#@lewdity: 25
+a reception gown in velvet with an off-shoulder neckline flaring into a mermaid hem __patterns/female_party_dress_detail__
+#@fit: bust, waist, back
+#@lewdity: 25
+a reception gown in silk with a draped cowl back __patterns/female_saree_borders__
+#@fit: bust, waist, hips
+a bridal trousseau gown in silk with fine lace inserts and satin ribbons __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist, hips
+a bridal trousseau gown in satin with fine lace trim and covered buttons falling to mid-calf
+#@fit: bust, waist, shoulders
+#@lewdity: 25
+a bridal trousseau gown in silk with a pleated bodice and delicate straps __patterns/female_party_dress_detail__
+#@fit: bust, shoulders
+#@lewdity: 25
+a getting-ready bridal robe in satin with feathered trim and lace cuffs __patterns/female_lingerie_lace_detail__ that drapes open
+#@fit: bust, waist
+a bridal robe with ivory lace overlays and a flowing sash __patterns/female_lingerie_lace_detail__
+#@fit: bust, shoulders
+a getting-ready bridal robe in silk with embroidered monogram initials and a soft sash
+#@fit: bust, waist
+#@lewdity: 15
+a getting-ready bridal robe in velvet with quilted texture and satin lapels
+#@fit: bust, shoulders
+#@lewdity: 25
+a getting-ready bridal robe in satin with lace insets and a ribbon tie
+#@fit: bust, waist, hips
+#@lewdity: 30
+a bridal saree in silk with a wide gold border __patterns/female_saree_borders__ and a matching veil that pools in a soft train
+#@fit: bust, waist, hips
+#@lewdity: 30
+a pre-draped bridal saree in satin with a pleated pallu __patterns/female_saree_motifs__
+#@fit: bust, waist, hips
+#@lewdity: 30
+a bridal saree in organza with a feather-light pallu __patterns/female_saree_motifs__
+#@fit: bust, waist, hips
+#@lewdity: 30
+a bridal saree in silk with a crystal-encrusted matching blouse __patterns/female_saree_borders__
+#@fit: bust, waist, hips
+#@lewdity: 30
+a pre-draped bridal saree in organza with scattered floral motifs and a graceful pallu
+#@fit: bust, waist, hips
+#@lewdity: 35
+a bridal lehenga in silk with a fitted sweetheart blouse and a sheer dupatta that leaves the midriff bare
+#@fit: bust, waist, hips
+#@lewdity: 30
+a bridal lehenga in brocade with a scalloped blouse and a double dupatta __patterns/female_lehenga_work__
+#@fit: bust, waist, hips
+#@lewdity: 30
+a bridal lehenga in velvet with a hand-embroidered blouse and a long veil __patterns/female_lehenga_work__
+#@fit: bust, waist, hips
+#@lewdity: 30
+a bridal lehenga with a red drape in silk with a pleated dupatta __patterns/female_saree_borders__
+#@fit: bust, waist, hips
+#@lewdity: 35
+a bridal lehenga in satin with a beaded blouse and a dupatta pinned at the shoulder __patterns/female_lehenga_work__
+#@fit: bust, waist, hips
+#@lewdity: 30
+a bridal lehenga in silk with gemstone-toned embroidery and a regal dupatta __patterns/female_lehenga_work__
+#@fit: bust, waist, hips
+#@lewdity: 30
+a bridal lehenga in tulle with layered net flares and a flowing veil __patterns/female_lehenga_work__
+#@fit: bust, waist, hips
+#@lewdity: 30
+a bridal lehenga in organza with tonal embroidery and a sheer dupatta __patterns/female_lehenga_work__
+#@fit: bust, waist, hips
+#@lewdity: 30
+a bridal lehenga in brocade with a vermilion border and a pleated dupatta __patterns/female_saree_borders__

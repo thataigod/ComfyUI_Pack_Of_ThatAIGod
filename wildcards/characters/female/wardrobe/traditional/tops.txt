@@ -1,3 +1,59 @@
+#@lewdity: 20
+
 #@fit: bust, waist
-#@mishap: the blouse strap slipping down her arm
-an embroidered blouse, __jeweltone_colors_female__
+an embroidered blouse in __colors/female_jewel__
+#@fit: bust, shoulders
+#@lewdity: 30
+a sweetheart cap sleeved choli in __colors/female_jewel__ that accentuates her bust, with a dupatta draped diagonally over one shoulder
+#@fit: bust, waist
+#@lewdity: 10
+a high-neck full sleeved choli in raw silk that fully covers her torso
+#@fit: bust, waist
+#@lewdity: 10
+a cotton salwar kameez with side slits, round neckline and short sleeves, with a dupatta draped over one shoulder that modestly covers her chest
+#@fit: bust, waist
+#@lewdity: 10
+a silk churidar kameez with longer straight cut, V-neck and full sleeves, with a dupatta draped over both shoulders that fully covers her torso
+#@fit: bust, waist
+a cotton kurti with knee-length straight cut, round neckline and 3/4 sleeves with side slits, with a dupatta draped over one shoulder that modestly covers her chest
+#@fit: bust, waist
+#@lewdity: 10
+a short hip-length kurta in cotton with side slits and a collar neck, with a dupatta draped neatly over one shoulder that modestly covers her chest
+#@fit: bust, waist
+#@lewdity: 10
+a floor-length Anarkali kameez in georgette with kalidar panels and umbrella flare, sweetheart neckline with 3/4th sheer sleeves, with a dupatta draped over one shoulder that modestly covers her chest
+#@fit: bust, waist
+#@lewdity: 10
+a bridal Anarkali kameez in velvet with fitted bodice and heavy pleated panels, high-neck with full sleeves, with a dupatta draped over her head that fully covers her chest
+#@fit: bust, shoulders
+#@lewdity: 10
+a boat-neck short sleeved blouse in Assamese muga silk that modestly covers her torso, with a chador upper drape with fringed border wrapped over one shoulder
+#@fit: bust, shoulders
+#@lewdity: 10
+a high-neck short sleeved blouse in khun that modestly covers her chest
+#@fit: bust, shoulders
+#@lewdity: 15
+a boat-neck 3/4th sleeved blouse in silk that modestly covers her chest and midriff
+#@fit: bust, back
+#@lewdity: 35
+a sleeveless deep V blouse in georgette that accentuates her cleavage
+#@fit: bust, shoulders
+#@lewdity: 15
+a short sweetheart cap sleeved kurti in silk that modestly covers her chest, with a dupatta draped elegantly over one shoulder
+#@fit: bust, shoulders
+#@lewdity: 15
+a short V-neck 3/4 sleeved kurti in georgette that subtly shows her neckline while modestly covering her chest, with a dupatta draped over her head and shoulder
+#@fit: bust, waist
+#@lewdity: 10
+a printed cotton salwar kameez __patterns/female_salwar_prints__ with side slits, V-neck and 3/4 sleeves, with a dupatta draped elegantly across her torso that modestly covers her chest
+#@fit: bust, shoulders
+#@lewdity: 10
+a short hip-length kurta in phulkari cotton with side slits, round neckline and cap sleeves, with a dupatta draped over her head and shoulder that fully covers her chest and shoulders
+#@fit: bust, waist
+#@lewdity: 25
+a short U-neck cap sleeved kurti in velvet that subtly shows her cleavage while modestly covering her midriff, with a dupatta draped regally across her torso
+#@fit: bust, waist
+a georgette kurti __patterns/female_salwar_prints__ with calf-length A-line cut, V-neckline and cap sleeves, styled without a dupatta for a minimal traditional look
+#@fit: bust, shoulders
+#@lewdity: 10
+a round-neck elbow sleeved blouse in Assamese pat silk that modestly covers her chest and shoulders, with the fringed chador draped across her shoulders

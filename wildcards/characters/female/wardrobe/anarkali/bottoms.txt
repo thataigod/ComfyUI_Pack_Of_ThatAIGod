@@ -1,0 +1,37 @@
+#@lewdity: 10
+
+#@fit: hips, thighs
+__colors/female_light__ colored churidar bottoms with ankle gathers
+#@fit: hips, thighs
+__colors/female_metallic__ colored churidar bottoms with bangle-like gathers at the ankles
+#@fit: hips, thighs
+__colors/female_neutral__ colored palazzo pants with wide flowing legs
+#@fit: hips, thighs
+__colors/female_light__ colored palazzo pants with wide cropped legs
+#@fit: hips, thighs
+__colors/female_cool__ colored leggings with a straight fit
+#@fit: hips, thighs
+__colors/female_spring__ colored leggings with a fitted silhouette
+#@fit: hips, thighs
+__colors/female_bright__ colored churidar bottoms with puckered gathers at the ankles
+#@fit: hips, thighs
+#@lewdity: 15
+__colors/female_pastel__ colored palazzo pants with wide sheer-layered legs
+#@fit: hips, thighs
+__colors/female_dark__ colored palazzo pants with wide legs
+#@fit: hips, thighs
+__colors/female_earthtone__ colored leggings with a fitted cut
+#@fit: hips, thighs
+__colors/female_dusty__ colored leggings in a straight cut
+#@fit: hips, thighs
+__colors/female_neutral__ colored leggings with a fitted fit
+#@fit: hips, thighs
+__colors/female_summer__ colored leggings with a fitted silhouette in a breathable cotton blend
+#@fit: hips, thighs
+__colors/female_vivid__ colored palazzo pants with wide flowing legs in flowing georgette
+#@fit: hips, thighs
+__colors/female_winter__ colored churidar bottoms with ankle bangles in warm brushed cotton
+#@fit: hips, thighs
+__colors/female_nude__ colored palazzo pants with wide flowing legs in soft cotton silk
+#@fit: hips, thighs
+__colors/female_tropical__ colored churidar bottoms with ankle gathers in stretch cotton

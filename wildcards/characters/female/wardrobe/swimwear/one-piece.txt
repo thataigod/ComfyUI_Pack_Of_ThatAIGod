@@ -1,8 +1,24 @@
+#@lewdity: 60
+
+#@lewdity: 50
 #@fit: bust, waist, hips
-#@condition: wet
-#@modifiers: color, pattern
-a classic one-piece swimsuit, __neutral_colors_female__
+a classic one-piece swimsuit in a __colors/female_neutral__ colored lycra
+#@lewdity: 55
 #@fit: bust, waist, hips
-#@condition: wet
-#@modifiers: color, pattern
-a high-cut one-piece swimsuit, __bright_colors_female__
+a high-cut one-piece swimsuit in a __colors/female_bright__ colored lycra
+#@lewdity: 50
+#@fit: bust, waist, hips
+a scoop-neck one-piece swimsuit in a __colors/female_light__ colored nylon with thin straps
+#@lewdity: 55
+#@fit: bust, waist, hips, back
+a plunging V-neck one-piece in a __colors/female_neon__ colored lycra with high-cut legs and a sleek racerback
+#@fit: bust, waist, hips, shoulders
+a deep V-neck one-piece in a __colors/female_cool__ colored polyester blend with a sleek one-shoulder strap
+#@fit: bust, waist, hips
+a one-piece swimsuit with daring side cutouts in a __colors/female_summer__ colored nylon __patterns/female_swimwear_print__
+#@lewdity: 65
+#@fit: bust, waist, hips, shoulders
+a monokini in a __colors/female_light__ colored lycra with a front keyhole cutout and a halter neck
+#@lewdity: 70
+#@fit: bust, waist, hips, back
+a monokini in a __colors/female_jewel__ colored spandex with front cutouts, a halter tie neck and an open back

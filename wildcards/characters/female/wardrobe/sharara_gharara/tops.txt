@@ -1,0 +1,75 @@
+#@lewdity: 15
+
+#@fit: bust, shoulders
+a short sweetheart cap sleeved __colors/female_metallic__ colored kurti in silk that modestly covers her chest, with a dupatta draped elegantly over one shoulder
+#@fit: bust, waist
+#@lewdity: 10
+a short boat short sleeved __colors/female_light__ colored kurti in brocade that fully covers her torso, with a dupatta draped gracefully over both shoulders
+#@fit: bust, shoulders
+a short V-neck 3/4 sleeved __colors/female_nude__ colored kurti in georgette that subtly shows her neckline while modestly covering her chest, with a dupatta draped over her head and shoulder
+#@fit: bust, waist
+#@lewdity: 25
+a short sweetheart cap sleeved __colors/female_dark__ colored kurti in velvet that accentuates her bust while covering her midriff, with a dupatta draped diagonally across her torso
+#@fit: bust, shoulders
+a short V-neck short sleeved __colors/female_pastel__ colored kurti in net that softly covers her shoulders while modestly covering her chest, with a dupatta draped pleated over one arm
+#@fit: bust, waist
+#@lewdity: 10
+a short boat 3/4 sleeved __colors/female_earthtone__ colored kurti in khadi silk that modestly covers her chest and midriff, with a dupatta draped neatly pinned at one shoulder
+#@fit: bust, waist
+a short round short sleeved __colors/female_warm__ colored kurti in georgette that elegantly shows her neckline while fully covering her torso, with a dupatta draped flowing behind her shoulders
+#@fit: bust, shoulders
+a short square cap sleeved __colors/female_vivid__ colored kurti in silk that modestly covers her chest, with a dupatta draped around her arms
+#@fit: bust, waist
+#@lewdity: 10
+a short high-neck short sleeved __colors/female_jewel__ colored kurti in brocade that fully covers her torso, with a dupatta draped classically over one shoulder
+#@fit: bust, waist
+#@lewdity: 25
+a short U-neck 3/4 sleeved __colors/female_cool__ colored kurti in velvet that subtly shows her cleavage while modestly covering her midriff, with a dupatta draped regally across her torso
+#@fit: bust, shoulders
+#@lewdity: 25
+a short sweetheart 3/4 sleeved __colors/female_muted__ colored kurti in net that accentuates her bust, with a dupatta draped elegantly pinned at the waist
+#@fit: bust, waist
+#@lewdity: 10
+a short boat cap sleeved __colors/female_neutral__ colored kurti in khadi silk that fully covers her upper body, with a dupatta draped gracefully over her head
+#@fit: bust, shoulders
+a short V-neck 3/4 sleeved __colors/female_light__ colored kurti in silk that modestly covers her chest, with a dupatta draped diagonally over one shoulder
+#@fit: bust, shoulders
+a short sweetheart short sleeved __colors/female_dusty__ colored kurti in georgette that softly covers her shoulders, with a dupatta draped pleated and pinned at the waist
+#@fit: bust, waist
+a short boat short sleeved __colors/female_muted__ colored kurti in velvet that modestly covers her chest and torso, with a dupatta draped over her head and shoulder
+#@fit: bust, shoulders
+a short V-neck cap sleeved __colors/female_jewel__ colored kurti in brocade that elegantly shows her neckline, with a dupatta draped around her shoulders
+#@fit: bust, shoulders
+a short square 3/4 sleeved __colors/female_tropical__ colored kurti in khadi silk __patterns/female_blouse_patterns__ that modestly covers her chest, with a dupatta draped elegantly over one shoulder
+#@fit: bust, waist
+#@lewdity: 25
+a short sweetheart short sleeved __colors/female_bright__ colored kurti in silk that accentuates her bust while covering her midriff, with a dupatta draped gracefully over both shoulders
+#@fit: bust, waist
+#@lewdity: 10
+a short boat cap sleeved __colors/female_summer__ colored kurti in georgette that fully covers her upper body, with a dupatta draped flowing behind her shoulders
+#@fit: bust, shoulders
+a short round short sleeved __colors/female_pastel__ colored kurti in net that modestly covers her chest, with a dupatta draped diagonally across her torso
+#@fit: bust, shoulders
+#@lewdity: 25
+a short V-neck cap sleeved __colors/female_dark__ colored kurti in silk that subtly shows her cleavage, with a dupatta draped pleated over one arm
+#@fit: bust, shoulders
+#@lewdity: 25
+a short sweetheart short sleeved __colors/female_vivid__ colored kurti in brocade that accentuates her bust, with a dupatta draped around her arms
+#@fit: bust, waist
+#@lewdity: 10
+a short high-neck 3/4 sleeved __colors/female_tropical__ colored kurti in georgette __patterns/female_blouse_patterns__ that fully covers her torso, with a dupatta draped elegantly pinned at the waist
+#@fit: bust, waist
+a short sweetheart 3/4 sleeved __colors/female_autumn__ colored kurti in brocade that modestly covers her chest and midriff, with a dupatta draped over her head and shoulder
+#@fit: bust, waist
+#@lewdity: 25
+a short U-neck cap sleeved __colors/female_nude__ colored kurti in velvet that subtly shows her midriff while modestly covering her chest, with a dupatta draped diagonally across her torso
+#@fit: bust, shoulders
+a short V-neck short sleeved __colors/female_candy__ colored kurti in georgette that modestly covers her chest, with a dupatta draped gracefully over her head
+#@fit: bust, shoulders
+a short round cap sleeved __colors/female_bright__ colored kurti in net __patterns/female_blouse_patterns__ that softly covers her torso, with a dupatta draped elegantly over one shoulder
+#@fit: bust, waist
+#@lewdity: 10
+a short boat short sleeved __colors/female_neutral__ colored kurti in khadi silk that fully covers her upper body, with a dupatta draped flowing behind her shoulders
+#@fit: bust, waist
+#@lewdity: 25
+a short sweetheart 3/4 sleeved __colors/female_warm__ colored kurti in silk that accentuates her bust, with a dupatta draped classically over one shoulder

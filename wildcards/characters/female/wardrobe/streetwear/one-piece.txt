@@ -1,0 +1,17 @@
+#@lewdity: 25
+
+#@fit: bust, waist, hips
+#@lewdity: 20
+a co-ord tracksuit set in __colors/female_vivid__ cotton fleece with an oversized hoodie and joggers that hang relaxedly at the waist __patterns/female_streetwear_graphic__
+#@fit: bust, waist, hips
+#@lewdity: 30
+a co-ord tracksuit set in __colors/female_neon__ knit with a cropped hoodie and joggers that taper at the ankle from a high waist __patterns/female_streetwear_graphic__
+#@fit: bust, waist, hips
+#@lewdity: 20
+a co-ord tracksuit set in __colors/female_bright__ jersey with a zip-up hoodie and joggers that drape softly at the natural waist __patterns/female_streetwear_graphic__
+#@fit: bust, waist, hips
+#@lewdity: 20
+a co-ord tracksuit set in __colors/female_candy__ cotton fleece with a longline hoodie and joggers that fall straight from low hips __patterns/female_streetwear_graphic__
+#@fit: bust, waist, hips
+#@lewdity: 30
+a co-ord tracksuit set in __colors/female_vivid__ nylon with a sleeveless hoodie and cargo-pocket joggers that hang baggy at the hips __patterns/female_streetwear_graphic__

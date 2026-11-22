@@ -1,0 +1,35 @@
+#@lewdity: 30
+
+#@fit: waist, hips, thighs
+#@lewdity: 15
+elastic-waist pajama pants in __colors/female_pastel__ cotton that fall relaxed to the ankles
+#@fit: waist, hips, thighs
+#@lewdity: 15
+brushed flannel pajama pants in __colors/female_earthtone__ that fit cozily to the ankles __patterns/female_casual_top_print__
+#@fit: waist, hips, thighs
+#@lewdity: 20
+wide-leg satin pajama pants in __colors/female_warm__ that flow elegantly to the ankles __patterns/female_lingerie_lace_detail__
+#@fit: waist, hips, thighs
+#@lewdity: 20
+bias-cut satin pajama pants in __colors/female_metallic__ that slide smoothly over the legs __patterns/female_lingerie_lace_detail__
+#@fit: waist, hips, thighs
+#@lewdity: 20
+soft modal pajama trousers in __colors/female_tropical__ that drape lightly to the ankles
+#@fit: waist, hips, thighs
+#@lewdity: 20
+jogger sleep pants in __colors/female_vivid__ jersey that taper softly to the ankles __patterns/female_casual_top_print__
+#@fit: waist, hips, thighs
+#@lewdity: 15
+thermal leggings in __colors/female_neon__ knit that hug gently to the ankles __patterns/female_casual_top_print__
+#@fit: waist, hips, thighs
+#@lewdity: 30
+drawstring sleep shorts in __colors/female_light__ cotton that rest lightly on the hips
+#@fit: waist, hips, thighs
+#@lewdity: 40
+satin shorts in __colors/female_neutral__ with lace-trimmed edges that skim the hips __patterns/female_lingerie_lace_detail__
+#@fit: waist, hips, thighs
+#@lewdity: 30
+modal shorts in __colors/female_warm__ that rest gently at mid-thigh __patterns/female_lingerie_lace_detail__
+#@fit: waist, hips, thighs
+#@lewdity: 30
+boxer-style sleep shorts in __colors/female_earthtone__ jersey that sit softly at mid-thigh __patterns/female_casual_top_print__

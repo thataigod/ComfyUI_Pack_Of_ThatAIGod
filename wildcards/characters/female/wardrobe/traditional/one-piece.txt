@@ -1,5 +1,61 @@
+#@lewdity: 15
+
 #@fit: bust, waist, hips
-#@mishap: her saree pallu slipping off her shoulder
-an elegant saree, __jeweltone_colors_female__
+an elegant saree in __colors/female_jewel__
 #@fit: bust, waist, hips
-a graceful kimono, __earthtone_colors_female__
+#@lewdity: 10
+a graceful kimono in __colors/female_earthtone__
+#@fit: bust, waist, hips
+#@lewdity: 10
+a floor-length Anarkali gown in georgette with kalidar panels and umbrella flare, sweetheart neckline with 3/4th sheer sleeves, dupatta draped over one shoulder
+#@fit: bust, waist, hips
+#@lewdity: 10
+a bridal Anarkali gown in velvet __patterns/female_anarkali_embroidery__ with fitted bodice and heavy pleated panels, high-neck with full sleeves
+#@fit: bust, waist, hips
+#@lewdity: 15
+a net Anarkali gown __patterns/female_anarkali_embroidery__ with sheer overlay and floor-length flared layers, boat neck with cap sleeves
+#@fit: bust, waist, hips
+a nine-yard Nauvari saree ensemble in silk __patterns/female_saree_borders__ draped kasta-style with kashta pleats tucked between the legs and pallu over her shoulder
+#@fit: bust, waist, hips
+a Kanjeevaram silk saree __patterns/female_saree_borders__ __patterns/female_saree_motifs__ draped elegantly with pallu over her shoulder
+#@fit: bust, waist, hips
+a bridal Banarasi saree in brocade __patterns/female_saree_borders__ __patterns/female_saree_motifs__ draped regally with pallu pinned at her shoulder
+#@fit: bust, waist, hips
+#@lewdity: 25
+a chiffon saree __patterns/female_saree_borders__ draped alluringly with pallu cascading over her arm
+#@fit: bust, waist, hips
+#@lewdity: 30
+a net saree __patterns/female_saree_motifs__ draped boldly with a sheer pallu over her shoulder
+#@fit: bust, waist, hips
+#@lewdity: 20
+a half-saree ensemble in chiffon __patterns/female_saree_borders__ with a flowing drape over her shoulder
+#@fit: bust, waist, hips
+#@lewdity: 10
+a Mekhela Chador ensemble in Assamese muga silk __patterns/female_mekhela_patterns__ with wrap skirt and fringed chador tucked at the waist
+#@fit: bust, waist, hips
+#@lewdity: 30
+a bridal Ghagra lehenga set in brocade with a sweetheart choli and flared gathered skirt, dupatta draped diagonally over one shoulder
+#@fit: bust, waist, hips
+#@lewdity: 15
+a sharara set in silk with a short kurti and wide palazzo flare from the waist, dupatta draped elegantly over one shoulder
+#@fit: bust, waist, hips
+#@lewdity: 15
+a gharara set in velvet fitted till the knee then flaring hugely with a prominent gota band, with a short sweetheart kurti covering her midriff
+#@fit: bust, waist, hips
+#@lewdity: 10
+a festive floor-length gown in deep maroon with gold zardozi embroidery
+#@fit: bust, waist, hips
+a Tussar silk saree with a naturally draped wrap and pallu over her shoulder
+#@fit: bust, waist, hips
+#@lewdity: 25
+an organza saree __patterns/female_saree_borders__ with a delicately sheer drape and pallu over her shoulder
+#@fit: bust, waist, hips
+#@lewdity: 20
+a crepe saree with a fluid drape and sleek pallu over her arm
+#@fit: bust, waist, hips
+a Maheshwari cotton silk saree with a lightly draped wrap and pallu over her shoulder
+#@fit: bust, waist, hips
+a Patiala suit ensemble in cotton with a short hip-length kurta and heavily pleated salwar, dupatta draped over one shoulder
+#@fit: bust, waist, hips
+#@lewdity: 15
+a kurti set in linen __patterns/female_salwar_prints__ with a knee-length straight kurti and palazzo pants, dupatta draped over one shoulder

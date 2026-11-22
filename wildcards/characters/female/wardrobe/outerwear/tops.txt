@@ -1,0 +1,48 @@
+#@lewdity: 0
+
+#@fit: bust, waist, hips
+a down puffer coat in __colors/female_warm__ with a high funnel collar and long sleeves, wrapping snugly from shoulders to knees
+#@fit: bust, waist, hips
+a quilted down puffer coat in __colors/female_cool__ with a detachable hood and elastic cuffs __patterns/female_athletic_stripe__, falling to mid-thigh
+#@fit: bust, waist
+an oversized down puffer coat in __colors/female_monochrome__ with dropped shoulders and roomy side pockets, covering to the hips
+#@fit: bust, waist, hips
+a trench coat in __colors/female_neutral__ gabardine with notch lapels and a belted waist __patterns/female_formal_blazer_detail__, falling below the knee
+#@fit: bust, waist, hips
+a double-breasted trench coat in __colors/female_earthtone__ gabardine with epaulettes and a storm flap __patterns/female_formal_blazer_detail__, fully covering the legs
+#@fit: bust, waist, hips
+a trench coat in __colors/female_pastel__ gabardine with raglan sleeves and patch pockets, draping to the knee
+#@fit: bust, waist, hips
+a wool overcoat in __colors/female_dark__ with notch lapels and flap pockets __patterns/female_formal_blazer_detail__, falling to the calves
+#@fit: bust, waist, hips
+a cashmere overcoat in __colors/female_neutral__ with a shawl collar and deep patch pockets __patterns/female_formal_blazer_detail__, wrapping to mid-calf
+#@fit: bust, waist, hips
+a tweed overcoat in __colors/female_autumn__ with peak lapels and horn buttons __patterns/female_formal_blazer_detail__, falling below the knee
+#@fit: bust, waist, shoulders
+a shearling jacket in __colors/female_earthtone__ with a wide plush collar and zipped front, sitting at the hips
+#@fit: bust, waist, shoulders
+a leather shearling jacket in __colors/female_vivid__ with an asymmetric zip and wide lapels __patterns/female_streetwear_graphic__, ending at the hips
+#@fit: bust, waist, shoulders
+a shearling jacket in __colors/female_dusty__ with toggle buttons and a stand collar, keeping warm to the waist
+#@fit: bust, waist, hips
+a cape coat in __colors/female_jewel__ wool with a draped front and concealed clasp __patterns/female_formal_blazer_detail__, falling to the knees
+#@fit: bust, waist, hips
+a cashmere cape in __colors/female_nude__ with a roll collar and arm slits __patterns/female_formal_blazer_detail__, draping below the knee
+#@fit: bust, waist, hips
+a tweed cape in __colors/female_light__ with fringed trim and a front tie, swinging to the knees
+#@fit: bust, waist, hips
+a down parka in __colors/female_winter__ with a fur-trimmed hood and zip front __patterns/female_athletic_stripe__, wrapping from collar to knees
+#@fit: bust, waist, hips
+a gabardine parka in __colors/female_muted__ with a drawstring waist and flap pockets, falling to mid-thigh
+#@fit: bust, waist, hips
+a double-breasted peacoat in __colors/female_neutral__ wool with wide notch lapels __patterns/female_formal_blazer_detail__, falling below the hips
+#@fit: bust, waist
+a peacoat in __colors/female_dark__ wool with a sailor collar and anchor buttons __patterns/female_formal_blazer_detail__, reaching mid-thigh
+#@fit: bust, waist, hips
+a duffle coat in __colors/female_spring__ wool with a hooded collar and toggle fastenings __patterns/female_formal_blazer_detail__, falling to the knees
+#@fit: bust, waist, hips
+a duffle coat in __colors/female_pastel__ cashmere with a draped hood and toggle placket __patterns/female_formal_blazer_detail__, falling to the calves
+#@fit: bust, waist, hips
+a longline wool coat in __colors/female_monochrome__ with notch lapels and a belted waist __patterns/female_formal_blazer_detail__, draping open over layers to the calves
+#@fit: bust, waist, hips
+a collarless longline coat in __colors/female_dark__ cashmere with a self-tie belt and flap pockets, falling below the knee

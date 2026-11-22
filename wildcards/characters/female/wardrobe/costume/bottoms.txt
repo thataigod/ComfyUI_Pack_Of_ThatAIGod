@@ -1,5 +1,79 @@
+#@lewdity: 50
+
 #@fit: waist, hips
-#@mishap: the tutu slipping down her hips
-a tutu skirt
+#@lewdity: 40
+a graceful __colors/female_pastel__ colored tutu skirt in layered chiffon __patterns/female_costume_detail__
 #@fit: waist, hips
-ragged pirate trousers
+#@lewdity: 30
+ragged pirate trousers in striped cotton cropped below the knee
+#@fit: waist, hips, thighs
+#@lewdity: 60
+a naughty __colors/female_candy__ colored pleated micro skirt in cotton
+#@fit: waist, hips
+#@lewdity: 55
+a __colors/female_bright__ colored pleated cheer skirt in sequin
+#@fit: waist, hips
+an enchanting __colors/female_pastel__ colored petal skirt in layered chiffon
+#@fit: waist, hips, thighs
+a mesmerizing __colors/female_tropical__ colored sequin mermaid tail skirt with a sheer fin hem
+#@fit: waist, hips
+#@lewdity: 45
+a fierce __colors/female_jewel__ colored battle skirt in velvet with layered panels
+#@fit: waist, hips
+#@lewdity: 35
+an ethereal __colors/female_earthtone__ colored flowing tulle skirt in chiffon
+#@fit: waist, hips
+#@lewdity: 55
+a wicked __colors/female_dark__ colored witch skirt in sheer with a jagged hem
+#@fit: waist, hips
+#@lewdity: 65
+cheeky __colors/female_candy__ colored satin bunny briefs with a fluffy cottontail
+#@fit: waist, hips
+#@lewdity: 55
+a tantalizing __colors/female_vivid__ colored velvet mini skirt trimmed with white fur
+#@fit: waist, hips
+#@lewdity: 70
+a smoldering __colors/female_warm__ colored barbarian loincloth in velvet with fur accents
+#@fit: waist, hips, thighs
+#@lewdity: 60
+savage __colors/female_earthtone__ colored leather huntress shorts with lace-up sides
+#@fit: hips
+#@lewdity: 65
+bold __colors/female_neon__ colored superheroine briefs in mesh with a high-cut leg
+#@fit: waist, hips, thighs
+beguiling __colors/female_dark__ colored kunoichi pants in mesh with a fitted leg
+#@fit: waist, hips, thighs
+an entrancing __colors/female_tropical__ colored siren skirt in sequin with iridescent fin panels
+#@fit: waist, hips
+#@lewdity: 40
+a sensual __colors/female_earthtone__ colored Egyptian drape skirt in satin with gold beaded panels
+#@fit: waist, hips
+#@lewdity: 55
+a devilish __colors/female_earthtone__ colored leather gladiatrix skirt with studded straps
+#@fit: waist, hips, thighs
+#@lewdity: 60
+scorching __colors/female_warm__ colored fringed denim micro shorts
+#@fit: waist, hips, thighs
+#@lewdity: 20
+a luminous __colors/female_vivid__ colored pleated hakama in cotton
+#@fit: hips
+#@lewdity: 65
+glamorous __colors/female_winter__ colored showgirl fringe briefs with feather accents
+#@fit: waist, hips, thighs
+#@lewdity: 40
+otherworldly __colors/female_warm__ colored mesh ranger leggings
+#@fit: waist, hips
+#@lewdity: 45
+a striking __colors/female_cool__ colored armored knightess skirt in satin with plate accents __patterns/female_costume_detail__
+#@fit: waist, hips, thighs
+#@lewdity: 40
+enigmatic __colors/female_neutral__ colored mesh leggings with strappy accents __patterns/female_costume_detail__
+#@fit: hips, thighs
+#@lewdity: 60
+sinful __colors/female_dark__ colored lace shorts with a sheer veil hem
+#@fit: hips
+#@lewdity: 55
+irresistible __colors/female_bright__ colored petal shorts in chiffon
+#@fit: hips, thighs
+#@lewdity: 55
+infernal __colors/female_candy__ colored sequin shorts with sparkle trim

@@ -1,0 +1,77 @@
+#@lewdity: 10
+
+#@fit: bust, waist
+a __colors/female_jewel__ colored Anarkali kameez in silk with empire waist and floor-length circular flare, high-neck with full sleeves, with a dupatta draped over both shoulders that fully covers her torso
+#@fit: bust, waist
+an __colors/female_light__ colored Anarkali kameez in cotton silk with tiered pleats and knee-length flared skirt, boat neck with cap sleeves, with a dupatta draped around her arms that softly covers her shoulders
+#@fit: bust, waist
+a bridal __colors/female_warm__ colored Anarkali kameez in velvet with fitted bodice flared from the waist to floor-length with heavy pleated panels, round neck with full velvet sleeves, with a dupatta draped over her head and shoulder that fully covers her chest and torso
+#@fit: bust, waist
+a __colors/female_cool__ colored Anarkali kameez in cotton with empire waist and ankle-length flared silhouette with soft gathers, V-neck with elbow sleeves, with a dupatta draped gracefully over one shoulder that subtly frames her neckline while modestly covering her chest
+#@fit: bust, shoulders
+#@lewdity: 15
+a festive __colors/female_neutral__ colored Anarkali kameez in net with sheer yoke and floor-length umbrella flare with layered panels, square neck with illusion overlay and sheer net cap sleeves, with a dupatta draped elegantly across her torso that modestly covers her chest
+#@fit: bust, waist
+a __colors/female_dusty__ colored Anarkali kameez in cotton silk with kalidar cut flaring from the chest to knee-length, high-neck with 3/4th sleeves, with a dupatta draped neatly over one shoulder that fully covers her upper body
+#@fit: bust, waist
+an __colors/female_earthtone__ colored Anarkali kameez in georgette with anarkali flare from the waist and floor-length circular hem with subtle gathers, round neck with full sheer sleeves, with a dupatta draped softly over one shoulder that modestly covers her bust
+#@fit: bust, waist
+a festive __colors/female_jewel__ colored Anarkali kameez in georgette __patterns/female_anarkali_embroidery__ with kalidar panels and umbrella flare reaching floor-length, sweetheart neckline with 3/4th sheer sleeves, with a dupatta draped over one shoulder that modestly covers her chest
+#@fit: bust, waist
+a bridal __colors/female_dark__ colored Anarkali kameez in silk __patterns/female_anarkali_embroidery__ with fitted bodice flared from the empire waist to floor-length, high-neck with full sleeves, with a dupatta draped over her head and both shoulders that fully covers her torso
+#@fit: bust, shoulders
+#@lewdity: 15
+an __colors/female_pastel__ colored Anarkali kameez in net __patterns/female_anarkali_embroidery__ with sheer overlay and floor-length flared layers, boat neck with cap sleeves edged in lace, with a dupatta draped around her arms that softly covers her shoulders and chest
+#@fit: bust, waist
+a __colors/female_vivid__ colored Anarkali kameez in cotton silk __patterns/female_anarkali_embroidery__ with tiered kalidar panels and knee-length flare, V-neck with 3/4th sleeves, with a dupatta draped gracefully over one shoulder that subtly frames her neckline
+#@fit: bust, waist
+a festive __colors/female_spring__ colored Anarkali kameez in georgette __patterns/female_anarkali_embroidery__ with empire waist and ankle-length umbrella flare, sweetheart neckline with elbow sleeves, with a dupatta draped elegantly over one shoulder that modestly covers her bust
+#@fit: bust, waist
+a __colors/female_light__ colored Anarkali kameez in cotton __patterns/female_anarkali_embroidery__ with knee-length flared skirt gathered at the waist, round neck with cap sleeves, with a dupatta draped lightly over her arms that softly covers her torso
+#@fit: bust, waist
+a __colors/female_muted__ colored Anarkali kameez in cotton silk __patterns/female_anarkali_embroidery__ with floor-length anarkali flare from the chest with subtle pleats, boat neck with 3/4th sleeves, with a dupatta draped over both shoulders that modestly covers her chest
+#@fit: bust, waist
+an __colors/female_cool__ colored Anarkali kameez in georgette __patterns/female_anarkali_embroidery__ __patterns/female_saree_motifs__ with empire waist and floor-length umbrella flare, V-neck with full sheer sleeves, with a dupatta draped softly over one shoulder that elegantly frames her neckline
+#@fit: bust, shoulders
+#@lewdity: 15
+a festive __colors/female_candy__ colored Anarkali kameez in net __patterns/female_anarkali_embroidery__ with layered net overlay and knee-length kalidar flare, sweetheart neckline with a fitted bodice with detachable sheer 3/4th sleeves, with a dupatta draped around her shoulders that modestly covers her bust
+#@fit: bust, waist
+a bridal __colors/female_jewel__ colored Anarkali kameez in velvet __patterns/female_anarkali_embroidery__ with floor-length flared skirt with heavy kalidar panels suited for winter, high-neck with full velvet sleeves, with a dupatta draped regally over her head and shoulder that fully covers her upper body
+#@fit: bust, waist
+a __colors/female_earthtone__ colored Anarkali kameez in cotton __patterns/female_anarkali_embroidery__ with ankle-length flare gathered from the waist, square neck with elbow sleeves, with a dupatta draped classically over one shoulder that modestly covers her chest
+#@fit: bust, waist
+a __colors/female_summer__ colored Anarkali kameez in georgette __patterns/female_anarkali_embroidery__ with floor-length circular flare and empire waist seam, boat neck with cap sleeves, with a dupatta draped airily over her arms that softly covers her shoulders
+#@fit: bust, waist
+a festive __colors/female_bright__ colored Anarkali kameez in silk __patterns/female_anarkali_embroidery__ with kalidar panels and umbrella flare to floor-length, V-neck with 3/4th sleeves, with a dupatta draped diagonally across her torso that subtly frames her neckline while modestly covering her chest
+#@fit: bust, waist
+an __colors/female_nude__ colored Anarkali kameez in cotton silk __patterns/female_anarkali_embroidery__ with knee-length tiered flare and fitted bodice, high-neck with full sleeves, with a dupatta draped elegantly over one shoulder that fully covers her torso
+#@fit: bust, waist
+a bridal __colors/female_tropical__ colored Anarkali kameez in georgette __patterns/female_anarkali_embroidery__ with floor-length umbrella flare and heavily pleated panels, sweetheart neckline with full sheer sleeves, with a dupatta draped over her head and shoulder that modestly covers her chest
+#@fit: bust, shoulders
+#@lewdity: 15
+a __colors/female_dusty__ colored Anarkali kameez in net __patterns/female_anarkali_embroidery__ with sheer net yoke and floor-length flared silhouette, round neck with full net sleeves, with a dupatta draped gracefully over both shoulders that softly covers her bust
+#@fit: bust, waist
+an __colors/female_autumn__ colored Anarkali kameez in cotton silk __patterns/female_anarkali_embroidery__ with empire waist and ankle-length circular flare, boat neck with elbow sleeves, with a dupatta draped over one shoulder that modestly covers her chest
+#@fit: bust, waist
+an __colors/female_metallic__ colored Anarkali kameez in silk __patterns/female_anarkali_embroidery__ with floor-length kalidar flare, V-neck with cap sleeves, with a dupatta draped across her arms that elegantly frames her neckline
+#@fit: bust, waist
+a __colors/female_neutral__ colored Anarkali kameez in georgette __patterns/female_anarkali_embroidery__ __patterns/female_saree_motifs__ with kalidar panels and floor-length umbrella flare, sweetheart neckline with 3/4th sheer net sleeves, with a dupatta draped over one shoulder that modestly covers her bust
+#@fit: bust, waist
+a __colors/female_dark__ colored Anarkali kameez in silk __patterns/female_anarkali_embroidery__ with empire waist and ankle-length flare with soft gathers, boat neck with full sleeves, with a dupatta draped elegantly around her torso that fully covers her upper body
+#@fit: bust, waist
+a festive __colors/female_warm__ colored Anarkali kameez in cotton __patterns/female_anarkali_embroidery__ with knee-length flared skirt and tiered panels suited for daytime, square neck with cap sleeves, with a dupatta draped over one shoulder that modestly covers her chest
+#@fit: bust, waist
+an __colors/female_vivid__ colored Anarkali kameez in georgette __patterns/female_anarkali_embroidery__ with floor-length circular flare flaring from the waist, high-neck with 3/4th sleeves, with a dupatta draped softly over both shoulders that fully covers her torso
+#@fit: bust, waist
+a bridal __colors/female_jewel__ colored Anarkali kameez in silk __patterns/female_anarkali_embroidery__ with floor-length kalidar flare, sweetheart neckline with full sheer sleeves, with a dupatta draped regally over her head and shoulders that modestly covers her bust
+#@fit: bust, waist
+a __colors/female_light__ colored Anarkali kameez in cotton silk __patterns/female_anarkali_embroidery__ with ankle-length umbrella flare gathered at the empire waist, V-neck with elbow sleeves, with a dupatta draped classically over one shoulder that subtly frames her neckline
+#@fit: bust, shoulders
+#@lewdity: 15
+a festive __colors/female_pastel__ colored Anarkali kameez in net __patterns/female_anarkali_embroidery__ with floor-length sheer overlay and kalidar panels, boat neck with a fitted bodice with sheer 3/4th sleeves, with a dupatta draped over her arms that modestly covers her chest
+#@fit: bust, waist
+an __colors/female_muted__ colored Anarkali kameez in georgette __patterns/female_anarkali_embroidery__ with knee-length tiered flare and fitted bodice, round neck with full sleeves, with a dupatta draped gracefully over one shoulder that softly covers her torso
+#@fit: bust, waist
+a __colors/female_spring__ colored Anarkali kameez in cotton __patterns/female_anarkali_embroidery__ with floor-length flared silhouette with soft pleats from the waist, high-neck with cap sleeves, with a dupatta draped neatly over one shoulder that fully covers her chest
+#@fit: bust, waist
+a __colors/female_tropical__ colored Anarkali kameez in cotton silk __patterns/female_anarkali_embroidery__ with floor-length umbrella flare flaring from the chest with soft gathers, sweetheart neckline with cap sleeves, with a dupatta draped over one shoulder that modestly covers her bust

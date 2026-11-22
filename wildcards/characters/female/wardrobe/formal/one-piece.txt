@@ -1,5 +1,64 @@
+#@lewdity: 20
+
 #@fit: bust, waist, hips
-#@mishap: the back zipper of her gown inching down
-an evening gown, __jeweltone_colors_female__
+a __colors/female_jewel__ colored evening gown in silk with a sweeping hem
 #@fit: bust, waist, hips
-a velvet gown, __muted_colors_female__
+a __colors/female_muted__ colored velvet gown with a flowing skirt
+#@fit: bust, waist, hips
+#@lewdity: 15
+a __colors/female_neutral__ colored sheath dress in crepe with a V-neck and 3/4 sleeves __patterns/female_formal_skirt_detail__
+#@fit: bust, waist, hips
+#@lewdity: 15
+a __colors/female_dark__ colored sheath dress in twill with a high neck and long sleeves
+#@fit: bust, waist, hips
+a __colors/female_muted__ colored sheath dress in satin with a V-neck and elbow sleeves
+#@fit: bust, waist, hips
+#@lewdity: 15
+a __colors/female_light__ colored shirt dress in poplin with a collar-neck and long sleeves __patterns/female_formal_skirt_detail__
+#@fit: bust, waist, hips
+#@lewdity: 15
+a __colors/female_dusty__ colored shirt dress in crepe with a shirt collar and long sleeves
+#@fit: bust, waist, hips
+#@lewdity: 15
+a __colors/female_monochrome__ colored sheath dress in linen blend with a collar-neck and full sleeves
+#@fit: bust, waist, hips
+#@lewdity: 10
+a __colors/female_neutral__ colored pantsuit set with a blazer and tailored trousers in wool with notch lapels and long sleeves __patterns/female_formal_blazer_detail__
+#@fit: bust, waist, hips
+#@lewdity: 10
+a __colors/female_dark__ colored skirt suit set with a blazer and pencil skirt in crepe with a shawl collar and 3/4 sleeves
+#@fit: bust, waist, hips
+#@lewdity: 10
+a __colors/female_monochrome__ colored pantsuit set with a blazer and tailored trousers in twill with a shawl collar and full sleeves
+#@fit: bust, waist, hips
+#@lewdity: 35
+a satin slip gown with a bias cut and delicate straps
+#@fit: bust, waist, hips
+#@lewdity: 30
+a sequined evening gown with a V-neckline
+#@fit: bust, waist, hips
+#@lewdity: 40
+a velvet evening gown with a thigh-high slit
+#@fit: bust, waist, hips
+#@lewdity: 30
+a lace evening gown with an illusion neckline
+#@fit: bust, waist, hips
+#@lewdity: 25
+a metallic evening gown with a column silhouette
+#@fit: bust, waist, hips
+#@lewdity: 35
+a flowing chiffon evening gown with a plunging back
+#@fit: bust, waist, hips
+#@lewdity: 30
+a crepe evening gown with an off-shoulder neckline
+#@fit: bust, waist, hips
+a floral midi dress with an elegant draped neckline
+#@fit: bust, waist, hips
+#@lewdity: 25
+a cocktail dress with a boat neckline and three-quarter sleeves
+#@fit: bust, waist, hips
+#@lewdity: 25
+a formal jumpsuit in flowing crepe with a V-neckline
+#@fit: bust, waist, hips
+#@lewdity: 25
+a tulle-overlay formal dress with a scalloped neckline

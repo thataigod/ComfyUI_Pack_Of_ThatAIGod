@@ -1,5 +1,118 @@
+#@lewdity: 55
+
 #@fit: bust, waist, hips
-#@mishap: the cat costume tail coming loose
-a cat costume
+a sleek __colors/female_dark__ colored cat costume in lace with a sweetheart neckline and sleeveless cut __patterns/female_costume_detail__ that hugs the body
 #@fit: bust, waist, hips
-a superhero costume
+#@lewdity: 65
+a bold __colors/female_neon__ colored superheroine bodysuit in mesh with a deep V-neckline and cap sleeves that hugs the body
+#@fit: bust, waist, hips
+#@lewdity: 50
+an enchanting fairy costume in chiffon with a sweetheart neckline and sleeveless cut __patterns/female_costume_detail__ that reveals the shoulders and shows the legs
+#@fit: bust, waist, hips
+#@lewdity: 50
+a light __colors/female_light__ colored nurse dress in satin with a deep V-neckline and cap sleeves __patterns/female_costume_detail__ that hugs the curves
+#@fit: bust, waist, hips
+a dark __colors/female_dark__ colored maid dress in satin with a sweetheart neckline and short puff sleeves __patterns/female_costume_detail__ that shows the thighs
+#@fit: bust, waist, hips
+#@lewdity: 50
+a wicked __colors/female_dark__ colored vampire gown in velvet with a deep V-neckline and long sleeves __patterns/female_costume_detail__ that shows the legs through a slit
+#@fit: bust, waist, hips
+#@lewdity: 50
+a radiant __colors/female_light__ colored angel dress in chiffon with a sweetheart neckline and off-shoulder sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+a tempting __colors/female_vivid__ colored devil dress in satin with a halter neckline and sleeveless straps __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 45
+a ravishing __colors/female_pastel__ colored princess gown in satin with a sweetheart neckline and off-shoulder sleeves and a sheer cape __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 45
+a decadent __colors/female_jewel__ colored sorceress gown in velvet with an off-shoulder neckline and long sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 50
+a provocative __colors/female_dark__ colored police dress in satin with a deep V-neckline and short sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 45
+an alluring __colors/female_vivid__ colored stewardess dress in satin with a V-neckline and short sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 45
+a sultry __colors/female_warm__ colored geisha-inspired kimono in satin with a deep V-neckline and short sleeves __patterns/female_costume_detail__ that shows the legs through a slit
+#@fit: bust, waist, hips
+#@lewdity: 50
+a mystical __colors/female_autumn__ colored kitsune-inspired kimono in satin with a deep V-neckline and short sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 45
+a dazzling __colors/female_candy__ colored idol dress in sequin with a sweetheart neckline and cap sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 50
+a voluptuous __colors/female_dark__ colored gothic lolita dress in lace with a V-neckline and short puff sleeves
+#@fit: bust, waist, hips
+#@lewdity: 50
+a mischievous __colors/female_neon__ colored jester dress in satin with a deep V-neckline and cap sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 45
+a sumptuous __colors/female_metallic__ colored goddess gown in chiffon with a halter neckline and sleeveless cut __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 60
+a captivating __colors/female_cool__ colored ice queen gown in sheer with an off-shoulder neckline and long sleeves
+#@fit: bust, waist, hips
+#@lewdity: 45
+a spellbinding __colors/female_dusty__ colored enchantress gown in velvet with an off-shoulder neckline and long sleeves __patterns/female_costume_detail__ that shows the legs through a slit
+#@fit: bust, waist, hips
+#@lewdity: 65
+an enigmatic __colors/female_monochrome__ colored necromancer gown in sheer with a plunging neckline and long sleeves
+#@fit: bust, waist, hips
+#@lewdity: 45
+an elegant __colors/female_spring__ colored musketeer dress in velvet with a deep V-neckline and long sleeves
+#@fit: bust, waist, hips
+#@lewdity: 50
+a celestial __colors/female_summer__ colored queen of hearts dress in satin with a sweetheart neckline and short puff sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 65
+a fateful __colors/female_muted__ colored frost nymph dress in sheer with an off-shoulder neckline and long sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 45
+a forbidden __colors/female_pastel__ colored celestial priestess gown in chiffon with a V-neckline and short sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 50
+a heavenly __colors/female_light__ colored crusader dress in velvet with a deep V-neckline and long sleeves __patterns/female_costume_detail__ that shows the legs through a slit
+#@fit: bust, waist, hips
+#@lewdity: 60
+an infernal __colors/female_candy__ colored circus performer leotard in sequin with a V-neckline and cap sleeves __patterns/female_costume_detail__ that shows the midriff
+#@fit: bust, waist, hips
+#@lewdity: 50
+an irresistibly whimsical __colors/female_bright__ colored pixie dress in chiffon with a sweetheart neckline and cap sleeves
+#@fit: bust, waist, hips
+#@lewdity: 45
+a mythic __colors/female_neon__ colored dark empress gown in velvet with an off-shoulder neckline and long sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 45
+a steamy __colors/female_jewel__ colored moon priestess gown in chiffon with an off-shoulder neckline and long sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 50
+a stunning __colors/female_warm__ colored infernal sovereign gown in velvet with a deep V-neckline and long bell sleeves __patterns/female_costume_detail__ that shows the legs through a slit
+#@fit: bust, waist, hips
+#@lewdity: 65
+a lavish __colors/female_muted__ colored stormcaller gown in sheer with a deep V-neckline and long sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 60
+a dangerous __colors/female_dark__ colored nun costume in lace with a V-neckline and long sleeves __patterns/female_costume_detail__ that shows the legs through a slit
+#@fit: bust, waist, hips
+#@lewdity: 45
+a fervent __colors/female_pastel__ colored secretary dress in satin with a V-neckline and short sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 60
+a glamorous __colors/female_winter__ colored showgirl costume in sequin with a halter neckline and sleeveless cut
+#@fit: bust, waist, hips
+#@lewdity: 60
+an opulent __colors/female_summer__ colored burlesque dancer dress in lace with a sweetheart neckline and sleeveless cut __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 50
+a graceful __colors/female_light__ colored ballerina dress in chiffon with a sweetheart neckline and off-shoulder sleeves __patterns/female_costume_detail__ with a tutu skirt
+#@fit: bust, waist, hips
+a mysterious __colors/female_dark__ colored gothic bride gown in lace with a V-neckline and long sleeves __patterns/female_costume_detail__ that shows the legs through a slit
+#@fit: bust, waist, hips
+#@lewdity: 50
+a stealthy __colors/female_metallic__ colored phantom thief jumpsuit in satin with a deep V-neckline and long sleeves __patterns/female_costume_detail__
+#@fit: bust, waist, hips
+#@lewdity: 45
+a whimsical __colors/female_candy__ colored magical girl dress in sequin with a sweetheart neckline and short puff sleeves __patterns/female_costume_detail__

@@ -1,0 +1,36 @@
+#@lewdity: 10
+
+#@fit: waist, hips, thighs
+a __colors/female_jewel__ colored Nauvari saree in silk __patterns/female_saree_borders__ draped in classic kasta style, kashta pleats tucked between the legs as dhoti pants with back pleats framing her hips
+#@fit: waist, hips, thighs
+a festive __colors/female_warm__ colored Nauvari saree in cotton silk __patterns/female_saree_motifs__ draped in traditional kachche style with pants-like pleats tucked between the legs
+#@fit: waist, hips, thighs
+a regally styled __colors/female_dark__ colored Nauvari saree in khun draped in seedha pallu kasta style with kashta pleats between the legs
+#@fit: waist, hips, thighs
+an elegantly styled __colors/female_earthtone__ colored Nauvari saree in brocade __patterns/female_saree_borders__ __patterns/female_saree_motifs__ draped in Nauvari kasta style with back pleats
+#@fit: waist, hips, thighs
+a bridal __colors/female_vivid__ colored Nauvari saree in cotton silk __patterns/female_saree_borders__ draped regally in a 9-yard kashta drape with back pleats
+#@fit: waist, hips, thighs
+a traditionally styled __colors/female_muted__ colored Nauvari saree in brocade __patterns/female_saree_motifs__ draped in traditional kachche style with pants-like pleats
+#@fit: waist, hips, thighs
+a festive __colors/female_light__ colored Nauvari saree in khun __patterns/female_saree_borders__ draped in Maharashtrian dhoti style with kashta pleats between the legs
+#@fit: waist, hips, thighs
+a regally styled __colors/female_cool__ colored Nauvari saree in silk __patterns/female_saree_motifs__ draped in seedha pallu kasta style with back pleats
+#@fit: waist, hips, thighs
+a gracefully styled __colors/female_dusty__ colored Nauvari saree in cotton silk draped in Nauvari kasta style with kashta pleats tucked between the legs
+#@fit: waist, hips, thighs
+a traditionally styled __colors/female_bright__ colored Nauvari saree in khun __patterns/female_saree_borders__ draped in classic kasta style with dhoti pants pleats
+#@fit: waist, hips, thighs
+a festive __colors/female_tropical__ colored Nauvari saree in brocade __patterns/female_saree_motifs__ draped regally in a 9-yard kashta drape with pants-like pleats
+#@fit: waist, hips, thighs
+a regally styled __colors/female_winter__ colored Nauvari saree in silk __patterns/female_saree_borders__ __patterns/female_saree_motifs__ draped in Maharashtrian dhoti style with back pleats
+#@fit: waist, hips, thighs
+a bridal __colors/female_summer__ colored Nauvari saree in khun draped in Nauvari kasta style with kashta pleats tucked between the legs
+#@fit: waist, hips, thighs
+a traditionally styled __colors/female_spring__ colored Nauvari saree in brocade __patterns/female_saree_motifs__ draped in seedha pallu kasta style with pants-like pleats
+#@fit: waist, hips, thighs
+a gracefully styled __colors/female_muted__ colored Nauvari saree in cotton silk __patterns/female_saree_motifs__ draped in Maharashtrian dhoti style with kashta pleats
+#@fit: waist, hips, thighs
+a regally styled __colors/female_autumn__ colored Nauvari saree in khun __patterns/female_saree_borders__ __patterns/female_saree_motifs__ draped in a 9-yard kashta drape with dhoti pleats
+#@fit: waist, hips, thighs
+a classically styled __colors/female_cool__ colored Nauvari saree in brocade draped in traditional kachche style with back pleats framing her hips

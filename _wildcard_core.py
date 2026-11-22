@@ -100,6 +100,7 @@ KNOWN_DIRECTIVE_KEYS: frozenset[str] = frozenset(
         "mishap",
         "slip",
         "state",
+        "lewdity",
         "modifiers",
         "no_modifiers",
         "fixed",
@@ -625,6 +626,142 @@ class WildcardResolver:
         ordered = sorted(candidates, key=lambda pair: pair[0])
         chosen_index = self._pick_index(len(ordered), path, context, salt="blocks")
         return ordered[chosen_index]
+
+    def pick_line_in_band(
+        self,
+        file_rel: str,
+        context: FilterContext,
+        low: int,
+        high: int,
+        salt: str = "",
+    ) -> tuple[str, dict[str, set[str]]]:
+        """Pick an eligible line whose lewdity rating fits ``[low, high]``.
+
+        A line's rating is its ``#@lewdity`` override, else the file's
+        top-of-file default header, else 0 (unrated lines read as maximally
+        modest, so conservative bands can never be surprised by them).
+        Both the default header and per-line overrides accumulate per
+        :meth:`_parse_file`, matching the authored wardrobe format.
+
+        Eligibility uses the same context and deep-tag filtering as
+        :meth:`resolve`.  Selection honours the resolver's mode, with the
+        band included in the no-repeat deck key so different bands never
+        share a deck.
+
+        Args:
+            file_rel: Path to the wildcard file relative to the wildcards
+                directory, without the ``.txt`` extension.
+            context: The active filter context.
+            low: Inclusive lower bound of the lewdity band.
+            high: Inclusive upper bound of the lewdity band.
+            salt: Extra deck-key discriminator (prepended to the band tag).
+
+        Returns:
+            A ``(line, directives)`` tuple; ``("", {})`` when the file is
+            missing, empty, or nothing eligible fits the band.
+        """
+        path = self._contained_path(file_rel)
+        if path is None or not os.path.isfile(path):
+            return "", {}
+        entries = self._parse_file(path) or []
+        if not entries:
+            return "", {}
+        file_default = self._file_lewdity(path)
+        candidates: list[tuple[str, dict[str, set[str]]]] = []
+        for line, directives in entries:
+            if not self._line_eligible(directives, context):
+                continue
+            if not self._tag_deep_eligible(line, context, frozenset()):
+                continue
+            rating = self._directive_int(directives, "lewdity", file_default)
+            if not low <= rating <= high:
+                continue
+            candidates.append((line, directives))
+        if not candidates:
+            return "", {}
+        index = self._pick(
+            list(range(len(candidates))),
+            path,
+            context,
+            salt=f"{salt}band{low}-{high}",
+        )
+        return candidates[index]
+
+    def pick_line_preferred(
+        self,
+        file_rel: str,
+        context: FilterContext,
+        prefer_key: str,
+    ) -> tuple[str, dict[str, set[str]]]:
+        """Pick an eligible line, preferring lines tagged to match *prefer_key*.
+
+        When the context asserts *prefer_key*, lines carrying a matching
+        ``#@<prefer_key>:`` value win exclusively (untagged lines are excluded
+        so a per-occasion or per-time variant is never diluted by universal
+        lines).  With no matching tagged lines — or the key unasserted — the
+        untagged/eligible lines serve as the fallback pool.  Lines tagged with
+        a NON-matching value are never eligible while the key is asserted.
+
+        Selection honours the resolver's mode; the preference key joins the
+        no-repeat deck salt so preferred and fallback pools never share decks.
+        """
+        path = self._contained_path(file_rel)
+        if path is None or not os.path.isfile(path):
+            return "", {}
+        pairs = self._block_directives(path)
+        if not pairs:
+            return "", {}
+        active = (context or {}).get(prefer_key)
+        preferred: list[tuple[str, dict[str, set[str]]]] = []
+        fallback: list[tuple[str, dict[str, set[str]]]] = []
+        for line, directives in pairs:
+            if not self._line_eligible(directives, context):
+                continue
+            if not self._tag_deep_eligible(line, context, frozenset()):
+                continue
+            values = directives.get(prefer_key)
+            if active and values:
+                if values & active:
+                    preferred.append((line, directives))
+            else:
+                fallback.append((line, directives))
+        pool = preferred if preferred else fallback
+        if not pool:
+            return "", {}
+        index = self._pick(list(range(len(pool))), path, context, salt=f"pref:{prefer_key}")
+        return pool[index]
+
+    @staticmethod
+    def _directive_int(directives: dict[str, set[str]], key: str, default: int) -> int:
+        """Return the single int value of *key* in *directives*, or *default*."""
+        values = directives.get(key)
+        if not values:
+            return default
+        try:
+            return int(next(iter(values)))
+        except (TypeError, ValueError):
+            return default
+
+    @staticmethod
+    def _file_lewdity(path: str) -> int:
+        """Return the file's top-of-file ``#@lewdity`` default, or 0."""
+        try:
+            with open(path, encoding="utf-8-sig") as f:
+                for raw in f:
+                    line = raw.strip()
+                    if not line:
+                        continue
+                    match = _DIRECTIVE_PATTERN.match(line)
+                    if match is not None and match.group(1) == "lewdity":
+                        try:
+                            return int(match.group(2).split(",")[0].strip())
+                        except ValueError:
+                            return 0
+                    if not line.startswith("#"):
+                        break
+        except OSError:  # pragma: no cover - caller just checked isfile
+            return 0
+        return 0
 
     def pick_line_per_block(self, file_rel: str, context: FilterContext) -> str:
         """Pick one eligible line per directive block and join them with commas.

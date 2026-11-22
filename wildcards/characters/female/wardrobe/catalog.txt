@@ -1,9 +1,116 @@
+#@occasion: casual, travel, home
 __characters/female/wardrobe/casual__
+
+#@occasion: casual, travel
+__characters/female/wardrobe/streetwear__
+
+#@occasion: casual, travel
+__characters/female/wardrobe/outerwear__
+
+#@occasion: office, costume
+__characters/female/wardrobe/uniform__
+
+#@occasion: home, intimate
+__characters/female/wardrobe/sleepwear__
+
+#@occasion: resort, pool, travel
+__characters/female/wardrobe/resort_wear__
+
+#@occasion: office, formal
 __characters/female/wardrobe/business__
-__characters/female/wardrobe/formal__
-__characters/female/wardrobe/party__
+
+#@occasion: athletic, gym
 __characters/female/wardrobe/athletic__
-__characters/female/wardrobe/swimwear__
-__characters/female/wardrobe/lingerie__
-__characters/female/wardrobe/traditional__
+
+#@occasion: party, festival
+__characters/female/wardrobe/dancewear__
+
+#@occasion: costume, festival
 __characters/female/wardrobe/costume__
+
+#@occasion: formal, wedding
+__characters/female/wardrobe/formal__
+
+#@occasion: party, wedding
+__characters/female/wardrobe/party__
+
+#@occasion: wedding
+__characters/female/wardrobe/bridal__
+
+#@occasion: beach, pool, resort
+__characters/female/wardrobe/swimwear__
+
+#@occasion: pool, resort, intimate
+__characters/female/wardrobe/micro_swimwear__
+
+#@occasion: party, intimate
+__characters/female/wardrobe/sheer_wear__
+
+#@occasion: intimate, boudoir
+__characters/female/wardrobe/lingerie__
+
+#@occasion: intimate, boudoir, wedding
+__characters/female/wardrobe/lingerie_bridal__
+
+#@occasion: intimate, boudoir
+__characters/female/wardrobe/lingerie_latex__
+
+#@occasion: intimate, boudoir
+__characters/female/wardrobe/lingerie_stockings__
+
+#@occasion: intimate, boudoir
+__characters/female/wardrobe/boudoir_wear__
+
+#@occasion: intimate, boudoir
+__characters/female/wardrobe/bdsm__
+
+#@occasion: intimate, boudoir
+__characters/female/wardrobe/fetish_wear__
+
+#@occasion: party, intimate
+__characters/female/wardrobe/wet_look__
+
+#@occasion: festival, wedding, traditional
+__characters/female/wardrobe/anarkali__
+
+#@occasion: casual, festival, traditional
+__characters/female/wardrobe/kurti_sets__
+
+#@occasion: festival, wedding, traditional
+__characters/female/wardrobe/lehenga_choli__
+
+#@occasion: festival, wedding, traditional
+__characters/female/wardrobe/mekhela_chador__
+
+#@occasion: festival, wedding, traditional
+__characters/female/wardrobe/nauvari_dhoti_saree__
+
+#@occasion: casual, festival, traditional
+__characters/female/wardrobe/patiala_suit__
+
+#@occasion: casual, festival, traditional
+__characters/female/wardrobe/salwar_suits__
+
+#@occasion: festival, wedding, traditional
+__characters/female/wardrobe/sarees__
+
+#@occasion: festival, wedding, traditional
+__characters/female/wardrobe/sharara_gharara__
+
+#@occasion: festival, wedding, traditional, party
+__characters/female/wardrobe/traditional__
+
+#@occasion: intimate, boudoir
+__characters/female/wardrobe/full_nude__
+
+#@occasion: intimate, boudoir
+__characters/female/wardrobe/body_paint__
+
+#@occasion: intimate, boudoir
+__characters/female/wardrobe/topless_implied__
+
+#@occasion: intimate, boudoir
+__characters/female/wardrobe/softcore_solo__
+
+#@occasion: intimate, boudoir
+__characters/female/wardrobe/artistic_nude__

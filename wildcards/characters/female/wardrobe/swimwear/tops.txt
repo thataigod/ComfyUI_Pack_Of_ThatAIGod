@@ -1,6 +1,28 @@
+#@lewdity: 60
+
 #@fit: bust
-#@condition: wet
-a triangle bikini top, __bright_colors_female__
+a __colors/female_bright__ colored triangle bikini top
 #@fit: bust
-#@condition: wet
-a bandeau bikini top, __pastel_colors_female__
+a __colors/female_pastel__ colored bandeau bikini top
+#@lewdity: 70
+#@fit: bust, shoulders
+a __colors/female_vivid__ colored triangle string bikini top in lycra with a plunging neckline
+#@lewdity: 70
+#@fit: bust, shoulders
+a __colors/female_bright__ colored halter string top in lycra __patterns/female_swimwear_print__ with lattice tie sides
+#@lewdity: 70
+#@fit: bust, shoulders
+a __colors/female_tropical__ colored triangle halter top in nylon __patterns/female_saree_motifs__ with delicate tie closures
+#@fit: bust, back
+a __colors/female_neon__ colored halter-neck bikini top in lycra __patterns/female_swimwear_print__ with a tie-back closure
+#@fit: bust, shoulders
+a __colors/female_jewel__ colored underwire halter top in spandex __patterns/female_swimwear_print__ with a supportive retro pin-up shape
+#@lewdity: 50
+#@fit: bust, waist
+a __colors/female_candy__ colored cropped tankini top in a polyester blend with a tie-front knot
+#@lewdity: 50
+#@fit: bust, waist, shoulders
+a __colors/female_muted__ colored cropped halter tank in nylon with shirred side panels
+#@lewdity: 50
+#@fit: bust, waist
+a __colors/female_winter__ colored bandeau tank top in lycra __patterns/female_swimwear_print__ with a tie-front knot

@@ -1,0 +1,126 @@
+#@lewdity: 20
+
+#@fit: bust, shoulders
+#@lewdity: 10
+a high-neck __colors/female_metallic__ colored 3/4th sleeved blouse in silk __patterns/female_blouse_patterns__ that fully covers her top body
+#@fit: bust, shoulders
+#@lewdity: 35
+a low-neck __colors/female_pastel__ colored sleeveless blouse in cotton that fully shows her cleavage
+#@fit: bust, shoulders
+#@lewdity: 15
+a boat-neck __colors/female_metallic__ colored 3/4th sleeved blouse in silk that modestly covers her chest and midriff
+#@fit: bust, waist
+#@lewdity: 25
+a sweetheart __colors/female_metallic__ colored short sleeved blouse in brocade __patterns/female_blouse_patterns__ that accentuates her bust
+#@fit: bust, shoulders
+#@lewdity: 15
+a boat-neck __colors/female_metallic__ colored elbow sleeved blouse in silk __patterns/female_blouse_patterns__ that modestly covers her chest
+#@fit: bust, shoulders
+#@lewdity: 10
+a high-neck __colors/female_metallic__ colored full sleeved blouse in raw silk __patterns/female_blouse_patterns__ that fully covers her upper body
+#@fit: bust, shoulders
+#@lewdity: 15
+a round-neck __colors/female_jewel__ colored 3/4th sleeved blouse in silk __patterns/female_blouse_patterns__ that modestly covers her torso
+#@fit: bust, shoulders
+#@lewdity: 10
+a collar-neck __colors/female_metallic__ colored full sleeved blouse in velvet that fully covers her torso
+#@fit: bust, shoulders
+#@lewdity: 10
+a high-neck __colors/female_warm__ colored long sleeved blouse in brocade __patterns/female_blouse_patterns__ that fully covers her chest and arms
+#@fit: bust, waist
+#@lewdity: 25
+a square-neck __colors/female_nude__ colored short sleeved blouse in brocade __patterns/female_blouse_patterns__ that subtly reveals her midriff
+#@fit: bust, shoulders
+#@lewdity: 15
+a boat-neck __colors/female_pastel__ colored cap sleeved blouse in cotton that modestly covers her chest
+#@fit: bust, waist
+#@lewdity: 30
+a sweetheart __colors/female_light__ colored short sleeved blouse in cotton that subtly shows her cleavage
+#@fit: bust, waist
+#@lewdity: 25
+a round-neck __colors/female_pastel__ colored sleeveless blouse in cotton __patterns/female_blouse_patterns__ that partially shows her midriff
+#@fit: bust, shoulders
+#@lewdity: 15
+a boat-neck __colors/female_nude__ colored 3/4th sleeved blouse in organza that softly covers her torso
+#@fit: bust, shoulders
+a V-neck __colors/female_spring__ colored short sleeved blouse in cotton __patterns/female_blouse_patterns__ that elegantly shows her neckline
+#@fit: bust, shoulders
+#@lewdity: 15
+a square-neck __colors/female_pastel__ colored puff sleeved blouse in cotton __patterns/female_blouse_patterns__ that modestly covers her bust
+#@fit: bust, shoulders
+#@lewdity: 10
+a high-neck __colors/female_nude__ colored elbow sleeved blouse in cotton that fully covers her upper body
+#@fit: bust, shoulders
+#@lewdity: 25
+a sweetheart __colors/female_candy__ colored cap sleeved blouse in net that subtly reveals her shoulders
+#@fit: bust, shoulders
+#@lewdity: 15
+a round-neck __colors/female_nude__ colored short sleeved blouse in cotton that modestly covers her torso
+#@fit: bust, shoulders
+#@lewdity: 10
+a collar-neck __colors/female_neutral__ colored full sleeved blouse in linen __patterns/female_blouse_patterns__ that fully covers her torso
+#@fit: bust, waist
+#@lewdity: 25
+a boat-neck __colors/female_autumn__ colored 3/4th sleeved blouse in cotton that partially shows her midriff
+#@fit: bust, shoulders
+#@lewdity: 15
+a square-neck __colors/female_dusty__ colored short sleeved blouse in cotton that modestly covers her chest
+#@fit: bust, shoulders
+#@lewdity: 30
+a V-neck __colors/female_warm__ colored sleeveless blouse in cotton __patterns/female_blouse_patterns__ that subtly shows her cleavage
+#@fit: bust, back
+#@lewdity: 35
+a deep U-neck __colors/female_vivid__ colored sleeveless blouse in georgette __patterns/female_blouse_patterns__ that accentuates her cleavage
+#@fit: bust, back
+#@lewdity: 35
+a halter-neck __colors/female_bright__ colored sleeveless blouse in chiffon that reveals her shoulders and back
+#@fit: bust, shoulders
+#@lewdity: 30
+an off-shoulder __colors/female_summer__ colored sleeveless blouse in crepe that shows her shoulders and collarbone
+#@fit: bust, waist
+#@lewdity: 25
+a V-neck __colors/female_neon__ colored short sleeved blouse in georgette __patterns/female_blouse_patterns__ that partially reveals her midriff
+#@fit: bust, back
+#@lewdity: 35
+a backless __colors/female_pastel__ colored sleeveless blouse in net __patterns/female_blouse_patterns__ that reveals her back
+#@fit: bust, shoulders
+#@lewdity: 30
+a deep V-neck __colors/female_metallic__ colored full sleeved blouse in velvet that accentuates her bust while covering her arms
+#@fit: bust, shoulders
+#@lewdity: 10
+a high-neck __colors/female_monochrome__ colored full sleeved blouse in cotton that fully covers her torso
+#@fit: bust, shoulders
+#@lewdity: 25
+a round-neck __colors/female_bright__ colored sleeveless blouse in cotton that subtly shows her shoulders
+#@fit: bust, shoulders
+#@lewdity: 15
+a boat-neck __colors/female_cool__ colored short sleeved blouse in cotton that modestly covers her upper body
+#@fit: bust, waist
+a sweetheart __colors/female_spring__ colored cap sleeved blouse in cotton __patterns/female_blouse_patterns__ that softly covers her bust
+#@fit: bust, waist
+#@lewdity: 25
+a V-neck __colors/female_cool__ colored short sleeved blouse in satin that subtly reveals her waist
+#@fit: bust, shoulders
+#@lewdity: 10
+a high-neck __colors/female_light__ colored full sleeved blouse in cotton that fully covers her torso
+#@fit: bust, waist
+#@lewdity: 25
+a boat-neck __colors/female_pastel__ colored puff sleeved blouse in cotton that gently shows her midriff
+#@fit: bust, shoulders
+#@lewdity: 15
+a boat-neck __colors/female_dusty__ colored cap sleeved blouse in cotton __patterns/female_blouse_patterns__ that elegantly covers her shoulders
+#@fit: bust, back
+#@lewdity: 35
+a halter-neck __colors/female_summer__ colored sleeveless blouse in net __patterns/female_blouse_patterns__ that reveals her midriff and shoulders
+#@fit: bust, shoulders
+#@lewdity: 25
+a sweetheart __colors/female_warm__ colored short sleeved blouse in silk that accentuates her bust
+#@fit: bust, waist
+#@lewdity: 25
+a V-neck __colors/female_summer__ colored sleeveless blouse in linen that subtly shows her midriff
+#@fit: bust, shoulders
+#@lewdity: 30
+an off-shoulder __colors/female_bright__ colored sleeveless blouse in georgette that shows her shoulders and collarbone
+#@fit: bust, back
+#@lewdity: 35
+a halter-neck __colors/female_tropical__ colored sleeveless blouse in georgette __patterns/female_blouse_patterns__ that reveals her shoulders and back

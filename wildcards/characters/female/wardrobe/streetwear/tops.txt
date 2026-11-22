@@ -1,0 +1,38 @@
+#@lewdity: 25
+
+#@fit: bust, waist, shoulders
+#@lewdity: 20
+an oversized hoodie in __colors/female_vivid__ cotton fleece with a hooded neckline and long sleeves __patterns/female_streetwear_graphic__
+#@fit: bust, waist
+#@lewdity: 30
+a cropped hoodie in __colors/female_neon__ knit with a crew neckline and dropped sleeves __patterns/female_streetwear_graphic__
+#@fit: bust, waist, shoulders
+#@lewdity: 20
+a zip-up hoodie in __colors/female_bright__ cotton fleece with a high neckline and long sleeves __patterns/female_streetwear_graphic__
+#@fit: bust, waist, thighs
+#@lewdity: 20
+a longline hoodie in __colors/female_neon__ knit with a mock neckline and long sleeves __patterns/female_kurti_patterns__
+#@fit: bust, waist, shoulders
+#@lewdity: 30
+a sleeveless hoodie in __colors/female_neon__ knit with a hooded neckline __patterns/female_streetwear_graphic__
+#@fit: bust, waist, shoulders
+#@lewdity: 20
+an oversized sweatshirt in __colors/female_vivid__ knit with a crew neckline and oversized sleeves __patterns/female_blouse_patterns__
+#@fit: bust, waist
+a graphic tee in __colors/female_bright__ jersey with a crew neckline and short sleeves __patterns/female_streetwear_graphic__
+#@fit: bust, waist
+a boxy tee in __colors/female_bright__ jersey with a V-neckline and short sleeves __patterns/female_streetwear_graphic__
+#@fit: bust, waist, shoulders
+a boxy tee in __colors/female_candy__ cotton fleece with a crew neckline and dropped sleeves __patterns/female_kurti_patterns__
+#@fit: bust, waist
+#@lewdity: 35
+a scoop-neck crop top in __colors/female_candy__ jersey with a sleeveless cut __patterns/female_salwar_prints__
+#@fit: bust, waist
+#@lewdity: 35
+a V-neck crop top in __colors/female_candy__ knit with a sleeveless cut __patterns/female_salwar_prints__
+#@fit: bust, waist
+#@lewdity: 30
+a V-neck crop top in __colors/female_neon__ jersey with cap sleeves __patterns/female_kurti_patterns__
+#@fit: bust, waist
+#@lewdity: 30
+a graphic crop top in __colors/female_bright__ jersey with a scoop neckline and cap sleeves __patterns/female_streetwear_graphic__

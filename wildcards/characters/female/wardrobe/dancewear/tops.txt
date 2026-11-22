@@ -1,0 +1,53 @@
+#@lewdity: 40
+
+#@fit: bust, waist
+#@lewdity: 35
+a __colors/female_neutral__ colored ballet wrap top in jersey with scalloped lace trim and a crossover tie front __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist
+a __colors/female_dark__ colored ballet wrap top in lycra with a cropped knotted crossover front
+#@fit: bust, waist
+#@lewdity: 35
+a __colors/female_pastel__ colored ballet wrap top in jersey with a satin bow detail and soft ribbed knit __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist
+#@lewdity: 35
+a __colors/female_cool__ colored ballet wrap top in jersey with a waist tie that cinches at the middle
+#@fit: bust, shoulders
+#@lewdity: 35
+a __colors/female_nude__ colored ballet wrap top in jersey with a ruched sleeve and a satin bow detail
+#@fit: bust, waist
+#@lewdity: 35
+a __colors/female_light__ colored ballet wrap top in lycra with a gathered neckline __patterns/female_party_dress_detail__
+#@fit: bust, waist
+a fitted __colors/female_spring__ colored tank top in jersey with a high waistband
+#@fit: bust, waist
+a __colors/female_bright__ colored crop top in spandex with a wide waistband __patterns/female_party_dress_detail__
+#@fit: bust, waist
+a __colors/female_vivid__ colored crop top in lycra with tapered short sleeves
+#@fit: bust
+a __colors/female_bright__ colored racerback top in spandex __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist
+#@lewdity: 35
+a __colors/female_neutral__ colored fitted tank in jersey tucked in at the waist
+#@fit: bust, waist
+#@lewdity: 45
+a __colors/female_earthtone__ colored fitted leotard in jersey with a scoop-neck bodice
+#@fit: bust, waist
+#@lewdity: 45
+a __colors/female_autumn__ colored fitted leotard in lycra with a buttoned front panel __patterns/female_saree_motifs__
+#@fit: bust, waist
+#@lewdity: 45
+a __colors/female_summer__ colored fitted leotard in lycra with a printed bodice
+#@fit: bust, waist
+#@lewdity: 45
+a __colors/female_monochrome__ colored fitted leotard in lycra with a fitted vest cut __patterns/female_lingerie_lace_detail__
+#@fit: bust, waist
+#@lewdity: 35
+a __colors/female_candy__ colored dance blouse in jersey with a ribboned waistband __patterns/female_saree_motifs__
+#@fit: bust, shoulders
+#@lewdity: 30
+a __colors/female_tropical__ colored dance blouse in jersey with puff sleeves __patterns/female_saree_motifs__
+#@fit: bust, waist
+a __colors/female_jewel__ colored halter dance top in lycra with an open back
+#@fit: bust
+#@lewdity: 55
+a __colors/female_dusty__ colored mesh-panel dance crop top in lycra __patterns/female_lingerie_lace_detail__

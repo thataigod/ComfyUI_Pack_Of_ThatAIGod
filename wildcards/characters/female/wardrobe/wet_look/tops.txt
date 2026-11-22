@@ -1,0 +1,77 @@
+#@lewdity: 70
+
+#@lewdity: 60
+#@fit: bust
+a casually styled __colors/female_pastel__ colored soaked cotton shirt in a soft weave with rolled sleeves, clinging softly to the frame as rain streams down
+#@lewdity: 60
+#@fit: bust, shoulders
+a rain-drenched __colors/female_light__ colored cotton shirt in light cotton __patterns/female_blouse_patterns__, clinging to the shoulders and turning translucent at the cuffs
+#@lewdity: 65
+#@fit: bust
+a rain-slicked __colors/female_neon__ colored cotton tee in fitted cotton __patterns/female_casual_top_print__, clinging to the torso and sheering against the skin
+#@lewdity: 65
+#@fit: bust
+a drenched __colors/female_dark__ colored cotton graphic tee in heavyweight cotton __patterns/female_streetwear_graphic__, clinging to the torso and darkening with water
+#@lewdity: 65
+#@fit: bust, shoulders
+a rain-drenched __colors/female_metallic__ colored silk blouse in wet silk __patterns/female_blouse_patterns__, shining with rainwater and clinging softly
+#@lewdity: 65
+#@fit: bust, shoulders
+a drenched __colors/female_winter__ colored silk blouse in heavy silk __patterns/female_costume_detail__, clinging cold and sheering at the shoulders
+#@lewdity: 65
+#@fit: bust
+a rain-soaked __colors/female_jewel__ colored silk wrap blouse in fluid silk with a draped neckline, clinging softly and sheering where soaked
+#@lewdity: 65
+#@fit: bust, shoulders
+a rain-drenched __colors/female_tropical__ colored chiffon blouse in sheer chiffon with a tie neck, sticking lightly to the shoulders and turning translucent
+#@lewdity: 65
+#@fit: bust
+a rain-drenched __colors/female_neon__ colored cotton blouse in crisp cotton __patterns/female_blouse_patterns__, clinging at the waist and turning translucent at the yoke
+#@lewdity: 65
+#@fit: bust
+a soaked __colors/female_pastel__ colored chiffon blouse in floating chiffon __patterns/female_blouse_patterns__, clinging softly and turning sheer at the sleeves
+#@lewdity: 65
+#@fit: bust
+a soaked __colors/female_spring__ colored silk blouse in airy silk __patterns/female_lingerie_lace_detail__, clinging and turning sheer along the sleeves
+#@lewdity: 65
+#@fit: bust
+a drenched __colors/female_jewel__ colored silk blouse in liquid silk __patterns/female_blouse_patterns__, clinging and sheering over the camisole beneath
+#@lewdity: 70
+#@fit: bust
+a soaked __colors/female_jewel__ colored silk camisole in delicate silk __patterns/female_lingerie_lace_detail__, clinging and sheering over the bandeau beneath
+#@lewdity: 70
+#@fit: bust
+a soaked __colors/female_summer__ colored cotton camisole in light cotton __patterns/female_blouse_patterns__, clinging and turning see-through where soaked
+#@lewdity: 70
+#@fit: bust
+a rain-soaked __colors/female_warm__ colored silk camisole in washed silk __patterns/female_lingerie_lace_detail__, clinging and sheering at the neckline
+#@lewdity: 70
+#@fit: bust
+a drenched __colors/female_candy__ colored cotton crop top in ribbed cotton __patterns/female_casual_top_print__, clinging and turning translucent at the edges
+#@lewdity: 70
+#@fit: bust, shoulders
+a rain-soaked __colors/female_cool__ colored jersey wrap top in fine jersey __patterns/female_costume_detail__, clinging damply across the shoulders
+#@lewdity: 70
+#@fit: bust
+a soaked __colors/female_muted__ colored jersey tee in soft jersey __patterns/female_lingerie_lace_detail__, clinging to the shoulders and sheering at the neckline
+#@lewdity: 55
+#@fit: bust, shoulders
+a rain-soaked __colors/female_neutral__ colored linen shirt in slubby linen __patterns/female_blouse_patterns__, clinging at the back and darkening at the collar
+#@lewdity: 55
+#@fit: bust, shoulders
+a soaked __colors/female_monochrome__ colored cotton shirt in poplin cotton __patterns/female_costume_detail__, clinging to the frame and sheering at the sleeves
+#@lewdity: 55
+#@fit: bust, shoulders
+a rain-soaked __colors/female_autumn__ colored cotton overshirt in brushed cotton __patterns/female_casual_top_print__, clinging at the elbows and darkening with rain
+#@lewdity: 55
+#@fit: bust, shoulders
+a drenched __colors/female_autumn__ colored linen overshirt in rustic linen __patterns/female_blouse_patterns__, clinging at the elbows and sheering at the shoulders
+#@lewdity: 55
+#@fit: bust, shoulders
+a rain-soaked __colors/female_winter__ colored jersey knit top in fine jersey with long sleeves, clinging and darkening down the sleeves
+#@lewdity: 55
+#@fit: bust, shoulders
+a drenched __colors/female_neutral__ colored cotton pullover in soft cotton __patterns/female_streetwear_graphic__, clinging at the shoulders and darkening with rain
+#@lewdity: 55
+#@fit: bust
+a rain-soaked __colors/female_muted__ colored linen tee in soft linen __patterns/female_casual_top_print__, clinging lightly and turning translucent at the edges

@@ -1,2 +1,50 @@
+#@lewdity: 40
+
 #@fit: bust, waist, hips
-a one-piece athletic bodysuit
+a sleek __colors/female_bright__ colored athletic bodysuit in polyester with a scoop neckline and sleeveless cut that sculpts the curves and sits snugly on the hips
+#@fit: bust, waist, hips
+a __colors/female_candy__ colored unitard bodysuit in cotton blend with a scoop neckline and short sleeves __patterns/female_athletic_stripe__ that skims the figure and sits at the natural waist
+#@fit: bust, waist, hips
+a __colors/female_jewel__ colored athletic unitard in spandex with a high neckline and racerback __patterns/female_athletic_stripe__ that clings to the curves and sits snugly on the hips
+#@fit: bust, waist, hips
+a fitted __colors/female_neon__ colored athletic catsuit in nylon with a racerback and long sleeves __patterns/female_athletic_stripe__ that sculpts the figure and hugs the legs tightly
+#@fit: bust, waist, hips
+an athletic __colors/female_neon__ colored jumpsuit in spandex with a V-neckline and sleeveless cut __patterns/female_athletic_stripe__ that hugs the figure and accentuates the curves
+#@fit: bust, waist, hips
+#@lewdity: 30
+a __colors/female_bright__ colored co-ord tracksuit set with a hoodie and joggers in fleece with a high neckline and long sleeves that drapes softly and sits relaxed on the hips
+#@fit: bust, waist, hips
+#@lewdity: 30
+a __colors/female_tropical__ colored co-ord zip-up tracksuit set with a hoodie and joggers in polyester __patterns/female_athletic_stripe__ that drapes softly and sits comfortably at the waist
+#@fit: bust, waist, hips
+#@lewdity: 35
+a __colors/female_vivid__ colored co-ord cropped hoodie and joggers set in cotton blend with a high neckline and relaxed cuffs that skim the legs
+#@fit: bust, waist, hips
+#@lewdity: 35
+a __colors/female_tropical__ colored co-ord long-sleeve crop top and joggers set in fleece with a crew neckline and long sleeves that drapes softly
+#@fit: bust, waist, hips
+a __colors/female_jewel__ colored co-ord hoodie and biker shorts set in fleece with a high neckline and long sleeves __patterns/female_blouse_patterns__ that drapes softly and sits low on the hips
+#@fit: bust, waist, hips
+#@lewdity: 45
+a __colors/female_neon__ colored matching sports bra and leggings set in spandex with a racerback and high waist that hugs the figure tightly and sits high on the waist
+#@fit: bust, waist, hips
+#@lewdity: 45
+a __colors/female_candy__ colored matching sports bra and biker shorts set in spandex with thin straps and a high waist __patterns/female_athletic_stripe__ that hugs the thighs and sits high on the hips
+#@fit: bust, waist, hips
+a __colors/female_bright__ colored co-ord sports bra and capri leggings set in spandex with a scoop neckline and thin straps __patterns/female_salwar_prints__ that hugs the calves and sits high on the waist
+#@fit: bust, waist, hips
+#@lewdity: 45
+a __colors/female_bright__ colored co-ord tank top and leggings set in nylon with a racerback __patterns/female_athletic_stripe__ that sculpts the legs and shows midriff
+#@fit: bust, waist, hips
+a __colors/female_candy__ colored co-ord cropped tank and high-waisted leggings set in cotton blend with a V-neckline and thin straps __patterns/female_saree_motifs__ that hugs the legs and sits high on the waist
+#@fit: bust, waist, hips
+a __colors/female_vivid__ colored matching long-sleeve crop top and leggings set in polyester with a crew neckline and long sleeves __patterns/female_athletic_stripe__ that hugs the legs and sits high on the waist
+#@fit: bust, waist, hips
+#@lewdity: 35
+a __colors/female_tropical__ colored matching cropped tank and joggers set in knit with a crew neckline __patterns/female_athletic_stripe__ that hugs the calves and sits relaxed on the hips
+#@fit: bust, waist, hips
+#@lewdity: 30
+a __colors/female_vivid__ colored matching hoodie and training tights set in polyester with a high neckline and long sleeves __patterns/female_kurti_patterns__ that sculpts the legs and sits high on the hips
+#@fit: bust, waist, hips
+#@lewdity: 30
+a __colors/female_neon__ colored matching zip-up hoodie and leggings set in knit with a high neckline and long sleeves __patterns/female_athletic_stripe__ that hugs the figure and sits at the natural waist

@@ -1,4 +1,45 @@
+#@lewdity: 25
+
 #@fit: bust, waist, hips
-a floral sundress, __pastel_colors_female__
+#@lewdity: 30
+a floral sundress in __colors/female_pastel__
 #@fit: bust, waist, hips
-a simple slip dress, __neutral_colors_female__
+a simple slip dress in __colors/female_neutral__ that skims the body and falls to the knees
+#@fit: bust, waist, hips
+#@lewdity: 30
+a cotton co-ord set in __colors/female_pastel__ with a cropped top and wide-leg pants that drape softly from the waist
+#@fit: bust, waist, hips
+#@lewdity: 30
+a rayon co-ord set in __colors/female_bright__ with a cropped tank and palazzo pants that flow breezily from a high waist
+#@fit: bust, waist, hips
+a linen co-ord set in __colors/female_earthtone__ with a wrap blouse and tapered trousers that fall lightly from the waist
+#@fit: bust, waist, hips
+#@lewdity: 30
+a denim co-ord set in __colors/female_cool__ with a cropped shirt and straight-leg jeans
+#@fit: bust, waist, hips
+#@lewdity: 30
+a chambray co-ord set in __colors/female_summer__ with a button shirt and shorts that show the thighs
+#@fit: bust, waist, hips
+a jersey tracksuit set in __colors/female_warm__ with a hoodie and joggers that drape relaxed at the hips
+#@fit: bust, waist, hips
+a chambray shirt dress in __colors/female_candy__ with a collar neck and short sleeves that cinch at the waist, falling to the knees
+#@fit: bust, waist, hips
+#@lewdity: 30
+a cotton shirt dress in __colors/female_warm__ with a collar and 3/4 sleeves belted at the waist, falling to mid-thigh
+#@fit: bust, waist, hips
+#@lewdity: 20
+a knitted sweater dress in __colors/female_autumn__ with a crew neckline and long sleeves that drape softly to mid-calf
+#@fit: bust, waist, hips
+#@lewdity: 30
+a wrap dress in __colors/female_jewel__ rayon with a V-neck and 3/4 sleeves that cinch at the waist and flare to the knees
+#@fit: bust, waist, hips
+#@lewdity: 30
+a linen sundress in __colors/female_muted__ with a square neck and shoulder straps that sit loosely on the hips
+#@fit: bust, waist, hips
+#@lewdity: 30
+a jersey jumpsuit in __colors/female_neon__ with a V-neck and sleeveless cut that hugs the torso and drapes loosely over the legs
+#@fit: bust, waist, hips
+#@lewdity: 35
+a cotton romper in __colors/female_spring__ with a crew neck and short sleeves that show the thighs
+#@fit: bust, waist, hips
+a denim jumpsuit in __colors/female_dark__ with a boat neck and cap sleeves, fitted at the waist and falling straight to the ankles

@@ -1,0 +1,32 @@
+#@lewdity: 85
+
+#@lewdity: 90
+#@fit: bust, shoulders, waist
+a strappy __colors/female_neon__ leather harness in supple leather __patterns/female_fetish_detail__, framing the shoulders and cinching the waist
+#@lewdity: 90
+#@fit: bust, shoulders
+a strapped __colors/female_monochrome__ leather harness top in smooth leather __patterns/female_fetish_detail__, banding across the collarbones
+#@lewdity: 90
+#@fit: bust, waist
+a strappy __colors/female_vivid__ PVC harness top in structured PVC __patterns/female_fetish_detail__, framing the chest and waist
+#@lewdity: 90
+#@fit: bust, waist
+a strapped __colors/female_metallic__ leather harness top in smooth leather __patterns/female_lingerie_lace_detail__, banding across the chest
+#@lewdity: 80
+#@fit: bust, waist
+a sculpted __colors/female_jewel__ corset with straps that cinch the waist and lace at the back
+#@lewdity: 80
+#@fit: bust, waist
+a boned __colors/female_cool__ corset with straps in satin-backed leather __patterns/female_fetish_detail__, cinching the waist and lacing at the back
+#@lewdity: 80
+#@fit: bust, waist
+a structured __colors/female_earthtone__ leather harness corset in saddle leather __patterns/female_fetish_detail__, cinching the waist
+#@lewdity: 80
+#@fit: bust, waist
+a boned __colors/female_jewel__ leather corset in rich leather __patterns/female_party_dress_detail__, lacing at the back and cinching the waist
+#@lewdity: 75
+#@fit: bust
+a high-necked __colors/female_muted__ latex top in stretch latex __patterns/female_fetish_detail__, layering smoothly under a harness
+#@lewdity: 75
+#@fit: bust
+a cropped latex top in glossy __colors/female_dark__ latex, cut high beneath the ribs

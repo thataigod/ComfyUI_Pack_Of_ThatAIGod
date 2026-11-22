@@ -1,0 +1,30 @@
+#@lewdity: 10
+
+#@fit: bust, shoulders
+a boat-neck short sleeved blouse in Assamese muga silk that modestly covers her torso, with a chador upper drape __patterns/female_mekhela_patterns__ wrapped over one shoulder
+#@fit: bust, shoulders
+a boat-neck short sleeved blouse in Assamese tussar silk that elegantly covers her shoulders, with a chador upper drape __patterns/female_mekhela_patterns__ __patterns/female_garment_detail__ draped over one arm
+#@fit: bust, shoulders
+a round-neck elbow sleeved blouse in Assamese eri silk that modestly covers her chest, with the soft eri chador with fringed border draped over both shoulders
+#@fit: bust, shoulders
+a boat-neck short sleeved blouse in Assamese cotton that modestly covers her torso, with a plain cotton chador with fringed border draped softly over one shoulder
+#@fit: bust, shoulders
+a boat-neck short sleeved blouse in Assamese pat silk that fully covers her torso with a modest neckline, with the pat silk chador with fringed border draped over one shoulder
+#@fit: bust, shoulders
+a round-neck elbow sleeved blouse in Assamese tussar silk that modestly covers her chest and shoulders, with a chador upper drape __patterns/female_mekhela_patterns__ draped over both shoulders
+#@fit: bust, shoulders
+a boat-neck short sleeved blouse in Assamese muga silk that softly covers her upper body, with the fringed chador draped over one shoulder
+#@fit: bust, shoulders
+a round-neck elbow sleeved blouse in Assamese eri silk that modestly covers her bust, with the bridal eri chador with fringed border draped over her head
+#@fit: bust, shoulders
+a round-neck elbow sleeved blouse in Assamese pat silk that modestly covers her upper torso, with a chador upper drape __patterns/female_mekhela_patterns__ draped over one shoulder
+#@fit: bust, waist
+a round-neck elbow sleeved blouse in Assamese muga silk that fully covers her chest and midriff modestly, with a chador upper drape __patterns/female_mekhela_patterns__ draped across her torso
+#@fit: bust, shoulders
+a boat-neck short sleeved blouse in Assamese eri silk that modestly covers her torso, with the eri chador with fringed border draped softly over one shoulder
+#@fit: bust, shoulders
+a round-neck elbow sleeved blouse in Assamese cotton that modestly covers her chest, with a plain cotton chador __patterns/female_mekhela_patterns__ draped neatly over her shoulders
+#@fit: bust, shoulders
+a boat-neck short sleeved blouse in Assamese eri silk that fully covers her torso, with the ceremonial eri chador with fringed border draped over one shoulder
+#@fit: bust, shoulders
+a round-neck elbow sleeved blouse in Assamese cotton that modestly covers her chest and shoulders, with the bridal cotton chador with fringed border draped classically over her torso

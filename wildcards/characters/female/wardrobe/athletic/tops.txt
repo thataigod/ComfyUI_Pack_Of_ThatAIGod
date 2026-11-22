@@ -1,8 +1,54 @@
+#@lewdity: 40
+
 #@fit: bust
 #@condition: sweaty
-#@mishap: her sports bra strap slipping off her shoulder
-a breathable sports bra
+a breathable __colors/female_bright__ colored sports bra in spandex with a racerback and thin straps
+#@fit: bust
+a __colors/female_neon__ colored sports bra in spandex with a scoop neckline and thin straps
+#@fit: bust
+a __colors/female_jewel__ colored racerback sports bra in spandex with a high neckline __patterns/female_athletic_stripe__
+#@fit: bust
+a __colors/female_neon__ colored racerback sports bra in spandex with a scoop neckline __patterns/female_athletic_stripe__
+#@fit: bust
+a __colors/female_candy__ colored sports bra in knit with a scoop neckline and thin straps __patterns/female_saree_motifs__
 #@fit: bust, waist
 #@condition: sweaty
-#@mishap: the tank top bunching up at her waist
-a fitted tank top
+a fitted __colors/female_vivid__ colored tank top in nylon with a V-neckline
+#@fit: bust
+a __colors/female_vivid__ colored cropped tank top in polyester with a scoop neckline
+#@fit: bust
+a __colors/female_tropical__ colored cropped tank in cotton blend with a V-neckline and thin straps __patterns/female_salwar_prints__
+#@fit: bust, waist
+a __colors/female_neon__ colored racerback tank top in nylon with a scoop neckline and racerback
+#@fit: bust
+a __colors/female_tropical__ colored racerback tank in polyester with a scoop neckline __patterns/female_salwar_prints__
+#@fit: bust
+a __colors/female_bright__ colored tank top in knit with a crew neckline __patterns/female_blouse_patterns__
+#@fit: bust
+a __colors/female_jewel__ colored athletic tank top in polyester with a racerback and scoop neckline
+#@fit: bust, waist
+a __colors/female_vivid__ colored athletic tank in spandex with a V-neckline __patterns/female_kurti_patterns__
+#@fit: bust, waist
+a __colors/female_tropical__ colored long-sleeve crop top in cotton blend with a crew neckline and long sleeves
+#@fit: bust, waist
+a __colors/female_candy__ colored long-sleeve crop top in knit with a crew neckline and long sleeves __patterns/female_saree_motifs__
+#@fit: bust, waist
+a __colors/female_neon__ colored crop top in polyester with a V-neckline and short sleeves __patterns/female_athletic_stripe__
+#@fit: bust, waist
+a __colors/female_vivid__ colored crop top in spandex with a crew neckline and short sleeves __patterns/female_kurti_patterns__
+#@fit: bust, waist
+a __colors/female_jewel__ colored sleeveless crop top in spandex with a high neckline __patterns/female_athletic_stripe__
+#@fit: bust, waist
+#@lewdity: 35
+a __colors/female_candy__ colored cropped tank top in fleece with a crew neckline and short sleeves __patterns/female_saree_motifs__
+#@fit: bust, shoulders
+#@lewdity: 30
+a __colors/female_jewel__ colored cropped hoodie in fleece with a high neckline and long sleeves
+#@fit: bust, shoulders
+#@lewdity: 30
+a __colors/female_tropical__ colored cropped hoodie in cotton blend with a high neckline and long sleeves __patterns/female_athletic_stripe__
+#@fit: bust, shoulders
+#@lewdity: 30
+a __colors/female_bright__ colored zip-up hoodie in fleece with a high neckline and long sleeves __patterns/female_athletic_stripe__
+#@fit: bust, shoulders
+a __colors/female_vivid__ colored sleeveless hoodie in polyester with a high neckline __patterns/female_athletic_stripe__

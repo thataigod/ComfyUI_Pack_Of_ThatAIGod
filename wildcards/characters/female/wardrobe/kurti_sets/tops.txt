@@ -1,0 +1,78 @@
+#@lewdity: 20
+
+#@fit: bust, waist
+a __colors/female_earthtone__ colored cotton kurti with knee-length straight cut, round neckline and 3/4 sleeves with side slits, with a dupatta draped over one shoulder that modestly covers her chest
+#@fit: bust, waist
+a casually styled __colors/female_warm__ colored rayon kurti __patterns/female_salwar_prints__ with calf-length A-line cut, V-neckline and sleeveless with front placket, with a dupatta draped over both shoulders that fully covers her torso
+#@fit: bust, waist
+an __colors/female_jewel__ colored linen kurti __patterns/female_kurti_patterns__ with knee-length A-line cut, Chinese collar and cap sleeves with side slits, with a dupatta draped elegantly over one shoulder that elegantly frames her neckline while modestly covering her chest
+#@fit: bust, waist
+a __colors/female_muted__ colored khadi kurti __patterns/female_salwar_prints__ with calf-length straight cut, shirt-collar and 3/4 sleeves with subtle pintucks, with a dupatta draped neatly over one shoulder that modestly covers her chest and shoulders
+#@fit: bust, shoulders
+a __colors/female_vivid__ colored georgette kurti with knee-length straight cut, round neckline and cap sleeves with straight hem, with a dupatta draped lightly over her arms that softly covers her shoulders
+#@fit: bust, waist
+a __colors/female_nude__ colored cotton kurti __patterns/female_salwar_prints__ with calf-length A-line cut, V-neckline and 3/4 sleeves with side slits and front buttons, with a dupatta draped gracefully over one shoulder that modestly covers her chest
+#@fit: bust, shoulders
+a festively styled __colors/female_autumn__ colored rayon kurti __patterns/female_kurti_patterns__ with knee-length straight cut, Chinese collar and sleeveless with side slits, with a dupatta draped over her head and shoulder that fully covers her chest and shoulders
+#@fit: bust, waist
+a __colors/female_tropical__ colored linen kurti __patterns/female_salwar_prints__ with calf-length straight cut, shirt-collar and cap sleeves with front placket, with a dupatta draped diagonally across her torso that modestly covers her chest
+#@fit: bust, waist
+a classically styled __colors/female_bright__ colored khadi kurti with knee-length A-line cut, round neckline and 3/4 sleeves with subtle gathers, with a dupatta draped over one shoulder that softly covers her torso
+#@fit: bust, waist
+a __colors/female_winter__ colored georgette kurti __patterns/female_salwar_prints__ __patterns/female_saree_motifs__ with calf-length A-line cut, V-neckline and cap sleeves with side slits, styled without a dupatta for a minimal traditional look
+#@fit: bust, waist
+a __colors/female_earthtone__ colored cotton kurti __patterns/female_kurti_patterns__ with knee-length straight cut, Chinese collar and 3/4 sleeves with straight hem, with a dupatta draped over both shoulders that modestly covers her chest
+#@fit: bust, waist
+a casually styled __colors/female_warm__ colored rayon kurti __patterns/female_salwar_prints__ with calf-length straight cut, shirt-collar and sleeveless with side slits and buttons, with a dupatta draped comfortably over one shoulder that fully covers her upper body
+#@fit: bust, shoulders
+an __colors/female_jewel__ colored linen kurti with knee-length straight cut, round neckline and sleeveless with side slits, with a dupatta draped over one shoulder that modestly covers her chest
+#@fit: bust, waist
+a gracefully styled __colors/female_muted__ colored khadi kurti __patterns/female_salwar_prints__ with calf-length A-line cut, V-neckline and 3/4 sleeves with front pintucks, styled without a dupatta for a minimal traditional look
+#@fit: bust, waist
+a __colors/female_vivid__ colored georgette kurti __patterns/female_kurti_patterns__ with knee-length A-line cut, Chinese collar and 3/4 sleeves with side slits, with a dupatta draped elegantly over one shoulder that elegantly frames her neckline while modestly covering her chest
+#@fit: bust, waist
+a breezily styled __colors/female_nude__ colored cotton kurti __patterns/female_salwar_prints__ with calf-length straight cut, shirt-collar and cap sleeves with side slits, with a dupatta draped neatly over one shoulder that modestly covers her chest and shoulders
+#@fit: bust, shoulders
+a festively styled __colors/female_autumn__ colored rayon kurti with knee-length straight cut, boat neck and 3/4 sleeves with side slits, with a dupatta draped lightly over her arms that softly covers her shoulders
+#@fit: bust, waist
+a comfortably styled __colors/female_tropical__ colored linen kurti __patterns/female_salwar_prints__ with calf-length A-line cut, round neckline and cap sleeves with front placket, with a dupatta draped gracefully over one shoulder that modestly covers her chest
+#@fit: bust, shoulders
+a classically styled __colors/female_bright__ colored khadi kurti __patterns/female_kurti_patterns__ with knee-length straight cut, V-neckline and sleeveless with subtle gathers, with a dupatta draped over her head and shoulder that fully covers her chest and shoulders
+#@fit: bust, waist
+a __colors/female_winter__ colored georgette kurti __patterns/female_salwar_prints__ with calf-length straight cut, Chinese collar and 3/4 sleeves with side slits, styled without a dupatta for a minimal traditional look
+#@fit: bust, waist
+a traditionally styled __colors/female_earthtone__ colored cotton kurti with knee-length A-line cut, shirt-collar and 3/4 sleeves with straight hem, with a dupatta draped over one shoulder that softly covers her torso
+#@fit: bust, waist
+a casually styled __colors/female_warm__ colored rayon kurti __patterns/female_salwar_prints__ with calf-length A-line cut, round neckline and sleeveless with side slits and pintucks, with a dupatta draped elegantly over one shoulder that softly covers her chest
+#@fit: bust, waist
+an elegantly styled __colors/female_jewel__ colored linen kurti __patterns/female_kurti_patterns__ with knee-length straight cut, V-neckline and cap sleeves with front buttons, with a dupatta draped over both shoulders that modestly covers her chest
+#@fit: bust, waist
+a breezily styled __colors/female_nude__ colored cotton kurti __patterns/female_salwar_prints__ with calf-length A-line cut, round neckline and 3/4 sleeves with side slits, with a dupatta draped over both shoulders that fully covers her torso
+#@fit: bust, waist
+a festively styled __colors/female_autumn__ colored rayon kurti __patterns/female_kurti_patterns__ with knee-length A-line cut, V-neckline and 3/4 sleeves with side slits, with a dupatta draped elegantly over one shoulder that elegantly frames her neckline while modestly covering her chest
+#@fit: bust, waist
+a comfortably styled __colors/female_tropical__ colored linen kurti __patterns/female_salwar_prints__ with calf-length straight cut, Chinese collar and cap sleeves with front placket, styled without a dupatta for a minimal traditional look
+#@fit: bust, shoulders
+a classically styled __colors/female_bright__ colored khadi kurti with knee-length straight cut, shirt-collar and 3/4 sleeves with side slits, with a dupatta draped lightly over her arms that softly covers her shoulders
+#@fit: bust, waist
+a softly styled __colors/female_winter__ colored georgette kurti __patterns/female_salwar_prints__ __patterns/female_kurti_patterns__ with calf-length A-line cut, round neckline and cap sleeves with side slits, styled without a dupatta for a minimal traditional look
+#@fit: bust, waist
+a traditionally styled __colors/female_earthtone__ colored cotton kurti __patterns/female_kurti_patterns__ with knee-length A-line cut, V-neckline and sleeveless with side slits, with a dupatta draped over her head and shoulder that fully covers her chest and shoulders
+#@fit: bust, waist
+a casually styled __colors/female_warm__ colored rayon kurti __patterns/female_salwar_prints__ with calf-length straight cut, Chinese collar and 3/4 sleeves with subtle pintucks, with a dupatta draped diagonally across her torso that modestly covers her chest
+#@fit: bust, waist
+an elegantly styled __colors/female_jewel__ colored linen kurti __patterns/female_kurti_patterns__ with knee-length straight cut, shirt-collar and cap sleeves with side slits, with a dupatta draped over one shoulder that softly covers her torso
+#@fit: bust, waist
+a gracefully styled __colors/female_muted__ colored khadi kurti __patterns/female_salwar_prints__ with calf-length A-line cut, round neckline and 3/4 sleeves with front placket, with a dupatta draped elegantly over one shoulder that softly covers her chest
+#@fit: bust, waist
+a simply styled __colors/female_vivid__ colored georgette kurti __patterns/female_kurti_patterns__ with knee-length straight cut, V-neckline and 3/4 sleeves with side slits and gathers, with a dupatta draped over both shoulders that modestly covers her chest
+#@fit: bust, shoulders
+a breezily styled __colors/female_nude__ colored cotton kurti __patterns/female_salwar_prints__ with calf-length straight cut, Chinese collar and sleeveless with straight hem, styled without a dupatta for a minimal traditional look
+#@fit: bust, waist
+a festively styled __colors/female_autumn__ colored rayon kurti __patterns/female_kurti_patterns__ with knee-length A-line cut, shirt-collar and 3/4 sleeves with side slits, with a dupatta draped over one shoulder that modestly covers her chest
+#@fit: bust, waist
+a comfortably styled __colors/female_tropical__ colored linen kurti __patterns/female_salwar_prints__ with calf-length A-line cut, round neckline and cap sleeves with side slits, with a dupatta draped over both shoulders that fully covers her torso
+#@fit: bust, waist
+a classically styled __colors/female_bright__ colored khadi kurti __patterns/female_kurti_patterns__ with knee-length straight cut, V-neckline and cap sleeves with side slits, with a dupatta draped elegantly over one shoulder that elegantly frames her neckline while modestly covering her chest
+#@fit: bust, waist
+a softly styled __colors/female_winter__ colored georgette kurti __patterns/female_salwar_prints__ __patterns/female_saree_motifs__ with calf-length straight cut, Chinese collar and 3/4 sleeves with front buttons, with a dupatta draped neatly over one shoulder that modestly covers her chest and shoulders

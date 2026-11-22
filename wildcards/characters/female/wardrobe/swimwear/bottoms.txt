@@ -1,6 +1,24 @@
+#@lewdity: 60
+
+#@lewdity: 65
+#@fit: hips
+cheeky bikini bottoms in a __colors/female_bright__ colored lycra
+#@lewdity: 55
 #@fit: waist, hips
-#@condition: wet
-cheeky bikini bottoms, __bright_colors_female__
+high-waisted bikini bottoms in a __colors/female_pastel__ colored nylon
+#@fit: hips
+low-rise bikini bottoms in a __colors/female_tropical__ colored nylon __patterns/female_swimwear_print__
+#@fit: hips
+high-cut bikini bottoms in a __colors/female_neon__ colored spandex
+#@lewdity: 70
+#@fit: hips
+tie-side string bikini bottoms in a __colors/female_vivid__ colored lycra with skimpy side ties
+#@lewdity: 70
+#@fit: hips
+lattice-tie bikini bottoms in a __colors/female_dusty__ colored polyester blend __patterns/female_swimwear_print__
+#@lewdity: 55
 #@fit: waist, hips
-#@condition: wet
-high-waisted bikini bottoms, __pastel_colors_female__
+ruched high-waisted bikini bottoms in a __colors/female_warm__ colored nylon __patterns/female_swimwear_print__ with a retro pin-up shape
+#@lewdity: 50
+#@fit: hips, thighs
+full-coverage swim shorts in a __colors/female_neutral__ colored nylon

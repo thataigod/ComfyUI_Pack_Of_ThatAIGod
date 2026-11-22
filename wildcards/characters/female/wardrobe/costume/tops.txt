@@ -1,5 +1,96 @@
+#@lewdity: 55
+
 #@fit: bust, waist
-#@mishap: the corset laces loosening at her back
-a pirate corset top
+#@lewdity: 60
+a daring __colors/female_jewel__ colored pirate corset top in velvet with a deep V-neckline and long bell sleeves __patterns/female_costume_detail__ that hugs the waist and shows a bare midriff
 #@fit: bust, waist
-a witch costume top
+#@lewdity: 65
+a bewitching __colors/female_dark__ colored witch bodice top in sheer with a deep V-neckline and long sleeves __patterns/female_costume_detail__ that hugs the curves
+#@fit: bust, waist
+#@lewdity: 50
+an enchanting __colors/female_pastel__ colored fairy bodice in chiffon with a sweetheart neckline and sleeveless cut __patterns/female_costume_detail__
+#@fit: bust
+#@lewdity: 60
+a __colors/female_tropical__ colored mermaid bustier in sequin with a deep V-neckline and sleeveless straps __patterns/female_costume_detail__
+#@fit: bust, waist
+#@lewdity: 40
+a naughty __colors/female_candy__ colored schoolgirl blouse in cotton with a V-neckline and short puff sleeves
+#@fit: bust, waist
+a __colors/female_light__ colored nurse bodice in satin with a deep V-neckline and cap sleeves __patterns/female_costume_detail__
+#@fit: bust, waist
+a teasing __colors/female_dark__ colored maid bodice in satin with a sweetheart neckline and short puff sleeves __patterns/female_costume_detail__
+#@fit: bust, waist
+#@lewdity: 60
+a fierce __colors/female_jewel__ colored warrior princess bustier in velvet with a deep U-neckline and sleeveless straps __patterns/female_costume_detail__
+#@fit: bust, shoulders
+#@lewdity: 40
+an ethereal __colors/female_earthtone__ colored elf blouse in chiffon with an off-shoulder neckline and trailing sleeves
+#@fit: bust, back
+#@lewdity: 60
+a cheeky __colors/female_candy__ colored bunny corset in satin with a halter neckline and sleeveless cut __patterns/female_costume_detail__
+#@fit: bust, waist
+#@lewdity: 50
+a __colors/female_bright__ colored cheerleader shell top in sequin with a V-neckline and cap sleeves
+#@fit: bust, back
+#@lewdity: 50
+a tempting __colors/female_vivid__ colored devil bodice in satin with a halter neckline and sleeveless straps __patterns/female_costume_detail__
+#@fit: bust, waist
+#@lewdity: 45
+a ravishing __colors/female_pastel__ colored princess corset bodice in satin with a sweetheart neckline and off-shoulder sleeves __patterns/female_costume_detail__
+#@fit: bust, shoulders
+#@lewdity: 45
+a decadent __colors/female_jewel__ colored sorceress bodice in velvet with an off-shoulder neckline and long sleeves __patterns/female_costume_detail__
+#@fit: bust, waist
+#@lewdity: 60
+a bold __colors/female_neon__ colored superheroine bustier in mesh with a deep V-neckline and cap sleeves
+#@fit: bust, waist
+#@lewdity: 50
+a __colors/female_dark__ colored police bodice in satin with a deep V-neckline and short sleeves __patterns/female_costume_detail__
+#@fit: bust, waist
+#@lewdity: 35
+an alluring __colors/female_vivid__ colored stewardess jacket top in satin with a V-neckline and short sleeves __patterns/female_costume_detail__
+#@fit: bust, shoulders
+#@lewdity: 50
+a tantalizing __colors/female_vivid__ colored santa helper corset in velvet with a sweetheart neckline and off-shoulder sleeves trimmed with fur __patterns/female_costume_detail__
+#@fit: bust, waist
+#@lewdity: 70
+a hypnotic __colors/female_jewel__ colored succubus corset in lace with a plunging neckline
+#@fit: bust, waist
+#@lewdity: 60
+a savage __colors/female_earthtone__ colored huntress top in mesh with a deep V-neckline and sleeveless straps __patterns/female_costume_detail__
+#@fit: bust, waist
+#@lewdity: 60
+a smoldering __colors/female_warm__ colored barbarian queen bustier in velvet with a deep U-neckline and sleeveless cut __patterns/female_costume_detail__
+#@fit: bust, waist
+#@lewdity: 45
+a dazzling __colors/female_candy__ colored idol crop top in sequin with a sweetheart neckline and cap sleeves __patterns/female_costume_detail__
+#@fit: bust, waist
+#@lewdity: 40
+a __colors/female_dark__ colored gothic lolita blouse in lace with a V-neckline and short puff sleeves
+#@fit: bust, waist
+#@lewdity: 50
+a mischievous __colors/female_neon__ colored jester bodice in satin with a deep V-neckline and cap sleeves __patterns/female_costume_detail__
+#@fit: bust, shoulders
+#@lewdity: 45
+a scorching __colors/female_warm__ colored cowgirl shirt in sequin with a sweetheart neckline and off-shoulder sleeves __patterns/female_costume_detail__
+#@fit: bust, back
+#@lewdity: 45
+a sumptuous __colors/female_metallic__ colored goddess drape top in chiffon with a halter neckline and sleeveless cut __patterns/female_costume_detail__
+#@fit: bust, waist
+a beguiling __colors/female_dark__ colored kunoichi top in mesh with a V-neckline and sleeveless straps __patterns/female_costume_detail__
+#@fit: bust, waist
+a stunning __colors/female_tropical__ colored siren bustier in sequin with a sweetheart neckline and sleeveless cut
+#@fit: bust, back
+#@lewdity: 50
+a sensual __colors/female_earthtone__ colored Cleopatra-inspired halter top in satin with a beaded collar and sleeveless cut __patterns/female_costume_detail__
+#@fit: bust, back
+#@lewdity: 50
+an entrancing __colors/female_metallic__ colored valkyrie bustier in velvet with a halter neckline and sleeveless straps __patterns/female_costume_detail__
+#@fit: bust, waist
+#@lewdity: 60
+a devilish __colors/female_earthtone__ colored gladiatrix top in mesh with a deep U-neckline and sleeveless straps __patterns/female_costume_detail__
+#@fit: bust, back
+a glamorous __colors/female_winter__ colored showgirl bodice in sequin with a halter neckline and sleeveless cut
+#@fit: bust, waist
+#@lewdity: 40
+a luminous __colors/female_vivid__ colored shrine maiden top in cotton with a V-neckline and short puff sleeves __patterns/female_costume_detail__

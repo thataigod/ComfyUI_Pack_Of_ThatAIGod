@@ -1,6 +1,54 @@
+#@lewdity: 15
+
 #@fit: bust, waist
-#@mishap: her silk camisole strap slipping down her arm
-a silk camisole, __jeweltone_colors_female__
+#@lewdity: 25
+a __colors/female_jewel__ colored silk camisole with delicate thin straps
 #@fit: bust, shoulders
-#@mishap: her off-shoulder top slipping off one shoulder
-an off-shoulder top, __metallic_colors_female__
+#@lewdity: 30
+a __colors/female_metallic__ colored off-shoulder top in satin
+#@fit: bust, waist, shoulders
+#@lewdity: 10
+a __colors/female_dark__ colored single-breasted blazer in wool with notch lapels and long sleeves __patterns/female_formal_blazer_detail__
+#@fit: bust, waist, shoulders
+#@lewdity: 10
+a __colors/female_monochrome__ colored single-breasted blazer in twill with peak lapels and 3/4 sleeves
+#@fit: bust, waist, shoulders
+#@lewdity: 10
+a __colors/female_neutral__ colored tailored blazer in wool with a collar-neck and long sleeves __patterns/female_formal_blazer_detail__
+#@fit: bust, waist, shoulders
+#@lewdity: 10
+a __colors/female_muted__ colored single-breasted blazer in crepe with notch lapels and long sleeves __patterns/female_formal_blazer_detail__
+#@fit: bust, waist
+a __colors/female_warm__ colored silk blouse with a collar-neck and 3/4 sleeves
+#@fit: bust, shoulders
+a __colors/female_monochrome__ colored satin blouse with a high neck and long sleeves
+#@fit: bust, waist
+#@lewdity: 20
+a __colors/female_neutral__ colored satin blouse with a V-neck and 3/4 sleeves
+#@fit: bust, waist
+a __colors/female_cool__ colored silk blouse with a collar-neck and full sleeves
+#@fit: bust, waist
+#@lewdity: 20
+a __colors/female_dusty__ colored silk blouse with a V-neck and 3/4 sleeves
+#@fit: bust, waist
+a __colors/female_muted__ colored poplin shirt with a collar-neck and long sleeves
+#@fit: bust, waist
+#@lewdity: 20
+a __colors/female_monochrome__ colored poplin shirt with a V-neck and long sleeves
+#@fit: bust, shoulders
+a __colors/female_light__ colored poplin shirt with a shirt collar and long sleeves
+#@fit: bust, waist
+#@lewdity: 25
+a delicate lace evening blouse with sheer sleeves
+#@fit: bust
+#@lewdity: 30
+a sequined evening camisole with thin straps
+#@fit: bust, waist
+#@lewdity: 35
+a structured satin bustier with boned seams
+#@fit: bust, shoulders
+#@lewdity: 25
+a beaded evening top with an illusion neckline
+#@fit: bust, waist
+#@lewdity: 25
+a velvet evening wrap top with a soft crossover front

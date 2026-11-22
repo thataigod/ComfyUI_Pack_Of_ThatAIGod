@@ -1,0 +1,56 @@
+#@lewdity: 30
+
+#@fit: bust, waist, hips
+#@lewdity: 20
+a modal nightgown in __colors/female_warm__ with a scoop neckline and short sleeves, draping gently to mid-calf
+#@fit: bust, waist, hips
+#@lewdity: 25
+a silk nightgown in __colors/female_jewel__ with a V-neckline and delicate straps __patterns/female_lingerie_lace_detail__, falling fluidly to mid-calf
+#@fit: bust, waist, hips
+#@lewdity: 25
+a silk nightgown in __colors/female_monochrome__ with a cowl neckline and thin straps __patterns/female_lingerie_lace_detail__, floating to the knees
+#@fit: bust, waist, hips
+#@lewdity: 30
+a modal nightgown in __colors/female_pastel__ with a sweetheart neckline and lace-trimmed straps __patterns/female_lingerie_lace_detail__, falling to mid-calf
+#@fit: bust, waist, hips
+#@lewdity: 25
+a modal nightgown in __colors/female_dark__ with a square neckline and lace straps __patterns/female_lingerie_lace_detail__, sweeping to the calves
+#@fit: bust, waist, hips
+#@lewdity: 20
+a jersey nightgown in __colors/female_summer__ with a scoop neckline and short sleeves, falling loosely to the knees
+#@fit: bust, waist, hips
+#@lewdity: 20
+a jersey nightgown in __colors/female_earthtone__ with a henley neckline and long sleeves __patterns/female_casual_top_print__, draping to mid-calf
+#@fit: bust, waist, hips
+#@lewdity: 30
+a cotton sleep shirt in __colors/female_cool__ with a collared neckline and long sleeves, falling loosely to mid-thigh
+#@fit: bust, waist, hips
+#@lewdity: 30
+a cotton sleep shirt in __colors/female_monochrome__ with a camp collar and side slits __patterns/female_casual_top_print__, falling airily to mid-thigh
+#@fit: bust, waist, hips
+#@lewdity: 30
+a modal sleep shirt in __colors/female_light__ with a V-neckline and lace edging __patterns/female_lingerie_lace_detail__, floating softly to mid-thigh
+#@fit: bust, waist, hips
+#@lewdity: 30
+a satin sleep shirt in __colors/female_metallic__ with a shawl collar and side vents __patterns/female_lingerie_lace_detail__, gliding to mid-thigh
+#@fit: bust, waist, hips
+#@lewdity: 30
+a flannel sleep shirt in __colors/female_cool__ with a chest pocket and rolled cuffs __patterns/female_casual_top_print__, falling warmly to mid-thigh
+#@fit: bust, waist, hips
+#@lewdity: 35
+a jersey sleep romper in __colors/female_candy__ with a button-front bodice and cuffed short legs __patterns/female_casual_top_print__, skimming mid-thigh
+#@fit: bust, waist, hips
+#@lewdity: 35
+a cotton sleep romper in __colors/female_dark__ with a snap-front bodice and patch pockets __patterns/female_casual_top_print__, skimming mid-thigh
+#@fit: bust, waist, hips
+#@lewdity: 35
+a flannel sleep romper in __colors/female_pastel__ with a button front and cuffed shorts __patterns/female_casual_top_print__, fitting warmly to mid-thigh
+#@fit: bust, waist, hips
+#@lewdity: 25
+a belted modal robe layered over a matching sleep set in __colors/female_dusty__, falling softly to the calves
+#@fit: bust, waist, hips
+#@lewdity: 25
+a satin robe tied at the waist over a matching camisole set in __colors/female_spring__ __patterns/female_lingerie_lace_detail__, falling to the knees
+#@fit: bust, waist, hips
+#@lewdity: 25
+a kimono-style cotton robe layered lightly over a matching tank and shorts in __colors/female_nude__ __patterns/female_casual_top_print__, falling to the knees

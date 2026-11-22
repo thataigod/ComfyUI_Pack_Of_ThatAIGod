@@ -1,0 +1,34 @@
+#@lewdity: 95
+
+a loosely draped __colors/female_jewel__ silk sheet wrapped low around her hips and held gently across her chest
+an artfully arranged __colors/female_earthtone__ satin sheet pooled around her legs and lifted softly across her front
+#@lewdity: 100
+a sheer draped __colors/female_dusty__ chiffon fabric over one shoulder, falling in gentle folds across her body
+#@lewdity: 100
+a slim __colors/female_dark__ waist chain with a whisper-light silk drape lifted across her front
+a finely wrapped __colors/female_cool__ organza fabric around her torso, trailing gracefully across one arm
+a flowing __colors/female_candy__ silk length wrapped over her front and pooling toward the floor
+a tastefully draped __colors/female_bright__ satin fabric gathered across her chest with the ends cascading down her back
+a softly folded __colors/female_autumn__ chiffon wrap settled low on her hips and carried over one arm
+a delicately arranged __colors/female_winter__ silk drape held across her front in gentle folds that catch the light
+an elegantly looped __colors/female_warm__ organza length over both arms and loosely across her chest
+a loosely held __colors/female_vivid__ sheer silk fabric wrapped across her front in soft artistic folds
+#@lewdity: 100
+a minimal __colors/female_tropical__ silk sash twisted over her chest and knotted softly at one hip
+a graceful __colors/female_summer__ chiffon length swirled across her body and held at her shoulder
+a softly draped __colors/female_spring__ silk fabric across her chest with the ends falling behind her, __patterns/female_lingerie_lace_detail__
+an airy __colors/female_pastel__ organza layer over one shoulder and opening across her front, __patterns/female_lingerie_lace_detail__
+#@lewdity: 100
+a gossamer __colors/female_nude__ chiffon length wrapped at her waist and held over one hip, __patterns/female_lingerie_lace_detail__
+a gently folded __colors/female_neutral__ satin sheet lifted across her front and trailing past her hips, __patterns/female_lingerie_lace_detail__
+a translucent __colors/female_neon__ silk layer over her arms and loosely around her torso, __patterns/female_lingerie_lace_detail__
+a diaphanous __colors/female_dusty__ organza veil draped over her hair and drifting across her arms, __patterns/female_lingerie_lace_detail__
+a sleek __colors/female_metallic__ satin drape falling from her shoulder and knotted at the waist, __patterns/female_lingerie_lace_detail__
+a fluid __colors/female_candy__ satin drape settled across her front and slipping from one shoulder, __patterns/female_lingerie_lace_detail__
+a sculptural __colors/female_winter__ satin drape wrapped across one shoulder and cinched at the waist, __patterns/female_lingerie_lace_detail__
+a finely draped __colors/female_spring__ silk fabric over her front with one end lifted above her shoulder, __patterns/female_saree_motifs__
+a lustrous __colors/female_metallic__ satin length wrapped at her hips and lifted across her chest, __patterns/female_saree_motifs__
+a translucent __colors/female_earthtone__ chiffon drape over her head and shoulders with the ends gathered at her waist, __patterns/female_saree_motifs__
+a finely pleated __colors/female_vivid__ satin fabric across her front with the tail sweeping behind her, __patterns/female_party_dress_detail__
+a __colors/female_summer__ organza sheet held at her hips and rising across her back in layered folds, __patterns/female_party_dress_detail__
+a __colors/female_metallic__ silk sheet wrapped around her torso with the ends falling across her legs, __patterns/female_lingerie_lace_detail__

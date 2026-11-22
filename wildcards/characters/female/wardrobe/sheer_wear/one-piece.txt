@@ -1,0 +1,81 @@
+#@lewdity: 80
+
+#@fit: bust, waist, hips, shoulders
+a sheer mesh dress in a __colors/female_pastel__ colored fine mesh with a soft cowl neck and long sleeves that reveals the silhouette in soft focus
+#@fit: bust, waist, hips, shoulders
+a chiffon maxi dress in a __colors/female_cool__ colored flowing chiffon __patterns/female_party_dress_detail__ that drifts to reveal the shoulders and back
+#@lewdity: 85
+#@fit: bust, waist, hips
+a sheer bodysuit in a __colors/female_dark__ colored stretch mesh __patterns/female_lingerie_lace_detail__ that layers thinly over the figure
+#@lewdity: 85
+#@fit: bust, waist, hips
+a lace bodysuit in a __colors/female_dark__ colored fine lace __patterns/female_costume_detail__ that traces the figure through the open lace
+#@fit: bust, waist, hips
+a gauze wrap dress in a __colors/female_warm__ colored double gauze with a tie waist and flutter sleeves that parts gently to show the legs
+#@lewdity: 85
+#@fit: bust, waist, hips
+a sheer cocktail dress in a __colors/female_neon__ colored layered organza __patterns/female_costume_detail__ that reveals the outline of the figure in the light
+#@lewdity: 85
+#@fit: bust, waist, hips, shoulders
+a lace overlay dress in a __colors/female_vivid__ colored floral lace __patterns/female_blouse_patterns__ that reveals bare shoulders and arms
+#@fit: bust, waist, hips
+an organza gown in a __colors/female_candy__ colored sheer organza __patterns/female_saree_motifs__ that drifts airily around the figure
+#@fit: bust, waist, hips
+a tulle ball gown in a __colors/female_bright__ colored voluminous tulle __patterns/female_lingerie_lace_detail__ that layers over a fitted bodice and shows the legs through the skirt
+#@fit: bust, waist, hips, back
+a chiffon sundress in a __colors/female_tropical__ colored breezy chiffon with thin straps and a smocked back that flutters to show the shape beneath
+#@lewdity: 85
+#@fit: bust, waist, hips
+a sheer robe in a __colors/female_monochrome__ colored fine mesh __patterns/female_lingerie_lace_detail__ over a slip dress that drapes open
+#@fit: bust, waist, hips
+an organza wrap dress in a __colors/female_neutral__ colored sheer organza __patterns/female_costume_detail__ that softly shows the lining beneath
+#@fit: bust, waist, hips, shoulders
+a mesh kimono in a __colors/female_dusty__ colored fine mesh __patterns/female_lingerie_lace_detail__ that skims the figure and reveals the dress beneath
+#@fit: bust, waist, hips
+a gauze maxi dress in a __colors/female_earthtone__ colored crinkled gauze __patterns/female_anarkali_embroidery__ that parts in the breeze to show the legs beneath
+#@fit: bust, waist, hips
+a chiffon tiered dress in a __colors/female_spring__ colored airy chiffon __patterns/female_blouse_patterns__ that floats to show the layers beneath
+#@condition: sunlit, translucent
+#@fit: bust, waist, hips
+a gauze sundress in a __colors/female_summer__ colored light gauze __patterns/female_casual_top_print__ that turns breezy and translucent in the sun
+#@fit: bust, waist, hips, shoulders
+a tulle tea-length dress in a __colors/female_winter__ colored soft tulle with a fitted bodice and cap sleeves that shows the figure in a soft haze
+#@lewdity: 85
+#@fit: bust, waist, hips
+a lace midi dress in a __colors/female_autumn__ colored sheer lace over a lining __patterns/female_lingerie_lace_detail__ that reveals the slip beneath through the lace
+#@fit: bust, waist, hips
+a mesh maxi dress in a __colors/female_light__ colored fine mesh __patterns/female_swimwear_print__ that layers lightly over the body
+#@lewdity: 90
+#@fit: bust, waist, hips, back
+a sheer slip dress in a __colors/female_nude__ colored sheer chiffon with thin straps and a low back that drifts to show the figure beneath
+#@fit: bust, waist, hips
+a tulle slip dress in a __colors/female_cool__ colored fine tulle __patterns/female_lingerie_lace_detail__ that floats in soft layers over the lining
+#@fit: bust, waist, hips
+a chiffon robe dress in a __colors/female_warm__ colored sheer chiffon __patterns/female_lingerie_lace_detail__ that wraps softly and shows the waist beneath
+#@lewdity: 85
+#@fit: bust, waist, hips
+an organza cocktail dress in a __colors/female_neon__ colored structured organza with a fitted bodice and full skirt that reveals the lining through sheer panels
+#@lewdity: 85
+#@fit: bust, waist, hips
+a sheer mesh gown in a __colors/female_metallic__ colored shimmering mesh __patterns/female_party_dress_detail__ that sparkles and shows the figure beneath
+#@fit: bust, waist, hips, shoulders
+a tulle cape dress in a __colors/female_winter__ colored fine tulle __patterns/female_lingerie_lace_detail__ that drapes from the shoulders and shows the slip beneath
+#@fit: bust, waist, hips
+an organza blouse dress in a __colors/female_muted__ colored sheer organza __patterns/female_blouse_patterns__ that skims the figure in the light
+#@lewdity: 85
+#@fit: bust, waist, hips, shoulders
+a lace tea dress in a __colors/female_jewel__ colored fine lace over a nude slip that reveals the shoulders and arms through the sleeves
+#@fit: bust, waist, hips
+a tulle tutu dress in a __colors/female_candy__ colored airy tulle __patterns/female_lingerie_lace_detail__ that bounces softly and shows the legs beneath
+#@fit: bust, waist, hips
+a gauze midi dress in a __colors/female_neutral__ colored soft gauze with a button front and rolled sleeves that shows the camisole beneath
+#@lewdity: 85
+#@fit: bust, waist, hips
+a mesh bodysuit in a __colors/female_nude__ colored fine mesh __patterns/female_lingerie_lace_detail__ that disappears against the skin
+#@lewdity: 85
+#@fit: bust, waist, hips, shoulders
+a mesh halter dress in a __colors/female_neon__ colored fine mesh __patterns/female_costume_detail__ that glows under the lights and shows the figure
+#@fit: bust, waist, hips
+a chiffon wrap dress in a __colors/female_spring__ colored breezy chiffon __patterns/female_party_dress_detail__ that flutters to show the waist beneath
+#@fit: bust, waist, hips
+an organza sundress in a __colors/female_summer__ colored crisp organza __patterns/female_party_dress_detail__ that holds its shape and shows the lining through the fabric

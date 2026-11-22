@@ -1,0 +1,31 @@
+#@lewdity: 95
+
+an untied __colors/female_jewel__ silk robe, its front fallen open over bare skin
+a __colors/female_pastel__ lace bralette worn loose, its straps slipped off one shoulder
+a half-buttoned __colors/female_nude__ oversized cotton shirt slipping off one shoulder with its tails barely meeting
+a __colors/female_cool__ satin slip pooled low on one hip, one strap sliding down her arm
+a __colors/female_dusty__ sheer robe worn open, its folds drifting apart at the front
+a __colors/female_light__ silk chemise ruched high on her thighs, its straps fallen loose
+a loose __colors/female_earthtone__ cotton nightshirt fallen to mid-thigh with its collar open
+a __colors/female_metallic__ satin camisole taut over her chest with its hem riding high
+an open __colors/female_dark__ silk kimono robe, its panels parted over bare shoulders
+a __colors/female_tropical__ sheer top clinging lightly over bare skin
+a __colors/female_autumn__ cotton slip loose on her frame with its straps fallen to her arms
+a __colors/female_jewel__ silk robe, __patterns/female_lingerie_lace_detail__, left untied and open down the front
+a __colors/female_pastel__ lace bralette, __patterns/female_lingerie_lace_detail__, with both straps pushed off her shoulders
+a __colors/female_nude__ satin slip, __patterns/female_lingerie_lace_detail__, drawn low off one shoulder
+a __colors/female_candy__ satin shorts set, __patterns/female_lingerie_lace_detail__, the top rolled up over a bare midriff
+a __colors/female_warm__ cotton nightshirt, __patterns/female_lingerie_lace_detail__, rucked up to mid-thigh
+a __colors/female_earthtone__ lace bodysuit, __patterns/female_lingerie_lace_detail__, sheer at the bust and high-cut at the hips
+a __colors/female_spring__ cotton shirt, __patterns/female_blouse_patterns__, half-buttoned with the sleeves pushed up and slipping from one shoulder
+a __colors/female_summer__ satin camisole, __patterns/female_blouse_patterns__, worn loose with its straps fallen
+a __colors/female_tropical__ silk robe, __patterns/female_blouse_patterns__, slipped open over bare shoulders
+a __colors/female_neon__ lace bralette, __patterns/female_blouse_patterns__, worn loose and askew over bare skin
+a __colors/female_winter__ cotton nightshirt, __patterns/female_blouse_patterns__, fallen open at the collar to mid-thigh
+a __colors/female_pastel__ satin slip, __patterns/female_blouse_patterns__, lying loose off one shoulder with its hem high
+a __colors/female_vivid__ silk robe, __patterns/female_party_dress_detail__, untied with its front hanging open
+a __colors/female_candy__ satin camisole, __patterns/female_party_dress_detail__, riding up over her waist
+a __colors/female_dark__ lace bralette, __patterns/female_party_dress_detail__, its straps tangled loose at her elbows
+a __colors/female_summer__ chiffon slip, __patterns/female_party_dress_detail__, drifting loose around her frame
+a __colors/female_bright__ lace bodysuit, __patterns/female_party_dress_detail__, its lace panels parted open over bare skin
+a __colors/female_nude__ satin corset, __patterns/female_party_dress_detail__, loosened with its cups riding low

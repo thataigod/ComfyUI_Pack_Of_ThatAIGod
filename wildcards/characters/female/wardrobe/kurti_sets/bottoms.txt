@@ -1,0 +1,20 @@
+#@lewdity: 10
+
+#@fit: hips, thighs
+__colors/female_pastel__ colored palazzo pants with wide straight flare
+#@fit: hips, thighs
+__colors/female_cool__ colored leggings with tight fit
+#@fit: hips, thighs
+__colors/female_light__ colored churidar bottoms with ankle bangles
+#@fit: hips, thighs
+__colors/female_pastel__ colored leggings in stretch cotton with tight fit
+#@fit: hips, thighs
+__colors/female_bright__ colored palazzo pants in breezy rayon with wide straight flare
+#@fit: hips, thighs
+__colors/female_jewel__ colored churidar bottoms in cotton lycra with ankle bangles
+#@fit: hips, thighs
+__colors/female_warm__ colored palazzo pants with wide straight flare and pressed creases
+#@fit: hips, thighs
+__colors/female_vivid__ colored leggings in soft jersey with tight fit
+#@fit: hips, thighs
+__colors/female_autumn__ colored churidar bottoms with snug ankle gathers

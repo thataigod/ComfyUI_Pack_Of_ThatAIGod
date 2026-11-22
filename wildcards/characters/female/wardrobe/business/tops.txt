@@ -1,8 +1,22 @@
+#@lewdity: 10
+
 #@fit: bust, waist
-#@mishap: a button of her blouse coming undone
 a crisp white blouse
 #@fit: bust, waist
-a tailored silk blouse, __neutral_colors_female__
+a tailored silk blouse in __colors/female_neutral__
 #@fit: bust, waist
-#@mishap: the blazer slipping off her shoulders
-a fitted blazer over a camisole
+a fitted blazer over a camisole in __colors/female_dark__
+#@fit: bust, waist, shoulders
+a crisp button-down blouse in __colors/female_light__ cotton with a collar and buttoned cuffs
+#@fit: bust, waist
+a silk wrap blouse in __colors/female_jewel__ with a modest V-neck and blouson sleeves
+#@fit: bust, waist
+a fine-knit shell top in __colors/female_dark__ with a high neckline
+#@fit: bust, waist, shoulders
+a pinstriped cotton blouse in __colors/female_monochrome__ with a rounded collar
+#@fit: bust, waist
+a bow-neck blouse in __colors/female_cool__ with a fluid crepe drape
+#@fit: bust, waist
+a sleeveless crepe blouse in __colors/female_muted__ with a straight neckline
+#@fit: bust, waist
+a tailored waistcoat in __colors/female_dark__ wool layered over a pinstriped shirt

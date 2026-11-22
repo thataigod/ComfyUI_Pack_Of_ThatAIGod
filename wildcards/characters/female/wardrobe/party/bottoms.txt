@@ -1,6 +1,50 @@
+#@lewdity: 50
+
 #@fit: waist, hips
-#@mishap: the leather mini skirt riding up her thighs
-#@no_modifiers: fabric
 a leather mini skirt
 #@fit: waist, hips
 high-waisted party trousers
+#@fit: waist, hips
+#@lewdity: 45
+a __colors/female_jewel__ colored satin mini skirt
+#@fit: waist, hips
+#@lewdity: 45
+a __colors/female_neon__ colored sequin mini skirt
+#@fit: waist, hips
+#@lewdity: 45
+a __colors/female_vivid__ colored velvet mini skirt
+#@fit: waist, hips
+a __colors/female_candy__ colored lace mini skirt
+#@fit: waist, hips
+#@lewdity: 45
+a __colors/female_bright__ colored chiffon mini skirt
+#@fit: waist, hips
+#@lewdity: 45
+a __colors/female_metallic__ colored silk mini skirt
+#@fit: waist, hips
+#@lewdity: 45
+a __colors/female_vivid__ colored metallic mini skirt
+#@fit: waist, hips
+#@lewdity: 45
+a __colors/female_metallic__ colored pleated foil mini skirt
+#@fit: waist, hips
+#@lewdity: 40
+a __colors/female_candy__ colored satin midi skirt
+#@fit: waist, hips
+#@lewdity: 40
+a __colors/female_jewel__ colored sequin midi skirt
+#@fit: waist, hips
+#@lewdity: 40
+a layered tulle party skirt
+#@fit: waist, hips
+#@lewdity: 45
+a sequin mini skirt with a fringe hem
+#@fit: waist, hips
+#@lewdity: 45
+a satin mini skirt with a sarong-style wrap side
+#@fit: waist, hips, thighs
+#@lewdity: 35
+leather-look party leggings
+#@fit: waist, hips
+#@lewdity: 30
+tailored party shorts in crepe

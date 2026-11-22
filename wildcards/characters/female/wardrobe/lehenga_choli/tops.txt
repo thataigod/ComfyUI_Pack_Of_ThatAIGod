@@ -1,0 +1,106 @@
+#@lewdity: 30
+
+#@fit: bust, shoulders
+a __colors/female_metallic__ colored cap sleeved choli in brocade with a sweetheart neckline that accentuates her bust, with a dupatta draped diagonally over one shoulder
+#@fit: bust, shoulders
+#@lewdity: 35
+a deep V __colors/female_jewel__ colored sleeveless choli in silk that reveals her midriff and cleavage, with a dupatta draped gracefully over her head
+#@fit: bust, shoulders
+#@lewdity: 25
+a boat __colors/female_warm__ colored 3/4 sleeved choli in velvet that modestly covers her chest, with a dupatta draped pleated over one arm
+#@fit: bust, waist
+#@lewdity: 15
+a high-neck __colors/female_vivid__ colored full sleeved choli in raw silk that fully covers her torso, with a dupatta draped around her shoulders
+#@fit: bust, shoulders
+a square __colors/female_bright__ colored short sleeved choli in net that subtly reveals her shoulders, with a dupatta draped elegantly pinned at the waist
+#@fit: bust, waist
+#@lewdity: 25
+a round __colors/female_pastel__ colored elbow sleeved choli in georgette that modestly covers her chest and midriff, with a dupatta draped flowing behind her shoulders
+#@fit: bust, waist
+#@lewdity: 15
+a collar-neck __colors/female_light__ colored long sleeved choli in chiffon that fully covers her upper body, with a dupatta draped neatly over one shoulder
+#@fit: bust, back
+#@lewdity: 35
+a halter __colors/female_cool__ colored sleeveless choli in velvet that reveals her back and shoulders, with a dupatta draped regally across her torso
+#@fit: bust, shoulders
+a V-neck __colors/female_nude__ colored cap sleeved choli in brocade that elegantly shows her neckline, with a dupatta draped diagonally over one shoulder
+#@fit: bust, shoulders
+a U-neck __colors/female_pastel__ colored short sleeved choli in silk __patterns/female_blouse_patterns__ that subtly shows her cleavage, with a dupatta draped diagonally across her torso
+#@fit: bust, shoulders
+a sweetheart __colors/female_metallic__ colored 3/4 sleeved choli in raw silk that accentuates her bust, with a dupatta draped gracefully pinned at one shoulder
+#@fit: bust, shoulders
+a deep V __colors/female_jewel__ colored full sleeved choli in georgette that reveals her midriff, with a dupatta draped pleated and pinned at the waist
+#@fit: bust, shoulders
+#@lewdity: 25
+a boat __colors/female_warm__ colored elbow sleeved choli in chiffon that modestly covers her chest, with a dupatta draped over her head and shoulder
+#@fit: bust, waist
+#@lewdity: 15
+a high-neck __colors/female_dark__ colored sleeveless choli in brocade that fully covers her torso, with a dupatta draped around her arms
+#@fit: bust, shoulders
+a square __colors/female_tropical__ colored cap sleeved choli in silk __patterns/female_blouse_patterns__ that subtly reveals her shoulders, with a dupatta draped over one shoulder with latkans visible
+#@fit: bust, shoulders
+#@lewdity: 25
+a round __colors/female_spring__ colored short sleeved choli in velvet __patterns/female_blouse_patterns__ that modestly covers her chest, with a dupatta draped diagonally over one shoulder
+#@fit: bust, waist
+#@lewdity: 15
+a collar-neck __colors/female_summer__ colored long sleeved choli in raw silk that fully covers her upper body, with a dupatta draped gracefully over her head
+#@fit: bust, back
+#@lewdity: 35
+a halter __colors/female_autumn__ colored sleeveless choli in net __patterns/female_blouse_patterns__ that reveals her shoulders and back, with a dupatta draped pleated over one arm
+#@fit: bust, shoulders
+a V-neck __colors/female_winter__ colored 3/4 sleeved choli in georgette that elegantly shows her neckline, with a dupatta draped around her shoulders
+#@fit: bust, waist
+#@lewdity: 25
+a U-neck __colors/female_candy__ colored full sleeved choli in chiffon that subtly shows her midriff, with a dupatta draped elegantly pinned at the waist
+#@fit: bust, shoulders
+#@lewdity: 25
+a boat __colors/female_dusty__ colored elbow sleeved choli in velvet __patterns/female_blouse_patterns__ that modestly covers her chest, with a dupatta draped regally across her torso
+#@fit: bust, waist
+#@lewdity: 15
+a high-neck __colors/female_earthtone__ colored short sleeved choli in raw silk __patterns/female_blouse_patterns__ that fully covers her torso, with a dupatta draped diagonally over one shoulder
+#@fit: bust, shoulders
+#@lewdity: 25
+a square __colors/female_neutral__ colored long sleeved choli in net that subtly reveals her shoulders, with a dupatta draped diagonally across her torso
+#@fit: bust, shoulders
+#@lewdity: 25
+a round __colors/female_monochrome__ colored cap sleeved choli in georgette __patterns/female_blouse_patterns__ that modestly covers her chest, with a dupatta draped gracefully pinned at one shoulder
+#@fit: bust, waist
+#@lewdity: 15
+a collar-neck __colors/female_bright__ colored sleeveless choli in chiffon that fully covers her upper body, with a dupatta draped pleated and pinned at the waist
+#@fit: bust, back
+#@lewdity: 35
+a halter __colors/female_jewel__ colored 3/4 sleeved choli in brocade that reveals her back, with a dupatta draped over her head and shoulder
+#@fit: bust, shoulders
+#@lewdity: 25
+a V-neck __colors/female_metallic__ colored full sleeved choli in silk that elegantly shows her neckline, with a dupatta draped around her arms
+#@fit: bust, waist
+a U-neck __colors/female_light__ colored short sleeved choli in velvet that subtly reveals her waist, with a dupatta draped over one shoulder with latkans visible
+#@fit: bust, shoulders
+a sweetheart __colors/female_cool__ colored elbow sleeved choli in raw silk __patterns/female_blouse_patterns__ that accentuates her bust, with a dupatta draped diagonally over one shoulder
+#@fit: bust, shoulders
+#@lewdity: 35
+a deep V __colors/female_nude__ colored long sleeved choli in net __patterns/female_blouse_patterns__ that reveals her midriff, with a dupatta draped gracefully over her head
+#@fit: bust, shoulders
+#@lewdity: 25
+a boat __colors/female_pastel__ colored sleeveless choli in georgette that modestly covers her chest, with a dupatta draped pleated over one arm
+#@fit: bust, waist
+#@lewdity: 15
+a high-neck __colors/female_earthtone__ colored cap sleeved choli in chiffon __patterns/female_blouse_patterns__ that fully covers her torso, with a dupatta draped around her shoulders
+#@fit: bust, shoulders
+a square __colors/female_warm__ colored short sleeved choli in brocade that subtly reveals her shoulders, with a dupatta draped elegantly pinned at the waist
+#@fit: bust, shoulders
+#@lewdity: 25
+a round __colors/female_vivid__ colored 3/4 sleeved choli in silk that modestly covers her chest, with a dupatta draped flowing behind her shoulders
+#@fit: bust, waist
+#@lewdity: 15
+a collar-neck __colors/female_dark__ colored full sleeved choli in velvet that fully covers her upper body, with a dupatta draped neatly over one shoulder
+#@fit: bust, back
+#@lewdity: 35
+a halter __colors/female_tropical__ colored elbow sleeved choli in raw silk that reveals her shoulders, with a dupatta draped regally across her torso
+#@fit: bust, shoulders
+a V-neck __colors/female_spring__ colored sleeveless choli in net __patterns/female_blouse_patterns__ that elegantly shows her neckline, with a dupatta draped diagonally over one shoulder
+#@fit: bust, shoulders
+#@lewdity: 35
+a U-neck __colors/female_summer__ colored cap sleeved choli in georgette __patterns/female_blouse_patterns__ that accentuates her cleavage, with a dupatta draped diagonally across her torso
+#@fit: bust, shoulders
+a sweetheart __colors/female_autumn__ colored sleeveless choli in georgette that modestly covers her chest, with a dupatta draped pleated over one arm

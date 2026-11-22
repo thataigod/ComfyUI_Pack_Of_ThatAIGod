@@ -1,0 +1,43 @@
+#@lewdity: 30
+
+#@fit: waist, hips, thighs
+__colors/female_spring__ colored jazz pants in jersey with a high waistband
+#@fit: waist, hips, thighs
+__colors/female_vivid__ colored jazz pants in spandex with a flared hem __patterns/female_lehenga_work__
+#@fit: waist, hips, thighs
+__colors/female_monochrome__ colored jazz pants in lycra with a fitted silhouette __patterns/female_lingerie_lace_detail__
+#@fit: waist, hips, thighs
+__colors/female_vivid__ colored jazz pants in lycra with a tapered leg __patterns/female_party_dress_detail__
+#@fit: waist, hips, thighs
+__colors/female_neutral__ colored jazz pants in jersey with a straight leg
+#@fit: waist, hips
+a __colors/female_earthtone__ colored character skirt in jersey with a flared knee-length hem
+#@fit: waist, hips
+a __colors/female_autumn__ colored character skirt in lycra with a buttoned front panel
+#@fit: waist, hips
+a __colors/female_candy__ colored character skirt in jersey with a ribboned waistband __patterns/female_saree_motifs__
+#@fit: waist, hips
+a __colors/female_tropical__ colored character skirt in jersey with a pleated front panel __patterns/female_saree_motifs__
+#@fit: waist, hips
+a __colors/female_summer__ colored character skirt in lycra with a printed flare
+#@fit: waist, hips, thighs
+#@lewdity: 20
+__colors/female_dark__ colored high-waisted ballet tights in lycra that hug the legs
+#@fit: waist, hips, thighs
+#@lewdity: 20
+__colors/female_cool__ colored footed ballet tights in jersey
+#@fit: waist, hips, thighs
+#@lewdity: 20
+__colors/female_pastel__ colored ribbed ballet tights in jersey
+#@fit: waist, hips, thighs
+#@lewdity: 20
+__colors/female_light__ colored convertible ballet tights in lycra
+#@fit: hips, thighs
+#@lewdity: 60
+__colors/female_dark__ colored fishnet dance tights
+#@fit: waist, hips, thighs
+#@lewdity: 45
+__colors/female_neon__ colored dance shorts in spandex with a rolled waistband
+#@fit: waist, hips
+#@lewdity: 45
+a __colors/female_jewel__ colored fringed latin practice skirt in lycra with built-in briefs

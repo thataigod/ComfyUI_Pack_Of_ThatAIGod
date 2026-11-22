@@ -1,0 +1,70 @@
+#@lewdity: 75
+
+#@fit: bust, waist, hips
+a seductively styled __colors/female_jewel__ colored silk negligee with a lace-trimmed plunging neckline and a thigh slit
+#@fit: bust, waist, hips
+an elegantly styled __colors/female_light__ colored satin slip with a lace-trimmed hem and thin straps, skimming the body
+#@fit: bust, waist, hips
+a boldly styled __colors/female_metallic__ colored velvet slip __patterns/female_lingerie_lace_detail__ clinging to the curves with a sheer hem
+#@fit: bust, waist, hips
+a ravishingly styled __colors/female_cool__ colored marabou-trimmed slip with fluffy shoulder trim, a thigh slit and a sheer hem
+#@fit: bust, waist, hips
+a sultrily styled __colors/female_cool__ colored silk slip __patterns/female_blouse_patterns__ clinging to the curves with a sheer hem
+#@fit: bust, waist, hips
+an enticingly styled __colors/female_tropical__ colored bias-cut satin chemise __patterns/female_blouse_patterns__ falling away over the legs
+#@fit: bust, waist, hips
+#@lewdity: 80
+a delicately styled __colors/female_cool__ colored chiffon chemise __patterns/female_lingerie_lace_detail__ clinging over sheer layers
+#@fit: bust, waist, hips
+a teasingly styled __colors/female_vivid__ colored silk chemise __patterns/female_blouse_patterns__ skimming the body over revealed cleavage and legs
+#@fit: bust, waist, hips
+a sizzlingly styled __colors/female_warm__ colored velvet chemise __patterns/female_party_dress_detail__ clinging with a sheer hem over the legs
+#@fit: bust, shoulders, waist
+#@lewdity: 70
+a teasingly styled __colors/female_metallic__ colored chiffon nightgown with a draped cowl back and ribboned straps, swaying to bare the shoulders and show the legs
+#@fit: bust, waist, hips
+a ravishingly styled __colors/female_warm__ colored satin nightgown with a lace-edged wrap front and marabou trim __patterns/female_lingerie_lace_detail__ parting over the collarbones and legs
+#@fit: bust, waist, hips
+an alluringly styled __colors/female_warm__ colored velvet nightgown with a deep V neckline and side slits
+#@fit: bust, waist, hips
+#@lewdity: 80
+an enticingly styled __colors/female_jewel__ colored sheer nightgown __patterns/female_fetish_detail__ draping to reveal the silhouette through the sheer
+#@fit: bust, waist, hips
+an invitingly styled __colors/female_dusty__ colored silk nightgown __patterns/female_fetish_detail__ skimming over revealed cleavage and legs
+#@fit: bust, shoulders, hips
+#@lewdity: 70
+an invitingly styled __colors/female_pastel__ colored marabou robe with fluffy trim and a satin sash, wrapping softly open over a slip
+#@fit: bust, shoulders, hips
+#@lewdity: 70
+a sultrily styled __colors/female_dark__ colored velvet robe over a satin slip with a deep open front and wide sleeves
+#@fit: bust, shoulders, hips
+#@lewdity: 70
+a seductively styled __colors/female_jewel__ colored silk robe over a chemise __patterns/female_lingerie_lace_detail__ falling open over the slip and legs
+#@fit: bust, shoulders, hips
+a provocatively styled __colors/female_nude__ colored sheer babydoll robe with a lace-trimmed front and flowing hem drifting open over a slip
+#@fit: bust, shoulders, hips
+an alluringly styled __colors/female_pastel__ colored chiffon babydoll robe __patterns/female_party_dress_detail__ fluttering open over a lace slip
+#@fit: bust, shoulders, hips
+a provocatively styled __colors/female_vivid__ colored chiffon peignoir __patterns/female_party_dress_detail__ drifting open over a satin slip
+#@fit: bust, shoulders, hips
+a daringly styled __colors/female_cool__ colored sheer peignoir __patterns/female_lingerie_lace_detail__ drifting open over the satin slip beneath
+#@fit: bust, shoulders, hips
+a captivatingly styled __colors/female_dusty__ colored ostrich-feather trim robe with feather-trimmed cuffs and a satin sash, falling open over the slip beneath
+#@fit: bust, shoulders, hips
+#@lewdity: 70
+a sizzlingly styled __colors/female_light__ colored satin robe over a lace slip __patterns/female_lingerie_lace_detail__ draping open over the thighs
+#@fit: bust, shoulders, hips
+#@lewdity: 70
+a sensually styled __colors/female_nude__ colored satin robe over a velvet slip __patterns/female_blouse_patterns__ falling open over the thighs
+#@fit: bust, waist, hips
+#@lewdity: 60
+a boldly styled __colors/female_jewel__ colored velvet loungewear set __patterns/female_fetish_detail__ wrapping softly with a deep open neckline
+#@fit: bust, waist, hips
+#@lewdity: 60
+an exquisitely styled __colors/female_nude__ colored silk loungewear set __patterns/female_party_dress_detail__ draping loosely with a deep open neckline
+#@fit: bust, waist, hips
+#@lewdity: 60
+an enchantingly styled __colors/female_light__ colored satin loungewear set __patterns/female_lingerie_lace_detail__ skimming over revealed cleavage and midriff
+#@fit: bust, waist, hips
+#@lewdity: 60
+a boldly styled __colors/female_tropical__ colored chiffon loungewear set __patterns/female_lingerie_lace_detail__ draping loosely over revealed cleavage and midriff

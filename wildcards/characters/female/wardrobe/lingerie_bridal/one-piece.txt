@@ -1,0 +1,79 @@
+#@lewdity: 80
+
+#@fit: bust, waist, hips, back
+an enticingly styled __colors/female_light__ colored pearl-accented lace teddy with a sheer tulle back and pearl strap detail
+#@fit: bust, waist, hips
+an exquisitely styled __colors/female_pastel__ colored bridal silk teddy __patterns/female_lingerie_lace_detail__ skimming the body
+#@fit: bust, waist, hips
+a ravishingly styled __colors/female_pastel__ colored lace bridal teddy __patterns/female_lingerie_lace_detail__ with sheer side panels
+#@fit: bust, waist, hips, back
+a provocatively styled __colors/female_nude__ colored bridal lace bodysuit __patterns/female_lingerie_lace_detail__ with a plunging neckline and an open back
+#@fit: bust, waist, hips
+a sultrily styled __colors/female_light__ colored bridal satin bodysuit __patterns/female_fetish_detail__ hugging the curves
+#@fit: bust, waist, hips
+#@lewdity: 75
+an enticingly styled __colors/female_light__ colored bridal silk slip dress __patterns/female_lingerie_lace_detail__ skimming the body
+#@fit: bust, waist, hips
+#@lewdity: 75
+a provocatively styled __colors/female_pastel__ colored bridal lace slip dress __patterns/female_party_dress_detail__ with a sheer skirt
+#@fit: bust, waist, hips
+#@lewdity: 75
+a temptingly styled __colors/female_light__ colored tulle bridal slip dress __patterns/female_lingerie_lace_detail__ with layered tulle
+#@fit: bust, waist, hips
+#@lewdity: 75
+a temptingly styled __colors/female_nude__ colored satin slip with a lace-trimmed hem and thin straps
+#@fit: bust, waist, hips
+#@lewdity: 75
+an enchantingly styled __colors/female_light__ colored pearl-accented satin slip __patterns/female_party_dress_detail__ with a fluid drape
+#@fit: bust, waist, hips
+a sensually styled __colors/female_pastel__ colored bridal tulle babydoll with a satin bow and ruffled hem
+#@fit: bust, waist, hips
+a temptingly styled __colors/female_light__ colored sheer babydoll __patterns/female_lingerie_lace_detail__ with a transparent overlay and a lace set beneath
+#@fit: bust, waist, hips
+a boldly styled __colors/female_nude__ colored chiffon babydoll __patterns/female_lingerie_lace_detail__ fluttering over the thighs
+#@fit: bust, waist, hips
+a provocatively styled __colors/female_light__ colored bridal lace babydoll __patterns/female_party_dress_detail__ with a scalloped hem
+#@fit: bust, waist, hips
+#@lewdity: 75
+a teasingly styled __colors/female_pastel__ colored chiffon wedding-night chemise with a cowl neckline and side slits
+#@fit: bust, waist, hips
+#@lewdity: 75
+a captivatingly styled __colors/female_light__ colored pearl-detailed silk chemise with a lace neckline and thigh slits
+#@fit: bust, waist, hips
+#@lewdity: 75
+an invitingly styled __colors/female_nude__ colored chiffon chemise __patterns/female_party_dress_detail__ with an airy drape over the legs
+#@fit: bust, waist, hips
+#@lewdity: 75
+an enticingly styled __colors/female_pastel__ colored bridal chiffon nightgown __patterns/female_lingerie_lace_detail__ with side slits
+#@fit: bust, waist, hips
+#@lewdity: 75
+a sensually styled __colors/female_nude__ colored satin chemise __patterns/female_lingerie_lace_detail__ with a sheer hem over the legs
+#@fit: bust, waist, hips
+#@lewdity: 75
+a sensually styled __colors/female_light__ colored satin bridal nightgown __patterns/female_blouse_patterns__ with side slits
+#@fit: bust, shoulders, hips
+an alluringly styled __colors/female_light__ colored silk robe over a lace set with a belted waist and flowing sleeves
+#@fit: bust, shoulders, hips
+a provocatively styled __colors/female_pastel__ colored pearl-trimmed silk robe over a lace set __patterns/female_lingerie_lace_detail__ draping open over the legs
+#@fit: bust, shoulders, hips
+a glamorously styled __colors/female_nude__ colored ivory satin bridal robe over a lace set __patterns/female_party_dress_detail__ falling open over the legs
+#@fit: bust, shoulders, hips
+a teasingly styled __colors/female_pastel__ colored chiffon robe over a satin set __patterns/female_party_dress_detail__ drifting open over the thighs
+#@fit: bust, shoulders, hips
+a ravishingly styled __colors/female_nude__ colored pearl-detailed sheer robe over a lace set __patterns/female_lingerie_lace_detail__ draping open over the legs
+#@fit: bust, shoulders, hips
+a sizzlingly styled __colors/female_nude__ colored bridal lace robe over a lace teddy __patterns/female_lingerie_lace_detail__ falling open over the legs
+#@fit: bust, shoulders, hips
+an invitingly styled __colors/female_pastel__ colored silk robe over a satin chemise __patterns/female_blouse_patterns__ drifting open over the thighs
+#@fit: bust, shoulders, hips
+#@lewdity: 75
+a sensually styled __colors/female_nude__ colored tulle bridal peignoir over a silk slip __patterns/female_lingerie_lace_detail__ drifting open over the thighs
+#@fit: bust, shoulders, hips
+a teasingly styled __colors/female_pastel__ colored sheer robe over a tulle set __patterns/female_lingerie_lace_detail__ falling open over the legs
+#@fit: bust, shoulders, hips
+a teasingly styled __colors/female_nude__ colored chiffon robe over a lace teddy __patterns/female_party_dress_detail__ drifting open over the thighs
+#@fit: bust, shoulders, hips
+#@lewdity: 75
+a delicately styled __colors/female_pastel__ colored pearl-accented tulle robe over a slip with ruffled trim and a satin sash
+#@fit: bust, waist, hips
+a ravishingly styled __colors/female_light__ colored sheer tulle overlay set __patterns/female_lingerie_lace_detail__ with lace cups and a pearl waist detail over the lace beneath

@@ -1,12 +1,27 @@
+#@lewdity: 80
+
 #@fit: bust, waist
-#@modifiers: color, pattern
-a lace bralette, __neutral_colors_female__
+an elegantly styled __colors/female_neutral__ colored lace bralette with sheer underwire cups and scalloped trim
 #@fit: bust, waist
-#@modifiers: color, pattern
-a sheer bralette, __pastel_colors_female__
+a sensually styled __colors/female_pastel__ colored sheer bralette with transparent cups
 #@fit: bust, waist
-#@modifiers: color, pattern
-a see-through mesh bralette, __neutral_colors_female__
+a temptingly styled __colors/female_neutral__ colored see-through mesh bralette with netted sheer cups
 #@fit: bust, waist
-#@modifiers: color, pattern
-a sheer plunge bra, __pastel_colors_female__
+a teasingly styled __colors/female_pastel__ colored sheer plunge bra with lace-edged cups
+#@fit: bust, waist
+a boldly styled __colors/female_bright__ colored lace push-up bra __patterns/female_blouse_patterns__ with padded plunge cups and a deep neckline
+#@fit: bust
+a daringly styled __colors/female_nude__ colored satin bra with smooth underwire cups
+#@fit: bust, waist
+#@lewdity: 85
+a ravishingly styled __colors/female_earthtone__ colored mesh bra with strappy cage detailing and sheer cups
+#@fit: bust
+a boldly styled __colors/female_cool__ colored cotton bralette with a ribbed comfort band and minimal coverage
+#@fit: bust
+a seductively styled __colors/female_summer__ colored satin bralette __patterns/female_blouse_patterns__ with a snug bust-hugging fit
+#@fit: bust, waist
+an enticingly styled __colors/female_winter__ colored lace corset __patterns/female_blouse_patterns__ with boned cups pushing up the bust
+#@fit: bust, waist
+a sizzlingly styled __colors/female_tropical__ colored satin corset __patterns/female_blouse_patterns__ with a boned waist and molded cups
+#@fit: bust, waist
+a daringly styled __colors/female_bright__ colored sheer corset __patterns/female_blouse_patterns__ with visible boning and lace beneath
