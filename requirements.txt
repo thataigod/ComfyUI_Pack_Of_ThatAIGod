@@ -1,0 +1,6 @@
+# Dependencies installed by ComfyUI-Manager into ComfyUI's embedded Python.
+# ComfyUI already bundles torch, numpy, Pillow and aiohttp, so only the
+# pack-specific dependency is listed here.  Deliberately ranged (not pinned)
+# to match the user's Python/ComfyUI version; see pyproject.toml for the
+# full dependency ranges.
+structlog>=24.0.0

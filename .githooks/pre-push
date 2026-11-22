@@ -94,36 +94,21 @@ fi
 echo "✅ pytest + coverage passed"
 
 
-# ── App import verification ──────────────────────────
+# ── App module compile verification ──────────────────
 echo ""
-echo "--- verifying app modules can be imported ---"
-MAIN=$(ls *.py 2>/dev/null | head -3)
-if [ -n "$MAIN" ]; then
-  python -c "
-import sys
-import types
-# Mock comfy and server modules for import check
-sys.modules['comfy'] = types.ModuleType('comfy')
-sys.modules['comfy.utils'] = types.ModuleType('comfy.utils')
-sys.modules['server'] = types.ModuleType('server')
-# Try importing each top-level module
-import importlib.util
-for mod in ['_utils', 'Dynamic_Resolution_Picker', 'Image_Saver_Plus', 'LLM_Node', 'LLM_Fallback_Node', 'Resolution_Selector', 'Sequential_Image_Loader', 'Truncate_LLM_Thinking', 'Upscale_By_Max_Side', 'Wildcard_Reader']:
-    try:
-        importlib.util.spec_from_file_location(mod, mod + '.py')
-    except Exception:
-        pass
-print('All modules importable')
-" 2>/dev/null
-  if [ $? -ne 0 ]; then
+echo "--- verifying app modules compile ---"
+MODULES=$(ls *.py 2>/dev/null)
+if [ -n "$MODULES" ]; then
+  if ! python -m py_compile $MODULES; then
     echo ""
     echo "=========================================="
     echo "❌ PRE-PUSH FAILED"
     echo "=========================================="
-    echo "App modules failed to import."
+    echo "App modules failed to compile (syntax error)."
+    echo ""
     exit 1
   fi
-  echo "✅ app modules importable"
+  echo "✅ app modules compile"
 fi
 
 echo ""

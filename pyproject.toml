@@ -20,8 +20,32 @@ dependencies = [
 requires = ["setuptools>=68.0"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools.packages.find]
-where = ["."]
+[tool.setuptools]
+# ComfyUI loads these as flat top-level modules from custom_nodes.  Without an
+# explicit list a built distribution ships only the tests package and none of
+# the node code (the previous packages.find setup did exactly that).
+py-modules = [
+    "_camera_core",
+    "_character_core",
+    "_scene_core",
+    "_utils",
+    "_wildcard_core",
+    "Camera",
+    "Character",
+    "Dynamic_Resolution_Picker",
+    "Image_Saver_Plus",
+    "LLM_Fallback_Node",
+    "LLM_Node",
+    "llm_utils",
+    "Resolution_Selector",
+    "Scene",
+    "Sequential_Image_Loader",
+    "Truncate_LLM_Thinking",
+    "Upscale_By_Max_Side",
+    "Wildcard_Reader",
+]
+# tests/ is development-only; keep it out of built distributions.
+packages = []
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -57,7 +81,7 @@ ignore = ["E501", "N801", "N802", "N806", "N815", "N816", "N999"]
 "llm_utils.py" = ["S310"]
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.10"
 strict = true
 ignore_missing_imports = true
 # disallow_untyped_defs = false: ComfyUI's INPUT_TYPES(), IS_CHANGED(), and VALIDATE_INPUTS()
