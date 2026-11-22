@@ -4,6 +4,7 @@ import shutil
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -36,7 +37,9 @@ class TestWildcardResolverCore(unittest.TestCase):
         WildcardResolver._file_index_cache.clear()
         WildcardResolver._file_mtimes.clear()
         WildcardResolver._annotations_cache.clear()
+        WildcardResolver._block_cache.clear()
         WildcardResolver._deck_cache.clear()
+        WildcardResolver._choice_deck_cache.clear()
 
     def tearDown(self):
         shutil.rmtree(self.temp_dir, ignore_errors=True)
@@ -461,3 +464,156 @@ class TestWildcardResolverCore(unittest.TestCase):
         self.assertEqual(resolver.pick_line_per_block("missing", None), "")
         self._create("empty.txt", ["# a comment only"])
         self.assertEqual(resolver.pick_line_per_block("empty", None), "")
+
+    def test_block_directives_unknown_key_warns(self):
+        self._create("garments.txt", ["#@mystery: x", "a top"])
+        with self.assertLogs("ThatAIGod", level=logging.WARNING) as logs:
+            pairs = self._resolver()._block_directives(os.path.join(self.wildcards_dir, "garments.txt"))
+        self.assertTrue(any("mystery" in message for message in logs.output))
+        # Mirrors _parse_file: unknown keys warn but still attach to the block.
+        self.assertEqual(pairs, [("a top", {"mystery": {"x"}})])
+
+    def test_tag_only_pattern_rejects_multi_tag_lines(self):
+        self.assertIsNone(_wildcard_core._TAG_ONLY_PATTERN.match("__pose1__ __pose2__"))
+        self.assertIsNone(_wildcard_core._TAG_ONLY_PATTERN.match("__a__, __b__"))
+
+    def test_tag_only_pattern_matches_single_tags(self):
+        match = _wildcard_core._TAG_ONLY_PATTERN.match("__wardrobe/female/casual__")
+        self.assertIsNotNone(match)
+        self.assertEqual(match.group(1), "wardrobe/female/casual")
+        self.assertIsNotNone(_wildcard_core._TAG_ONLY_PATTERN.match("__colors_a__"))
+
+    def test_block_directives_decode_error_returns_empty(self):
+        path = os.path.join(self.wildcards_dir, "bad.txt")
+        with open(path, "wb") as f:
+            f.write("#@fit: loose\r\nwarm caf\xe9 line\r\n".encode("cp1252"))
+        with self.assertLogs("ThatAIGod", level=logging.WARNING):
+            pairs = self._resolver()._block_directives(path)
+        self.assertEqual(pairs, [])
+
+    def test_block_directives_bom_directives_parse(self):
+        path = os.path.join(self.wildcards_dir, "bom.txt")
+        with open(path, "w", encoding="utf-8-sig") as f:
+            f.write("#@fit: loose\na loose top\n")
+        pairs = self._resolver()._block_directives(path)
+        self.assertEqual(pairs, [("a loose top", {"fit": {"loose"}})])
+
+    def test_block_directives_cached_by_mtime(self):
+        path = self._create("garments.txt", ["a top"])
+        resolver = self._resolver()
+        first = resolver._block_directives(path)
+        self.assertIs(resolver._block_directives(path), first)
+        with open(path, "a", encoding="utf-8") as f:
+            f.write("\nanother top")
+        future = os.path.getmtime(path) + 10
+        os.utime(path, (future, future))
+        refreshed = resolver._block_directives(path)
+        self.assertEqual(len(refreshed), 2)
+
+    def test_block_cache_fifo_eviction(self):
+        original = _wildcard_core._MAX_CONTENT_CACHE_SIZE
+        _wildcard_core._MAX_CONTENT_CACHE_SIZE = 2
+        try:
+            path_a = self._create("a.txt", ["a"])
+            path_b = self._create("b.txt", ["b"])
+            path_c = self._create("c.txt", ["c"])
+            resolver = self._resolver()
+            resolver._block_directives(path_a)
+            resolver._block_directives(path_b)
+            self.assertIn(path_a, WildcardResolver._block_cache)
+            resolver._block_directives(path_c)
+            self.assertNotIn(path_a, WildcardResolver._block_cache)
+            self.assertIn(path_c, WildcardResolver._block_cache)
+        finally:
+            _wildcard_core._MAX_CONTENT_CACHE_SIZE = original
+
+    def test_pick_line_with_directives_duplicate_lines_map_to_their_own_blocks(self):
+        self._create(
+            "pose.txt",
+            ["#@facing: front", "the subject faces you", "#@facing: back", "the subject faces you"],
+        )
+        seen = set()
+        for seed in range(20):
+            line, directives = self._resolver(seed=seed).pick_line_with_directives("pose", None)
+            self.assertEqual(line, "the subject faces you")
+            facing = directives.get("facing")
+            self.assertIn(facing, ({"front"}, {"back"}))
+            seen.add(next(iter(facing)) if facing else None)
+        # Both blocks' directives are reachable — the pick maps by position,
+        # not by the first value-equal line.
+        self.assertEqual(seen, {"front", "back"})
+
+    def test_file_index_detects_deletions(self):
+        path = self._create("temp.txt", ["x"])
+        resolver = self._resolver()
+        index1 = resolver._build_file_index(self.wildcards_dir)
+        self.assertIn("temp.txt", index1)
+        os.remove(path)
+        index2 = resolver._build_file_index(self.wildcards_dir)
+        self.assertNotIn("temp.txt", index2)
+
+    def test_entry_points_reject_paths_escaping_wildcards_dir(self):
+        self._create("colors.txt", ["red"])
+        outside = os.path.join(self.temp_dir, "secret.txt")
+        with open(outside, "w", encoding="utf-8") as f:
+            f.write("secret")
+        resolver = self._resolver()
+        with self.assertLogs("ThatAIGod", level=logging.WARNING):
+            self.assertEqual(resolver.pick_line_with_directives("../secret", None), ("", {}))
+            self.assertEqual(resolver.pick_line_per_block("../secret", None), "")
+            self.assertFalse(resolver.file_exists("../secret"))
+            self.assertIsNone(resolver.pick_file("../", None))
+
+    def test_pick_file_listdir_error_returns_none(self):
+        self._create("scenes/a.txt", ["x"])
+        resolver = self._resolver()
+        with patch.object(_wildcard_core.os, "listdir", side_effect=OSError("denied")):
+            with self.assertLogs("ThatAIGod", level=logging.WARNING):
+                self.assertIsNone(resolver.pick_file("scenes", None))
+
+    def test_resolve_iteration_cap_warns(self):
+        for i in range(_MAX_WILDCARD_ITERATIONS + 1):
+            self._create(f"cap{i}.txt", [f"line{i}"])
+        text = " ".join(f"__cap{i}__" for i in range(_MAX_WILDCARD_ITERATIONS + 1))
+        with self.assertLogs("ThatAIGod", level=logging.WARNING) as logs:
+            result = self._resolver(seed=0).resolve(text)
+        self.assertTrue(any("iteration cap" in message for message in logs.output))
+        self.assertIn("__cap", result)
+
+    def test_choice_iteration_cap_warns(self):
+        text = " ".join(f"{{a{i}|b{i}}}" for i in range(120))
+        with self.assertLogs("ThatAIGod", level=logging.WARNING) as logs:
+            result = self._resolver(seed=0).resolve(text)
+        self.assertTrue(any("iteration cap" in message for message in logs.output))
+        self.assertIn("{a", result)
+
+    def test_no_repeat_choice_deck_exhausts_and_refills(self):
+        resolver = self._resolver(mode="Random (No Repeat)")
+        drawn = {resolver.resolve("{red|green|blue}") for _ in range(3)}
+        self.assertEqual(drawn, {"red", "green", "blue"})
+        fourth = resolver.resolve("{red|green|blue}")
+        self.assertIn(fourth, {"red", "green", "blue"})
+
+    def test_choice_deck_cache_fifo_eviction(self):
+        original = _wildcard_core._MAX_DECK_CACHE_SIZE
+        _wildcard_core._MAX_DECK_CACHE_SIZE = 1
+        try:
+            resolver = self._resolver(mode="Random (No Repeat)")
+            resolver.resolve("{red|green}")
+            resolver.resolve("{blue|yellow}")
+            self.assertLessEqual(len(WildcardResolver._choice_deck_cache), 1)
+        finally:
+            _wildcard_core._MAX_DECK_CACHE_SIZE = original
+
+    def test_deck_cache_fifo_eviction(self):
+        original = _wildcard_core._MAX_DECK_CACHE_SIZE
+        _wildcard_core._MAX_DECK_CACHE_SIZE = 3
+        try:
+            for i in range(6):
+                self._create(f"deck{i}.txt", [f"only{i}"])
+                self._resolver(mode="Random (No Repeat)").pick_line(f"deck{i}", None)
+            self.assertEqual(len(WildcardResolver._deck_cache), 3)
+            newest_path = os.path.join(self.wildcards_dir, "deck5.txt")
+            self.assertIn((newest_path, "blocks", ""), WildcardResolver._deck_cache)
+        finally:
+            _wildcard_core._MAX_DECK_CACHE_SIZE = original

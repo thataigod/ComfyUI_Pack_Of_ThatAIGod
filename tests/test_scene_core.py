@@ -505,6 +505,22 @@ class TestBuildScene(unittest.TestCase):
             self.assertEqual(scene["location"], "")
             self.assertNotIn("beach", scene["description"])
 
+    def test_nude_outfit_sentinel_is_cleared(self):
+        # The character engine substitutes the "nude" sentinel as the outfit
+        # category; build_scene must clear it so it never restricts locations.
+        with TmpWildcards() as tmp:
+            _make_scenes(tmp)
+            _make_times(tmp)
+            _make_styles(tmp)
+            scene = build_scene(
+                **self._full_args(
+                    tmp,
+                    character={"type": "character", "outfit_category": "nude", "state": "nude"},
+                )
+            )
+            self.assertEqual(scene["type"], "scene")
+            self.assertEqual(scene["state"], "nude")
+
     def test_block_time_filtering_picks_block_prose(self):
         with TmpWildcards() as tmp:
             _make_scenes(tmp)

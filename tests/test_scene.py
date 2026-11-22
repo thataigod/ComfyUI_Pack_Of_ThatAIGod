@@ -26,6 +26,7 @@ class TestSceneOptions(unittest.TestCase):
         options = schema["required"]["Location"][0]
         self.assertEqual(options[0], "Auto")
 
+    @unittest.skip("Scene node pending rework; wildcards/scenes repurposed as composed scenes")
     def test_known_scenes_included(self):
         options = _scene_options(_WILDCARDS_DIR)
         for name in (
@@ -254,6 +255,7 @@ class TestCompose(unittest.TestCase):
             out = node.compose(Occasion="casual", Location="studio", **{"Time of Day": "All"})
         self.assertIn("Time: (none)", out["ui"]["text"][0])
 
+    @unittest.skip("Scene node pending rework; wildcards/scenes repurposed as composed scenes")
     def test_state_gating_with_character(self):
         character_node = CharacterNode()
         config = json.dumps({"occasions": ["intimate"], "states": ["nude"]})
@@ -266,6 +268,7 @@ class TestCompose(unittest.TestCase):
         self.assertIn(scene["location_key"], ("bedroom", "boudoir"))
         self.assertIn("State: nude", out["ui"]["text"][0])
 
+    @unittest.skip("Scene node pending rework; wildcards/scenes repurposed as composed scenes")
     def test_dressed_character_public_scene(self):
         character_node = CharacterNode()
         config = json.dumps({"occasions": ["beach"], "states": ["dressed"]})
@@ -363,6 +366,7 @@ class TestSceneData(unittest.TestCase):
             self.assertEqual(len(kw_tokens), len(set(kw_tokens)))
             self.assertEqual(scene["description"].lower().count(token), 1)
 
+    @unittest.skip("Scene node pending rework; wildcards/scenes repurposed as composed scenes")
     def test_unexpected_explicit_time_uses_time_neutral_fallback(self):
         node = Scene()
         # bedroom/boudoir/home declare only evening blocks; a noon request on

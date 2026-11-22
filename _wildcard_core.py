@@ -36,6 +36,8 @@ import logging
 import os
 import random
 import re
+import threading
+from typing import Any, Protocol, TypeVar
 
 logger: logging.Logger = logging.getLogger("ThatAIGod")
 
@@ -51,7 +53,10 @@ _CHOICE_PATTERN: re.Pattern[str] = re.compile(r"\{([^}]+)\}")
 # Matches the innermost { ... } blocks (no nested braces) for nested choice expansion.
 _INNER_CHOICE_PATTERN: re.Pattern[str] = re.compile(r"\{([^{}]*)\}")
 # Matches a line that is *entirely* one wildcard tag (used for deep filtering).
-_TAG_ONLY_PATTERN: re.Pattern[str] = re.compile(r"^__([a-zA-Z0-9_\-\/\\\\. ]+)__$")
+# The (?!__) lookahead stops the inner run at the first closing "__" so a
+# multi-tag line ("__a__ __b__") is NOT treated as one bogus tag path —
+# consistent with how _WILDCARD_PATTERN tokenises tags.
+_TAG_ONLY_PATTERN: re.Pattern[str] = re.compile(r"^__((?:(?!__)[a-zA-Z0-9_\-\/\\\. ])+)__$")
 # Matches "#@key: value, value" directive comment lines.
 _DIRECTIVE_PATTERN: re.Pattern[str] = re.compile(r"^#@\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:\s*(.+?)\s*$")
 # Maximum number of nested wildcard resolution passes to prevent infinite loops.
@@ -60,6 +65,8 @@ _MAX_WILDCARD_ITERATIONS: int = 50
 _MAX_CHOICE_ITERATIONS: int = 100
 # Maximum number of file-content cache entries before FIFO eviction.
 _MAX_CONTENT_CACHE_SIZE: int = 100
+# Maximum number of deck cache entries before FIFO eviction.
+_MAX_DECK_CACHE_SIZE: int = 256
 # Directive keys recognised by the engine.  Unknown keys are ignored with a warning.
 # Beyond the classic scene/outfit dimensions, the character object system asserts
 # camera-geometry dimensions (facing, gaze, elevation, awareness) and free-form
@@ -70,10 +77,17 @@ KNOWN_DIRECTIVE_KEYS: frozenset[str] = frozenset(
         "occasion",
         "scale",
         "regions",
+        "region",
         "outfit",
         "setting",
         "time",
         "location",
+        "place",
+        "domain",
+        "climate",
+        "weather",
+        "era",
+        "privacy",
         "facing",
         "gaze",
         "elevation",
@@ -95,6 +109,18 @@ KNOWN_DIRECTIVE_KEYS: frozenset[str] = frozenset(
 # A filter context maps a dimension key to the set of currently active values.
 # None means "no filtering" (plain wildcard behaviour).
 FilterContext = dict[str, set[str]] | None
+
+
+class _Comparable(Protocol):
+    """Candidate types the mode-aware picker can sort (lines, positions)."""
+
+    def __lt__(self, other: Any) -> bool: ...
+
+    def __gt__(self, other: Any) -> bool: ...
+
+
+# Candidate value type for the mode-aware picker.
+_T = TypeVar("_T", bound=_Comparable)
 
 
 def _context_key(context: FilterContext) -> str:
@@ -130,10 +156,14 @@ class WildcardResolver:
     _file_mtimes: dict[str, dict[str, float]] = {}
     # _annotations_cache: absolute_path → (mtime, [(line, accumulated_directives), ...])
     _annotations_cache: dict[str, tuple[float, list[tuple[str, dict[str, set[str]]]]]] = {}
+    # _block_cache: absolute_path → (mtime, [(line, block_directives), ...])
+    _block_cache: dict[str, tuple[float, list[tuple[str, dict[str, set[str]]]]]] = {}
     # _deck_cache: (absolute_path_or_dir, deck_salt, context_key) → (mtime, shuffled_deck)
-    _deck_cache: dict[tuple[str, str, str], tuple[float, list[str]]] = {}
+    _deck_cache: dict[tuple[str, str, str], tuple[float, list[Any]]] = {}
     # _choice_deck_cache: choice inner literal → shuffled deck (for Random No Repeat)
     _choice_deck_cache: dict[str, list[str]] = {}
+    # Guards the shared caches against concurrent node executions.
+    _CACHE_LOCK = threading.Lock()
 
     def __init__(self, wildcards_dir: str, mode: str = "Deterministic (Seed)", seed: int = 0) -> None:
         """Initialise the resolver.
@@ -175,15 +205,19 @@ class WildcardResolver:
 
         if not needs_refresh:
             cached_mtimes = self._file_mtimes.get(cache_key, {})
+            current_mtimes: dict[str, float] = {}
             for root, _dirs, files in os.walk(wildcards_dir):
                 for f in files:
                     if f.endswith(".txt"):
                         abs_path = os.path.join(root, f)
-                        if abs_path not in cached_mtimes or cached_mtimes[abs_path] != os.path.getmtime(abs_path):
-                            needs_refresh = True
-                            break
-                if needs_refresh:
-                    break
+                        try:
+                            current_mtimes[abs_path] = os.path.getmtime(abs_path)
+                        except OSError:  # pragma: no cover - filesystem race
+                            current_mtimes[abs_path] = -1.0
+            # Compare the full on-disk set against the cached set so that
+            # deletions invalidate the index too, not just mtime changes.
+            if current_mtimes != cached_mtimes:
+                needs_refresh = True
 
         if not needs_refresh:
             return self._file_index_cache[cache_key]
@@ -195,12 +229,16 @@ class WildcardResolver:
             files.sort()
             for f in files:
                 if f.endswith(".txt"):
+                    abs_path = os.path.join(root, f)
+                    try:
+                        mtime = os.path.getmtime(abs_path)
+                    except OSError:  # pragma: no cover - filesystem race
+                        continue
                     if f not in file_index:
                         file_index[f] = []
-                    abs_path = os.path.join(root, f)
                     rel_path = os.path.relpath(abs_path, wildcards_dir).replace("\\", "/")
                     file_index[f].append(rel_path)
-                    mtimes[abs_path] = os.path.getmtime(abs_path)
+                    mtimes[abs_path] = mtime
 
         self._file_index_cache[cache_key] = file_index
         self._file_mtimes[cache_key] = mtimes
@@ -233,7 +271,7 @@ class WildcardResolver:
             return cached[1]
 
         try:
-            with open(file_path, encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8-sig") as f:
                 raw_lines = [line.strip() for line in f]
         except (OSError, UnicodeDecodeError):
             logger.warning("Failed to read wildcard file: %s", file_path)
@@ -298,6 +336,29 @@ class WildcardResolver:
         if not real_final.startswith(real_wildcards + os.sep) and real_final != real_wildcards:
             return None
         return real_final.replace("\\", "/")
+
+    def _contained_path(self, file_rel: str) -> str | None:
+        """Join *file_rel* (plus ``.txt``) under the wildcards dir with a traversal guard.
+
+        Mirrors :meth:`_resolve_tag_path`'s containment check for the
+        entry-point APIs that take raw relative paths (``pick_line_*``,
+        ``file_exists``) so a crafted path cannot read outside the wildcards
+        directory.
+
+        Args:
+            file_rel: Path relative to the wildcards directory (no extension).
+
+        Returns:
+            The joined path, or ``None`` (with a warning) when the resolved
+            location escapes the wildcards directory.
+        """
+        candidate = os.path.join(self.wildcards_dir, file_rel + ".txt")
+        real_dir = os.path.realpath(self.wildcards_dir)
+        real_candidate = os.path.realpath(candidate)
+        if not real_candidate.startswith(real_dir + os.sep) and real_candidate != real_dir:
+            logger.warning("Wildcard path %r escapes the wildcards directory; ignored", file_rel)
+            return None
+        return candidate
 
     # ------------------------------------------------------------------
     # Eligibility
@@ -404,7 +465,7 @@ class WildcardResolver:
     # Selection
     # ------------------------------------------------------------------
 
-    def _pick(self, candidates: list[str], cache_path: str, context: FilterContext, salt: str = "") -> str:
+    def _pick(self, candidates: list[_T], cache_path: str, context: FilterContext, salt: str = "") -> _T:
         """Pick one candidate according to the resolver's selection mode.
 
         ``"Deterministic (Seed)"`` sorts the candidates before choosing so the
@@ -412,10 +473,11 @@ class WildcardResolver:
         natural file order; ``"Random (No Repeat)"`` draws from a per-file,
         per-context shuffle deck that reshuffles when exhausted or when the
         file's mtime changes.  *salt* separates decks within one file (e.g.
-        per directive block in :meth:`pick_line_per_block`).
+        per directive block in :meth:`pick_line_per_block`, or the index
+        decks of :meth:`pick_line_with_directives`).
 
         Args:
-            candidates: Non-empty list of candidate strings.
+            candidates: Non-empty list of candidate values (lines or indices).
             cache_path: Absolute path (file or directory) used as the deck key.
             context: The filter context (part of the deck key).
             salt: Extra deck-key discriminator ("" for plain picks).
@@ -429,16 +491,29 @@ class WildcardResolver:
                 mtime = os.path.getmtime(cache_path)
             except OSError:
                 mtime = 0.0
-            entry = self._deck_cache.get(deck_key)
-            if entry is None or entry[0] != mtime or not entry[1]:
-                shuffled = list(candidates)
-                self.rng.shuffle(shuffled)
-                self._deck_cache[deck_key] = (mtime, shuffled)
-                entry = self._deck_cache[deck_key]
-            return entry[1].pop(0)
+            with WildcardResolver._CACHE_LOCK:
+                entry = self._deck_cache.get(deck_key)
+                if entry is None or entry[0] != mtime or not entry[1]:
+                    shuffled = list(candidates)
+                    self.rng.shuffle(shuffled)
+                    if len(self._deck_cache) >= _MAX_DECK_CACHE_SIZE:
+                        self._deck_cache.pop(next(iter(self._deck_cache)))
+                    self._deck_cache[deck_key] = (mtime, shuffled)
+                    entry = self._deck_cache[deck_key]
+                picked: _T = entry[1].pop(0)
+                return picked
         if self.mode == "Deterministic (Seed)":
             return self.rng.choice(sorted(candidates))
         return self.rng.choice(candidates)
+
+    def _pick_index(self, count: int, cache_path: str, context: FilterContext, salt: str = "") -> int:
+        """Pick a candidate position in ``range(count)`` honouring the mode.
+
+        Picking by position (rather than by line value) keeps duplicate line
+        texts under different directive blocks distinguishable — the caller
+        learns *which* occurrence was chosen, not just its text.
+        """
+        return self._pick(list(range(count)), cache_path, context, salt)
 
     def pick_line(self, file_rel: str, context: FilterContext) -> str:
         """Pick a random eligible line from ``wildcards_dir/file_rel.txt``.
@@ -465,16 +540,30 @@ class WildcardResolver:
         ``mishap``/``slip`` apply to the line they sit above and never leak
         to the next garment).
 
+        Results are cached by mtime (with FIFO eviction at
+        :data:`_MAX_CONTENT_CACHE_SIZE`, mirroring :meth:`_parse_file`);
+        unreadable or non-UTF-8 files yield ``[]`` with a warning instead of
+        raising.
+
         Args:
             file_path: Absolute path to the wildcard file.
 
         Returns:
             Pairs in file order; directive-less lines carry ``{}``.
         """
+        try:
+            current_mtime = os.path.getmtime(file_path)
+        except OSError:
+            return []
+
+        cached = self._block_cache.get(file_path)
+        if cached is not None and cached[0] == current_mtime:
+            return cached[1]
+
         pairs: list[tuple[str, dict[str, set[str]]]] = []
         block: dict[str, set[str]] = {}
         try:
-            with open(file_path, encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8-sig") as f:
                 for raw in f:
                     line = raw.strip()
                     if not line:
@@ -482,6 +571,8 @@ class WildcardResolver:
                     match = _DIRECTIVE_PATTERN.match(line)
                     if match is not None:
                         key, values_raw = match.group(1), match.group(2)
+                        if key not in KNOWN_DIRECTIVE_KEYS:
+                            logger.warning("Unknown wildcard directive key '%s' in %s", key, file_path)
                         values = {v.strip().lower() for v in values_raw.split(",") if v.strip()}
                         if values:
                             block[key] = values
@@ -490,8 +581,13 @@ class WildcardResolver:
                         continue
                     pairs.append((line, dict(block)))
                     block = {}
-        except OSError:
+        except (OSError, UnicodeDecodeError):
+            logger.warning("Failed to read wildcard file: %s", file_path)
             return []
+        with WildcardResolver._CACHE_LOCK:
+            if len(self._block_cache) >= _MAX_CONTENT_CACHE_SIZE:
+                self._block_cache.pop(next(iter(self._block_cache)))
+            self._block_cache[file_path] = (current_mtime, pairs)
         return pairs
 
     def pick_line_with_directives(self, file_rel: str, context: FilterContext) -> tuple[str, dict[str, set[str]]]:
@@ -509,8 +605,8 @@ class WildcardResolver:
             A ``(line, directives)`` tuple; ``("", {})`` when the file is
             missing, empty, or fully filtered out.
         """
-        path = os.path.join(self.wildcards_dir, file_rel + ".txt")
-        if not os.path.isfile(path):
+        path = self._contained_path(file_rel)
+        if path is None or not os.path.isfile(path):
             return "", {}
         pairs = self._block_directives(path)
         if not pairs:
@@ -522,9 +618,13 @@ class WildcardResolver:
         ]
         if not candidates:
             return "", {}
-        lines = [line for line, _directives in candidates]
-        chosen = self._pick(lines, path, context)
-        return candidates[lines.index(chosen)]
+        # Pick by position over the line-sorted pairs: the k-th sorted pair
+        # matches the historical k-th sorted line for unique lines (keeping
+        # seeded picks stable) while duplicate line texts stay paired with
+        # the directives of the block that was actually chosen.
+        ordered = sorted(candidates, key=lambda pair: pair[0])
+        chosen_index = self._pick_index(len(ordered), path, context, salt="blocks")
+        return ordered[chosen_index]
 
     def pick_line_per_block(self, file_rel: str, context: FilterContext) -> str:
         """Pick one eligible line per directive block and join them with commas.
@@ -543,8 +643,8 @@ class WildcardResolver:
         Returns:
             The joined picks, or ``""`` when the file is missing or empty.
         """
-        path = os.path.join(self.wildcards_dir, file_rel + ".txt")
-        if not os.path.isfile(path):
+        path = self._contained_path(file_rel)
+        if path is None or not os.path.isfile(path):
             return ""
         entries = self._parse_file(path) or []
         if not entries:
@@ -572,9 +672,10 @@ class WildcardResolver:
             file_rel: Path relative to the wildcards directory (no extension).
 
         Returns:
-            ``True`` if the file exists.
+            ``True`` if the file exists inside the wildcards directory.
         """
-        return os.path.isfile(os.path.join(self.wildcards_dir, file_rel + ".txt"))
+        path = self._contained_path(file_rel)
+        return path is not None and os.path.isfile(path)
 
     def pick_file(self, dir_rel: str, context: FilterContext, exclude: set[str] | None = None) -> tuple[str, str] | None:
         """Pick a random eligible file from ``wildcards_dir/dir_rel`` and a line from it.
@@ -594,10 +695,19 @@ class WildcardResolver:
             directory is missing or no file is eligible.
         """
         base = os.path.join(self.wildcards_dir, dir_rel)
+        real_base = os.path.realpath(base)
+        real_dir = os.path.realpath(self.wildcards_dir)
+        if not real_base.startswith(real_dir + os.sep) and real_base != real_dir:
+            logger.warning("Wildcard path %r escapes the wildcards directory; ignored", dir_rel)
+            return None
         if not os.path.isdir(base):
             return None
         excluded = exclude or set()
-        files = sorted(f for f in os.listdir(base) if f.endswith(".txt") and f not in excluded)
+        try:
+            files = sorted(f for f in os.listdir(base) if f.endswith(".txt") and f not in excluded)
+        except OSError:
+            logger.warning("Cannot list wildcard directory: %s", base)
+            return None
         eligible = [f for f in files if self._file_has_eligible_lines(os.path.join(base, f), context)]
         if not eligible:
             return None
@@ -657,14 +767,17 @@ class WildcardResolver:
         options = self._split_choice_options(inner)
         if not options:  # pragma: no cover - malformed {}
             return "{" + inner + "}"  # pragma: no cover
-        if self.mode == "Random (No Repeat)":  # pragma: no cover - deck not hit by deterministic tests
-            deck = WildcardResolver._choice_deck_cache.get(inner)  # pragma: no cover
-            if deck is None or len(deck) == 0:  # pragma: no cover
-                shuffled = list(options)  # pragma: no cover
-                self.rng.shuffle(shuffled)  # pragma: no cover
-                WildcardResolver._choice_deck_cache[inner] = shuffled  # pragma: no cover
-                deck = WildcardResolver._choice_deck_cache[inner]  # pragma: no cover
-            return deck.pop(0)  # pragma: no cover
+        if self.mode == "Random (No Repeat)":
+            with WildcardResolver._CACHE_LOCK:
+                deck = WildcardResolver._choice_deck_cache.get(inner)
+                if deck is None or len(deck) == 0:
+                    shuffled = list(options)
+                    self.rng.shuffle(shuffled)
+                    if len(WildcardResolver._choice_deck_cache) >= _MAX_DECK_CACHE_SIZE:
+                        WildcardResolver._choice_deck_cache.pop(next(iter(WildcardResolver._choice_deck_cache)))
+                    WildcardResolver._choice_deck_cache[inner] = shuffled
+                    deck = WildcardResolver._choice_deck_cache[inner]
+                return deck.pop(0)
         return self.rng.choice(options)
 
     def _resolve_nested_choices(self, text: str) -> str:
@@ -710,8 +823,12 @@ class WildcardResolver:
                     continue
             result.append(text[i])
             i += 1
-        if i < n:  # pragma: no cover - loop cap not hit in tests
-            result.append(text[i:])  # pragma: no cover
+        if i < n:
+            logger.warning(
+                "Choice expansion hit the %d-iteration cap; leaving the rest of the text as written",
+                _MAX_CHOICE_ITERATIONS,
+            )
+            result.append(text[i:])
         return "".join(result)
 
     def resolve(self, text: str, context: FilterContext = None) -> str:
@@ -746,6 +863,15 @@ class WildcardResolver:
                 if tag in processed:
                     processed = processed.replace(tag, replacement, 1)
                     break
+        else:
+            remaining = sorted(set(_WILDCARD_PATTERN.findall(processed)))
+            if remaining:
+                logger.warning(
+                    "Wildcard resolution hit the %d-iteration cap; leaving %d tag(s) unresolved: %s",
+                    _MAX_WILDCARD_ITERATIONS,
+                    len(remaining),
+                    ", ".join(f"__{tag}__" for tag in remaining[:5]),
+                )
 
         processed = self._resolve_nested_choices(processed)
         return processed.strip()

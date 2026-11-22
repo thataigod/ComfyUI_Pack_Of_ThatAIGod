@@ -22,13 +22,18 @@ import logging
 import os
 import random
 import re
+import threading
 from typing import Any
 
 logger: logging.Logger = logging.getLogger("ThatAIGod")
 
-# Matches __tag__ tokens; allows letters, digits, underscores, hyphens, slashes,
-# backslashes, and dots so that subdirectory paths work (e.g. __autowildcards/colors__).
-_WILDCARD_PATTERN: re.Pattern[str] = re.compile(r"__([a-zA-Z0-9_\-\/\\\\.]+)__")
+# Matches "__tag__" tokens; allows letters, digits, underscores, hyphens,
+# slashes, backslashes, dots and spaces so that subdirectory paths and
+# display-name folders work (e.g. __autowildcards/colors__ or
+# __characters/Rohini Smirnova/hair__).  Identical to the shared engine's
+# pattern in _wildcard_core.py so every tag the dropdown offers is one the
+# reader can resolve; the lazy quantifier ends each tag at the first "__".
+_WILDCARD_PATTERN: re.Pattern[str] = re.compile(r"__([a-zA-Z0-9_\-\/\\\. ]+?)__")
 # Matches {choice1|choice2|...} inline choice blocks (pipe-separated).
 _CHOICE_PATTERN: re.Pattern[str] = re.compile(r"\{([^}]+)\}")
 # Matches the innermost { ... } blocks (no nested braces) for nested choice expansion.
@@ -39,6 +44,8 @@ _MAX_WILDCARD_ITERATIONS: int = 50
 _MAX_CHOICE_ITERATIONS: int = 100
 # Maximum number of file-content cache entries before FIFO eviction (see DECISIONS.md D4).
 _MAX_CONTENT_CACHE_SIZE: int = 100
+# Maximum number of deck cache entries before FIFO eviction.
+_MAX_DECK_CACHE_SIZE: int = 256
 
 
 class WildcardReader:
@@ -61,6 +68,8 @@ class WildcardReader:
     _deck_cache: dict[str, tuple[float, list[str]]] = {}
     # _choice_deck_cache: choice inner literal → shuffled deck (for Random No Repeat)
     _choice_deck_cache: dict[str, list[str]] = {}
+    # Guards the deck caches against concurrent node executions.
+    _CACHE_LOCK = threading.Lock()
 
     @classmethod
     def INPUT_TYPES(cls) -> dict[str, Any]:
@@ -75,7 +84,7 @@ class WildcardReader:
 
         if os.path.exists(wildcards_dir):
             root_files: list[str] = [
-                f"__{f.replace('.txt', '')}__"
+                f"__{f[:-4]}__"
                 for f in os.listdir(wildcards_dir)
                 if os.path.isfile(os.path.join(wildcards_dir, f)) and f.endswith(".txt")
             ]
@@ -90,7 +99,7 @@ class WildcardReader:
                 for f in files:
                     if f.endswith(".txt"):
                         sub_path: str = os.path.join(rel_path, f).replace("\\", "/")
-                        entry: str = f"__{sub_path.replace('.txt', '')}__"
+                        entry: str = f"__{sub_path[:-4]}__"
                         sub_entries.append(entry)
 
             wildcard_files.extend(sorted(sub_entries))
@@ -202,17 +211,19 @@ class WildcardReader:
 
         if not needs_refresh:
             cached_mtimes = self._file_mtimes.get(cache_key, {})
-            for root, dirs, files in os.walk(wildcards_dir):
+            current_mtimes: dict[str, float] = {}
+            for root, _dirs, files in os.walk(wildcards_dir):
                 for f in files:
                     if f.endswith(".txt"):
                         abs_path = os.path.join(root, f)
-                        current_mtime = os.path.getmtime(abs_path)
-                        # Rebuild index if any file was modified since last cache
-                        if abs_path not in cached_mtimes or cached_mtimes[abs_path] != current_mtime:
-                            needs_refresh = True
-                            break
-                if needs_refresh:
-                    break
+                        try:
+                            current_mtimes[abs_path] = os.path.getmtime(abs_path)
+                        except OSError:  # pragma: no cover - filesystem race
+                            current_mtimes[abs_path] = -1.0
+            # Compare the full on-disk set against the cached set so that
+            # deletions invalidate the index too, not just mtime changes.
+            if current_mtimes != cached_mtimes:
+                needs_refresh = True
 
         if not needs_refresh:
             return self._file_index_cache[cache_key]
@@ -224,12 +235,16 @@ class WildcardReader:
             files.sort()
             for f in files:
                 if f.endswith(".txt"):
+                    abs_path = os.path.join(root, f)
+                    try:
+                        mtime = os.path.getmtime(abs_path)
+                    except OSError:  # pragma: no cover - filesystem race
+                        continue
                     if f not in file_index:
                         file_index[f] = []
-                    abs_path = os.path.join(root, f)
                     rel_path: str = os.path.relpath(abs_path, wildcards_dir).replace("\\", "/")
                     file_index[f].append(rel_path)
-                    mtimes[abs_path] = os.path.getmtime(abs_path)
+                    mtimes[abs_path] = mtime
 
         self._file_index_cache[cache_key] = file_index
         self._file_mtimes[cache_key] = mtimes
@@ -243,8 +258,9 @@ class WildcardReader:
         reaches :data:`_MAX_CONTENT_CACHE_SIZE` entries the oldest entry is evicted
         (FIFO — see DECISIONS.md D4).
 
-        Lines starting with ``#`` are treated as comments and excluded.  Blank lines
-        are also excluded.
+        Lines are stripped *before* the comment check, so indented ``#``
+        comments are excluded too.  Files are read as ``utf-8-sig`` so a BOM
+        cannot corrupt the first line.  Blank lines are excluded.
 
         Args:
             file_path: Absolute path to the wildcard ``.txt`` file.
@@ -265,8 +281,9 @@ class WildcardReader:
                 return cached_lines
 
         try:
-            with open(file_path, encoding="utf-8") as f:
-                lines = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+            with open(file_path, encoding="utf-8-sig") as f:
+                raw_lines = [line.strip() for line in f]
+            lines = [line for line in raw_lines if line and not line.startswith("#")]
             if len(WildcardReader._file_content_cache) >= _MAX_CONTENT_CACHE_SIZE:
                 WildcardReader._file_content_cache.pop(next(iter(WildcardReader._file_content_cache)))
             WildcardReader._file_content_cache[file_path] = (current_mtime, lines)
@@ -340,18 +357,21 @@ class WildcardReader:
                 current_mtime = os.path.getmtime(final_path)
             except OSError:
                 return f"__{wildcard_tag}__"
-            cached = deck.get(final_path)
-            if cached is None or cached[0] != current_mtime or len(cached[1]) == 0:
-                lines = self._get_file_lines(final_path)
-                if lines is None:
-                    return f"__{wildcard_tag}__"
-                if not lines:
-                    return ""
-                shuffled = list(lines)
-                rng.shuffle(shuffled)
-                deck[final_path] = (current_mtime, shuffled)
-                cached = deck[final_path]
-            return cached[1].pop(0)
+            with WildcardReader._CACHE_LOCK:
+                cached = deck.get(final_path)
+                if cached is None or cached[0] != current_mtime or len(cached[1]) == 0:
+                    lines = self._get_file_lines(final_path)
+                    if lines is None:
+                        return f"__{wildcard_tag}__"
+                    if not lines:
+                        return ""
+                    shuffled = list(lines)
+                    rng.shuffle(shuffled)
+                    if len(deck) >= _MAX_DECK_CACHE_SIZE:
+                        deck.pop(next(iter(deck)))
+                    deck[final_path] = (current_mtime, shuffled)
+                    cached = deck[final_path]
+                return cached[1].pop(0)
         else:
             lines = self._get_file_lines(final_path)
             if lines is None:
@@ -403,6 +423,15 @@ class WildcardReader:
             if not found_replacement:
                 break
             iteration += 1
+        else:
+            remaining = sorted(set(_WILDCARD_PATTERN.findall(processed)))
+            if remaining:
+                logger.warning(
+                    "Wildcard resolution hit the %d-iteration cap; leaving %d tag(s) unresolved: %s",
+                    max_iterations,
+                    len(remaining),
+                    ", ".join(f"__{tag}__" for tag in remaining[:5]),
+                )
         return processed
 
     @staticmethod
@@ -455,15 +484,17 @@ class WildcardReader:
         options = self._split_choice_options(inner)
         if not options:  # pragma: no cover - malformed {}
             return "{" + inner + "}"  # pragma: no cover
-        # Single option like "{hello}" unwraps to "hello".
-        if mode == "Random (No Repeat)":  # pragma: no cover - deck path not hit by deterministic tests
-            deck = WildcardReader._choice_deck_cache.get(inner)  # pragma: no cover
-            if deck is None or len(deck) == 0:  # pragma: no cover
-                shuffled = list(options)  # pragma: no cover
-                rng.shuffle(shuffled)  # pragma: no cover
-                WildcardReader._choice_deck_cache[inner] = shuffled  # pragma: no cover
-                deck = WildcardReader._choice_deck_cache[inner]  # pragma: no cover
-            return deck.pop(0)  # pragma: no cover
+        if mode == "Random (No Repeat)":
+            with WildcardReader._CACHE_LOCK:
+                deck = WildcardReader._choice_deck_cache.get(inner)
+                if deck is None or len(deck) == 0:
+                    shuffled = list(options)
+                    rng.shuffle(shuffled)
+                    if len(WildcardReader._choice_deck_cache) >= _MAX_DECK_CACHE_SIZE:
+                        WildcardReader._choice_deck_cache.pop(next(iter(WildcardReader._choice_deck_cache)))
+                    WildcardReader._choice_deck_cache[inner] = shuffled
+                    deck = WildcardReader._choice_deck_cache[inner]
+                return deck.pop(0)
         return rng.choice(options)
 
     def _resolve_nested_choices(self, text: str, rng: random.Random, mode: str) -> str:
@@ -519,9 +550,13 @@ class WildcardReader:
                     continue
             result.append(text[i])
             i += 1
-        # Append any trailing text beyond loop cap (should not happen).
-        if i < n:  # pragma: no cover - loop cap not hit in tests
-            result.append(text[i:])  # pragma: no cover
+        # Append any trailing text beyond loop cap and warn loudly.
+        if i < n:
+            logger.warning(
+                "Choice expansion hit the %d-iteration cap; leaving the rest of the text as written",
+                _MAX_CHOICE_ITERATIONS,
+            )
+            result.append(text[i:])
         return "".join(result)
 
     def _expand_segment(

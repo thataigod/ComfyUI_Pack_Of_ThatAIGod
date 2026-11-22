@@ -1,3 +1,4 @@
+import logging
 import math
 import os
 import shutil
@@ -30,6 +31,7 @@ class TestWildcardReader(unittest.TestCase):
         WildcardReader._file_mtimes.clear()
         WildcardReader._file_content_cache.clear()
         WildcardReader._deck_cache.clear()
+        WildcardReader._choice_deck_cache.clear()
 
     def tearDown(self):
         self.module_file_patch.stop()
@@ -413,6 +415,92 @@ class TestWildcardReader(unittest.TestCase):
     def test_choice_pattern_empty_options_falls_back(self):
         result = self.node.process(text="{A||B}", mode="Deterministic (Seed)", seed=42, delimiter=", ")
         self.assertIn(result[0], ["A", "B"])
+
+    def test_wildcard_pattern_allows_spaces(self):
+        self.assertIsNotNone(_WILDCARD_PATTERN.match("__Rohini Smirnova/hair__"))
+        self._create_wildcard_file(os.path.join("characters", "Rohini Smirnova", "hair.txt"), ["wavy auburn hair"])
+        result = self.node.process(
+            text="__characters/Rohini Smirnova/hair__",
+            mode="Deterministic (Seed)",
+            seed=0,
+            delimiter=", ",
+        )
+        self.assertEqual(result[0], "wavy auburn hair")
+
+    def test_dropdown_tags_strip_only_the_txt_suffix(self):
+        self._create_wildcard_file("my.file.txt", ["x"])
+        self._create_wildcard_file(os.path.join("sub", "note.v2.txt"), ["y"])
+        result = WildcardReader.INPUT_TYPES()
+        options = result["required"]["Select to add Wildcard"][0]
+        self.assertIn("__my.file__", options)
+        self.assertIn("__sub/note.v2__", options)
+        self.assertNotIn("__my__", options)
+
+    def test_indented_comments_ignored(self):
+        self._create_wildcard_file("colors.txt", ["    # indented comment", "red"])
+        result = self.node.process(text="__colors__", mode="Deterministic (Seed)", seed=0, delimiter=", ")
+        self.assertEqual(result[0], "red")
+
+    def test_bom_file_first_line_handled(self):
+        path = os.path.join(self.wildcards_dir, "bom.txt")
+        with open(path, "w", encoding="utf-8-sig") as f:
+            f.write("# comment\nvalue line\n")
+        result = self.node.process(text="__bom__", mode="Deterministic (Seed)", seed=0, delimiter=", ")
+        self.assertEqual(result[0], "value line")
+
+    def test_file_index_detects_deletions(self):
+        self._create_wildcard_file("temp.txt", ["x"])
+        index1 = self.node._build_file_index(self.wildcards_dir)
+        self.assertIn("temp.txt", index1)
+        os.remove(os.path.join(self.wildcards_dir, "temp.txt"))
+        index2 = self.node._build_file_index(self.wildcards_dir)
+        self.assertNotIn("temp.txt", index2)
+
+    def test_wildcard_cap_warns_on_too_many_tags(self):
+        for i in range(Wildcard_Reader._MAX_WILDCARD_ITERATIONS + 1):
+            self._create_wildcard_file(f"cap{i}.txt", [f"line{i}"])
+        text = " ".join(f"__cap{i}__" for i in range(Wildcard_Reader._MAX_WILDCARD_ITERATIONS + 1))
+        with self.assertLogs("ThatAIGod", level=logging.WARNING) as logs:
+            result = self.node.process(text=text, mode="Deterministic (Seed)", seed=0, delimiter=", ")
+        self.assertTrue(any("iteration cap" in m for m in logs.output))
+        self.assertIn("__cap", result[0])
+
+    def test_choice_cap_warns_on_too_many_blocks(self):
+        text = " ".join(f"{{a{i}|b{i}}}" for i in range(120))
+        with self.assertLogs("ThatAIGod", level=logging.WARNING) as logs:
+            result = self.node.process(text=text, mode="Deterministic (Seed)", seed=0, delimiter=", ")
+        self.assertTrue(any("iteration cap" in m for m in logs.output))
+        self.assertIn("{a", result[0])
+
+    def test_no_repeat_choice_deck_exhausts(self):
+        results = set()
+        for _ in range(2):
+            r = self.node.process(text="{red|green}", mode="Random (No Repeat)", seed=0, delimiter=", ")
+            results.add(r[0])
+        self.assertEqual(results, {"red", "green"})
+
+    def test_choice_deck_cache_fifo_eviction(self):
+        original = Wildcard_Reader._MAX_DECK_CACHE_SIZE
+        Wildcard_Reader._MAX_DECK_CACHE_SIZE = 1
+        try:
+            self.node.process(text="{red|green}", mode="Random (No Repeat)", seed=0, delimiter=", ")
+            self.node.process(text="{blue|yellow}", mode="Random (No Repeat)", seed=0, delimiter=", ")
+            self.assertLessEqual(len(WildcardReader._choice_deck_cache), 1)
+        finally:
+            Wildcard_Reader._MAX_DECK_CACHE_SIZE = original
+
+    def test_deck_cache_fifo_eviction(self):
+        original = Wildcard_Reader._MAX_DECK_CACHE_SIZE
+        Wildcard_Reader._MAX_DECK_CACHE_SIZE = 3
+        try:
+            for i in range(6):
+                self._create_wildcard_file(f"deck{i}.txt", [f"only{i}"])
+                self.node.process(text=f"__deck{i}__", mode="Random (No Repeat)", seed=0, delimiter=", ")
+            self.assertEqual(len(WildcardReader._deck_cache), 3)
+            newest_path = os.path.realpath(os.path.join(self.wildcards_dir, "deck5.txt"))
+            self.assertIn(newest_path, WildcardReader._deck_cache)
+        finally:
+            Wildcard_Reader._MAX_DECK_CACHE_SIZE = original
 
 
 if __name__ == "__main__":
