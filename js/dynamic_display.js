@@ -138,13 +138,13 @@ app.registerExtension({
                     const originalCallback = modeWidget.callback;
                     modeWidget.callback = (value) => {
                         if (originalCallback) originalCallback.call(modeWidget, value);
-                        this.refreshModels();
+                        this.refreshModels().catch((err) => console.error("ThatAIGod: model refresh failed:", err));
                     };
                 }
 
                 // Refresh models on initial load so saved workflows with Local mode
                 // don't keep showing OpenRouter models in the dropdown.
-                setTimeout(() => this.refreshModels(), 100);
+                setTimeout(() => this.refreshModels().catch((err) => console.error("ThatAIGod: model refresh failed:", err)), 100);
 
                 return r;
             };
@@ -172,36 +172,48 @@ app.registerExtension({
                 }
                 this._lastMode = mode;
 
+                // Only the newest refresh may apply its outcome: overlapping calls
+                // (mode switch vs. the initial load refresh) must not overwrite
+                // newer state or restore a stale "Fetching..." placeholder.
+                const token = (this._refreshToken = (this._refreshToken || 0) + 1);
+                const isCurrent = () => this._refreshToken === token;
+
+                const capturedValue = modelWidget.value;
+                const originalValue = capturedValue !== "Fetching..."
+                    ? capturedValue
+                    : (this._lastModelPerMode[mode] ?? "");
+
                 let fetchUrl = "";
 
-                if (mode === "OpenRouter") {
-                    fetchUrl = "https://openrouter.ai/api/v1/models";
-                } else {
-                    let rawUrl = localUrlWidget ? localUrlWidget.value : "http://localhost:1234/v1";
-                    if(rawUrl) {
-                        const normalizedUrl = rawUrl.includes("://") ? rawUrl : "http://" + rawUrl;
-                        const allowedHosts = ["localhost", "127.0.0.1", "::1"];
-                        const parsed = new URL(normalizedUrl);
-                        if (!allowedHosts.includes(parsed.hostname)) {
-                            throw new Error(`Local URL must be localhost (got ${parsed.hostname})`);
-                        }
-                        rawUrl = rawUrl.replace(/\/chat\/completions\/?$/, "");
-                        rawUrl = rawUrl.replace(/\/v1\/?$/, "");
-                        rawUrl = rawUrl.replace(/\/$/, "");
-                        fetchUrl = rawUrl + "/v1/models";
-                    } else {
-                        fetchUrl = "http://localhost:1234/v1/models";
-                    }
-                }
-
-                const originalValue = modelWidget.value;
-                modelWidget.value = "Fetching...";
-                app.graph.setDirtyCanvas(true);
-
                 try {
+                    if (mode === "OpenRouter") {
+                        fetchUrl = "https://openrouter.ai/api/v1/models";
+                    } else {
+                        let rawUrl = localUrlWidget ? localUrlWidget.value : "http://localhost:1234/v1";
+                        if(rawUrl) {
+                            const normalizedUrl = rawUrl.includes("://") ? rawUrl : "http://" + rawUrl;
+                            const allowedHosts = ["localhost", "127.0.0.1", "::1"];
+                            const parsed = new URL(normalizedUrl);
+                            if (!allowedHosts.includes(parsed.hostname)) {
+                                throw new Error(`Local URL must be localhost (got ${parsed.hostname})`);
+                            }
+                            rawUrl = rawUrl.replace(/\/chat\/completions\/?$/, "");
+                            rawUrl = rawUrl.replace(/\/v1\/?$/, "");
+                            rawUrl = rawUrl.replace(/\/$/, "");
+                            fetchUrl = rawUrl + "/v1/models";
+                        } else {
+                            fetchUrl = "http://localhost:1234/v1/models";
+                        }
+                    }
+
+                    modelWidget.value = "Fetching...";
+                    app.graph.setDirtyCanvas(true);
+
                     const response = await fetch(fetchUrl);
+                    if (!isCurrent()) return;
                     if (!response.ok) throw new Error(`HTTP ${response.status}`);
                     const data = await response.json();
+                    if (!isCurrent()) return;
                     let models = [];
                     if (data.data && Array.isArray(data.data)) {
                         models = data.data.map(m => m.id);
@@ -225,6 +237,7 @@ app.registerExtension({
                     }
                 } catch (error) {
                     console.error(error);
+                    if (!isCurrent()) return;
                     const errorWidget = this.widgets.find(w => w.name === "Full LLM Response or Any Errors");
                     const errMsg = `[ERROR] Failed to fetch ${mode} models: ${error.message || error}`;
                     if (errorWidget) {

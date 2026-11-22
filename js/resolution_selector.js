@@ -133,6 +133,17 @@ app.registerExtension({
             }
         };
 
+        // Stop the layout poll when the node is deleted — an untracked interval
+        // keeps a removed node and its detached DOM alive for the page lifetime.
+        const origOnRemoved = nodeType.prototype.onRemoved;
+        nodeType.prototype.onRemoved = function () {
+            if (this._rsMinHeightTimer) {
+                clearInterval(this._rsMinHeightTimer);
+                this._rsMinHeightTimer = null;
+            }
+            return origOnRemoved ? origOnRemoved.apply(this, arguments) : undefined;
+        };
+
         nodeType.prototype._adjustInfoHeight = function (size) {
             // Keep as no-op to prevent any feedback loops
         };
@@ -462,8 +473,10 @@ app.registerExtension({
                 }
 
                 updateMinHeight();
-                // Continuously check for dynamic widgets (like 'seed') and container height changes
-                setInterval(updateMinHeight, 500);
+                // Continuously check for dynamic widgets (like 'seed') and container height changes.
+                // Keep the handle so onRemoved can clear it (and never stack two timers).
+                if (this._rsMinHeightTimer) clearInterval(this._rsMinHeightTimer);
+                this._rsMinHeightTimer = setInterval(updateMinHeight, 500);
                 this.onResize?.(this.size);
             });
         };
