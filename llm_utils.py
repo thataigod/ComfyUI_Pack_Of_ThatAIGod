@@ -25,6 +25,8 @@ import threading
 import urllib.error
 import urllib.request
 from collections.abc import AsyncIterator, Iterator
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 from typing import Any
 from urllib.parse import urlparse
 
@@ -48,6 +50,12 @@ MAX_ERROR_BODY_LENGTH: int = 500
 MAX_RETRIES: int = 3
 # Base delay (seconds) for exponential backoff between retries.
 RETRY_BACKOFF_BASE: float = 1.0
+# Upper bound (seconds) on any single retry wait, including server-supplied
+# Retry-After values, so a broken/hostile header cannot stall a run.
+MAX_RETRY_WAIT: float = 60.0
+# Floor (seconds) for the stream read-idle timeout: after the first chunk, a
+# connection that sends no bytes for this long is treated as stalled.
+MIN_STREAM_READ_TIMEOUT: int = 60
 # HTTP status codes that warrant an automatic retry.
 RETRYABLE_STATUS_CODES: frozenset[int] = frozenset({429, 502, 503})
 # Maximum allowed image dimension (width or height) for vision inputs.
@@ -292,26 +300,71 @@ _STREAM_HEADERS: dict[str, str] = {
 }
 
 
+def _parse_retry_after(value: str | None, fallback: float) -> float:
+    """Return a retry delay in seconds parsed from a ``Retry-After`` header.
+
+    Accepts both forms the HTTP spec allows: a delta in seconds or an
+    HTTP-date.  Unparseable values fall back to *fallback*, and the result is
+    clamped to ``[0, MAX_RETRY_WAIT]`` so a broken or hostile header cannot
+    stall a generation for hours.
+
+    Args:
+        value: The raw ``Retry-After`` header value (or ``None``).
+        fallback: Delay to use when the header is absent or unparseable.
+
+    Returns:
+        A non-negative delay in seconds, at most :data:`MAX_RETRY_WAIT`.
+    """
+    if not value:
+        return fallback
+    delay: float
+    try:
+        delay = float(value)
+    except ValueError:
+        try:
+            when = parsedate_to_datetime(value)
+        except (TypeError, ValueError):
+            return fallback
+        if when.tzinfo is None:
+            when = when.replace(tzinfo=timezone.utc)
+        delay = (when - datetime.now(timezone.utc)).total_seconds()
+    return max(0.0, min(delay, MAX_RETRY_WAIT))
+
+
 async def _async_fetch_stream(url: str, payload: dict[str, Any], api_key: str, timeout: int) -> AsyncIterator[bytes]:
     """Async generator that yields SSE lines as they arrive from the API.
 
     Retries up to :data:`MAX_RETRIES` times on :data:`RETRYABLE_STATUS_CODES`
-    (429, 502, 503) and transient network errors, using exponential backoff with
-    the ``Retry-After`` header when available.  See DECISIONS.md D2 for why
+    (429, 502, 503) and transient network errors, using exponential backoff
+    with the ``Retry-After`` header when available (numeric seconds or
+    HTTP-date, capped at :data:`MAX_RETRY_WAIT`).  See DECISIONS.md D2 for why
     ``asyncio.sleep`` is used instead of ``time.sleep``.
+
+    The stream carries a read-idle timeout (``sock_read``) of
+    ``max(timeout, MIN_STREAM_READ_TIMEOUT)`` so a stalled connection raises
+    instead of hanging the node's execution thread forever.  Retries are only
+    attempted before the first chunk is yielded — re-requesting after content
+    started arriving would duplicate the already-emitted text.
     """
     headers: dict[str, str] = {**_STREAM_HEADERS, "Authorization": f"Bearer {api_key}"}
     for attempt in range(MAX_RETRIES):
+        stream_started = False
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.post(
                     url,
                     json=payload,
                     headers=headers,
-                    timeout=aiohttp.ClientTimeout(total=None, sock_connect=timeout),
+                    timeout=aiohttp.ClientTimeout(
+                        total=None,
+                        sock_connect=timeout,
+                        sock_read=max(timeout, MIN_STREAM_READ_TIMEOUT),
+                    ),
                 ) as response:
                     if response.status in RETRYABLE_STATUS_CODES and attempt < MAX_RETRIES - 1:
-                        retry_after = float(response.headers.get("Retry-After", RETRY_BACKOFF_BASE * (2**attempt)))
+                        retry_after = _parse_retry_after(
+                            response.headers.get("Retry-After"), RETRY_BACKOFF_BASE * (2**attempt)
+                        )
                         logger.warning(
                             "Retryable HTTP %d, retrying in %.1fs (attempt %d/%d)",
                             response.status,
@@ -324,12 +377,13 @@ async def _async_fetch_stream(url: str, payload: dict[str, Any], api_key: str, t
                     response.raise_for_status()
                     it = response.content.__aiter__()
                     first_chunk = await asyncio.wait_for(it.__anext__(), timeout=timeout)
+                    stream_started = True
                     yield first_chunk
                     async for line in it:
                         yield line
                     return
         except aiohttp.ClientResponseError as e:
-            if e.status in RETRYABLE_STATUS_CODES and attempt < MAX_RETRIES - 1:
+            if e.status in RETRYABLE_STATUS_CODES and attempt < MAX_RETRIES - 1 and not stream_started:
                 wait = RETRY_BACKOFF_BASE * (2**attempt)
                 logger.warning(
                     "Retryable error %d, retrying in %.1fs (attempt %d/%d)", e.status, wait, attempt + 1, MAX_RETRIES
@@ -338,7 +392,7 @@ async def _async_fetch_stream(url: str, payload: dict[str, Any], api_key: str, t
                 continue
             raise
         except (aiohttp.ClientError, TimeoutError, asyncio.TimeoutError) as e:
-            if attempt < MAX_RETRIES - 1:
+            if attempt < MAX_RETRIES - 1 and not stream_started:
                 wait = RETRY_BACKOFF_BASE * (2**attempt)
                 logger.warning("Network error, retrying in %.1fs (attempt %d/%d): %s", wait, attempt + 1, MAX_RETRIES, e)
                 await asyncio.sleep(wait)
@@ -499,6 +553,8 @@ __all__: list[str] = [
     "CREDITS_FETCH_TIMEOUT",
     "MAX_ERROR_BODY_LENGTH",
     "MAX_RETRIES",
+    "MAX_RETRY_WAIT",
+    "MIN_STREAM_READ_TIMEOUT",
     "RETRY_BACKOFF_BASE",
     "RETRYABLE_STATUS_CODES",
     "DEFAULT_MODELS",

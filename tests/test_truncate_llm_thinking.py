@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 
@@ -29,6 +30,13 @@ class TestTruncateThinking(unittest.TestCase):
     def test_empty_text(self):
         result = self.node.truncate(Text="")
         self.assertEqual(result, ("", ""))
+
+    def test_empty_tokens_return_text_unchanged(self):
+        # An empty delimiter would compile to a match-everything regex.
+        for start, end in (("", "</x>"), ("<x>", "")):
+            with self.assertLogs("ThatAIGod", level=logging.WARNING):
+                result = self.node.truncate(**{"Text": "plain text", "Start Token": start, "End Token": end})
+            self.assertEqual(result, ("plain text", ""))
 
     def test_custom_tokens(self):
         result = self.node.truncate(

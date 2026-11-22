@@ -9,8 +9,11 @@ Returns both the cleaned text and the extracted thinking content as separate out
 so downstream nodes can use either or both.
 """
 
+import logging
 import re
 from typing import Any
+
+logger: logging.Logger = logging.getLogger("ThatAIGod")
 
 
 class TruncateThinking:
@@ -114,6 +117,9 @@ class TruncateThinking:
            ``Thinking Content`` output.
         4. All thinking blocks are removed from the text to produce ``Cleaned Text``.
 
+        Empty ``Start Token``/``End Token`` widgets return the text unchanged
+        (with a warning) — an empty delimiter would match everything.
+
         .. note::
             The regex is compiled on every call because ``start_token`` and
             ``end_token`` are user-configurable.  Python's ``re`` module caches
@@ -139,6 +145,11 @@ class TruncateThinking:
 
         if not text:
             return ("", "")
+
+        # An empty delimiter would compile to "(.*?)" and wipe the whole text.
+        if not start_token or not end_token:
+            logger.warning("Empty thinking token configured; returning text unchanged")
+            return (text.strip(), "")
 
         text = self._truncate_long_text(text, start_token, end_token)
 

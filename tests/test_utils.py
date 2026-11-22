@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 import unittest
@@ -72,6 +73,11 @@ class TestUtils(unittest.TestCase):
         with patch("importlib.import_module", return_value=unittest.mock.MagicMock()):
             result = safe_import("utils")
             self.assertIsNotNone(result)
+
+    def test_safe_import_warning_is_formatted(self):
+        with self.assertLogs("ThatAIGod", level="WARNING") as logs:
+            safe_import("nonexistent_module_xyz")
+        self.assertTrue(any("failed to import nonexistent_module_xyz" in message for message in logs.output))
 
     def test_round_down_to_multiple_within_range(self):
         self.assertEqual(round_down_to_multiple(100, 8), 96)
@@ -165,6 +171,26 @@ class TestErrorHandling(unittest.TestCase):
         self.assertEqual(result, "fb")
         # Check that .exception() was called on the mock logger
         mock_logger.exception.assert_called_once()
+
+    def test_get_logger_falls_back_to_stdlib_without_structlog(self):
+        """A missing structlog install must not break the logger or node loading."""
+        with patch.dict(sys.modules, {"structlog": None}):
+            logger = get_logger()
+        self.assertIsInstance(logger, logging.Logger)
+        self.assertEqual(logger.name, "ThatAIGod")
+
+    def test_handle_exceptions_with_stdlib_logger_uses_printf(self):
+        """handle_exceptions must tolerate stdlib loggers (no structured kwargs)."""
+        stdlib_logger = logging.getLogger("ThatAIGod")
+
+        @handle_exceptions(logger=stdlib_logger, fallback_return="fb")
+        def failing_fn() -> str:
+            raise ConfigurationError("boom")
+
+        with self.assertLogs("ThatAIGod", level="ERROR") as logs:
+            result = failing_fn()
+        self.assertEqual(result, "fb")
+        self.assertTrue(any("expected_error" in message for message in logs.output))
 
 
 class TestErrorHandlingIntegration(unittest.TestCase):

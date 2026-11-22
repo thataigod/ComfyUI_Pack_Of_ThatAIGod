@@ -82,21 +82,24 @@ def configure_logging() -> None:
     _LOG_CONFIGURED = True
 
 
-def get_logger() -> structlog.stdlib.BoundLogger:
-    """Return the shared ThatAIGod logger backed by structlog.
+def get_logger() -> Any:
+    """Return the shared ThatAIGod logger.
+
+    Returns the structlog ``BoundLogger`` when structlog is available, or a
+    plain :class:`logging.Logger` fallback when it is not, so a missing
+    optional install can never take node loading down with it.
 
     All nodes in the pack use a single named logger so that log output can be
     filtered or captured by name in tests.
 
     Returns:
-        A structlog ``BoundLogger`` that can be used with structured keyword
-        arguments::
-
-            logger = get_logger()
-            logger.info("node_processed", node="LLM_Node", status="ok")
+        A structlog ``BoundLogger``, or a stdlib logger fallback.
     """
-    configure_logging()
-    import structlog
+    try:
+        configure_logging()
+        import structlog
+    except ImportError:
+        return logging.getLogger("ThatAIGod")
 
     return structlog.get_logger("ThatAIGod")
 
@@ -125,6 +128,23 @@ class InputValidationError(NodeError):
 
 class ExternalServiceError(NodeError):
     """Raised when an external service (LLM API, file system) returns an error."""
+
+
+def _log_func_exception(logger: Any, event: str, func_name: str) -> None:
+    """Log *event* with *func_name*, supporting structlog and stdlib loggers.
+
+    structlog BoundLoggers take structured keyword arguments; stdlib loggers
+    reject unknown kwargs, so fall back to printf-style formatting there.
+
+    Args:
+        logger: A structlog BoundLogger or stdlib Logger.
+        event: The log event name/message.
+        func_name: The wrapped function's name (structured context).
+    """
+    try:
+        logger.exception(event, func_name=func_name)
+    except TypeError:
+        logger.exception("%s: func_name=%s", event, func_name)
 
 
 def handle_exceptions(
@@ -165,10 +185,10 @@ def handle_exceptions(
             except _reraise:
                 raise
             except NodeError:
-                _logger.exception("expected_error", func_name=func.__name__)  # type: ignore[call-arg]
+                _log_func_exception(_logger, "expected_error", func.__name__)
                 return fallback_return
             except Exception:
-                _logger.exception("unexpected_error", func_name=func.__name__)  # type: ignore[call-arg]
+                _log_func_exception(_logger, "unexpected_error", func.__name__)
                 return fallback_return
 
         return wrapper  # type: ignore[return-value]
@@ -251,8 +271,11 @@ def compute_aspect_ratio_dimensions(max_side: int, ratio: float) -> tuple[int, i
 def safe_import(module_name: str) -> Any | None:
     """Import *module_name* by name, returning ``None`` on any failure.
 
-    On failure a WARNING is logged via :func:`get_logger` so that the caller
-    can continue loading other modules without crashing.
+    On failure a WARNING is logged via the ``ThatAIGod`` stdlib logger so
+    that the caller can continue loading other modules without crashing.
+    The stdlib logger (rather than :func:`get_logger`) keeps this failure
+    path free of the optional structlog dependency and formats the message
+    with normal printf-style interpolation.
 
     Args:
         module_name: Fully-qualified module name (e.g. ``"LLM_Node"``).
@@ -263,8 +286,7 @@ def safe_import(module_name: str) -> Any | None:
     try:
         return importlib.import_module(module_name)
     except Exception as e:
-        logger = get_logger()
-        logger.warning(
+        logging.getLogger("ThatAIGod").warning(
             "ComfyUI_Pack_Of_ThatAIGod: failed to import %s: %s",
             module_name,
             e,

@@ -81,7 +81,9 @@ class LLM_Node:
         ``_model_cache``.  On subsequent calls the cached list is returned immediately.
 
         Falls back to :data:`~llm_utils.DEFAULT_MODELS` if the network request fails
-        or the response is malformed.  The returned list is capped at
+        or the response is malformed.  When the fetch succeeds the defaults are
+        kept at the front of the list (so the widget's default value always
+        exists) followed by the fetched catalogue, deduplicated and capped at
         ``MAX_MODELS_IN_DROPDOWN`` entries to keep the dropdown responsive.
 
         Returns:
@@ -99,7 +101,8 @@ class LLM_Node:
                 data: dict[str, Any] = json.loads(response.read().decode("utf-8"))
                 if "data" in data and isinstance(data["data"], list):
                     fetched_models: list[str] = [m["id"] for m in data["data"]]
-                    cls._model_cache = fetched_models[:MAX_MODELS_IN_DROPDOWN]
+                    merged: list[str] = list(dict.fromkeys([*defaults, *fetched_models]))
+                    cls._model_cache = merged[:MAX_MODELS_IN_DROPDOWN]
                     return cls._model_cache
                 logger.warning("Unexpected API response format from OpenRouter models endpoint")
         except Exception as e:
@@ -194,7 +197,10 @@ class LLM_Node:
                         "default": 30,
                         "min": 1,
                         "max": 300,
-                        "tooltip": "Socket connect timeout in seconds. Increase for slow models or large responses.",
+                        "tooltip": (
+                            "Socket connect and stream-idle timeout in seconds. Increase for slow models "
+                            "or large responses. Stream inactivity is bounded by at least 60 s."
+                        ),
                     },
                 ),
             },
@@ -303,7 +309,7 @@ class LLM_Node:
 
         Args:
             key: The cache key tuple (mode, model, prompts, temperature, tokens,
-                seed, image_hash).
+                seed, thinking, image_hash, api_key_env_var, local_url).
 
         Returns:
             The cached ``(text, status, info, reasoning)`` tuple, or ``None`` on
@@ -376,7 +382,9 @@ class LLM_Node:
                 return ("", False, err, "")
 
         image_hash: str | None = hashlib.sha256(b64_image.encode()).hexdigest() if b64_image else None
-        # Cache key includes all inputs + image hash so identical prompts with different images don't collide
+        # Cache key includes all inputs, the image hash and the endpoint
+        # identity (key env var / local URL) so switching accounts or local
+        # servers can never replay another endpoint's cached response.
         cache_key: tuple[Any, ...] = (
             cfg["mode"],
             cfg["model_name"],
@@ -387,6 +395,8 @@ class LLM_Node:
             cfg["seed"],
             cfg["thinking"],
             image_hash,
+            cfg["api_key_env_var"],
+            cfg["local_url"],
         )
 
         cached = self._cache_get(cache_key)

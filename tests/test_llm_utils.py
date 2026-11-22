@@ -6,9 +6,14 @@ from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-server_mock = MagicMock()
+# Share one server mock across test modules so patch targets stay consistent
+# regardless of pytest collection order (LLM_Node and llm_utils both import
+# PromptServer from this module and must see the same instance).
+server_mock = sys.modules.get("server")
+if server_mock is None:
+    server_mock = MagicMock()
+    sys.modules["server"] = server_mock
 server_mock.PromptServer.instance.send_sync = MagicMock()
-sys.modules["server"] = server_mock
 
 import asyncio
 import urllib.error
@@ -17,9 +22,11 @@ import aiohttp
 
 from llm_utils import (
     MAX_IMAGE_DIMENSION,
+    MAX_RETRY_WAIT,
     LlmConfigBuilder,
     LlmStreamer,
     _async_fetch_stream,
+    _parse_retry_after,
     _run_async_stream,
     encode_image_to_base64,
     fetch_openrouter_credits,
@@ -117,6 +124,64 @@ class TestAsyncFetchStream(unittest.TestCase):
         args, kwargs = mock_session.post.call_args
         self.assertIn("Authorization", kwargs.get("headers", {}))
         self.assertEqual(kwargs["headers"]["Authorization"], "Bearer sk-key")
+
+    def test_async_fetch_stream_sets_read_idle_timeout(self):
+        mock_session = self._make_mock_session()
+        captured: dict = {}
+        real_timeout = aiohttp.ClientTimeout
+
+        def fake_timeout(**kwargs):
+            captured.update(kwargs)
+            return real_timeout(**kwargs)
+
+        async def run():
+            with patch("aiohttp.ClientSession", return_value=mock_session):
+                with patch("llm_utils.aiohttp.ClientTimeout", side_effect=fake_timeout):
+                    async for _ in _async_fetch_stream("http://test/url", {}, "sk-key", 10):
+                        pass
+
+        asyncio.run(run())
+        self.assertEqual(captured.get("sock_connect"), 10)
+        # Stream inactivity is bounded even when the user timeout is small.
+        self.assertEqual(captured.get("sock_read"), 60)
+        self.assertIsNone(captured.get("total"))
+
+
+class TestParseRetryAfter(unittest.TestCase):
+    def test_none_returns_fallback(self):
+        self.assertEqual(_parse_retry_after(None, 2.0), 2.0)
+
+    def test_numeric_seconds(self):
+        self.assertEqual(_parse_retry_after("5", 2.0), 5.0)
+
+    def test_negative_clamped_to_zero(self):
+        self.assertEqual(_parse_retry_after("-3", 2.0), 0.0)
+
+    def test_huge_value_clamped(self):
+        self.assertEqual(_parse_retry_after("100000", 2.0), MAX_RETRY_WAIT)
+
+    def test_http_date_parsed(self):
+        from datetime import datetime, timedelta, timezone
+        from email.utils import format_datetime
+
+        future = datetime.now(timezone.utc) + timedelta(seconds=30)  # noqa: UP017
+        delay = _parse_retry_after(format_datetime(future), 2.0)
+        self.assertGreater(delay, 20)
+        self.assertLessEqual(delay, 31)
+
+    def test_http_date_in_past_clamped_to_zero(self):
+        from datetime import datetime, timedelta, timezone
+        from email.utils import format_datetime
+
+        past = datetime.now(timezone.utc) - timedelta(seconds=30)  # noqa: UP017
+        self.assertEqual(_parse_retry_after(format_datetime(past), 2.0), 0.0)
+
+    def test_http_date_without_timezone_treated_as_utc(self):
+        # parsedate_to_datetime returns a naive datetime for "-0000".
+        self.assertEqual(_parse_retry_after("Wed, 21 Oct 2015 07:28:00 -0000", 2.0), 0.0)
+
+    def test_garbage_returns_fallback(self):
+        self.assertEqual(_parse_retry_after("soon-ish", 2.0), 2.0)
 
 
 class TestRunAsyncStream(unittest.TestCase):
@@ -504,6 +569,37 @@ class TestRetryLogic(unittest.TestCase):
 
         asyncio.run(run())
         self.assertEqual(mock_session.post.call_count, 3)
+
+    def test_no_retry_after_stream_started(self):
+        # A failure mid-stream must abort (the already-emitted text would be
+        # duplicated by re-requesting), not retry.
+        class FailingIter(AsyncIter):
+            async def __anext__(self):
+                if self._idx == 0:
+                    self._idx += 1
+                    return b"line1\n"
+                raise aiohttp.ClientError("connection dropped")
+
+        resp = MagicMock()
+        resp.status = 200
+        resp.raise_for_status = MagicMock()
+        resp.content = FailingIter([])
+
+        mock_session = MagicMock()
+        mock_session.post = MagicMock(return_value=self._make_async_cm(resp))
+
+        async def run():
+            with patch("aiohttp.ClientSession", return_value=self._make_async_cm(mock_session)):
+                with patch("llm_utils.asyncio.sleep", new_callable=AsyncMock):
+                    chunks: list[bytes] = []
+                    with self.assertRaises(aiohttp.ClientError):
+                        async for line in _async_fetch_stream("http://test/url", {}, "sk-key", 10):
+                            chunks.append(line)
+                    return chunks
+
+        chunks = asyncio.run(run())
+        self.assertEqual(chunks, [b"line1\n"])
+        self.assertEqual(mock_session.post.call_count, 1)
 
 
 class TestEncodeImageEdgeCases(unittest.TestCase):

@@ -7,13 +7,19 @@ from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-server_mock = MagicMock()
+# Share one server mock across test modules so patch targets stay consistent
+# regardless of pytest collection order (LLM_Node and llm_utils both import
+# PromptServer from this module and must see the same instance).
+server_mock = sys.modules.get("server")
+if server_mock is None:
+    server_mock = MagicMock()
+    sys.modules["server"] = server_mock
 server_mock.PromptServer.instance.send_sync = MagicMock()
-sys.modules["server"] = server_mock
 
 import urllib.error
 
 from LLM_Node import LLM_Node
+from llm_utils import DEFAULT_MODELS
 
 
 def _make_kwargs(overrides: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -120,8 +126,23 @@ class TestLLMNode(unittest.TestCase):
         mock_response.__enter__.return_value = mock_response
         with patch.object(urllib.request, "urlopen", return_value=mock_response):
             result = LLM_Node.get_initial_model_list()
-            self.assertEqual(result, ["model1", "model2"])
-            self.assertEqual(LLM_Node._model_cache, ["model1", "model2"])
+            # Defaults stay first so the widget default always exists.
+            expected = [*DEFAULT_MODELS, "model1", "model2"]
+            self.assertEqual(result, expected)
+            self.assertEqual(LLM_Node._model_cache, expected)
+
+    def test_model_list_merge_dedups_and_caps(self):
+        LLM_Node._model_cache = None
+        models = [{"id": f"m{i}"} for i in range(300)]
+        models.insert(10, {"id": DEFAULT_MODELS[0]})
+        mock_response = MagicMock()
+        mock_response.read.return_value = json.dumps({"data": models}).encode("utf-8")
+        mock_response.__enter__.return_value = mock_response
+        with patch.object(urllib.request, "urlopen", return_value=mock_response):
+            result = LLM_Node.get_initial_model_list()
+        self.assertEqual(result[: len(DEFAULT_MODELS)], list(DEFAULT_MODELS))
+        self.assertEqual(len(result), 200)
+        self.assertEqual(len(result), len(set(result)))
 
     def test_get_initial_model_list_missing_data_key(self):
         LLM_Node._model_cache = None
@@ -180,7 +201,19 @@ class TestLLMNode(unittest.TestCase):
             self.assertEqual(result, "$7.50")
 
     def test_response_cache_hit_returns_cached_value(self):
-        cache_key = ("OpenRouter", "test-model", "", "hello", 0.7, 1024, 0, "enable", None)
+        cache_key = (
+            "OpenRouter",
+            "test-model",
+            "",
+            "hello",
+            0.7,
+            1024,
+            0,
+            "enable",
+            None,
+            "OPENROUTER_API_KEY",
+            "http://localhost:1234/v1",
+        )
         LLM_Node._response_cache[cache_key] = ("cached reply", True, "cached info", "")
 
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
@@ -424,7 +457,19 @@ class TestLLMNode(unittest.TestCase):
             )
 
     def test_generate_with_unique_id_and_cached_streams_to_ui(self):
-        cache_key = ("OpenRouter", "test-model", "", "hello", 0.7, 1024, 0, "enable", None)
+        cache_key = (
+            "OpenRouter",
+            "test-model",
+            "",
+            "hello",
+            0.7,
+            1024,
+            0,
+            "enable",
+            None,
+            "OPENROUTER_API_KEY",
+            "http://localhost:1234/v1",
+        )
         LLM_Node._response_cache[cache_key] = ("cached reply", True, "cached info", "")
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-or-test-key"}):
             with patch("LLM_Node.PromptServer.instance.send_sync") as mock_send:
@@ -583,6 +628,19 @@ class TestLLMNode(unittest.TestCase):
                         "that_ai_god.stream",
                         {"node": "uid_99", "type": "update", "delta": "final answer"},
                     )
+
+    def test_cache_key_distinguishes_endpoint_identity(self):
+        # Same prompt and settings under two different key env vars must not
+        # replay each other's cached responses.
+        chunks = [b"data: [DONE]\n"]
+        env = {"OPENROUTER_API_KEY": "key-a", "OPENROUTER_API_KEY_BACKUP": "key-b"}
+        with patch.dict(os.environ, env):
+            with patch("LLM_Node.PromptServer"):
+                with patch.object(LLM_Node._streamer, "stream_response", return_value=iter(chunks)):
+                    self.node.generate(**_make_kwargs())
+                with patch.object(LLM_Node._streamer, "stream_response", return_value=iter(chunks)):
+                    self.node.generate(**_make_kwargs({"API Key Env Var": "OPENROUTER_API_KEY_BACKUP"}))
+        self.assertEqual(len(LLM_Node._response_cache), 2)
 
 
 if __name__ == "__main__":
