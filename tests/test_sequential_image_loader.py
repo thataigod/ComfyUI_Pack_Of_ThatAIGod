@@ -1,12 +1,14 @@
 import os
 import sys
 import tempfile
+from unittest.mock import patch
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import unittest
 
 from PIL import Image
 
+import Sequential_Image_Loader
 from Sequential_Image_Loader import SequentialImageLoader
 
 
@@ -131,6 +133,32 @@ class TestSequentialImageLoader(unittest.TestCase):
         result = SequentialImageLoader.natural_sort_key("hello")
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0][1], "hello")
+
+    def test_natural_sort_key_digit_lookalikes_stay_text(self):
+        # "²" passes str.isdigit() but int() cannot parse it; it must be
+        # classified as a text segment instead of crashing the sort.
+        key = SequentialImageLoader.natural_sort_key("1²3.png")
+        self.assertIn((1, "²"), key)
+        files = ["img2.png", "1²3.png", "img10.png"]
+        files.sort(key=SequentialImageLoader.natural_sort_key)
+        self.assertEqual(files[0], "1²3.png")
+
+    def test_unreadable_directory_returns_error_tuple(self):
+        with patch.object(Sequential_Image_Loader.os, "listdir", side_effect=PermissionError("denied")):
+            result = self.node.load_next(**{"Directory Path": self.temp_dir, "seed": 0})
+        self.assertEqual(result[1], "ERROR")
+        self.assertIn("Cannot access directory", result[2])
+
+    def test_decompression_bomb_returns_error_tuple(self):
+        self._create_image("bomb.png")
+        original_limit = Image.MAX_IMAGE_PIXELS
+        Image.MAX_IMAGE_PIXELS = 1000
+        try:
+            result = self.node.load_next(**{"Directory Path": self.temp_dir, "seed": 0})
+        finally:
+            Image.MAX_IMAGE_PIXELS = original_limit
+        self.assertEqual(result[1], "ERROR")
+        self.assertIn("Failed to load image", result[2])
 
 
 if __name__ == "__main__":

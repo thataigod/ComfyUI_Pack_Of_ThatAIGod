@@ -56,6 +56,45 @@ _SHORTHAND_VARS: list[tuple[str, str]] = [
     ("%second%", "%S"),
 ]
 
+# Characters Windows forbids in file and directory names.  Date templates
+# like %date:HH:mm% expand to strings containing ':' which would otherwise
+# fail the whole batch on Windows.
+_WINDOWS_INVALID_CHARS: str = '<>:"|?*'
+# Path separators are preserved; every other segment is sanitised.
+_SEGMENT_SPLIT_RE: re.Pattern[str] = re.compile(r"([/\\])")
+
+
+def _sanitize_filename_segment(segment: str) -> str:
+    """Replace Windows-invalid characters in one filename template segment.
+
+    Args:
+        segment: A single path segment (no separators) of the expanded prefix.
+
+    Returns:
+        The segment with ``<>:"|?*`` mapped to ``_`` and any trailing dots or
+        spaces removed; never empty (falls back to ``_``).
+    """
+    cleaned: str = "".join("_" if ch in _WINDOWS_INVALID_CHARS else ch for ch in segment)
+    cleaned = cleaned.rstrip(" .")
+    return cleaned or "_"
+
+
+def _sanitize_filename_template(prefix: str) -> str:
+    """Sanitise each path segment of an expanded filename prefix.
+
+    Path separators (``/`` and ``\\``) are preserved so subfolder templates
+    keep working; only the name segments are cleaned.
+
+    Args:
+        prefix: The expanded filename prefix (date/shorthand variables already
+            substituted).
+
+    Returns:
+        The prefix with Windows-invalid characters replaced per segment.
+    """
+    parts: list[str] = _SEGMENT_SPLIT_RE.split(prefix)
+    return "".join(_sanitize_filename_segment(part) if i % 2 == 0 else part for i, part in enumerate(parts))
+
 
 def _resolve_date_format(format_str: str) -> str:
     """Apply a Java/.NET-style date format string to the current local datetime.
@@ -79,13 +118,14 @@ def _find_next_counter(folder: str, filename_template: str) -> int:
     """Scan *folder* for existing files that match *filename_template* and return the next counter.
 
     The template must contain the literal string ``%counter%`` exactly once.
-    Existing files are matched via a regex that expects a zero-padded 5-digit
-    counter in that position (e.g. ``img_00003_test.png``).  The function returns
-    ``max_found + 1``, or ``1`` if no matching files exist.
+    Existing files are matched via a regex that accepts a counter of any digit
+    count in that position (e.g. ``img_00003_test.png`` or
+    ``img_100000_test.png``), so the sequence keeps working past 99 999 files.
+    The function returns ``max_found + 1``, or ``1`` if no matching files exist.
 
     Args:
-        folder: Absolute path to the output directory.  If the directory does not
-            exist, ``1`` is returned immediately.
+        folder: Absolute path to the output directory.  If the directory does
+            not exist, ``1`` is returned immediately.
         filename_template: The filename stem (no extension) containing
             ``%counter%`` as a placeholder.
 
@@ -95,7 +135,7 @@ def _find_next_counter(folder: str, filename_template: str) -> int:
     if not os.path.isdir(folder):
         return 1
     prefix_part, suffix_part = filename_template.split("%counter%", 1)
-    escaped: str = re.escape(prefix_part) + r"(\d{5})" + re.escape(suffix_part) + r"(?:\.[a-zA-Z0-9]+)?$"
+    escaped: str = re.escape(prefix_part) + r"(\d+)" + re.escape(suffix_part) + r"(?:\.[a-zA-Z0-9]+)?$"
     pattern: re.Pattern[str] = re.compile(escaped)
     max_c: int = 0
     for fname in os.listdir(folder):
@@ -237,6 +277,14 @@ class ImageSaverPlus:
                 filename_prefix = filename_prefix.replace(var, now.strftime(fmt_code))
 
         filename_prefix = _DATE_PATTERN.sub(lambda m: _resolve_date_format(m.group(1)), filename_prefix)
+        # Date formats like %date:HH:mm% expand to Windows-invalid ':' — clean
+        # each segment so the batch cannot fail on filename characters.
+        filename_prefix = _sanitize_filename_template(filename_prefix)
+
+        if file_format not in ("png", "jpeg", "webp"):
+            logger.error("Unsupported file format %r; nothing saved", file_format)
+            return {"ui": {"images": []}}
+
         full_output_folder: str
         filename: str
         counter: int
@@ -246,6 +294,10 @@ class ImageSaverPlus:
         )
 
         if "%counter%" in filename:
+            if filename.count("%counter%") > 1:
+                logger.warning(
+                    "Filename template contains %%counter%% more than once; only the first occurrence is replaced"
+                )
             counter = _find_next_counter(full_output_folder, filename)
 
         results: list[dict[str, str]] = []
@@ -255,7 +307,7 @@ class ImageSaverPlus:
 
             filename_with_batch: str = filename.replace("%batch_num%", str(batch_number))
             if "%counter%" in filename_with_batch:
-                base_file: str = filename_with_batch.replace("%counter%", f"{counter:05}")
+                base_file: str = filename_with_batch.replace("%counter%", f"{counter:05}", 1)
             else:
                 base_file = f"{filename_with_batch}_{counter:05}_"
             file: str = f"{base_file}.{file_format}"
@@ -278,17 +330,23 @@ class ImageSaverPlus:
                     img.save(file_path, quality=quality)
                 elif file_format == "webp":
                     img.save(file_path, quality=quality)
-
-                if save_text:
-                    text_file: str = f"{base_file}.txt"
-                    text_path: str = os.path.join(full_output_folder, text_file)
-                    with open(text_path, "w", encoding="utf-8") as f:
-                        f.write(save_text)
             except OSError as e:
+                # A failed save must not reach the UI gallery as a phantom entry.
                 logger.error("Failed to save %s: %s", file_path, e)
+                continue
 
             results.append({"filename": file, "subfolder": subfolder, "type": self.type})
             counter += 1
+
+            if save_text:
+                text_file: str = f"{base_file}.txt"
+                text_path: str = os.path.join(full_output_folder, text_file)
+                try:
+                    with open(text_path, "w", encoding="utf-8") as f:
+                        f.write(save_text)
+                except OSError as e:
+                    # The image itself was saved; only its sidecar failed.
+                    logger.error("Failed to write sidecar %s: %s", text_path, e)
 
         return {"ui": {"images": results}}
 

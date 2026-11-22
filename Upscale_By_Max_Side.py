@@ -34,6 +34,8 @@ MAX_TOTAL_PIXELS: int = MAX_MAX_SIDE * MAX_MAX_SIDE
 DIVISIBILITY_STEP: int = 1
 MIN_DIVISIBILITY: int = 1
 MAX_DIVISIBILITY: int = 128
+# Interpolation methods offered by the widget and accepted by comfy.utils.
+UPSCALE_METHODS: list[str] = ["lanczos", "bicubic", "bilinear", "nearest-exact", "area"]
 
 # Per-mode Target memory stored in the Size Config JSON.  The frontend
 # (js/upscale_by_size.js) remembers the last Target used for each Limit By mode
@@ -138,7 +140,7 @@ class UpscaleByMaxSide:
                     },
                 ),
                 "Method": (
-                    ["lanczos", "bicubic", "bilinear", "nearest-exact", "area"],
+                    UPSCALE_METHODS,
                     {
                         "default": DEFAULT_UPSCALE_METHOD,
                         "tooltip": "Interpolation method. Lanczos gives the sharpest result for most images.",
@@ -199,8 +201,21 @@ class UpscaleByMaxSide:
 
         limit_by: str = kwargs.get("Limit By", "Max Side")
         target: int = kwargs.get("Target", DEFAULT_MAX_SIDE)
-        divisibility: int = kwargs.get("Divisibility", DEFAULT_DIVISIBILITY)
         method: str = kwargs.get("Method", DEFAULT_UPSCALE_METHOD)
+        # Linked inputs bypass widget min/max enforcement, so re-validate.
+        try:
+            divisibility: int = int(kwargs.get("Divisibility", DEFAULT_DIVISIBILITY))
+        except (TypeError, ValueError):
+            logger.warning("Divisibility %r is not an integer; using %d", kwargs.get("Divisibility"), DEFAULT_DIVISIBILITY)
+            divisibility = DEFAULT_DIVISIBILITY
+        if not MIN_DIVISIBILITY <= divisibility <= MAX_DIVISIBILITY:
+            logger.warning(
+                "Divisibility %d out of range [%d, %d]; clamping", divisibility, MIN_DIVISIBILITY, MAX_DIVISIBILITY
+            )
+            divisibility = max(MIN_DIVISIBILITY, min(divisibility, MAX_DIVISIBILITY))
+        if method not in UPSCALE_METHODS:
+            logger.warning("Unknown upscale method %r; falling back to %r", method, DEFAULT_UPSCALE_METHOD)
+            method = DEFAULT_UPSCALE_METHOD
 
         # ComfyUI image shape: (N, H, W, C)
         _, h, w, _ = image.shape

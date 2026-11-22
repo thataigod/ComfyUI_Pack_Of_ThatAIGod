@@ -119,6 +119,34 @@ class TestUpscaleByMaxSide(unittest.TestCase):
         self.assertEqual(w % 64, 0)
         self.assertEqual(h % 64, 0)
 
+    def test_zero_divisibility_clamped_no_crash(self):
+        img = self._make_image(256, 512)
+        result = self.node.upscale(**{"Image": img, "Target": 512, "Divisibility": 0, "Method": "bilinear"})
+        w, h = result[1], result[2]
+        self.assertGreaterEqual(w, 1)
+        self.assertGreaterEqual(h, 1)
+
+    def test_huge_divisibility_clamped_no_crash(self):
+        img = self._make_image(256, 512)
+        result = self.node.upscale(**{"Image": img, "Target": 512, "Divisibility": 10**9, "Method": "bilinear"})
+        self.assertGreaterEqual(result[1], 1)
+        self.assertGreaterEqual(result[2], 1)
+
+    def test_string_divisibility_coerced(self):
+        img = self._make_image(256, 512)
+        result = self.node.upscale(**{"Image": img, "Target": 512, "Divisibility": "8", "Method": "bilinear"})
+        self.assertEqual(result[1] % 8, 0)
+
+    def test_non_numeric_divisibility_uses_default(self):
+        img = self._make_image(256, 512)
+        result = self.node.upscale(**{"Image": img, "Target": 512, "Divisibility": "abc", "Method": "bilinear"})
+        self.assertEqual(result[1] % 8, 0)
+
+    def test_invalid_method_falls_back_no_crash(self):
+        img = self._make_image(256, 512)
+        result = self.node.upscale(**{"Image": img, "Target": 512, "Divisibility": 8, "Method": "bogus"})
+        self.assertEqual(result[1] % 8, 0)
+
     # --- Limit By modes (integration through upscale) ---
 
     def test_min_side_landscape(self):

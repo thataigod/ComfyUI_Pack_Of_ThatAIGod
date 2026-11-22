@@ -1,4 +1,5 @@
 import json
+import logging
 import math
 import os
 import random
@@ -21,6 +22,7 @@ from Resolution_Selector import (
     MODE_DETERMINISTIC,
     MODE_NO_REPEAT,
     ResolutionSelector,
+    _compute_dimensions_from_min_side,
     _compute_dimensions_from_total_pixels,
     _custom_intensity,
     _custom_ratio_bounds,
@@ -28,6 +30,7 @@ from Resolution_Selector import (
     _format_ratio,
     _keywords_for_custom_ratio,
     _preset_gap,
+    _sanitize_custom_ratio,
 )
 
 
@@ -218,10 +221,87 @@ class TestResolutionSelector(unittest.TestCase):
         self.assertEqual(h, 16384)
 
     def test_total_pixels_invalid_ratio_falls_back_to_square(self):
-        for bad_ratio in (0, -1.5):
+        for bad_ratio in (0, -1.5, float("nan")):
             w, h = _compute_dimensions_from_total_pixels(1_000_000, bad_ratio)
             self.assertEqual(w, 1000)
             self.assertEqual(h, 1000)
+
+    def test_min_side_invalid_ratio_falls_back_to_square(self):
+        for bad_ratio in (0, -1.5, float("nan")):
+            w, h = _compute_dimensions_from_min_side(1000, bad_ratio)
+            self.assertEqual(w, 1000)
+            self.assertEqual(h, 1000)
+
+    def test_sanitize_custom_ratio_valid_passthrough(self):
+        self.assertEqual(_sanitize_custom_ratio(2.0), 2.0)
+        self.assertEqual(_sanitize_custom_ratio("1.5"), 1.5)
+
+    def test_sanitize_custom_ratio_invalid_falls_back_to_one(self):
+        for bad in (0, -2.0, float("nan"), float("inf"), "16:9", None, [1, 2]):
+            with self.assertLogs("ThatAIGod", level=logging.WARNING):
+                self.assertEqual(_sanitize_custom_ratio(bad), 1.0)
+
+    def test_non_dict_config_falls_back_to_all(self):
+        with self.assertLogs("ThatAIGod", level=logging.WARNING):
+            result = self.node.calculate(
+                **{
+                    "Limit By": "Max Side",
+                    "Pixels": 1024,
+                    "Scale Factor": 1.0,
+                    "Aspect Ratio Config": "[1, 2]",
+                    "seed": 0,
+                }
+            )
+        w, h = result["result"][0], result["result"][1]
+        self.assertGreater(w, 0)
+        self.assertGreater(h, 0)
+
+    def test_non_list_ratios_ignored_falls_back_to_all(self):
+        config = json.dumps({"ratios": "Square 1:1"})
+        with self.assertLogs("ThatAIGod", level=logging.WARNING):
+            result = self.node.calculate(
+                **{
+                    "Limit By": "Max Side",
+                    "Pixels": 1024,
+                    "Scale Factor": 1.0,
+                    "Aspect Ratio Config": config,
+                    "seed": 0,
+                }
+            )
+        w, h = result["result"][0], result["result"][1]
+        self.assertGreater(w, 0)
+        self.assertGreater(h, 0)
+
+    def test_unhashable_ratio_entries_ignored(self):
+        config = json.dumps({"ratios": [["Square 1:1"], 42, "Square 1:1"]})
+        result = self.node.calculate(
+            **{
+                "Limit By": "Max Side",
+                "Pixels": 1024,
+                "Scale Factor": 1.0,
+                "Aspect Ratio Config": config,
+                "seed": 0,
+            }
+        )
+        w, h = result["result"][0], result["result"][1]
+        self.assertEqual(w, h)
+
+    def test_invalid_custom_ratio_in_config_falls_back_to_square(self):
+        for bad in (0, -1.5, float("nan"), float("inf"), "16:9", None, [1, 2]):
+            config = json.dumps({"ratios": [], "custom_ratio": bad, "custom_enabled": True})
+            with self.assertLogs("ThatAIGod", level=logging.WARNING):
+                result = self.node.calculate(
+                    **{
+                        "Limit By": "Min Side",
+                        "Pixels": 1024,
+                        "Scale Factor": 1.0,
+                        "Aspect Ratio Config": config,
+                        "seed": 0,
+                    }
+                )
+            w, h = result["result"][0], result["result"][1]
+            self.assertEqual(w, 1024)
+            self.assertEqual(h, 1024)
 
     def test_total_pixels_constants(self):
         self.assertEqual(DEFAULT_TOTAL_PIXELS, 1_000_000)

@@ -302,6 +302,60 @@ class TestImageSaverPlus(unittest.TestCase):
         self.assertIn(1, counters)
         self.assertIn(2, counters)
 
+    def test_failed_save_not_reported_to_ui(self):
+        with patch("PIL.Image.Image.save") as mock_save:
+            mock_save.side_effect = OSError("Disk full")
+            result = self.node.save_images(images=self.dummy_image, filename_prefix="ghost")
+        self.assertEqual(result["ui"]["images"], [])
+
+    def test_sidecar_failure_still_reports_image(self):
+        import builtins
+
+        real_open = builtins.open
+
+        def selective_open(file, *args, **kwargs):
+            if str(file).endswith(".txt"):
+                raise OSError("no txt")
+            return real_open(file, *args, **kwargs)
+
+        with patch("builtins.open", side_effect=selective_open):
+            result = self.node.save_images(
+                images=self.dummy_image,
+                filename_prefix="sidetext",
+                save_text="hello",
+            )
+        self.assertEqual(len(result["ui"]["images"]), 1)
+        self.assertIsNone(self._find_saved_txt("sidetext"))
+
+    def test_unsupported_format_saves_nothing(self):
+        with self.assertLogs("ThatAIGod", level="ERROR"):
+            result = self.node.save_images(images=self.dummy_image, filename_prefix="bmpx", file_format="bmp")
+        self.assertEqual(result["ui"]["images"], [])
+        self.assertFalse(any(f.endswith(".bmp") for f in os.listdir(self.temp_dir)))
+
+    def test_colon_in_date_template_sanitized(self):
+        self.node.save_images(images=self.dummy_image, filename_prefix="img_%date:HH:mm%")
+        files = [f for f in os.listdir(self.temp_dir) if f.endswith(".png")]
+        self.assertEqual(len(files), 1)
+        self.assertRegex(files[0], r"^img_\d{2}_\d{2}_\d{5}_\.png$")
+
+    def test_duplicate_counter_placeholder_replaced_once(self):
+        with self.assertLogs("ThatAIGod", level="WARNING"):
+            self.node.save_images(images=self.dummy_image, filename_prefix="dup_%counter%_%counter%")
+        files = [f for f in os.listdir(self.temp_dir) if f.endswith(".png")]
+        self.assertEqual(len(files), 1)
+        self.assertRegex(files[0], r"^dup_\d{5}_%counter%\.png$")
+
+    def test_sanitize_filename_segment(self):
+        self.assertEqual(Image_Saver_Plus._sanitize_filename_segment("a:b*c?"), "a_b_c_")
+        self.assertEqual(Image_Saver_Plus._sanitize_filename_segment("trailing.. "), "trailing")
+        self.assertEqual(Image_Saver_Plus._sanitize_filename_segment("::"), "__")
+        self.assertEqual(Image_Saver_Plus._sanitize_filename_segment(" "), "_")
+
+    def test_sanitize_filename_template_preserves_separators(self):
+        self.assertEqual(Image_Saver_Plus._sanitize_filename_template("sub:a/img*1"), "sub_a/img_1")
+        self.assertEqual(Image_Saver_Plus._sanitize_filename_template("plain"), "plain")
+
 
 class TestFindNextCounter(unittest.TestCase):
     def test_nonexistent_folder_returns_one(self):
@@ -320,6 +374,13 @@ class TestFindNextCounter(unittest.TestCase):
                     f.write("")
             result = Image_Saver_Plus._find_next_counter(d, "img_%counter%_test")
             self.assertEqual(result, 6)
+
+    def test_counter_scan_accepts_variable_digit_counts(self):
+        with tempfile.TemporaryDirectory() as d:
+            with open(os.path.join(d, "img_1234567_test.txt"), "w") as f:
+                f.write("")
+            result = Image_Saver_Plus._find_next_counter(d, "img_%counter%_test")
+            self.assertEqual(result, 1234568)
 
 
 class TestDatePatternRegex(unittest.TestCase):

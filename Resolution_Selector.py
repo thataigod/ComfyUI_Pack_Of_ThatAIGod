@@ -20,6 +20,7 @@ Supports:
 """
 
 import json
+import logging
 import math
 import random
 from fractions import Fraction
@@ -31,6 +32,8 @@ from _utils import (
     compute_aspect_ratio_dimensions,
     round_to_multiple,
 )
+
+logger: logging.Logger = logging.getLogger("ThatAIGod")
 
 # --- Constants -----------------------------------------------------------
 
@@ -118,11 +121,15 @@ def _compute_dimensions_from_min_side(min_side: int, ratio: float) -> tuple[int,
 
     Args:
         min_side: Target pixel count for the *shorter* side of the image.
-        ratio: Width-to-height ratio (e.g. ``16/9 ≈ 1.778``).
+        ratio: Width-to-height ratio (e.g. ``16/9 ≈ 1.778``). Non-positive or
+            NaN ratios fall back to square.
 
     Returns:
         A ``(width, height)`` tuple, both rounded to 8 px and clamped to 64 px.
     """
+    if not (ratio > 0):
+        ratio = 1.0
+
     if ratio >= 1.0:
         h = float(min_side)
         w = min_side * ratio
@@ -143,13 +150,13 @@ def _compute_dimensions_from_total_pixels(total_pixels: int, ratio: float) -> tu
 
     Args:
         total_pixels: Target pixel count for the whole image area.
-        ratio: Width-to-height ratio (e.g. ``16/9 ≈ 1.778``). Non-positive
-            ratios fall back to square.
+        ratio: Width-to-height ratio (e.g. ``16/9 ≈ 1.778``). Non-positive or
+            NaN ratios fall back to square.
 
     Returns:
         A ``(width, height)`` tuple, both rounded to 8 px and clamped to 64 px.
     """
-    if ratio <= 0:
+    if not (ratio > 0):
         ratio = 1.0
 
     w = math.sqrt(total_pixels * ratio)
@@ -257,6 +264,29 @@ def _keywords_for_custom_ratio(ratio: float) -> str:
     orientation: str = "portrait" if ratio < 1.0 else "landscape"
     intensity: str = _custom_intensity(ratio, tall, wide, _preset_gap())
     return f"{orientation} orientation, {_format_ratio(ratio)} aspect ratio, custom {intensity} composition"
+
+
+def _sanitize_custom_ratio(value: Any) -> float:
+    """Return *value* as a positive finite ratio, or 1.0 with a warning.
+
+    Guards the hand-edited Aspect Ratio Config JSON: non-numeric values,
+    ``NaN``/``Infinity`` (both accepted by ``json.loads``), and non-positive
+    ratios all fall back to square instead of crashing the dimension math.
+
+    Args:
+        value: The raw ``custom_ratio`` value from the config JSON.
+
+    Returns:
+        A usable width-to-height ratio (positive and finite).
+    """
+    try:
+        ratio: float = float(value)
+    except (TypeError, ValueError):
+        ratio = 0.0
+    if not math.isfinite(ratio) or ratio <= 0:
+        logger.warning("Invalid custom_ratio %r in Aspect Ratio Config; falling back to 1.0", value)
+        return 1.0
+    return ratio
 
 
 # No-repeat decks keyed by the active ratio set.  Module-level so the deck
@@ -373,8 +403,9 @@ class ResolutionSelector:
                         "max": MAX_TOTAL_PIXELS,
                         "step": 1,
                         "tooltip": (
-                            "Pixel budget: side length for Max/Min Side modes, total "
-                            "image area (e.g. 1000000 ≈ 1MP) for Total Pixels mode. "
+                            "Pixel budget: side length (1-16384 px) for Max/Min Side modes, "
+                            "or total image area (4096-268435456 px^2, e.g. 1000000 = 1MP) for "
+                            "Total Pixels mode. Values are clamped to each mode's range. "
                             "The last value per mode is remembered and recalled on switch."
                         ),
                     },
@@ -426,21 +457,26 @@ class ResolutionSelector:
             Falls back to all named presets if parsing fails or the list is empty.
         """
         try:
-            cfg: dict[str, Any] = json.loads(config_json)
+            cfg: Any = json.loads(config_json)
         except (json.JSONDecodeError, TypeError):
             cfg = {}
+        if not isinstance(cfg, dict):
+            logger.warning("Aspect Ratio Config is not a JSON object; falling back to all presets")
+            cfg = {}
 
-        selected_names: list[str] = cfg.get("ratios", [])
-        custom_enabled: bool = cfg.get("custom_enabled", False)
-        custom_ratio: float = float(cfg.get("custom_ratio", 1.0))
+        chosen: Any = cfg.get("ratios", [])
+        if not isinstance(chosen, list):
+            logger.warning("Aspect Ratio Config 'ratios' is not a list; ignoring it")
+            chosen = []
+        custom_enabled: bool = bool(cfg.get("custom_enabled", False))
 
         active: list[tuple[str, float]] = []
-        for name in selected_names:
-            if name in _ALL_RATIOS:
+        for name in chosen:
+            if isinstance(name, str) and name in _ALL_RATIOS:
                 active.append((name, _ALL_RATIOS[name]))
 
         if custom_enabled:
-            active.append(("Custom W:H", custom_ratio))
+            active.append(("Custom W:H", _sanitize_custom_ratio(cfg.get("custom_ratio", 1.0))))
 
         if not active:
             active = list(_ALL_RATIOS.items())
