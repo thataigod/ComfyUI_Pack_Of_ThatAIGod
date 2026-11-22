@@ -568,6 +568,60 @@ class TestParsingDetails(unittest.TestCase):
             self.assertEqual(list(space["views"]), ["Front", "Back"])
 
 
+class TestOptionSpaceCaching(unittest.TestCase):
+    def setUp(self):
+        core._OPTION_RECORD_CACHE.clear()
+
+    def tearDown(self):
+        core._OPTION_RECORD_CACHE.clear()
+
+    def test_option_records_cached_by_mtime(self):
+        with TmpWildcards() as tmp:
+            tmp.write("camera/views/Front.txt", "front one\n")
+            space1 = core.load_option_space(tmp.wildcards)
+            space2 = core.load_option_space(tmp.wildcards)
+            # Unchanged files reuse the resolved record without re-parsing.
+            self.assertIs(space2["views"]["Front"], space1["views"]["Front"])
+
+    def test_option_record_cache_invalidates_on_mtime_change(self):
+        with TmpWildcards() as tmp:
+            path = os.path.join(tmp.wildcards, "camera", "views", "Front.txt")
+            tmp.write("camera/views/Front.txt", "front one\n")
+            space1 = core.load_option_space(tmp.wildcards)
+            self.assertEqual(space1["views"]["Front"]["phrases"], ("front one",))
+            with open(path, "w", encoding="utf-8") as f:
+                f.write("front two\n")
+            future = os.path.getmtime(path) + 10
+            os.utime(path, (future, future))
+            space2 = core.load_option_space(tmp.wildcards)
+            self.assertEqual(space2["views"]["Front"]["phrases"], ("front two",))
+
+    def test_option_record_cache_fifo_eviction(self):
+        original = core._MAX_RECORD_CACHE_SIZE
+        core._MAX_RECORD_CACHE_SIZE = 2
+        try:
+            with TmpWildcards() as tmp:
+                for i in range(4):
+                    tmp.write(f"camera/views/v{i}.txt", f"#@based_on: Front\nphrase {i}\n")
+                core.load_option_space(tmp.wildcards)
+                self.assertEqual(len(core._OPTION_RECORD_CACHE), 2)
+                newest_path = os.path.join(tmp.wildcards, "camera", "views", "v3.txt")
+                self.assertIn(newest_path, core._OPTION_RECORD_CACHE)
+        finally:
+            core._MAX_RECORD_CACHE_SIZE = original
+
+    def test_builtin_space_returns_fresh_records(self):
+        a = core._builtin_space()
+        b = core._builtin_space()
+        self.assertIsNot(a["views"]["Front"], b["views"]["Front"])
+        a["views"]["Front"]["phrases"] = ("mutated",)
+        self.assertNotEqual(a["views"]["Front"]["phrases"], b["views"]["Front"]["phrases"])
+
+    def test_builtin_axis_unknown_axis_raises(self):
+        with self.assertRaises(ValueError):
+            core._builtin_axis("bogus")
+
+
 class TestResolveWarnings(unittest.TestCase):
     def test_movement_bare_phrases_warn_and_are_ignored(self):
         with TmpWildcards() as tmp:

@@ -20,7 +20,6 @@ The module has no node code and depends only on the standard library.
 
 from __future__ import annotations
 
-import copy
 import json
 import logging
 import os
@@ -817,95 +816,114 @@ _AXIS_DIRS: tuple[str, ...] = ("sizes", "angles", "views", "movements", "tilts",
 _DIRECTIVE_RE = re.compile(r"^#@([A-Za-z][A-Za-z0-9_]*):\s*(.*)$")
 _BLOCK_RE = re.compile(r"^#@([A-Za-z][A-Za-z0-9_]*)\s*$")
 
-_BUILTIN_SPACE: dict[str, dict[str, dict[str, Any]]] | None = None
+def _builtin_axis(axis: str) -> dict[str, dict[str, Any]]:
+    """Return the built-in option records for one axis, freshly constructed.
+
+    Records are built directly from the module tables — there is no shared
+    singleton and no copying — so callers may treat the returned dict (and
+    its records) as their own.  Building one axis costs a handful of dict
+    literals, which keeps per-axis fallbacks cheap.
+
+    Args:
+        axis: One of :data:`_AXIS_DIRS`.
+
+    Returns:
+        The ``{option_name: record}`` dict for *axis*.
+
+    Raises:
+        ValueError: When *axis* is not a known camera axis.
+    """
+
+    def groups(name: str) -> frozenset[str]:
+        return frozenset(group for group, members in _BASE_SHORTCUTS[axis].items() if name in members)
+
+    if axis == "sizes":
+        return {
+            name: {
+                "name": name,
+                "regions": tuple(_REGIONS_BY_SIZE[name]),
+                "lens": _LENS_BY_SIZE[name],
+                "depth": _DEPTH_BY_SIZE[name],
+                "close": name in _CLOSE_SIZES,
+                "long": name in _LONG_SIZES,
+                "keyword": _SIZE_KEYWORDS[name],
+                "phrases": tuple(_SHOT_PHRASES[name]),
+                "shortcuts": groups(name),
+            }
+            for name in SHOT_SIZES
+        }
+    if axis == "angles":
+        return {
+            name: {
+                "name": name,
+                "elevation": _ELEVATION_DEGREES[name],
+                "hides": _ANGLE_HIDES[name],
+                "keyword": _ANGLE_KEYWORDS[name],
+                "phrases": tuple(_ANGLE_PHRASES[name]),
+                "shortcuts": groups(name),
+            }
+            for name in ANGLES
+        }
+    if axis == "views":
+        return {
+            name: {
+                "name": name,
+                "azimuth": _AZIMUTH_DEGREES[name],
+                "hides": _VIEW_HIDES[name],
+                "keyword": _VIEW_KEYWORDS[name],
+                "phrases": tuple(_VIEW_PHRASES[name]),
+                "shortcuts": groups(name),
+            }
+            for name in VIEWS
+        }
+    if axis == "movements":
+        return {
+            name: {
+                "name": name,
+                "close": tuple(_MOVEMENT_PHRASES[name]["close"]),
+                "wide": tuple(_MOVEMENT_PHRASES[name]["wide"]),
+                "keyword": _MOVEMENT_KEYWORDS[name],
+                "shortcuts": groups(name),
+            }
+            for name in MOVEMENTS
+        }
+    if axis == "tilts":
+        return {
+            name: {
+                "name": name,
+                "roll": _ROLL_DEGREES[name],
+                "keyword": _TILT_KEYWORDS[name],
+                "phrases": tuple(phrase.strip().lstrip(", ") for phrase in _TILT_PHRASES[name]),
+                "shortcuts": groups(name),
+            }
+            for name in TILTS
+        }
+    if axis == "looks":
+        records: dict[str, dict[str, Any]] = {}
+        for name in LOOKS:
+            family = "film" if name in _LOOK_FAMILIES["film"] else "digital"
+            # NOTE: looks carry both ``keywords`` (used by _compose_keywords) and
+            # ``keyword`` alias so the record shape matches other axes.
+            records[name] = {
+                "name": name,
+                "family": family,
+                "keyword": _LOOK_KEYWORDS[name],
+                "keywords": _LOOK_KEYWORDS[name],
+                "phrases": tuple(_LOOK_PHRASES[name]),
+                "shortcuts": frozenset({"Film" if family == "film" else "Digital"}),
+            }
+        return records
+    raise ValueError(f"unknown camera axis {axis!r}")
 
 
 def _builtin_space() -> dict[str, dict[str, dict[str, Any]]]:
     """Return the built-in option space derived from the module tables.
 
-    The returned dict and its nested records are a deep copy so callers
-    cannot mutate the cached singleton via shallow-copy fallbacks.
+    The dict and its nested records are freshly constructed per call (there
+    is no cached singleton to mutate), so callers may freely modify the
+    result.
     """
-    global _BUILTIN_SPACE
-    if _BUILTIN_SPACE is not None:
-        return copy.deepcopy(_BUILTIN_SPACE)
-
-    def groups(axis: str, name: str) -> frozenset[str]:
-        return frozenset(group for group, members in _BASE_SHORTCUTS[axis].items() if name in members)
-
-    sizes: dict[str, dict[str, Any]] = {}
-    for name in SHOT_SIZES:
-        sizes[name] = {
-            "name": name,
-            "regions": tuple(_REGIONS_BY_SIZE[name]),
-            "lens": _LENS_BY_SIZE[name],
-            "depth": _DEPTH_BY_SIZE[name],
-            "close": name in _CLOSE_SIZES,
-            "long": name in _LONG_SIZES,
-            "keyword": _SIZE_KEYWORDS[name],
-            "phrases": tuple(_SHOT_PHRASES[name]),
-            "shortcuts": groups("sizes", name),
-        }
-    angles: dict[str, dict[str, Any]] = {}
-    for name in ANGLES:
-        angles[name] = {
-            "name": name,
-            "elevation": _ELEVATION_DEGREES[name],
-            "hides": _ANGLE_HIDES[name],
-            "keyword": _ANGLE_KEYWORDS[name],
-            "phrases": tuple(_ANGLE_PHRASES[name]),
-            "shortcuts": groups("angles", name),
-        }
-    views: dict[str, dict[str, Any]] = {}
-    for name in VIEWS:
-        views[name] = {
-            "name": name,
-            "azimuth": _AZIMUTH_DEGREES[name],
-            "hides": _VIEW_HIDES[name],
-            "keyword": _VIEW_KEYWORDS[name],
-            "phrases": tuple(_VIEW_PHRASES[name]),
-            "shortcuts": groups("views", name),
-        }
-    movements: dict[str, dict[str, Any]] = {}
-    for name in MOVEMENTS:
-        movements[name] = {
-            "name": name,
-            "close": tuple(_MOVEMENT_PHRASES[name]["close"]),
-            "wide": tuple(_MOVEMENT_PHRASES[name]["wide"]),
-            "keyword": _MOVEMENT_KEYWORDS[name],
-            "shortcuts": groups("movements", name),
-        }
-    tilts: dict[str, dict[str, Any]] = {}
-    for name in TILTS:
-        tilts[name] = {
-            "name": name,
-            "roll": _ROLL_DEGREES[name],
-            "keyword": _TILT_KEYWORDS[name],
-            "phrases": tuple(phrase.strip().lstrip(", ") for phrase in _TILT_PHRASES[name]),
-            "shortcuts": groups("tilts", name),
-        }
-    looks: dict[str, dict[str, Any]] = {}
-    for name in LOOKS:
-        family = "film" if name in _LOOK_FAMILIES["film"] else "digital"
-        # NOTE: looks carry both ``keywords`` (used by _compose_keywords) and
-        # ``keyword`` alias so the record shape matches other axes.
-        looks[name] = {
-            "name": name,
-            "family": family,
-            "keyword": _LOOK_KEYWORDS[name],
-            "keywords": _LOOK_KEYWORDS[name],
-            "phrases": tuple(_LOOK_PHRASES[name]),
-            "shortcuts": frozenset({"Film" if family == "film" else "Digital"}),
-        }
-    _BUILTIN_SPACE = {
-        "sizes": sizes,
-        "angles": angles,
-        "views": views,
-        "movements": movements,
-        "tilts": tilts,
-        "looks": looks,
-    }
-    return copy.deepcopy(_BUILTIN_SPACE)
+    return {axis: _builtin_axis(axis) for axis in _AXIS_DIRS}
 
 
 def _parse_int(value: str, fallback: int | None) -> int | None:
@@ -1005,24 +1023,32 @@ def _parse_option_file(path: str) -> dict[str, Any]:
     return result
 
 
+# Valid ranges for geometric directives; out-of-range values inherit the base.
+_GIMBAL_RANGES: dict[str, tuple[int, int]] = {
+    "elevation": (-90, 90),
+    "azimuth": (0, 360),
+    "roll": (0, 90),
+}
+
+
 def _resolve_option(
     axis: str,
     name: str,
     parsed: dict[str, Any],
-    builtin: dict[str, dict[str, dict[str, Any]]] | None = None,
+    builtin_axis: dict[str, dict[str, Any]] | None = None,
 ) -> dict[str, Any] | None:
-    """Resolve a parsed option file against the built-in space.
+    """Resolve a parsed option file against the axis's built-in records.
 
     The base record is the built-in option with the same name, or the built-in
     named by ``#@based_on``; anything the file spells out overrides the base.
     Returns ``None`` when no base exists (an option the engine cannot reason
     about geometrically).
     """
-    # Callers should pass the hoisted builtin to avoid a deepcopy per file.
-    if builtin is None:
-        builtin = _builtin_space()
-    base_name = name if name in builtin[axis] else parsed["based_on"]
-    base = builtin[axis].get(base_name or "")
+    # Callers should pass the hoisted axis records to avoid rebuilding them.
+    if builtin_axis is None:
+        builtin_axis = _builtin_axis(axis)
+    base_name = name if name in builtin_axis else parsed["based_on"]
+    base = builtin_axis.get(base_name or "")
     if base is None:
         return None
     record = dict(base)
@@ -1053,11 +1079,6 @@ def _resolve_option(
     if axis == "looks" and parsed["keyword"]:
         record["keywords"] = parsed["keyword"]
         record["keyword"] = parsed["keyword"]
-    _GIMBAL_RANGES: dict[str, tuple[int, int]] = {
-        "elevation": (-90, 90),
-        "azimuth": (0, 360),
-        "roll": (0, 90),
-    }
     for field in ("elevation", "azimuth", "roll"):
         if parsed[field] is not None:
             low, high = _GIMBAL_RANGES[field]
@@ -1095,13 +1116,24 @@ def _resolve_option(
     return record
 
 
+# Per-file resolved-record cache: option files are re-parsed only when their
+# mtime changes, so node executions and frontend option polls skip the disk
+# read + parse + resolve work for an unchanged camera tree.  Records are
+# shared across calls (treat them as read-only).  Bounded FIFO like the
+# other pack caches.
+_MAX_RECORD_CACHE_SIZE: int = 256
+_OPTION_RECORD_CACHE: dict[str, tuple[float, dict[str, Any]]] = {}
+_RECORD_CACHE_LOCK = threading.Lock()
+
+
 def load_option_space(wildcards_dir: str) -> dict[str, dict[str, dict[str, Any]]] | None:
     """Load the option space from ``wildcards_dir/camera/<axis>/*.txt``.
 
     Each axis folder replaces that axis's built-in options (a missing or
     empty axis folder falls back to the built-ins).  Files starting with ``.``
     or ``_`` are ignored.  Options that cannot resolve to a base (no built-in
-    of that name and no ``#@based_on``) are skipped.
+    of that name and no ``#@based_on``) are skipped.  Resolved records are
+    cached by file mtime and reused across calls.
 
     Args:
         wildcards_dir: Absolute path to the wildcards root directory.
@@ -1112,47 +1144,65 @@ def load_option_space(wildcards_dir: str) -> dict[str, dict[str, dict[str, Any]]
     root = os.path.join(wildcards_dir, _CAMERA_DIR_NAME)
     if not os.path.isdir(root):
         return None
-    builtin = _builtin_space()
     space: dict[str, dict[str, dict[str, Any]]] = {}
     for axis in _AXIS_DIRS:
         axis_dir = os.path.join(root, axis)
         if not os.path.isdir(axis_dir):
-            space[axis] = copy.deepcopy(builtin[axis])
+            space[axis] = _builtin_axis(axis)
             continue
+        axis_builtin = _builtin_axis(axis)
         records: dict[str, dict[str, Any]] = {}
         try:
             entries = sorted(os.listdir(axis_dir))
         except OSError:  # pragma: no cover - filesystem race
             logging.getLogger("ThatAIGod").warning("Camera: cannot list %s, using built-ins", axis_dir)
-            space[axis] = copy.deepcopy(builtin[axis])
+            space[axis] = axis_builtin
             continue
         for entry in entries:
             if not entry.endswith(".txt") or entry.startswith((".", "_")):
                 continue
+            abs_path = os.path.join(axis_dir, entry)
             try:
-                parsed = _parse_option_file(os.path.join(axis_dir, entry))
-            except (OSError, UnicodeDecodeError):
-                logging.getLogger("ThatAIGod").warning("Camera: cannot read %s, skipping", entry)
+                current_mtime = os.path.getmtime(abs_path)
+            except OSError:  # pragma: no cover - filesystem race
+                logging.getLogger("ThatAIGod").warning("Camera: cannot stat %s, skipping", entry)
                 continue
-            name = parsed["name"] or os.path.splitext(entry)[0]
+            with _RECORD_CACHE_LOCK:
+                cached = _OPTION_RECORD_CACHE.get(abs_path)
+            record: dict[str, Any]
+            if cached is not None and cached[0] == current_mtime:
+                record = cached[1]
+                name = record["name"]
+            else:
+                try:
+                    parsed = _parse_option_file(abs_path)
+                except (OSError, UnicodeDecodeError):
+                    logging.getLogger("ThatAIGod").warning("Camera: cannot read %s, skipping", entry)
+                    continue
+                name = parsed["name"] or os.path.splitext(entry)[0]
+                resolved = _resolve_option(axis, name, parsed, axis_builtin)
+                if resolved is None:
+                    logging.getLogger("ThatAIGod").warning(
+                        "Camera: skipping %r in %s (no built-in %r and no #@based_on)", entry, axis, name
+                    )
+                    continue
+                record = resolved
+                with _RECORD_CACHE_LOCK:
+                    if len(_OPTION_RECORD_CACHE) >= _MAX_RECORD_CACHE_SIZE:
+                        _OPTION_RECORD_CACHE.pop(next(iter(_OPTION_RECORD_CACHE)))
+                    _OPTION_RECORD_CACHE[abs_path] = (current_mtime, record)
             if name in records:
                 logging.getLogger("ThatAIGod").warning("Camera: duplicate option %r in %s, keeping first file", name, axis)
                 continue
-            record = _resolve_option(axis, name, parsed, builtin)
-            if record is None:
-                logging.getLogger("ThatAIGod").warning(
-                    "Camera: skipping %r in %s (no built-in %r and no #@based_on)", entry, axis, name
-                )
-                continue
             records[name] = record
         if not records:
-            space[axis] = copy.deepcopy(builtin[axis])
+            space[axis] = axis_builtin
             continue
         # Emit known options in builtin (curated) order so file-backed spaces
         # match builtin order for Full Auto determinism and chip layout;
         # genuinely custom options append alphabetically.
         ordered: dict[str, dict[str, Any]] = {}
-        for builtin_name in builtin[axis]:
+        for builtin_name in axis_builtin:
             if builtin_name in records:
                 ordered[builtin_name] = records[builtin_name]
         for custom_name in sorted(records):
@@ -1562,12 +1612,11 @@ def build_shot(
     # built-ins so Full Auto's space iteration and record lookups cannot KeyError.
     missing_axes = [axis for axis in _AXIS_DIRS if axis not in space]
     if missing_axes:
-        builtin = _builtin_space()
         for axis in missing_axes:
             logging.getLogger("ThatAIGod").warning(
                 "Camera: option space missing axis %r, using built-ins", axis
             )
-            space[axis] = builtin[axis]
+            space[axis] = _builtin_axis(axis)
     config = parse_config(config_json, space)
 
     if mode not in (DETERMINISTIC_MODE, FULL_AUTO_MODE, NO_REPEAT_MODE):  # pragma: no cover - defensive, UI restricts values
