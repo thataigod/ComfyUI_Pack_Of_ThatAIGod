@@ -7,7 +7,6 @@ import { ComfyWidgets } from "../../scripts/widgets.js";
 // Fallback spaces used only when the backend options endpoint is unreachable.
 const FALLBACK = {
     occasions: ["casual", "office", "formal", "wedding", "party", "festival", "costume", "athletic", "gym", "beach", "pool", "resort", "travel", "home", "intimate", "boudoir", "traditional"],
-    states: ["dressed", "revealing", "mishap", "slipping", "nude"],
     occasion_groups: [
         { text: "Everyday", members: ["casual", "travel", "home"] },
         { text: "Work", members: ["office", "formal"] },
@@ -29,7 +28,6 @@ function fetchCharacterOptions() {
             })
             .then((data) => ({
                 occasions: Array.isArray(data.occasions) && data.occasions.length ? data.occasions : FALLBACK.occasions,
-                states: Array.isArray(data.states) && data.states.length ? data.states : FALLBACK.states,
                 occasion_groups: Array.isArray(data.occasion_groups) ? data.occasion_groups : FALLBACK.occasion_groups,
             }))
             .catch((err) => {
@@ -40,17 +38,13 @@ function fetchCharacterOptions() {
     return _characterOptionsPromise;
 }
 
-function readConfig(widget, occasions, states) {
+function readConfig(widget, occasions) {
     try {
         const cfg = JSON.parse(widget.value);
-        const out = {};
-        for (const [key, options] of [["occasions", occasions], ["states", states]]) {
-            const picked = (cfg && typeof cfg === "object" && !Array.isArray(cfg)) ? cfg[key] : undefined;
-            out[key] = Array.isArray(picked) ? picked.filter((v) => options.includes(v)) : [...options];
-        }
-        return out;
+        const picked = (cfg && typeof cfg === "object" && !Array.isArray(cfg)) ? cfg.occasions : undefined;
+        return { occasions: Array.isArray(picked) ? picked.filter((v) => occasions.includes(v)) : [...occasions] };
     } catch (_) {
-        return { occasions: [...occasions], states: [...states] };
+        return { occasions: [...occasions] };
     }
 }
 
@@ -58,10 +52,10 @@ function writeConfig(widget, cfg) {
     widget.value = JSON.stringify(cfg);
 }
 
-function stateButton(label, state, onClick) {
+function toggleButton(label, color, onClick) {
     const btn = document.createElement("button");
     btn.textContent = label;
-    btn.style.cssText = "padding:1px 8px;border:1px solid " + state +
+    btn.style.cssText = "padding:1px 8px;border:1px solid " + color +
         ";border-radius:4px;cursor:pointer;font-size:10px;background:#2a2a2a;color:#ccc;";
     btn.onclick = onClick;
     return btn;
@@ -148,10 +142,9 @@ app.registerExtension({
             const existing = parentEl?.querySelector(".char-ui");
             if (existing) existing.remove();
 
-            const cfg = readConfig(configWidget, options.occasions, options.states);
+            const cfg = readConfig(configWidget, options.occasions);
             const selected = {
                 occasions: new Set(cfg.occasions),
-                states: new Set(cfg.states),
             };
 
             const container = document.createElement("div");
@@ -161,7 +154,6 @@ app.registerExtension({
             const persist = () => {
                 writeConfig(configWidget, {
                     occasions: options.occasions.filter((o) => selected.occasions.has(o)),
-                    states: options.states.filter((s) => selected.states.has(s)),
                 });
             };
 
@@ -175,13 +167,6 @@ app.registerExtension({
                         options: options.occasions,
                         shortcuts: options.occasion_groups,
                         selected: selected.occasions,
-                    },
-                    {
-                        key: "states",
-                        label: "State",
-                        options: options.states,
-                        shortcuts: [],
-                        selected: selected.states,
                     },
                 ];
 
@@ -198,7 +183,7 @@ app.registerExtension({
 
                     const allSelected = axis.selected.size === axis.options.length;
                     const noneSelected = axis.selected.size === 0;
-                    const btnAll = stateButton(
+                    const btnAll = toggleButton(
                         allSelected ? "All" : (noneSelected ? "None" : "Partial"),
                         allSelected ? "#77ee77" : (noneSelected ? "#ff5555" : "#cc8844"),
                         () => {
@@ -206,8 +191,7 @@ app.registerExtension({
                                 axis.selected.clear();
                             } else {
                                 axis.selected = new Set(axis.options);
-                                if (axis.key === "occasions") selected.occasions = axis.selected;
-                                else selected.states = axis.selected;
+                                selected.occasions = axis.selected;
                             }
                             persist();
                             render();
