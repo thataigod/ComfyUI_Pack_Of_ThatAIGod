@@ -622,6 +622,9 @@ class TestWildcardResolverCore(unittest.TestCase):
     def test_lewdity_is_known_directive_key(self):
         self.assertIn("lewdity", KNOWN_DIRECTIVE_KEYS)
 
+    def test_keyword_is_known_directive_key(self):
+        self.assertIn("keyword", KNOWN_DIRECTIVE_KEYS)
+
     def test_pick_line_in_band_respects_file_default(self):
         self._create("rated.txt", ["#@lewdity: 60", "a rated line", "another rated line"])
         resolver = self._resolver(seed=0)

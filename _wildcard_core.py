@@ -69,9 +69,10 @@ _MAX_CONTENT_CACHE_SIZE: int = 100
 _MAX_DECK_CACHE_SIZE: int = 256
 # Directive keys recognised by the engine.  Unknown keys are ignored with a warning.
 # Beyond the classic scene/outfit dimensions, the character object system asserts
-# camera-geometry dimensions (facing, gaze, elevation, awareness) and free-form
+# camera-geometry dimensions (facing, gaze, elevation, awareness), free-form
 # grouping keys (time, location, context, preset) so persona, pose, lighting and
-# interaction files can all be directive-filtered.
+# interaction files can all be directive-filtered, and ``keyword`` token lists
+# feeding the character keywords output.
 KNOWN_DIRECTIVE_KEYS: frozenset[str] = frozenset(
     {
         "occasion",
@@ -101,6 +102,7 @@ KNOWN_DIRECTIVE_KEYS: frozenset[str] = frozenset(
         "slip",
         "state",
         "lewdity",
+        "keyword",
         "modifiers",
         "no_modifiers",
         "fixed",

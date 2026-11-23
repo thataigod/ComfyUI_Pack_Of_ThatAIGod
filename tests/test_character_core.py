@@ -27,6 +27,7 @@ from _character_core import (
     _compose_fit,
     _context,
     _fill_slots,
+    _parse_keyword_directives,
     _parse_lewdity_value,
     _pick_category,
     _pose_context,
@@ -39,8 +40,10 @@ from _character_core import (
     _roll_extras,
     _roll_occasion,
     _safe_persona,
+    _split_tokens,
     _tag_basename,
     _tag_path,
+    _tag_tokens,
     _wardrobe_plan,
     build_character,
 )
@@ -94,7 +97,7 @@ class EngineFixture(unittest.TestCase):
             "#@occasion: office\n"
             "a composed professional with neat dark hair\n",
         )
-        self._write(f"{base}/face.txt", "a soft oval face with warm eyes\n")
+        self._write(f"{base}/face.txt", "#@keyword: Perfect Eyes, Bindi\na soft oval face with warm eyes\n")
         self._write(f"{base}/hair.txt", "long dark hair in a loose braid\n")
         self._write(f"{base}/profile.txt", "a fine-boned profile\n")
         self._write(
@@ -384,25 +387,25 @@ class TestSlots(EngineFixture):
         self._make_common()
 
     def test_resolve_slot_missing_file(self):
-        self.assertEqual(_resolve_slot(self._resolver(), None, "characters/female/wardrobe/casual", "hats", None), ("", {}))
+        self.assertEqual(_resolve_slot(self._resolver(), None, "characters/female/wardrobe/casual", "hats", None), ("", {}, []))
 
     def test_resolve_slot_band_filters_lines(self):
         resolver = self._resolver(seed=0)
-        piece, directives = _resolve_slot(resolver, None, "characters/female/wardrobe/casual", "tops", (0, 30))
+        piece, directives, _tokens = _resolve_slot(resolver, None, "characters/female/wardrobe/casual", "tops", (0, 30))
         self.assertEqual(piece, "a pastel cotton tee in a soft weave")
         self.assertIn("bust", directives.get("fit", ()))
-        piece, _directives = _resolve_slot(resolver, None, "characters/female/wardrobe/casual", "tops", (50, 100))
+        piece, _directives, _tokens = _resolve_slot(resolver, None, "characters/female/wardrobe/casual", "tops", (50, 100))
         self.assertEqual(piece, "a daring crop top with thin straps")
-        self.assertEqual(_resolve_slot(resolver, None, "characters/female/wardrobe/casual", "tops", (0, 10)), ("", {}))
+        self.assertEqual(_resolve_slot(resolver, None, "characters/female/wardrobe/casual", "tops", (0, 10)), ("", {}, []))
 
     def test_resolve_slot_without_band_ignores_lewdity(self):
         resolver = self._resolver(seed=0)
-        piece, _directives = _resolve_slot(resolver, None, "characters/female/wardrobe/lingerie", "tops", None)
+        piece, _directives, _tokens = _resolve_slot(resolver, None, "characters/female/wardrobe/lingerie", "tops", None)
         self.assertEqual(piece, "a sheer lace bralette with delicate straps")
 
     def test_fill_slots_forces_one_piece_without_separates(self):
         resolver = self._resolver(seed=0)
-        pieces, directives = _fill_slots(
+        pieces, directives, _keywords = _fill_slots(
             resolver, None, "characters/female/wardrobe", "resort", ["face", "chest", "hips"], (0, 100)
         )
         self.assertEqual(pieces, ["a flowing kaftan in airy cotton"])
@@ -411,7 +414,7 @@ class TestSlots(EngineFixture):
     def test_fill_slots_one_piece_probability(self):
         resolver = self._resolver(seed=0)
         with patch.object(resolver.rng, "random", return_value=0.0):
-            pieces, _directives = _fill_slots(
+            pieces, _directives, _keywords = _fill_slots(
                 resolver, None, "characters/female/wardrobe", "casual", ["shoulders", "chest", "hips", "feet"], None
             )
         joined = ", ".join(pieces)
@@ -420,7 +423,7 @@ class TestSlots(EngineFixture):
 
         resolver = self._resolver(seed=0)
         with patch.object(resolver.rng, "random", return_value=0.99):
-            pieces, _directives = _fill_slots(
+            pieces, _directives, _keywords = _fill_slots(
                 resolver, None, "characters/female/wardrobe", "casual", ["shoulders", "chest", "hips", "feet"], None
             )
         joined = ", ".join(pieces)
@@ -431,7 +434,7 @@ class TestSlots(EngineFixture):
     def test_fill_slots_skips_hidden_regions(self):
         resolver = self._resolver(seed=0)
         with patch.object(resolver.rng, "random", return_value=0.99):
-            pieces, _directives = _fill_slots(
+            pieces, _directives, _keywords = _fill_slots(
                 resolver, None, "characters/female/wardrobe", "casual", ["shoulders", "chest"], None
             )
         joined = ", ".join(pieces)
@@ -441,9 +444,51 @@ class TestSlots(EngineFixture):
     def test_fill_slots_empty_category(self):
         self._write("characters/female/wardrobe/empty/tops.txt", "#@lewdity: 10\n")
         resolver = self._resolver(seed=0)
-        pieces, directives = _fill_slots(resolver, None, "characters/female/wardrobe", "empty", ["face"], None)
+        pieces, directives, keywords = _fill_slots(resolver, None, "characters/female/wardrobe", "empty", ["face"], None)
         self.assertEqual(pieces, [])
         self.assertEqual(directives, [])
+        self.assertEqual(keywords, [])
+
+
+class TestKeywordDirectives(EngineFixture):
+    def test_file_default_and_per_line_overrides(self):
+        self._write(
+            "characters/maya/kw.txt",
+            "#@keyword: Default A, Default B\n# plain comment\nplain line\n#@keyword: Override X\noverridden line\n",
+        )
+        path = os.path.join(self.wildcards, "characters", "maya", "kw.txt")
+        default_tokens, mapping = _parse_keyword_directives(path)
+        self.assertEqual(default_tokens, ["Default A", "Default B"])
+        self.assertEqual(mapping, {"overridden line": "Override X"})
+
+    def test_missing_file_degrades_to_no_keywords(self):
+        self.assertEqual(
+            _parse_keyword_directives(os.path.join(self.wildcards, "nope.txt")),
+            ([], {}),
+        )
+
+    def test_split_tokens_trims_and_drops_empties(self):
+        self.assertEqual(_split_tokens(" A , B ,, C "), ["A", "B", "C"])
+
+    def test_tag_tokens_title_case_from_inline_tags(self):
+        raw = "a __colors/female_pastel__ blouse with __patterns/female_casual_top_print__ trim"
+        self.assertEqual(_tag_tokens(raw), ["Pastel", "Casual Top Print"])
+
+    def test_tag_tokens_plain_line(self):
+        self.assertEqual(_tag_tokens("plain garment line"), [])
+
+    def test_resolve_slot_collects_keywords_and_tag_tokens(self):
+        self._write("colors/female_test_color.txt", "test-color-word\n")
+        self._write(
+            "characters/female/wardrobe/tagged/tops.txt",
+            "#@keyword: Tagged Top\n#@fit: bust\na soft blouse in __colors/female_test_color__\n",
+        )
+        resolver = self._resolver(seed=0)
+        piece, _directives, tokens = _resolve_slot(
+            resolver, None, "characters/female/wardrobe/tagged", "tops", None
+        )
+        self.assertIn("test-color-word", piece)
+        self.assertEqual(tokens, ["Tagged Top", "Test Color"])
 
 
 class TestExtras(EngineFixture):
@@ -671,14 +716,12 @@ class TestBuildCharacter(EngineFixture):
         self.assertNotIn("cafe", character["description"])
         self.assertNotIn("cafe", character["keywords"])
 
-    def test_keywords_are_structured_tags_not_prose(self):
-        character = self._build(occasion="beach")
-        self.assertEqual(character["keywords"], "solo, female, beach, resort")
-        casual = self._build(occasion="casual")
-        self.assertEqual(casual["keywords"], "solo, female, casual")
+    def test_keywords_are_camera_style_tokens(self):
+        character = self._build(occasion="casual")
+        self.assertEqual(character["keywords"], "Solo, Perfect Eyes, Bindi")
         # The prose lives in the description only.
-        self.assertNotIn("beachgoer", character["keywords"])
-        self.assertNotIn("perfect", casual["keywords"])
+        self.assertNotIn("oval", character["keywords"])
+        self.assertNotIn("weave", character["keywords"])
 
     def test_background_with_time_filter(self):
         character = build_character(
@@ -715,7 +758,7 @@ class TestBuildCharacter(EngineFixture):
         self.assertEqual(character["outfit_category"], "")
         self.assertEqual(character["outfit"], "")
         self.assertEqual(character["background"], "")
-        self.assertEqual(character["keywords"], "solo, female, home")
+        self.assertEqual(character["keywords"], "Solo, Perfect Eyes, Bindi")
 
     def test_no_category_routed_warns(self):
         # A wardrobe whose catalog has no tag lines routes nothing at all.
