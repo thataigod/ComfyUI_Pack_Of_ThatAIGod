@@ -992,7 +992,33 @@ class WildcardResolver:
         Returns:
             The resolved, whitespace-stripped string.
         """
+        resolved, _values = self._resolve_with_values(text, context)
+        return resolved
+
+    def resolve_with_values(self, text: str, context: FilterContext = None) -> tuple[str, list[str]]:
+        """Resolve like :meth:`resolve` and also return the realized tag values.
+
+        Each ``__tag__`` expansion's picked replacement text is captured in
+        resolution order — one entry per replaced occurrence, consuming the
+        exact same RNG stream as :meth:`resolve` (identical seeding, identical
+        output text).  A value that still contains nested tags or choices is
+        recorded as written.
+
+        Args:
+            text: Input text containing ``__wildcard__`` tags and/or choices.
+            context: The active filter context (``None`` = no filtering).
+
+        Returns:
+            ``(resolved_text, values)``.
+        """
+        return self._resolve_with_values(text, context)
+
+    def _resolve_with_values(
+        self, text: str, context: FilterContext = None
+    ) -> tuple[str, list[str]]:
+        """Shared implementation for :meth:`resolve` and :meth:`resolve_with_values`."""
         processed = text if text else ""
+        values: list[str] = []
         for _iteration in range(_MAX_WILDCARD_ITERATIONS):
             matches = sorted(set(_WILDCARD_PATTERN.findall(processed)))
             if not matches:
@@ -1004,6 +1030,7 @@ class WildcardResolver:
                     replacement = ""
                 if tag in processed:
                     processed = processed.replace(tag, replacement, 1)
+                    values.append(replacement)
                     break
         else:
             remaining = sorted(set(_WILDCARD_PATTERN.findall(processed)))
@@ -1016,7 +1043,7 @@ class WildcardResolver:
                 )
 
         processed = self._resolve_nested_choices(processed)
-        return processed.strip()
+        return processed.strip(), values
 
     def _resolve_tag(self, tag: str, context: FilterContext) -> str:
         """Resolve a single tag to an eligible line (or empty string).

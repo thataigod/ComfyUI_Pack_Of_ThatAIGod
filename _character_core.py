@@ -32,8 +32,8 @@ Pipeline (lewdity-band era — the state axis is gone):
 6. **Outputs** — the description carries the prose; ``keywords`` is the
    camera-style token list: ``Solo`` plus authored ``#@keyword:`` tokens
    from every picked attribute and garment line, plus Title Case tokens
-   derived from inline color/pattern tags.  The trigger stays a separate
-   field.
+   derived from the realized inline-tag values (the shade actually picked).
+   The trigger stays a separate field.
 """
 
 from __future__ import annotations
@@ -485,20 +485,32 @@ def _parse_keyword_directives(path: str) -> tuple[list[str], dict[str, str]]:
     return _split_tokens(default_raw), mapping
 
 
-def _tag_tokens(raw_line: str) -> list[str]:
-    """Derive Title Case prompt tokens from a line's inline wildcard tags.
+def _tag_tokens(values: list[str]) -> list[str]:
+    """Convert realized inline-tag values into Title Case prompt tokens.
 
-    ``__colors/female_pastel__`` becomes ``Pastel`` and
-    ``__patterns/female_casual_top_print__`` becomes ``Casual Top Print``.
+    ``"Deep merlot"`` (the shade actually picked from a color deck) becomes
+    ``Deep Merlot``.  Values that are empty, still contain nested tags or
+    choices, or are prose-length are skipped.
     """
     tokens: list[str] = []
-    for content in re.findall(r"__(\w[\w/\-. ]*?)__", raw_line):
-        leaf = content.strip().split("/")[-1].strip()
-        if leaf.lower().startswith("female_"):
-            leaf = leaf[len("female_"):]
-        token = leaf.replace("_", " ").replace("-", " ").title()
-        if token:
-            tokens.append(token)
+    for value in values:
+        text = value.strip()
+        if not text or "__" in text or "{" in text or "}" in text:
+            continue
+        lowered = text.lower()
+        for article in ("a ", "an ", "the "):
+            if lowered.startswith(article):
+                text = text[len(article):]
+                break
+        text = text.rstrip(" .,;:")
+        if not text or len(text) > 40:
+            continue
+        words = [word for word in re.split(r"\s+", text) if word]
+        words = [
+            "-".join(part[:1].upper() + part[1:] for part in word.split("-"))
+            for word in words
+        ]
+        tokens.append(" ".join(words))
     return tokens
 
 
@@ -526,7 +538,8 @@ def _resolve_attribute(
         os.path.join(resolver.wildcards_dir, file_rel + ".txt")
     )
     tokens = _split_tokens(mapping[raw]) if raw in mapping else default_tokens
-    return resolver.resolve(raw, context), list(tokens)
+    resolved, tag_values = resolver.resolve_with_values(raw, context)
+    return resolved, list(tokens) + _tag_tokens(tag_values)
 
 
 def _compose_fit(
@@ -675,7 +688,7 @@ def _resolve_slot(
     without lewdity filtering.  Inline ``__colors/...__`` tags expand after
     the pick.  Keywords are the picked line's ``#@keyword:`` override, else
     the file's top-of-file default, plus Title Case tokens derived from the
-    line's inline tags.
+    realized inline-tag values (the shade actually picked, not the deck name).
     """
     if not resolver.file_exists(f"{slot_base}/{slot}"):
         return "", {}, []
@@ -689,8 +702,8 @@ def _resolve_slot(
         os.path.join(resolver.wildcards_dir, f"{slot_base}/{slot}.txt")
     )
     tokens = _split_tokens(mapping[raw]) if raw in mapping else list(default_tokens)
-    tokens.extend(_tag_tokens(raw))
-    piece = resolver.resolve(raw, context)
+    piece, tag_values = resolver.resolve_with_values(raw, context)
+    tokens.extend(_tag_tokens(tag_values))
     return piece, directives, tokens
 
 

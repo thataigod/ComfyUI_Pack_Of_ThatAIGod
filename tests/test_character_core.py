@@ -470,15 +470,25 @@ class TestKeywordDirectives(EngineFixture):
     def test_split_tokens_trims_and_drops_empties(self):
         self.assertEqual(_split_tokens(" A , B ,, C "), ["A", "B", "C"])
 
-    def test_tag_tokens_title_case_from_inline_tags(self):
-        raw = "a __colors/female_pastel__ blouse with __patterns/female_casual_top_print__ trim"
-        self.assertEqual(_tag_tokens(raw), ["Pastel", "Casual Top Print"])
+    def test_tag_tokens_title_case_from_realized_values(self):
+        values = ["Deep merlot", "a bold floral print", "an espresso", "the off-white weave"]
+        self.assertEqual(
+            _tag_tokens(values),
+            ["Deep Merlot", "Bold Floral Print", "Espresso", "Off-White Weave"],
+        )
 
-    def test_tag_tokens_plain_line(self):
-        self.assertEqual(_tag_tokens("plain garment line"), [])
+    def test_tag_tokens_skips_unusable_values(self):
+        values = [
+            "",
+            "   ",
+            "__nested/tag__",
+            "{a|b}",
+            "prose that is far too long to serve as a compact keyword token",
+        ]
+        self.assertEqual(_tag_tokens(values), [])
 
     def test_resolve_slot_collects_keywords_and_tag_tokens(self):
-        self._write("colors/female_test_color.txt", "test-color-word\n")
+        self._write("colors/female_test_color.txt", "deep teal\n")
         self._write(
             "characters/female/wardrobe/tagged/tops.txt",
             "#@keyword: Tagged Top\n#@fit: bust\na soft blouse in __colors/female_test_color__\n",
@@ -487,8 +497,8 @@ class TestKeywordDirectives(EngineFixture):
         piece, _directives, tokens = _resolve_slot(
             resolver, None, "characters/female/wardrobe/tagged", "tops", None
         )
-        self.assertIn("test-color-word", piece)
-        self.assertEqual(tokens, ["Tagged Top", "Test Color"])
+        self.assertIn("deep teal", piece)
+        self.assertEqual(tokens, ["Tagged Top", "Deep Teal"])
 
 
 class TestExtras(EngineFixture):

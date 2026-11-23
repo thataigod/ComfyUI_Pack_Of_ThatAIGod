@@ -625,6 +625,23 @@ class TestWildcardResolverCore(unittest.TestCase):
     def test_keyword_is_known_directive_key(self):
         self.assertIn("keyword", KNOWN_DIRECTIVE_KEYS)
 
+    def test_resolve_with_values_returns_realized_picks(self):
+        self._create("colors/deck.txt", ["deep merlot", "espresso"])
+        resolver = self._resolver(seed=0)
+        text, values = resolver.resolve_with_values("a suit in __colors/deck__")
+        self.assertIn(values[0], ("deep merlot", "espresso"))
+        self.assertEqual(text, f"a suit in {values[0]}")
+
+    def test_resolve_with_values_matches_resolve_seeding(self):
+        self._create("colors/deck.txt", ["deep merlot", "espresso"])
+        plain = self._resolver(seed=7).resolve("a suit in __colors/deck__ and __colors/deck__")
+        text, values = self._resolver(seed=7).resolve_with_values(
+            "a suit in __colors/deck__ and __colors/deck__"
+        )
+        self.assertEqual(text, plain)
+        self.assertEqual(len(values), 2)
+        self.assertTrue(all(value in ("deep merlot", "espresso") for value in values))
+
     def test_pick_line_in_band_respects_file_default(self):
         self._create("rated.txt", ["#@lewdity: 60", "a rated line", "another rated line"])
         resolver = self._resolver(seed=0)
