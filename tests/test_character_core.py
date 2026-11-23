@@ -671,6 +671,15 @@ class TestBuildCharacter(EngineFixture):
         self.assertNotIn("cafe", character["description"])
         self.assertNotIn("cafe", character["keywords"])
 
+    def test_keywords_are_structured_tags_not_prose(self):
+        character = self._build(occasion="beach")
+        self.assertEqual(character["keywords"], "solo, female, beach, resort")
+        casual = self._build(occasion="casual")
+        self.assertEqual(casual["keywords"], "solo, female, casual")
+        # The prose lives in the description only.
+        self.assertNotIn("beachgoer", character["keywords"])
+        self.assertNotIn("perfect", casual["keywords"])
+
     def test_background_with_time_filter(self):
         character = build_character(
             wildcards_dir=self.wildcards,
@@ -706,6 +715,7 @@ class TestBuildCharacter(EngineFixture):
         self.assertEqual(character["outfit_category"], "")
         self.assertEqual(character["outfit"], "")
         self.assertEqual(character["background"], "")
+        self.assertEqual(character["keywords"], "solo, female, home")
 
     def test_no_category_routed_warns(self):
         # A wardrobe whose catalog has no tag lines routes nothing at all.

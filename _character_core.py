@@ -29,6 +29,9 @@ Pipeline (lewdity-band era — the state axis is gone):
    picks a location taxonomy file which resolves under the optional
    time/domain context.  The background is returned as its own string,
    never inside the description.
+6. **Outputs** — the description carries the prose; ``keywords`` is a
+   compact structured tag list (solo, gender, occasion, outfit category);
+   the trigger stays a separate field.
 """
 
 from __future__ import annotations
@@ -873,9 +876,11 @@ def build_character(
     description_parts = [part for part in (subject, pose, outfit) if part]
     description = ", ".join(description_parts)
 
-    keyword_parts = _dedupe(
-        [attributes["intro"]] + [attributes[key] for key in subject_order] + [pose] + outfit_parts
-    )
+    # Keywords are structured prompt tags, not prose: the description already
+    # carries the natural-language content, so Keywords contributes only the
+    # compact facts a tag-style prompt or caption tail wants.  The trigger
+    # stays a separate output so it can be placed deliberately.
+    keyword_parts = _dedupe(["solo", gender, occasion, outfit_category])
     keywords = ", ".join(keyword_parts)
 
     return {
