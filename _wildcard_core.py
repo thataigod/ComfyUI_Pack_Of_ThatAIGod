@@ -640,8 +640,11 @@ class WildcardResolver:
         A line's rating is its ``#@lewdity`` override, else the file's
         top-of-file default header, else 0 (unrated lines read as maximally
         modest, so conservative bands can never be surprised by them).
-        Both the default header and per-line overrides accumulate per
-        :meth:`_parse_file`, matching the authored wardrobe format.
+        Directives are BLOCK-scoped, matching the authored wardrobe format:
+        an override above one line qualifies only that line, and all other
+        lines fall back to the file's default header (never to a previous
+        line's override).  The same block scoping applies to ``#@fit:``
+        zones, so a garment's fit never leaks onto its neighbours.
 
         Eligibility uses the same context and deep-tag filtering as
         :meth:`resolve`.  Selection honours the resolver's mode, with the
@@ -663,7 +666,7 @@ class WildcardResolver:
         path = self._contained_path(file_rel)
         if path is None or not os.path.isfile(path):
             return "", {}
-        entries = self._parse_file(path) or []
+        entries = self._block_directives(path)
         if not entries:
             return "", {}
         file_default = self._file_lewdity(path)

@@ -627,8 +627,28 @@ class TestWildcardResolverCore(unittest.TestCase):
         resolver = self._resolver(seed=0)
         picked = resolver.pick_line_in_band("rated", None, 50, 70)
         self.assertIn(picked[0], ("a rated line", "another rated line"))
-        self.assertEqual(picked[1].get("lewdity"), {"60"})
         self.assertEqual(resolver.pick_line_in_band("rated", None, 0, 30), ("", {}))
+
+    def test_pick_line_in_band_override_does_not_leak(self):
+        # A per-line override qualifies only its own line: the line AFTER
+        # the daring one still reads as the 60 default.
+        self._create(
+            "rated.txt",
+            ["#@lewdity: 60", "modest line", "#@lewdity: 90", "a daring line", "another modest line"],
+        )
+        for seed in range(5):
+            picked = self._resolver(seed=seed).pick_line_in_band("rated", None, 80, 100)
+            self.assertEqual(picked[0], "a daring line")
+
+    def test_pick_line_in_band_fit_does_not_leak(self):
+        # A #@fit zone above one garment must not attach to the next.
+        self._create(
+            "tops.txt",
+            ["#@lewdity: 10", "#@fit: bust", "a fitted top", "#@lewdity: 20", "a plain top"],
+        )
+        picked = self._resolver(seed=0).pick_line_in_band("tops", None, 15, 25)
+        self.assertEqual(picked[0], "a plain top")
+        self.assertNotIn("fit", picked[1])
 
     def test_pick_line_in_band_per_line_override(self):
         self._create(
