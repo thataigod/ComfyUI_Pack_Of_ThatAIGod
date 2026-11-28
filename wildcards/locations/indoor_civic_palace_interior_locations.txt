@@ -1,3 +1,4 @@
+#@keyword: Civic Palace Interior
 #@setting: indoor
 #@domain: civic
 #@place: palace_interior

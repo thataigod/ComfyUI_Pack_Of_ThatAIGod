@@ -1,3 +1,4 @@
+#@keyword: Commercial Greenhouse
 #@setting: indoor
 #@domain: commercial
 #@place: greenhouse

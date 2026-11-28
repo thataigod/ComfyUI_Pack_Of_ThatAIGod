@@ -1,3 +1,4 @@
+#@keyword: Gardens
 __outdoor_gardens_botanical_locations__
 __outdoor_gardens_rose_locations__
 __outdoor_gardens_zen_locations__

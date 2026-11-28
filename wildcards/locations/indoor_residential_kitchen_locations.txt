@@ -1,3 +1,4 @@
+#@keyword: Residential Kitchen
 #@setting: indoor
 #@domain: residential
 #@place: kitchen

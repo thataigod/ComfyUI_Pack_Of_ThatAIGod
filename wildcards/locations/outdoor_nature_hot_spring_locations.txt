@@ -1,3 +1,4 @@
+#@keyword: Nature Hot Spring
 #@setting: outdoor
 #@domain: nature
 #@place: hot_spring

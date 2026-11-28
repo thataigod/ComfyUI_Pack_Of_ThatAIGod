@@ -1,3 +1,4 @@
+#@keyword: Rural Barn
 #@setting: outdoor
 #@domain: rural
 #@place: barn

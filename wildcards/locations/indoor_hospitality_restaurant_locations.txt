@@ -1,3 +1,4 @@
+#@keyword: Hospitality Restaurant
 #@setting: indoor
 #@domain: hospitality
 #@place: restaurant

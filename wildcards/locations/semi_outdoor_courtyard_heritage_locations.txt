@@ -1,3 +1,4 @@
+#@keyword: Courtyard Heritage
 #@setting: semi_outdoor
 #@domain: courtyard
 #@place: heritage

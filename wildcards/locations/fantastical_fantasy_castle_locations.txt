@@ -1,3 +1,4 @@
+#@keyword: Fantasy Castle
 #@setting: fantastical
 #@domain: fantasy
 #@place: castle

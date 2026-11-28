@@ -1,3 +1,4 @@
+#@keyword: Mythological Cloud Kingdom
 #@setting: fantastical
 #@domain: mythological
 #@place: cloud_kingdom

@@ -1,3 +1,4 @@
+#@keyword: Waterfront
 __outdoor_waterfront_beach_locations__
 __outdoor_waterfront_shoreline_locations__
 __outdoor_waterfront_pier_locations__

@@ -1,3 +1,4 @@
+#@keyword: Nature
 __outdoor_nature_forest_locations__
 __outdoor_nature_meadow_locations__
 __outdoor_nature_mountain_locations__

@@ -1,3 +1,4 @@
+#@keyword: Nature Snowy Mountain
 #@setting: outdoor
 #@domain: nature
 #@place: snowy_mountain

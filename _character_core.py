@@ -28,12 +28,14 @@ Pipeline (lewdity-band era — the state axis is gone):
 5. **Background** — ``locations/female_<category>_matching_locations``
    picks a location taxonomy file which resolves under the optional
    time/domain context.  The background is returned as its own string,
-   never inside the description.
-6. **Outputs** — the description carries the prose; ``keywords`` is the
-   camera-style token list: ``Solo`` plus authored ``#@keyword:`` tokens
-   from every picked attribute and garment line, plus Title Case tokens
-   derived from the realized inline-tag values (the shade actually picked).
-   The trigger stays a separate field.
+   appended to the description, and contributes its own keyword tokens
+   from the taxonomy's ``#@keyword:`` directives.
+6. **Outputs** — the description is the full prose (subject, pose, outfit,
+   background); ``keywords`` is the camera-style token list: ``Solo`` plus
+   authored ``#@keyword:`` tokens from every picked attribute, garment and
+   background line, plus Title Case tokens derived from the realized
+   inline-tag values (the shade actually picked).  The trigger stays a
+   separate field.
 """
 
 from __future__ import annotations
@@ -786,7 +788,9 @@ def _roll_extras(resolver: WildcardResolver, category: str) -> list[str]:
     return extras
 
 
-def _background(resolver: WildcardResolver, category: str, time_of_day: str, domain: str) -> str:
+def _background(
+    resolver: WildcardResolver, category: str, time_of_day: str, domain: str
+) -> tuple[str, list[str]]:
     """Resolve the background for an outfit category via matching locations.
 
     The matching-locations file picks one location taxonomy tag, which then
@@ -795,9 +799,13 @@ def _background(resolver: WildcardResolver, category: str, time_of_day: str, dom
     request must not coin-flip into a noon description).  Categories
     without a matching file yield ``""`` with a warning — never a random
     location walk.
+
+    Returns the resolved text and its keyword tokens: the taxonomy file's
+    top-of-file ``#@keyword:`` default or the picked line's own override,
+    plus the requested time of day as a Title Case token.
     """
     if not category:
-        return ""
+        return "", []
     domain_context: dict[str, set[str]] | None = {"domain": {domain}} if domain else None
     for template in _MATCHING_LOCATIONS_CANDIDATES:
         rel = template.format(category=category)
@@ -805,18 +813,26 @@ def _background(resolver: WildcardResolver, category: str, time_of_day: str, dom
             continue
         tag_line = resolver.pick_line(rel, None)
         if not tag_line:
-            return ""
+            return "", []
         tag = _tag_path(tag_line)
         if not tag:
-            return ""
+            return "", []
+        default_tokens, mapping = _parse_keyword_directives(
+            os.path.join(resolver.wildcards_dir, tag + ".txt")
+        )
         if time_of_day:
             context = dict(domain_context or {})
             context["time"] = {time_of_day}
             line, _directives = resolver.pick_line_preferred(tag, context, "time")
-            return line.strip()
-        return resolver.resolve(tag_line, domain_context).strip()
+            text = line.strip()
+        else:
+            text = resolver.resolve(tag_line, domain_context).strip()
+        tokens = _split_tokens(mapping[text]) if text in mapping else list(default_tokens)
+        if time_of_day and text:
+            tokens.append(time_of_day.title())
+        return text, tokens
     logger.warning("Character: no matching-locations file for outfit category %r; background left empty", category)
-    return ""
+    return "", []
 
 
 def _dedupe(items: list[str]) -> list[str]:
@@ -871,7 +887,9 @@ def build_character(
 
     Returns:
         The CHARACTER object dict (see the Character node docs for the
-        shape), including the ``background`` string as its own field.
+        shape).  ``description`` is the full prose (subject, pose, outfit
+        and background); ``background`` is also its own field; ``keywords``
+        includes the background's keyword tokens.
     """
     persona = _safe_persona(persona)
     persona_base = f"characters/{persona}"
@@ -972,21 +990,24 @@ def build_character(
         outfit_parts.append(f"{piece}, {fit_clause}" if fit_clause else piece)
     outfit_parts.extend(_roll_extras(resolver, outfit_category))
 
-    background = _background(resolver, outfit_category, time_of_day, domain)
+    background, background_keywords = _background(
+        resolver, outfit_category, time_of_day, domain
+    )
     outfit = ", ".join(outfit_parts)
 
     subject_order = [face_attribute if key == "face" else key for key in _SUBJECT_ORDER]
     subject_parts = [attributes["intro"]] + [attributes[key] for key in subject_order]
     subject = ", ".join(part for part in subject_parts if part)
 
-    description_parts = [part for part in (subject, pose, outfit) if part]
+    description_parts = [part for part in (subject, pose, outfit, background) if part]
     description = ", ".join(description_parts)
 
     # Keywords are camera-style prompt tokens, not prose: the description
     # already carries the natural-language content, so Keywords contributes
-    # the authored ``#@keyword:`` tokens of every picked attribute and
-    # garment line, the inline color/pattern tokens, and a leading ``Solo``.
-    # The trigger stays a separate output so it can be placed deliberately.
+    # the authored ``#@keyword:`` tokens of every picked attribute, garment
+    # and background line, the realized inline-tag values, and a leading
+    # ``Solo``.  The trigger stays a separate output so it can be placed
+    # deliberately.
     keyword_parts = _dedupe(
         [
             "Solo",
@@ -994,6 +1015,7 @@ def build_character(
             *attribute_keywords,
             *pose_keywords,
             *outfit_keywords,
+            *background_keywords,
         ]
     )
     keywords = ", ".join(keyword_parts)

@@ -1,3 +1,4 @@
+#@keyword: Fantasy
 __fantastical_fantasy_castle_locations__
 __fantastical_fantasy_throne_room_locations__
 __fantastical_fantasy_dungeon_locations__

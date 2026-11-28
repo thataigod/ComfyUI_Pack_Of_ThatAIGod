@@ -1,3 +1,4 @@
+#@keyword: Residential Playroom
 #@setting: indoor
 #@domain: residential
 #@place: playroom

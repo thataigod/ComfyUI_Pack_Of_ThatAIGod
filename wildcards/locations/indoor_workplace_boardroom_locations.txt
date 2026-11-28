@@ -1,3 +1,4 @@
+#@keyword: Workplace Boardroom
 #@setting: indoor
 #@domain: workplace
 #@place: boardroom

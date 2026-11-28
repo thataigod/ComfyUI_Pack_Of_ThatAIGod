@@ -1,3 +1,4 @@
+#@keyword: Workplace Warehouse
 #@setting: indoor
 #@domain: workplace
 #@place: warehouse

@@ -1,3 +1,4 @@
+#@keyword: Nature Lakeside
 #@setting: outdoor
 #@domain: nature
 #@place: lakeside

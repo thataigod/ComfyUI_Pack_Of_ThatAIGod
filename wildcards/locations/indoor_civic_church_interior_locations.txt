@@ -1,3 +1,4 @@
+#@keyword: Civic Church Interior
 #@setting: indoor
 #@domain: civic
 #@place: church_interior

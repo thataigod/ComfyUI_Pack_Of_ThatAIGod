@@ -1,3 +1,4 @@
+#@keyword: Civic Art Gallery
 #@setting: indoor
 #@domain: civic
 #@place: art_gallery

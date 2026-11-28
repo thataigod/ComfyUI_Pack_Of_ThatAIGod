@@ -1,3 +1,4 @@
+#@keyword: Covered Market Stall
 #@setting: semi_outdoor
 #@domain: covered
 #@place: market_stall

@@ -1,3 +1,4 @@
+#@keyword: Sci-Fi Space Station
 #@setting: fantastical
 #@domain: scifi
 #@place: space_station

@@ -1,3 +1,4 @@
+#@keyword: Courtyard
 __semi_outdoor_courtyard_heritage_locations__
 __semi_outdoor_courtyard_haveli_locations__
 __semi_outdoor_courtyard_palace_locations__

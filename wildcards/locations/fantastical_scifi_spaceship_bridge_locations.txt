@@ -1,3 +1,4 @@
+#@keyword: Sci-Fi Spaceship Bridge
 #@setting: fantastical
 #@domain: scifi
 #@place: spaceship_bridge

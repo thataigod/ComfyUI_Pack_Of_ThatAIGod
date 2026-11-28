@@ -1,3 +1,4 @@
+#@keyword: Residential
 __indoor_residential_bedroom_locations__
 __indoor_residential_living_room_locations__
 __indoor_residential_kitchen_locations__

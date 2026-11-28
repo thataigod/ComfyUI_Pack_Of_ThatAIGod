@@ -1,3 +1,4 @@
+#@keyword: Urban Street
 #@setting: outdoor
 #@domain: urban
 #@place: street

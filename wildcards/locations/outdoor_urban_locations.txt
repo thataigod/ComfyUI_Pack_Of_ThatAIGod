@@ -1,3 +1,4 @@
+#@keyword: Urban
 __outdoor_urban_street_locations__
 __outdoor_urban_alley_locations__
 __outdoor_urban_plaza_locations__

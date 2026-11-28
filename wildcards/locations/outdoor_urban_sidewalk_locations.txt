@@ -1,3 +1,4 @@
+#@keyword: Urban Sidewalk
 #@setting: outdoor
 #@domain: urban
 #@place: sidewalk

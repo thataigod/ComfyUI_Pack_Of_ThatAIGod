@@ -1,3 +1,4 @@
+#@keyword: Urban Plaza
 #@setting: outdoor
 #@domain: urban
 #@place: plaza

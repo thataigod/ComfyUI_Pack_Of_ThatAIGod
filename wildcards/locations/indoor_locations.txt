@@ -1,3 +1,4 @@
+#@keyword: Location
 __indoor_residential_locations__
 __indoor_hospitality_locations__
 __indoor_commercial_locations__

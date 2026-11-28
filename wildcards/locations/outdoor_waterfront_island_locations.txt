@@ -1,3 +1,4 @@
+#@keyword: Waterfront Island
 #@setting: outdoor
 #@domain: waterfront
 #@place: island

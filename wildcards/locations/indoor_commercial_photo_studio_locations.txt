@@ -1,3 +1,4 @@
+#@keyword: Commercial Photo Studio
 #@setting: indoor
 #@domain: commercial
 #@place: photo_studio

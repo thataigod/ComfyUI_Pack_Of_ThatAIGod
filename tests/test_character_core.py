@@ -142,14 +142,18 @@ class EngineFixture(unittest.TestCase):
         self._write("locations/female_lingerie_matching_locations.txt", "__locations/test_diner__\n")
         self._write(
             "locations/test_cafe.txt",
-            "in a sunlit corner cafe with oak tables\n",
+            "#@keyword: Cafe Interior\nin a sunlit corner cafe with oak tables\n",
         )
         self._write(
             "locations/test_diner.txt",
-            "#@time: night\nin a dim diner under humming neon signs\n"
+            "#@keyword: Diner\n"
+            "#@time: night\n#@keyword: Neon Diner\nin a dim diner under humming neon signs\n"
             "#@time: dawn\nin a misty diner at first light\n",
         )
-        self._write("locations/test_beach.txt", "#@domain: waterfront\non a wide sandy beach with dune grass\n")
+        self._write(
+            "locations/test_beach.txt",
+            "#@keyword: Beach\n#@domain: waterfront\non a wide sandy beach with dune grass\n",
+        )
         self._write("jewellery/female_casual_jewellery.txt", "thin gold hoop earrings\n")
         self._write("accessories/female_casual_accessories.txt", "a woven canvas tote\n")
         self._write("brands/female_western_highstreet.txt", "a highstreet label\n")
@@ -539,52 +543,63 @@ class TestBackground(EngineFixture):
 
     def test_background_resolves_matching_location(self):
         resolver = self._resolver(seed=0)
-        background = _background(resolver, "casual", "", "")
-        self.assertEqual(background, "in a sunlit corner cafe with oak tables")
+        text, tokens = _background(resolver, "casual", "", "")
+        self.assertEqual(text, "in a sunlit corner cafe with oak tables")
+        self.assertEqual(tokens, ["Cafe Interior"])
 
     def test_background_time_filter_prefers_tagged_lines(self):
         resolver = self._resolver(seed=0)
         # The diner taxonomy has only time-tagged lines: a night request
         # must resolve to the night line, never the dawn one.
-        self.assertEqual(_background(resolver, "lingerie", "night", ""), "in a dim diner under humming neon signs")
-        self.assertEqual(_background(resolver, "lingerie", "dawn", ""), "in a misty diner at first light")
-        self.assertIn(_background(resolver, "lingerie", "", ""), {"in a dim diner under humming neon signs", "in a misty diner at first light"})
+        night_text, night_tokens = _background(resolver, "lingerie", "night", "")
+        self.assertEqual(night_text, "in a dim diner under humming neon signs")
+        self.assertEqual(night_tokens, ["Neon Diner", "Night"])
+        dawn_text, dawn_tokens = _background(resolver, "lingerie", "dawn", "")
+        self.assertEqual(dawn_text, "in a misty diner at first light")
+        self.assertEqual(dawn_tokens, ["Diner", "Dawn"])
+        any_text, any_tokens = _background(resolver, "lingerie", "", "")
+        self.assertIn(any_text, {"in a dim diner under humming neon signs", "in a misty diner at first light"})
+        self.assertEqual(any_tokens, ["Diner"])
 
     def test_background_time_filter_on_universal_file_keeps_universal(self):
         resolver = self._resolver(seed=0)
         # The cafe taxonomy has one universal line and no time blocks: the
         # time filter cannot invent a variant, so the universal line serves.
-        self.assertEqual(_background(resolver, "casual", "night", ""), "in a sunlit corner cafe with oak tables")
+        text, _tokens = _background(resolver, "casual", "night", "")
+        self.assertEqual(text, "in a sunlit corner cafe with oak tables")
 
     def test_background_domain_filter_excludes(self):
         resolver = self._resolver(seed=0)
         # The cafe taxonomy has no #@domain header, so a domain filter drops
         # its only universal line?  No — unasserted keys never restrict; the
         # header-less line stays eligible.
-        self.assertEqual(_background(resolver, "casual", "", "waterfront"), "in a sunlit corner cafe with oak tables")
+        text, _tokens = _background(resolver, "casual", "", "waterfront")
+        self.assertEqual(text, "in a sunlit corner cafe with oak tables")
 
     def test_background_domain_matching(self):
         resolver = self._resolver(seed=0)
-        self.assertEqual(_background(resolver, "resort", "", "waterfront"), "on a wide sandy beach with dune grass")
+        text, tokens = _background(resolver, "resort", "", "waterfront")
+        self.assertEqual(text, "on a wide sandy beach with dune grass")
+        self.assertEqual(tokens, ["Beach"])
 
     def test_background_missing_matching_file_warns(self):
         resolver = self._resolver(seed=0)
         with self.assertLogs("ThatAIGod", level=logging.WARNING):
-            self.assertEqual(_background(resolver, "business", "", ""), "")
+            self.assertEqual(_background(resolver, "business", "", ""), ("", []))
 
     def test_background_non_tag_matching_line_returns_empty(self):
         self._write("locations/female_business_matching_locations.txt", "just prose, not a tag\n")
         resolver = self._resolver(seed=0)
-        self.assertEqual(_background(resolver, "business", "", ""), "")
+        self.assertEqual(_background(resolver, "business", "", ""), ("", []))
         self.assertEqual(_tag_path("just prose, not a tag"), "")
 
     def test_background_without_category(self):
-        self.assertEqual(_background(self._resolver(), "", "", ""), "")
+        self.assertEqual(_background(self._resolver(), "", "", ""), ("", []))
 
     def test_background_empty_matching_file(self):
         self._write("locations/female_lingerie_matching_locations.txt", "#@occasion: intimate\n")
         resolver = self._resolver(seed=0)
-        self.assertEqual(_background(resolver, "lingerie", "", ""), "")
+        self.assertEqual(_background(resolver, "lingerie", "", ""), ("", []))
 
 
 class TestBuildCharacter(EngineFixture):
@@ -720,15 +735,16 @@ class TestBuildCharacter(EngineFixture):
         casual = self._build(occasion="casual")
         self.assertNotIn("pinned up", casual["description"])
 
-    def test_background_separate_from_description(self):
+    def test_background_appended_to_description_and_keywords(self):
         character = self._build()
         self.assertEqual(character["background"], "in a sunlit corner cafe with oak tables")
-        self.assertNotIn("cafe", character["description"])
+        self.assertTrue(character["description"].endswith("in a sunlit corner cafe with oak tables"))
+        self.assertIn("Cafe Interior", character["keywords"])
         self.assertNotIn("cafe", character["keywords"])
 
     def test_keywords_are_camera_style_tokens(self):
         character = self._build(occasion="casual")
-        self.assertEqual(character["keywords"], "Solo, Perfect Eyes, Bindi")
+        self.assertEqual(character["keywords"], "Solo, Perfect Eyes, Bindi, Cafe Interior")
         # The prose lives in the description only.
         self.assertNotIn("oval", character["keywords"])
         self.assertNotIn("weave", character["keywords"])

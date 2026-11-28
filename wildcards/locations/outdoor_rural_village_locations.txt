@@ -1,3 +1,4 @@
+#@keyword: Rural Village
 #@setting: outdoor
 #@domain: rural
 #@place: village

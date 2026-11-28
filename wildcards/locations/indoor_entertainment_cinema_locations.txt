@@ -1,3 +1,4 @@
+#@keyword: Entertainment Cinema
 #@setting: indoor
 #@domain: entertainment
 #@place: cinema

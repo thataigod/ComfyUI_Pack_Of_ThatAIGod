@@ -1,3 +1,4 @@
+#@keyword: Sci-Fi
 __fantastical_scifi_spaceship_bridge_locations__
 __fantastical_scifi_space_station_locations__
 __fantastical_scifi_alien_planet_locations__

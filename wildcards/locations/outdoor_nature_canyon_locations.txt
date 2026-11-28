@@ -1,3 +1,4 @@
+#@keyword: Nature Canyon
 #@setting: outdoor
 #@domain: nature
 #@place: canyon

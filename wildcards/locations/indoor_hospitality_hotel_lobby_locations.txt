@@ -1,3 +1,4 @@
+#@keyword: Hospitality Hotel Lobby
 #@setting: indoor
 #@domain: hospitality
 #@place: hotel_lobby

@@ -1,3 +1,4 @@
+#@keyword: Commercial
 __indoor_commercial_boutique_locations__
 __indoor_commercial_shopping_mall_locations__
 __indoor_commercial_indoor_market_locations__

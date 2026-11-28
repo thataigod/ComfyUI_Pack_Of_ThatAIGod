@@ -1,3 +1,4 @@
+#@keyword: Residential Living Room
 #@setting: indoor
 #@domain: residential
 #@place: living_room

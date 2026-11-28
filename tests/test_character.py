@@ -184,16 +184,17 @@ class TestBuild(unittest.TestCase):
                 "Character Config": json.dumps({"occasions": ["casual"]}),
             }
         )
-        self.assertEqual(len(out["result"]), 7)
-        character, character_json, description, keywords, background, occasion, trigger = out["result"]
-        self.assertIsInstance(character, dict)
-        self.assertEqual(json.loads(character_json), character)
+        self.assertEqual(len(out["result"]), 6)
+        trigger, description, keywords, subject, outfit, background = out["result"]
+        self.assertIsInstance(trigger, str)
         self.assertIsInstance(description, str)
         self.assertIsInstance(keywords, str)
+        self.assertIsInstance(subject, str)
+        self.assertIsInstance(outfit, str)
         self.assertIsInstance(background, str)
-        self.assertEqual(occasion, "casual")
-        self.assertIsInstance(trigger, str)
-        self.assertEqual(character["occasion"], "casual")
+        if background:
+            self.assertTrue(description.endswith(background))
+        self.assertIn("Occasion: casual", out["ui"]["text"][0])
         self.assertIn("Wardrobe:", out["ui"]["text"][0])
         self.assertIn("Lewdity:", out["ui"]["text"][0])
         self.assertIn("Background:", out["ui"]["text"][0])
@@ -214,8 +215,8 @@ class TestBuild(unittest.TestCase):
                 "Character Config": None,
             }
         )
-        occasion = out["result"][5]
-        self.assertTrue(occasion)
+        trigger = out["result"][0]
+        self.assertIsInstance(trigger, str)
         self.assertIn("(random)", out["ui"]["text"][0])
 
     def test_build_rolls_within_multi_occasion_config(self):
@@ -234,7 +235,8 @@ class TestBuild(unittest.TestCase):
                 "Character Config": json.dumps({"occasions": ["beach", "casual"]}),
             }
         )
-        self.assertIn(out["result"][5], {"beach", "casual"})
+        ui_text = out["ui"]["text"][0]
+        self.assertTrue("Occasion: beach" in ui_text or "Occasion: casual" in ui_text)
 
     def test_build_config_without_occasions_key_rolls_all(self):
         node = Character()
@@ -252,7 +254,9 @@ class TestBuild(unittest.TestCase):
                 "Character Config": json.dumps({"other": 1}),
             }
         )
-        self.assertTrue(out["result"][5])
+        ui_text = out["ui"]["text"][0]
+        self.assertIn("(random)", ui_text)
+        self.assertNotIn("(unrestricted)", ui_text)
 
     def test_build_custom_persona_shows_trigger(self):
         import tempfile
@@ -278,7 +282,7 @@ class TestBuild(unittest.TestCase):
                         "Character Config": json.dumps({"occasions": ["casual"]}),
                     }
                 )
-        self.assertEqual(out["result"][6], "trig_lora")
+        self.assertEqual(out["result"][0], "trig_lora")
         self.assertIn("Trigger:", out["ui"]["text"][0])
 
     def test_build_empty_occasions_config_is_unrestricted(self):
@@ -297,7 +301,7 @@ class TestBuild(unittest.TestCase):
                 "Character Config": json.dumps({"occasions": []}),
             }
         )
-        self.assertEqual(out["result"][5], "")
+        self.assertIn("Occasion: (unrestricted)", out["ui"]["text"][0])
 
     def test_build_time_filter_reaches_background(self):
         node = Character()
@@ -315,7 +319,7 @@ class TestBuild(unittest.TestCase):
                 "Character Config": json.dumps({"occasions": ["casual"]}),
             }
         )
-        background = out["result"][4]
+        background = out["result"][5]
         # Whatever location serves the casual category, the night filter must
         # hold: the background either mentions night phrasing or no
         # night-tagged lines exist for it (empty allowed, wrong never).
@@ -337,7 +341,10 @@ class TestBuild(unittest.TestCase):
                 "Character Config": json.dumps({"occasions": ["casual"]}),
             }
         )
-        self.assertEqual(out["result"][0]["wardrobe_base"], "characters/female/wardrobe")
+        self.assertIn(
+            "Wardrobe: Use Internal Wardrobe (characters/female/wardrobe)",
+            out["ui"]["text"][0],
+        )
 
 
 class TestMappings(unittest.TestCase):

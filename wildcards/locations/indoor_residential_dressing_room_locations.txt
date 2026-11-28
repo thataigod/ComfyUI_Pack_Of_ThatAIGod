@@ -1,3 +1,4 @@
+#@keyword: Residential Dressing Room
 #@setting: indoor
 #@domain: residential
 #@place: dressing_room

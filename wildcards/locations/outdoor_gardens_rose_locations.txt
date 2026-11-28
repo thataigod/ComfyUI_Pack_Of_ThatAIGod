@@ -1,3 +1,4 @@
+#@keyword: Gardens Rose
 #@setting: outdoor
 #@domain: gardens
 #@place: rose

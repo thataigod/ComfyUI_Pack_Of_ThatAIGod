@@ -1,3 +1,4 @@
+#@keyword: Nature Cliff
 #@setting: outdoor
 #@domain: nature
 #@place: cliff

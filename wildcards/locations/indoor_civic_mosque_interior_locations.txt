@@ -1,3 +1,4 @@
+#@keyword: Civic Mosque Interior
 #@setting: indoor
 #@domain: civic
 #@place: mosque_interior

@@ -1,3 +1,4 @@
+#@keyword: Mythological
 __fantastical_mythological_celestial_palace_locations__
 __fantastical_mythological_undersea_kingdom_locations__
 __fantastical_mythological_cloud_kingdom_locations__

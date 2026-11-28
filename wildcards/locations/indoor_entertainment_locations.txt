@@ -1,3 +1,4 @@
+#@keyword: Entertainment
 __indoor_entertainment_theatre_locations__
 __indoor_entertainment_cinema_locations__
 __indoor_entertainment_concert_hall_locations__

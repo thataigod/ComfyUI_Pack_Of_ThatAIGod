@@ -1,3 +1,4 @@
+#@keyword: Commercial Indoor Market
 #@setting: indoor
 #@domain: commercial
 #@place: indoor_market

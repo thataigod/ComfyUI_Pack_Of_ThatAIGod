@@ -1,3 +1,4 @@
+#@keyword: Courtyard Palace
 #@setting: semi_outdoor
 #@domain: courtyard
 #@place: palace

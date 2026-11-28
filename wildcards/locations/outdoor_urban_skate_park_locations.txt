@@ -1,3 +1,4 @@
+#@keyword: Urban Skate Park
 #@setting: outdoor
 #@domain: urban
 #@place: skate_park

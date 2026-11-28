@@ -1,3 +1,4 @@
+#@keyword: Residential Basement
 #@setting: indoor
 #@domain: residential
 #@place: basement

@@ -1,3 +1,4 @@
+#@keyword: Urban Rainy Street
 #@setting: outdoor
 #@domain: urban
 #@place: rainy_street

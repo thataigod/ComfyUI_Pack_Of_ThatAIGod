@@ -1,3 +1,4 @@
+#@keyword: Waterfront Ghat
 #@setting: outdoor
 #@domain: waterfront
 #@place: ghat

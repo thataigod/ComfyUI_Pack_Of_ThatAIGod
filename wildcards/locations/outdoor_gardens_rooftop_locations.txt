@@ -1,3 +1,4 @@
+#@keyword: Gardens Rooftop
 #@setting: outdoor
 #@domain: gardens
 #@place: rooftop

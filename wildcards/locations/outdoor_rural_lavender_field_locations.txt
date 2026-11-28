@@ -1,3 +1,4 @@
+#@keyword: Rural Lavender Field
 #@setting: outdoor
 #@domain: rural
 #@place: lavender_field

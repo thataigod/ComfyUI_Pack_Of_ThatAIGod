@@ -1,3 +1,4 @@
+#@keyword: Commercial Bookstore
 #@setting: indoor
 #@domain: commercial
 #@place: bookstore

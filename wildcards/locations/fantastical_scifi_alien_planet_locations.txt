@@ -1,3 +1,4 @@
+#@keyword: Sci-Fi Alien Planet
 #@setting: fantastical
 #@domain: scifi
 #@place: alien_planet

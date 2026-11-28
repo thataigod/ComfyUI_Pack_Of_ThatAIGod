@@ -1,3 +1,4 @@
+#@keyword: Courtyard Riad
 #@setting: semi_outdoor
 #@domain: courtyard
 #@place: riad

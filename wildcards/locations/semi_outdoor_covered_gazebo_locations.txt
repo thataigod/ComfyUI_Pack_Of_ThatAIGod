@@ -1,3 +1,4 @@
+#@keyword: Covered Gazebo
 #@setting: semi_outdoor
 #@domain: covered
 #@place: gazebo

@@ -1,3 +1,4 @@
+#@keyword: Hospitality Ballroom
 #@setting: indoor
 #@domain: hospitality
 #@place: ballroom

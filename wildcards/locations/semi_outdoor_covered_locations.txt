@@ -1,3 +1,4 @@
+#@keyword: Covered
 __semi_outdoor_covered_gazebo_locations__
 __semi_outdoor_covered_pergola_locations__
 __semi_outdoor_covered_market_stall_locations__

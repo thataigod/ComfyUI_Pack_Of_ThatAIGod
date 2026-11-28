@@ -1,3 +1,4 @@
+#@keyword: Gardens Mughal
 #@setting: outdoor
 #@domain: gardens
 #@place: mughal

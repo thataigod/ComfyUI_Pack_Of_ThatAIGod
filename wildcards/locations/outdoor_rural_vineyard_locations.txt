@@ -1,3 +1,4 @@
+#@keyword: Rural Vineyard
 #@setting: outdoor
 #@domain: rural
 #@place: vineyard

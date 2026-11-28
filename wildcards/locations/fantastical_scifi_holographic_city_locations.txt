@@ -1,3 +1,4 @@
+#@keyword: Sci-Fi Holographic City
 #@setting: fantastical
 #@domain: scifi
 #@place: holographic_city

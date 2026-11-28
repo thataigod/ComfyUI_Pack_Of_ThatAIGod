@@ -1,3 +1,4 @@
+#@keyword: Workplace Office
 #@setting: indoor
 #@domain: workplace
 #@place: office

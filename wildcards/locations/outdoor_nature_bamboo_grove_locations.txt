@@ -1,3 +1,4 @@
+#@keyword: Nature Bamboo Grove
 #@setting: outdoor
 #@domain: nature
 #@place: bamboo_grove

@@ -1,3 +1,4 @@
+#@keyword: Sci-Fi Cyberpunk Street
 #@setting: fantastical
 #@domain: scifi
 #@place: cyberpunk_street

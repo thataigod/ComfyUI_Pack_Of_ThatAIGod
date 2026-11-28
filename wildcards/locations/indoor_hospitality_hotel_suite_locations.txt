@@ -1,3 +1,4 @@
+#@keyword: Hospitality Hotel Suite
 #@setting: indoor
 #@domain: hospitality
 #@place: hotel_suite

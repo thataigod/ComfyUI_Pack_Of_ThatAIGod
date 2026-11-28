@@ -1,3 +1,4 @@
+#@keyword: Hospitality Spa
 #@setting: indoor
 #@domain: hospitality
 #@place: spa

@@ -1,3 +1,4 @@
+#@keyword: Nature Misty Forest
 #@setting: outdoor
 #@domain: nature
 #@place: misty_forest

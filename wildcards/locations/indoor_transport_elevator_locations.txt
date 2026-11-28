@@ -1,3 +1,4 @@
+#@keyword: Transport Elevator
 #@setting: indoor
 #@domain: transport
 #@place: elevator

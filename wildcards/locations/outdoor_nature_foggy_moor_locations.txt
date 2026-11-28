@@ -1,3 +1,4 @@
+#@keyword: Nature Foggy Moor
 #@setting: outdoor
 #@domain: nature
 #@place: foggy_moor

@@ -1,3 +1,4 @@
+#@keyword: Location
 __fantastical_fantasy_locations__
 __fantastical_scifi_locations__
 __fantastical_surreal_locations__

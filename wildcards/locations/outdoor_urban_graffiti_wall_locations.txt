@@ -1,3 +1,4 @@
+#@keyword: Urban Graffiti Wall
 #@setting: outdoor
 #@domain: urban
 #@place: graffiti_wall

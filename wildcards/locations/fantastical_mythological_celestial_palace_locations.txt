@@ -1,3 +1,4 @@
+#@keyword: Mythological Celestial Palace
 #@setting: fantastical
 #@domain: mythological
 #@place: celestial_palace

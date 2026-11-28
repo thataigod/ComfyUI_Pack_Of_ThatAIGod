@@ -1,3 +1,4 @@
+#@keyword: Residential Dining Room
 #@setting: indoor
 #@domain: residential
 #@place: dining_room

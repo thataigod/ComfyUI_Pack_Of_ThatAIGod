@@ -1,3 +1,4 @@
+#@keyword: Transport Car Interior
 #@setting: indoor
 #@domain: transport
 #@place: car_interior

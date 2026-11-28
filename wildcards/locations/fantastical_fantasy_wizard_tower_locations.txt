@@ -1,3 +1,4 @@
+#@keyword: Fantasy Wizard Tower
 #@setting: fantastical
 #@domain: fantasy
 #@place: wizard_tower

@@ -1,3 +1,4 @@
+#@keyword: Fantasy Elven Glade
 #@setting: fantastical
 #@domain: fantasy
 #@place: elven_glade

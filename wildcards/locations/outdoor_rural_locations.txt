@@ -1,3 +1,4 @@
+#@keyword: Rural
 __outdoor_rural_farmland_locations__
 __outdoor_rural_orchard_locations__
 __outdoor_rural_vineyard_locations__

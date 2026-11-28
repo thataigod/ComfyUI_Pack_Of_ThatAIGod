@@ -1,3 +1,4 @@
+#@keyword: Commercial Salon
 #@setting: indoor
 #@domain: commercial
 #@place: salon

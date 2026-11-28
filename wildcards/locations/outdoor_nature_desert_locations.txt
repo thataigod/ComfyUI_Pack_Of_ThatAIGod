@@ -1,3 +1,4 @@
+#@keyword: Nature Desert
 #@setting: outdoor
 #@domain: nature
 #@place: desert

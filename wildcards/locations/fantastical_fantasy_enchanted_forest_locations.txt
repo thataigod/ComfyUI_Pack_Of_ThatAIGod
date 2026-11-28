@@ -1,3 +1,4 @@
+#@keyword: Fantasy Enchanted Forest
 #@setting: fantastical
 #@domain: fantasy
 #@place: enchanted_forest

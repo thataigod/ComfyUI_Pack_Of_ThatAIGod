@@ -1,3 +1,4 @@
+#@keyword: Waterfront Beach
 #@setting: outdoor
 #@domain: waterfront
 #@place: beach

@@ -1,3 +1,4 @@
+#@keyword: Workplace Workshop
 #@setting: indoor
 #@domain: workplace
 #@place: workshop

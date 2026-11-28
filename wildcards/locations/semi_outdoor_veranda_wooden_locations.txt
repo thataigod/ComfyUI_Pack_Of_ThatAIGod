@@ -1,3 +1,4 @@
+#@keyword: Veranda Wooden
 #@setting: semi_outdoor
 #@domain: veranda
 #@place: wooden

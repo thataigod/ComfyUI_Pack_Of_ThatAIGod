@@ -1,3 +1,4 @@
+#@keyword: Transport
 __indoor_transport_car_interior_locations__
 __indoor_transport_train_carriage_locations__
 __indoor_transport_plane_cabin_locations__

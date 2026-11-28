@@ -1,3 +1,4 @@
+#@keyword: Covered Pergola
 #@setting: semi_outdoor
 #@domain: covered
 #@place: pergola

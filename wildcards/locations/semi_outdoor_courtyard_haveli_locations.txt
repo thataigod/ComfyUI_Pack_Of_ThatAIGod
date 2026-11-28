@@ -1,3 +1,4 @@
+#@keyword: Courtyard Haveli
 #@setting: semi_outdoor
 #@domain: courtyard
 #@place: haveli

@@ -1,3 +1,4 @@
+#@keyword: Commercial Shopping Mall
 #@setting: indoor
 #@domain: commercial
 #@place: shopping_mall

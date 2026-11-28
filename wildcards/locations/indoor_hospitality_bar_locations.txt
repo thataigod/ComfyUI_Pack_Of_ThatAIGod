@@ -1,3 +1,4 @@
+#@keyword: Hospitality Bar
 #@setting: indoor
 #@domain: hospitality
 #@place: bar

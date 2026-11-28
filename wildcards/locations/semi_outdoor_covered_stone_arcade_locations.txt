@@ -1,3 +1,4 @@
+#@keyword: Covered Stone Arcade
 #@setting: semi_outdoor
 #@domain: covered
 #@place: stone_arcade

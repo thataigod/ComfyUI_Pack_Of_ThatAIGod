@@ -1,3 +1,4 @@
+#@keyword: Surreal Floating Islands
 #@setting: fantastical
 #@domain: surreal
 #@place: floating_islands

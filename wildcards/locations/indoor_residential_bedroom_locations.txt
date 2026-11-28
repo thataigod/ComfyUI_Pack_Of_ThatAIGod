@@ -1,3 +1,4 @@
+#@keyword: Residential Bedroom
 #@setting: indoor
 #@domain: residential
 #@place: bedroom

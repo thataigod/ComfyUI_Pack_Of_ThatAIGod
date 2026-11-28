@@ -1,3 +1,4 @@
+#@keyword: Fantasy Dungeon
 #@setting: fantastical
 #@domain: fantasy
 #@place: dungeon

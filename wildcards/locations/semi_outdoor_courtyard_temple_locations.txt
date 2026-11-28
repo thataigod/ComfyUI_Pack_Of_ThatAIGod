@@ -1,3 +1,4 @@
+#@keyword: Courtyard Temple
 #@setting: semi_outdoor
 #@domain: courtyard
 #@place: temple

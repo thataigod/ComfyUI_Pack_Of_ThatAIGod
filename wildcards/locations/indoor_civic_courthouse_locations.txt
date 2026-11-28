@@ -1,3 +1,4 @@
+#@keyword: Civic Courthouse
 #@setting: indoor
 #@domain: civic
 #@place: courthouse

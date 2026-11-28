@@ -1,3 +1,4 @@
+#@keyword: Workplace Coworking
 #@setting: indoor
 #@domain: workplace
 #@place: coworking

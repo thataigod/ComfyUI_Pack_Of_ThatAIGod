@@ -1,3 +1,4 @@
+#@keyword: Veranda
 __semi_outdoor_veranda_wooden_locations__
 __semi_outdoor_veranda_balcony_locations__
 __semi_outdoor_veranda_terrace_locations__

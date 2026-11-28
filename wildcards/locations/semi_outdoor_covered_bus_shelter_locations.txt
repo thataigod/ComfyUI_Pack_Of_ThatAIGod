@@ -1,3 +1,4 @@
+#@keyword: Covered Bus Shelter
 #@setting: semi_outdoor
 #@domain: covered
 #@place: bus_shelter

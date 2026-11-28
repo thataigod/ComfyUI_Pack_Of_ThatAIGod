@@ -1,3 +1,4 @@
+#@keyword: Civic Airport Terminal
 #@setting: indoor
 #@domain: civic
 #@place: airport_terminal

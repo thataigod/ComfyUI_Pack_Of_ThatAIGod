@@ -6,8 +6,7 @@ Camera node, strips the persona description down to the visible body
 regions, poses the character, dresses it for a randomly rolled occasion
 from a wardrobe source chosen on the node (the shared common wardrobe
 gated by the persona's lewdity band, the persona's own curated wardrobe,
-or everything), rolls minimal extras, resolves a matching background, and
-emits a coherent CHARACTER object plus the background as its own string.
+or everything), rolls minimal extras, and resolves a matching background.
 
 Supports:
 * Persona selection from a dropdown populated at startup with ``female``,
@@ -22,9 +21,10 @@ Supports:
   scanned from the location taxonomy's ``#@time:``/``#@domain:`` headers.
 * Two selection modes: deterministic (seeded) and random without repeats.
 
-The node emits the CHARACTER object (for downstream nodes), its JSON twin,
-a natural-language Description, Keywords, the Background as its own string,
-the rolled Occasion and the persona Trigger.
+The node emits six strings: the persona Trigger, the full Description
+(subject, pose, outfit and background), Keywords (including the
+background's own keyword tokens), and the Subject, Outfit and Background
+slices for pipelines that want to place each part separately.
 """
 
 from __future__ import annotations
@@ -162,19 +162,18 @@ class Character:
         "Persona-driven character node: pick a persona and wire the CAMERA object from the "
         "Camera node — the node describes only the visible body regions, poses the character, "
         "dresses it for a rolled occasion from the chosen wardrobe source (lewdity-band gated), "
-        "adds minimal extras, resolves a matching background as its own output, and emits the "
-        "CHARACTER object, its JSON twin, Description, Keywords, Background, Occasion and Trigger."
+        "adds minimal extras, and resolves a matching background. Outputs: Trigger, Description "
+        "(including the background), Keywords, Subject, Outfit and Background."
     )
 
-    RETURN_TYPES: tuple[str, ...] = ("CHARACTER", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING")
+    RETURN_TYPES: tuple[str, ...] = ("STRING", "STRING", "STRING", "STRING", "STRING", "STRING")
     RETURN_NAMES: tuple[str, ...] = (
-        "Character",
-        "Character JSON",
+        "Trigger",
         "Description",
         "Keywords",
+        "Subject",
+        "Outfit",
         "Background",
-        "Occasion",
-        "Trigger",
     )
     FUNCTION: str = "build"
     CATEGORY: str = "ThatAIGod/Character System"
@@ -310,9 +309,9 @@ class Character:
                 ``"Wildcard Mode"``, ``"Character Config"``.
 
         Returns:
-            A dict with a 7-tuple ``"result"`` matching the node's
-            ``RETURN_TYPES`` (Character object, JSON, Description, Keywords,
-            Background, Occasion, Trigger).
+            A dict with a 6-tuple ``"result"`` matching the node's
+            ``RETURN_TYPES`` (Trigger, Description, Keywords, Subject,
+            Outfit, Background).
         """
         persona: str = str(kwargs.get("Persona", "female"))
         camera: Any = kwargs.get("Camera")
@@ -357,8 +356,6 @@ class Character:
             domain=domain,
         )
 
-        character_json = json.dumps(character)
-
         rolled = occasion == "" and character["occasion"] != ""
         band = character["lewdity"]
         band_text = (
@@ -386,13 +383,12 @@ class Character:
                 "keywords": [character["keywords"]],
             },
             "result": (
-                character,
-                character_json,
+                character["trigger"],
                 character["description"],
                 character["keywords"],
+                character["subject"],
+                character["outfit"],
                 character["background"],
-                character["occasion"],
-                character["trigger"],
             ),
         }
 

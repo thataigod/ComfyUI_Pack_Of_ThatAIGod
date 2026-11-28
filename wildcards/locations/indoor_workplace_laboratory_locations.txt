@@ -1,3 +1,4 @@
+#@keyword: Workplace Laboratory
 #@setting: indoor
 #@domain: workplace
 #@place: laboratory

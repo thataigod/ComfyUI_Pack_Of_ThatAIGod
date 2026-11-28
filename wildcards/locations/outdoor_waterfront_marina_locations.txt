@@ -1,3 +1,4 @@
+#@keyword: Waterfront Marina
 #@setting: outdoor
 #@domain: waterfront
 #@place: marina

@@ -1,3 +1,4 @@
+#@keyword: Nature Glacier
 #@setting: outdoor
 #@domain: nature
 #@place: glacier

@@ -1,3 +1,4 @@
+#@keyword: Rural Farmland
 #@setting: outdoor
 #@domain: rural
 #@place: farmland

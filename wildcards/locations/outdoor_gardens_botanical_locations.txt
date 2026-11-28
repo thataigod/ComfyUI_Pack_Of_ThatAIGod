@@ -1,3 +1,4 @@
+#@keyword: Gardens Botanical
 #@setting: outdoor
 #@domain: gardens
 #@place: botanical

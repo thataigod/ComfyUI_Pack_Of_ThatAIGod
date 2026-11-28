@@ -1,3 +1,4 @@
+#@keyword: Surreal
 __fantastical_surreal_dreamscape_locations__
 __fantastical_surreal_floating_islands_locations__
 __fantastical_surreal_infinity_room_locations__

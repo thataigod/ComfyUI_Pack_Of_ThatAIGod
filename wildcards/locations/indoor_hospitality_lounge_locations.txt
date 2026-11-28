@@ -1,3 +1,4 @@
+#@keyword: Hospitality Lounge
 #@setting: indoor
 #@domain: hospitality
 #@place: lounge

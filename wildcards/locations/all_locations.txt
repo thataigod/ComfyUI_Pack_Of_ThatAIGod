@@ -1,3 +1,4 @@
+#@keyword: Location
 __indoor_locations__
 __semi_outdoor_locations__
 __outdoor_locations__

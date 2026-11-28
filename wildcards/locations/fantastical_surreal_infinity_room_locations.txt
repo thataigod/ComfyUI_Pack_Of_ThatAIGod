@@ -1,3 +1,4 @@
+#@keyword: Surreal Infinity Room
 #@setting: fantastical
 #@domain: surreal
 #@place: infinity_room

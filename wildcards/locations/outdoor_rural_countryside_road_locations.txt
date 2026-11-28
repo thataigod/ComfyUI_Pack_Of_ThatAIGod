@@ -1,3 +1,4 @@
+#@keyword: Rural Countryside Road
 #@setting: outdoor
 #@domain: rural
 #@place: countryside_road

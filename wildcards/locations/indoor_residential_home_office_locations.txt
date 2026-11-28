@@ -1,3 +1,4 @@
+#@keyword: Residential Home Office
 #@setting: indoor
 #@domain: residential
 #@place: home_office

@@ -1,3 +1,4 @@
+#@keyword: Urban Night Market
 #@setting: outdoor
 #@domain: urban
 #@place: night_market

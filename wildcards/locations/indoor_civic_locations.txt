@@ -1,3 +1,4 @@
+#@keyword: Civic
 __indoor_civic_museum_locations__
 __indoor_civic_art_gallery_locations__
 __indoor_civic_library_locations__

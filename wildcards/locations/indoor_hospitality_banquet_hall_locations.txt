@@ -1,3 +1,4 @@
+#@keyword: Hospitality Banquet Hall
 #@setting: indoor
 #@domain: hospitality
 #@place: banquet_hall

@@ -1,3 +1,4 @@
+#@keyword: Location
 __outdoor_urban_locations__
 __outdoor_nature_locations__
 __outdoor_waterfront_locations__

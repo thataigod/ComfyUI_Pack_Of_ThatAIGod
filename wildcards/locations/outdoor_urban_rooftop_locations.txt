@@ -1,3 +1,4 @@
+#@keyword: Urban Rooftop
 #@setting: outdoor
 #@domain: urban
 #@place: rooftop

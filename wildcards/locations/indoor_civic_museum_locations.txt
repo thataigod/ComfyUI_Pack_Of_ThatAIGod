@@ -1,3 +1,4 @@
+#@keyword: Civic Museum
 #@setting: indoor
 #@domain: civic
 #@place: museum

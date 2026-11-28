@@ -1,3 +1,4 @@
+#@keyword: Transport Plane Cabin
 #@setting: indoor
 #@domain: transport
 #@place: plane_cabin

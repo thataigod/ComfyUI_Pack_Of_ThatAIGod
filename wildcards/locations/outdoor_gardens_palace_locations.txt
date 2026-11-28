@@ -1,3 +1,4 @@
+#@keyword: Gardens Palace
 #@setting: outdoor
 #@domain: gardens
 #@place: palace

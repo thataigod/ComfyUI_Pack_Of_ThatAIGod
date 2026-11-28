@@ -1,3 +1,4 @@
+#@keyword: Fantasy Throne Room
 #@setting: fantastical
 #@domain: fantasy
 #@place: throne_room

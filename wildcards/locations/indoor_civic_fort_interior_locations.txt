@@ -1,3 +1,4 @@
+#@keyword: Civic Fort Interior
 #@setting: indoor
 #@domain: civic
 #@place: fort_interior

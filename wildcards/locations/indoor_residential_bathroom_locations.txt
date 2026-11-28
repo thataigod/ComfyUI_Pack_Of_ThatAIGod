@@ -1,3 +1,4 @@
+#@keyword: Residential Bathroom
 #@setting: indoor
 #@domain: residential
 #@place: bathroom

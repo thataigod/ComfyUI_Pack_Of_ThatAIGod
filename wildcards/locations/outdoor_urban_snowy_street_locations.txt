@@ -1,3 +1,4 @@
+#@keyword: Urban Snowy Street
 #@setting: outdoor
 #@domain: urban
 #@place: snowy_street

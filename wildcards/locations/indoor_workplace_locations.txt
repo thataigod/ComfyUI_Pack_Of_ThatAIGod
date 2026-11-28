@@ -1,3 +1,4 @@
+#@keyword: Workplace
 __indoor_workplace_office_locations__
 __indoor_workplace_boardroom_locations__
 __indoor_workplace_coworking_locations__

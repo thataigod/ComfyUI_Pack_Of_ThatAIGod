@@ -1,3 +1,4 @@
+#@keyword: Commercial Boutique
 #@setting: indoor
 #@domain: commercial
 #@place: boutique

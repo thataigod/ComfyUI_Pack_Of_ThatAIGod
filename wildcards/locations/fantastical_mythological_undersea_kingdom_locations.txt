@@ -1,3 +1,4 @@
+#@keyword: Mythological Undersea Kingdom
 #@setting: fantastical
 #@domain: mythological
 #@place: undersea_kingdom

@@ -1,3 +1,4 @@
+#@keyword: Civic Temple Interior
 #@setting: indoor
 #@domain: civic
 #@place: temple_interior
