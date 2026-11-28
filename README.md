@@ -7,7 +7,7 @@ A custom node pack for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) prov
 ## Features
 
 - **LLM Chat** - Connect to OpenRouter API or local LLM servers (LM Studio) with streaming responses
-- **Image Saver Plus** - Save images with format selection, quality control, template variables, and text sidecars
+- **Image Saver Plus** - Save images as PNG, JPEG, WebP, AVIF, or EXR with format-specific quality, bit depth, color space, template variables, and text sidecars
 - **Dynamic Resolution Picker** - Calculate optimal width/height for any aspect ratio
 - **Dynamic Resolution Selector** - Multi-select aspect ratios with max/min side constraint and custom W:H ratio support
 - **Wildcard Reader** - Resolve `__wildcard__` placeholders from curated text files with `{A|B|C}` choice syntax
@@ -148,20 +148,29 @@ Calculates optimal image dimensions based on aspect ratio and scale factor.
 
 Category: `ThatAIGod/Image Utils`
 
-Saves images with format selection, quality/compression control, filename template variables, and optional text sidecar files.
+Saves images in PNG, JPEG, WebP, AVIF, or EXR with format-specific bit-depth, color-space, quality/compression control, filename template variables, and optional text sidecar files.
 
 | Input | Type | Description |
 |-------|------|-------------|
 | images | IMAGE | The images to save |
 | filename_prefix | STRING | Prefix with template variables. Supports `%width%`, `%height%`, `%date:FORMAT%` (e.g. `%date:yyyy_MM_dd%`), `%year%`, `%month%`, `%day%`, `%hour%`, `%minute%`, `%second%` (shorthand for the most common date parts), `%counter%` (sequential number, place anywhere in the filename), and `%batch_num%` |
-| file_format | Dropdown | `png`, `jpeg`, or `webp` |
+| file_format | Dropdown | `png`, `jpeg`, `webp`, `avif`, or `exr` |
 | quality | INT | Quality for JPEG/WebP (1-100, default 95) |
 | compress_level | INT | PNG compression (0-9, default 4) |
+| bit_depth | Dropdown | PNG: `8-bit`/`16-bit`; AVIF: `8-bit YUV420`/`10-bit YUV420`; EXR: `16-bit float`/`32-bit float`. `auto` picks a sensible default per format |
+| input_color_space | Dropdown | AVIF: `sRGB`/`HDR`/`HDR PQ`; EXR: `sRGB`/`HDR`/`linear`/`linear ACEScg`; ignored by PNG/JPEG/WebP |
+| channels | Dropdown | PNG only. `auto`, grayscale (1 channel), RGB (3 channels), or RGBA (4 channels) |
+| crf | INT | AVIF quality (1-63, default 18; lower is better) |
+| save_mode | Dropdown | AVIF only. `still images` or `animated` (encodes the batch as one looping AVIF) |
+| fps | FLOAT | Frame rate for animated AVIF (default 6) |
+| loop_count | INT | Loop count for animated AVIF (0 = forever) |
 | save_text | STRING | Optional text to save as a `.txt` sidecar alongside each image |
 
 **Examples:**
 - `ComfyUI/Chroma/%date:yyyy_MM_dd%/PiX_%date:yyyyMMdd%_%counter%_PreFaceFix` produces `ComfyUI/Chroma/2026_05_30/PiX_20260530_00001_PreFaceFix.png`
 - Using `%counter%` in the filename prevents overwrites — the counter scans existing files and increments automatically
+
+**Large AVIF images:** SVT-AV1 refuses frames taller than 8704 px, which breaks 48 MP portrait outputs (e.g. 5000×9600). Image Saver Plus automatically re-encodes those through Pillow's libavif AV1 encoder instead of failing; the only loss in that fallback is 10-bit/HDR signaling (files are written as 8-bit SDR).
 
 ### Wildcard Reader
 

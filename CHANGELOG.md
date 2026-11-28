@@ -9,12 +9,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 ### Added
 - Dynamic Resolution Selector node with multi-select aspect ratios, constraint mode (max/min side), and custom W:H ratio
 - Frontend UI for batch-selecting aspect ratios (Select All, Portraits, Landscapes)
+- Image Saver Plus: AVIF output (8/10-bit YUV420, sRGB/HDR/HDR PQ, CRF, still or animated) and EXR output (16/32-bit float, sRGB/HDR/linear/ACEScg)
+- Image Saver Plus: 16-bit PNG output and PNG grayscale/RGB/RGBA channel conversion
 
 ### Changed
 - `safe_import` now catches all exceptions instead of only `ImportError` for robustness
 
 ### Fixed
 - Camera: cache now includes dimensions (rounded to 8), geometry-honest custom angles/views (elevation 90), LRU bag cap, empty-deck guard, safe option loading, frontend Mid-Sizes parity
+- Image Saver Plus: AVIF saves at heights above SVT-AV1's 8704 px limit (e.g. 48 MP portrait images) now fall back to Pillow/libavif instead of failing
 
 ## [1.3.0] - 2026-05-30
 
